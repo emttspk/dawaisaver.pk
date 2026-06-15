@@ -41,3 +41,16 @@ Reason: The user requested `/api/...` endpoints, and keeping the prefix stable r
 Decision: Wrap successful and failed API responses in a stable envelope format.
 
 Reason: The controller layer needs predictable JSON contracts for client development and future versioning.
+
+## 2026-06-15: Use A Mock OCR Abstraction First
+
+Decision: Build an OCR abstraction with a mock provider before integrating a real OCR vendor.
+
+Reason: The user requested OCR abstraction only for the prescription pipeline, and the runtime should remain provider-agnostic until a vendor is selected.
+
+## 2026-06-15: Use Safety Wording For Medicine Comparisons
+
+Decision: Prescription alternatives should be described as "Equivalent options with same active ingredient, strength, and dosage form."
+
+Reason: The pipeline must avoid implying unsupported clinical substitution language.
+

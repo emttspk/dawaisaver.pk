@@ -6,11 +6,11 @@ DawaiSaver.pk
 
 ## Current Phase
 
-Phase 5: API Controller Layer
+Phase 6: Prescription Processing Pipeline
 
 ## Current Status
 
-The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, and API controller layer are complete. The workspace now contains an executable NestJS backend shell with Prisma, configuration, health checks, observability, Docker, Railway deployment scaffolding, REST controllers, and Swagger/OpenAPI documentation. No frontend, OCR, marketplace, or warehouse implementation has been started.
+The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, and prescription processing pipeline are complete. The workspace now contains an executable NestJS backend shell with Prisma, configuration, health checks, observability, Docker, Railway deployment scaffolding, REST controllers, prescription parsing and matching workflows, and Swagger/OpenAPI documentation. No frontend, marketplace, or warehouse implementation has been started.
 
 ## Mandatory Read Order For Future AI Agents
 
@@ -30,8 +30,10 @@ The governance phase, database foundation, data collection engines, search/disco
 14. `docs/MEDICINE_NORMALIZATION_ENGINE.md`
 15. `docs/API_CONTROLLER_LAYER.md`
 16. `docs/API_SPECIFICATION.md`
-17. `docs/ROADMAP.md`
-18. `docs/CHANGELOG.md`
+17. `docs/PRESCRIPTION_PROCESSING_ENGINE.md`
+18. `docs/PRESCRIPTION_PIPELINE_IMPLEMENTATION.md`
+19. `docs/ROADMAP.md`
+20. `docs/CHANGELOG.md`
 
 ## Document Index
 
@@ -64,6 +66,7 @@ The governance phase, database foundation, data collection engines, search/disco
 - `docs/DATA_INTELLIGENCE_ENGINE.md`
 - `docs/MEDICINE_NORMALIZATION_ENGINE.md`
 - `docs/PRESCRIPTION_PROCESSING_ENGINE.md`
+- `docs/PRESCRIPTION_PIPELINE_IMPLEMENTATION.md`
 - `docs/PHARMACY_MARKETPLACE_PLAN.md`
 - `docs/WAREHOUSE_EXPANSION_PLAN.md`
 - `docs/SECURITY_ARCHITECTURE.md`
@@ -84,6 +87,7 @@ The governance phase, database foundation, data collection engines, search/disco
 - `prisma/migrations/20260615190000_add_medicine_matching_engine/migration.sql`: canonical medicine matching migration
 - `prisma/migrations/20260615203000_add_search_api_foundation/migration.sql`: search API foundation migration
 - `prisma/migrations/20260615220000_add_product_discovery_engine/migration.sql`: product discovery engine migration
+- `prisma/migrations/20260615233000_add_prescription_processing_pipeline/migration.sql`: prescription processing pipeline migration
 - `prisma/seed.ts`: seed entrypoint placeholder
 - `prisma/seed/README.md`: seed policy and planned seed files
 
@@ -193,7 +197,7 @@ The governance phase, database foundation, data collection engines, search/disco
 - `railway.json`: Railway deployment configuration
 - `src/main.ts`: NestJS bootstrap with security, validation, logging, and diagnostics
 - `src/app.module.ts`: root module composition
-- `src/runtime-feature.module.ts`: module registration for DRAP, sources, price intelligence, matching, search, and discovery foundations
+- `src/runtime-feature.module.ts`: module registration for DRAP, sources, price intelligence, matching, prescriptions, search, and discovery foundations
 - `src/config/`: application, database, storage, crawler, and environment validation config
 - `src/database/`: Prisma module, Prisma service, database bootstrap, and health checks
 - `src/common/`: exception filter, response formatter, request logging, error logging, tracing, and startup diagnostics
@@ -215,6 +219,14 @@ The governance phase, database foundation, data collection engines, search/disco
 - `test/api-controller-layer.*.test.ts`: controller, DTO, contract, and Swagger tests
 - `docs/API_CONTROLLER_LAYER.md`: API contracts, response standards, Swagger, and recovery notes
 
+### Prescription Processing Pipeline Artifacts
+
+- `src/modules/prescriptions/`: prescription parser, matcher, cost estimator, review service, module, DTOs, and controllers
+- `src/modules/ocr/`: OCR abstraction with mock provider
+- `prisma/migrations/20260615233000_add_prescription_processing_pipeline/migration.sql`: additive prescription processing migration
+- `docs/PRESCRIPTION_PROCESSING_ENGINE.md`: engine purpose, workflow, safety, and recovery
+- `docs/PRESCRIPTION_PIPELINE_IMPLEMENTATION.md`: implementation notes and recovery procedure
+
 ## Phase Gate Status
 
 - Phase 0 documentation: complete
@@ -228,11 +240,13 @@ The governance phase, database foundation, data collection engines, search/disco
 - Phase 3 product discovery engine: complete
 - Phase 4 backend runtime foundation: complete
 - Phase 5 API controller layer: complete
+- Phase 6 prescription processing pipeline: complete
 - Frontend implementation: not started
-- OCR implementation: not started
+- OCR provider integration: not started
 - Marketplace implementation: not started
 - Warehouse implementation: not started
 
 ## Next Recommended Task
 
-Prescription Processing Pipeline.
+OCR Integration Layer.
+

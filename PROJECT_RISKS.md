@@ -6,6 +6,7 @@
 - External data sources may be incomplete, inconsistent, stale, or legally restricted.
 - User prescriptions and bills contain sensitive personal data.
 - Price data can become stale quickly.
+- Prescription parsing errors can produce unsafe matches if not reviewed.
 
 ## Medium Risks
 
@@ -21,6 +22,7 @@
 - Use confidence scores and admin review.
 - Keep medical disclaimers and professional-confirmation language in user-facing flows.
 - Create audit logs for ingestion, review, and mutation actions.
+- Flag high-risk medicines such as insulin, blood thinners, anticonvulsants, steroids, and psychiatric medicines for manual review.
 
 ## Current Residual Risk
 

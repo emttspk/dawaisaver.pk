@@ -51,6 +51,15 @@ BullMQ workers process OCR, source ingestion, normalization, matching, crawl job
 
 The search layer exposes backend search services over canonical products, generic names, manufacturer names, medicine signatures, registration numbers, alternatives, popularity, price intelligence, and availability.
 
+### Prescription Processing Layer
+
+The prescription layer accepts text or mock upload inputs, extracts text through an OCR abstraction, matches medicine lines against canonical products, calculates cost estimates, and stores reviewable records.
+
+Prescription processing files:
+
+- `src/modules/prescriptions/`
+- `src/modules/ocr/`
+
 ### Discovery Layer
 
 The discovery layer creates provisional product candidates from unknown products, source snapshots, DRAP imports, and search queries. It preserves evidence and sends candidates through review before promotion.
@@ -77,8 +86,10 @@ flowchart LR
   API --> R2[(Cloudflare R2)]
   API --> Queue[(BullMQ / Redis)]
   API --> Search[Search Services]
+  API --> Prescription[Prescription Services]
   API --> Discovery[Discovery Services]
   Search --> DB
+  Prescription --> DB
   Discovery --> DB
   Queue --> Workers[Background Workers]
   Workers --> Crawlers[Playwright / Cheerio]
@@ -93,6 +104,7 @@ flowchart LR
 - Historical records are append-only where practical.
 - Recommendations include confidence, reason codes, and evidence links.
 - Search results use canonical medicine identity and expose confidence/review status metadata.
+- Prescription processing preserves source text, safety warnings, confidence scores, and cost estimates.
 - Product discovery candidates must preserve evidence and remain reviewable before promotion.
 - Runtime health endpoints must remain available at `/health`, `/health/database`, and `/health/application`.
 - API endpoints are exposed under `/api`.

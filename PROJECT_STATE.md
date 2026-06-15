@@ -6,7 +6,7 @@
 
 ## Current Status
 
-The project is in Phase 5: API Controller Layer. Phase 0 governance, Phase 1 database foundation, Phase 2 data collection/intelligence foundations, Phase 3 search/discovery foundations, Phase 4 backend runtime foundation, and the REST API controller layer are complete.
+The project is in Phase 6: Prescription Processing Pipeline. Phase 0 governance, Phase 1 database foundation, Phase 2 data collection and intelligence foundations, Phase 3 search and discovery foundations, Phase 4 backend runtime foundation, Phase 5 API controller layer, and the Phase 6 prescription pipeline are complete. The new prescription pipeline build and test verification passed.
 
 ## Implemented
 
@@ -18,7 +18,7 @@ The project is in Phase 5: API Controller Layer. Phase 0 governance, Phase 1 dat
 - ERD in `docs/DATABASE_ARCHITECTURE.md`
 - Seed structure and seed policy
 - Data sources inventory
-- Progress, risk, current update, and next action tracking
+- Progress, risk, current update, next action, and implementation index tracking
 - DRAP import engine foundation under `src/modules/drap/`
 - DRAP module README with architecture diagram, sequence diagram, and test plan
 - Import tracking tables: `import_batches`, `import_batch_items`, `import_errors`
@@ -46,8 +46,8 @@ The project is in Phase 5: API Controller Layer. Phase 0 governance, Phase 1 dat
 - Discovery dataset and candidate/confidence/duplicate/review test scaffolds
 - Product discovery documentation
 - Executable NestJS backend runtime with `src/main.ts` and `src/app.module.ts`
-- Runtime module registration for DRAP, sources, price intelligence, matching, search, and discovery foundations
-- Prisma module, Prisma service, database bootstrap service, and database health checks
+- Runtime module registration for DRAP, sources, price intelligence, matching, prescriptions, search, and discovery foundations
+- Prisma module, service, database bootstrap, and database health checks
 - Environment validation and application, database, storage, and crawler configuration
 - Health endpoints for `/health`, `/health/database`, and `/health/application`
 - Health module under `src/modules/health/`
@@ -61,6 +61,12 @@ The project is in Phase 5: API Controller Layer. Phase 0 governance, Phase 1 dat
 - Swagger/OpenAPI documentation at `/api/docs`
 - Standard success/error API envelopes
 - Placeholder `AdminGuard` and `InternalGuard`
+- Prescription Processing Pipeline under `src/modules/prescriptions/`
+- OCR abstraction under `src/modules/ocr/`
+- Prescription processing tables: `prescription_processing_jobs`, `prescription_reviews`, `prescription_cost_estimates`
+- Prescription parser, item matcher, cost estimator, review workflow, mock OCR, and controller tests
+- `npm.cmd run build` passed after the prescription pipeline changes
+- `npm.cmd test` passed after the prescription pipeline changes
 
 ## Required Tables Covered
 
@@ -84,9 +90,8 @@ The project is in Phase 5: API Controller Layer. Phase 0 governance, Phase 1 dat
 ## Not Implemented
 
 - Live database migration execution
-- Full backend source adapter runtime
+- Real OCR provider integration
 - Provider-specific source adapters for Dawaai, Sehat, DVAGO, Servaid, and other pharmacy sites
-- OCR pipeline
 - Frontend PWA
 - Admin application
 - Marketplace
@@ -94,4 +99,4 @@ The project is in Phase 5: API Controller Layer. Phase 0 governance, Phase 1 dat
 
 ## Immediate Next Step
 
-Prescription Processing Pipeline.
+OCR Integration Layer.

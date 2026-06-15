@@ -3,6 +3,7 @@ import { DrapModule } from "./modules/drap/drap.module";
 import { SourceModule } from "./modules/sources/source.module";
 import { PriceIntelligenceModule } from "./modules/price-intelligence/price-intelligence.module";
 import { MatchingModule } from "./modules/matching/matching.module";
+import { PrescriptionsModule } from "./modules/prescriptions/prescriptions.module";
 import { SearchModule } from "./modules/search/search.module";
 import { DiscoveryModule } from "./modules/discovery/discovery.module";
 
@@ -10,6 +11,7 @@ export const DRAP_IMPORTER = Symbol("DRAP_IMPORTER");
 export const SOURCE_REGISTRY = Symbol("SOURCE_REGISTRY");
 export const PRICE_INTELLIGENCE_SERVICE = Symbol("PRICE_INTELLIGENCE_SERVICE");
 export const MATCHING_SERVICE = Symbol("MATCHING_SERVICE");
+export const PRESCRIPTION_SERVICE = Symbol("PRESCRIPTION_SERVICE");
 export const SEARCH_SERVICE = Symbol("SEARCH_SERVICE");
 export const DISCOVERY_SERVICE = Symbol("DISCOVERY_SERVICE");
 
@@ -26,6 +28,10 @@ export const DISCOVERY_SERVICE = Symbol("DISCOVERY_SERVICE");
     {
       provide: MATCHING_SERVICE,
       useFactory: () => MatchingModule.createService(),
+    },
+    {
+      provide: PRESCRIPTION_SERVICE,
+      useFactory: () => PrescriptionsModule.createService(),
     },
     {
       provide: SEARCH_SERVICE,
@@ -45,9 +51,9 @@ export const DISCOVERY_SERVICE = Symbol("DISCOVERY_SERVICE");
     SOURCE_REGISTRY,
     PRICE_INTELLIGENCE_SERVICE,
     MATCHING_SERVICE,
+    PRESCRIPTION_SERVICE,
     SEARCH_SERVICE,
     DISCOVERY_SERVICE,
   ],
 })
 export class RuntimeFeatureModule {}
-

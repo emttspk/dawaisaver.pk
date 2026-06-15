@@ -2,46 +2,57 @@
 
 ## Purpose
 
-The prescription processing engine converts user-uploaded prescriptions into parsed medicine items, matched products, cost estimates, and savings reports.
+The prescription processing engine converts user-supplied prescription text or mock upload references into parsed medicine lines, canonical medicine matches, cost estimates, and reviewable records.
 
-## Flow
+## Architecture
 
 ```mermaid
 sequenceDiagram
   participant User
   participant API
-  participant R2
   participant OCR
   participant Parser
   participant Matcher
-  participant Optimizer
+  participant Cost
   participant Review
 
-  User->>API: upload prescription image
-  API->>R2: store image
-  API->>OCR: enqueue OCR job
-  OCR->>Parser: extracted text
-  Parser->>Matcher: medicine candidates
-  Matcher->>Optimizer: matched items
-  Optimizer->>API: savings report
+  User->>API: submit text or mock upload
+  API->>OCR: extract text when needed
+  OCR->>Parser: raw prescription text
+  Parser->>Matcher: candidate medicine lines
+  Matcher->>Cost: matched items
+  Cost->>API: savings report
   Matcher->>Review: low-confidence items
 ```
 
-## Required Outputs
+Modules:
 
-- original upload reference
-- OCR text
-- parsed prescription items
-- candidate product matches
-- confidence scores
-- unknown items
-- cost optimization report
-- review status
+- `src/modules/prescriptions/`
+- `src/modules/ocr/`
+
+## Flow
+
+1. Create the prescription record.
+2. Parse the input text into raw lines.
+3. Match lines against canonical products.
+4. Store `prescription_items` rows for the parsed medicines.
+5. Estimate original, cheapest, balanced, and premium cost options.
+6. Mark low-confidence matches for review.
+7. Return a structured result with confidence and safety flags.
 
 ## Safety Rules
 
 - Do not provide diagnosis.
-- Do not instruct users to change prescribed medicine without pharmacist or clinician confirmation.
-- Clearly label alternatives as comparison candidates.
-- Preserve source image and parsing audit trail.
+- Do not say "replace medicine."
+- Use the wording: "Equivalent options with same active ingredient, strength, and dosage form."
+- Flag high-risk medicines for manual review.
+- Preserve source image or text references and parsing audit trail.
+
+## Recovery Procedure
+
+- Re-read the persisted `prescriptions` row.
+- Rehydrate stored `prescription_items`.
+- Rebuild the price context from product price observations.
+- Re-run the cost estimator and review workflow.
+- Keep audit and provenance metadata intact.
 

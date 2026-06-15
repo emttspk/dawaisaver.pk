@@ -2,16 +2,18 @@
 
 ## Immediate Next Task
 
-Prescription Processing Pipeline.
+OCR Integration Layer.
 
 ## Scope
 
-- Build prescription parsing and prescription-item matching workflows on top of the controller layer.
-- Preserve existing REST contracts, response envelopes, and Swagger docs while adding prescription-specific endpoints later.
-- Keep the new pipeline compatible with the current `/api` prefix and controller module structure.
+- Replace the mock OCR provider with a real OCR integration path.
+- Preserve the prescription parsing, matching, and cost-estimation workflow already in place.
+- Keep the new OCR layer compatible with the current prescription pipeline and controller structure.
 
 ## Preconditions
 
+- Prescription Processing Pipeline exists.
+- OCR abstraction exists.
 - API Controller Layer exists and builds.
 - Product Discovery Engine exists.
 - Search API Foundation exists.
@@ -22,6 +24,6 @@ Prescription Processing Pipeline.
 ## Out of Scope
 
 - Frontend
-- OCR
 - Marketplace
 - Warehouse fulfillment
+

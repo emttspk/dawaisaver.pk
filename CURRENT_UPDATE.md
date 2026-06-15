@@ -6,37 +6,27 @@
 
 ## Phase
 
-Phase 5 - API Controller Layer
+Phase 6 - Prescription Processing Pipeline
 
 ## Summary
 
-API Controller Layer is complete. DawaiSaver.pk now exposes REST APIs for search, autocomplete, alternatives, price intelligence, matching, DRAP import, source sync, and discovery review with standardized response envelopes and Swagger documentation.
+The prescription processing pipeline has been added as a backend-only flow with text parsing, mock OCR abstraction, canonical medicine matching, cost estimation, review support, and new persistence tables for processing jobs, reviews, and estimates.
 
 ## Completed
 
-- Verified the backend runtime foundation still builds and the existing engine layers remain intact.
-- Added REST controllers under `src/modules/search/controllers/`, `src/modules/discovery/controllers/`, `src/modules/matching/controllers/`, `src/modules/price-intelligence/controllers/`, `src/modules/drap/controllers/`, and `src/modules/sources/controllers/`.
-- Added DTO validation for search, autocomplete, alternatives, price analytics, discovery review, source sync, DRAP import, and medicine matching requests.
-- Added placeholder `AdminGuard` and `InternalGuard`.
-- Added the global response envelope interceptor and standardized error envelope format.
-- Wired Swagger at `/api/docs` with OpenAPI document generation.
-- Changed the API prefix to `/api`.
-- Updated the app module to register the controller layer modules.
-- Added controller, DTO, contract, and Swagger verification tests.
-- Updated the implementation index, state, memory, progress, decisions, next actions, changelog, API spec, and architecture documentation.
-
-## Verification
-
-- `npm.cmd install`: completed after adding Swagger dependencies.
-- `npm.cmd run build`: passed.
-- `npm.cmd test`: passed, 18 suites and 28 tests.
+- Added `src/modules/prescriptions/` with parser, matcher, cost estimator, review service, module, DTOs, and controllers.
+- Added `src/modules/ocr/` with a mock OCR provider abstraction for future provider integration.
+- Added additive Prisma models and migration for `prescription_processing_jobs`, `prescription_reviews`, and `prescription_cost_estimates`.
+- Wired prescription processing into the NestJS runtime and feature registry.
+- Updated prescription, API specification, system architecture, and changelog documentation.
+- Added parser, mock OCR, item matching, cost estimation, review workflow, and controller test scaffolds.
+- Verified the prescription pipeline with `npm.cmd run build` and `npm.cmd test`.
 
 ## Pending
 
-- Prescription Processing Pipeline.
-- Production Railway secret provisioning for long-lived deployment.
-- Live database migration execution against a configured PostgreSQL instance.
+- OCR provider integration beyond the mock abstraction.
+- Live PostgreSQL migration execution.
 
 ## Next Task
 
-Prescription Processing Pipeline.
+OCR Integration Layer.

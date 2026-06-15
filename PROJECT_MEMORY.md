@@ -16,7 +16,7 @@ The platform should help users upload prescriptions, compare equivalent medicine
 - Never overwrite historical records.
 - Store source URL and source type.
 - Every completed task must update AI recovery files and changelog.
-- Do not implement frontend, OCR, prescription upload, marketplace, or warehouse work during backend runtime work.
+- Do not implement frontend, marketplace, or warehouse work during backend runtime work.
 
 ## Preferred Stack
 
@@ -116,7 +116,7 @@ The platform should help users upload prescriptions, compare equivalent medicine
 
 - Backend Runtime Foundation is implemented as an executable NestJS application.
 - Runtime bootstrap lives in `src/main.ts`; root composition lives in `src/app.module.ts`.
-- `RuntimeFeatureModule` registers the DRAP, sources, price intelligence, matching, search, and discovery foundations without creating public controllers yet.
+- `RuntimeFeatureModule` registers the DRAP, sources, price intelligence, matching, prescriptions, search, and discovery foundations without creating public controllers yet.
 - Prisma integration lives in `src/database/prisma.module.ts` and `src/database/prisma.service.ts`.
 - Database health is checked through Prisma with a lightweight `SELECT 1`.
 - Environment validation lives in `src/config/env.validation.ts`; config composition lives in `src/config/configuration.ts`.
@@ -135,9 +135,21 @@ The platform should help users upload prescriptions, compare equivalent medicine
 - Error responses are wrapped as `{ success: false, error, code, timestamp }`.
 - Search controllers expose search, products, generics, autocomplete, alternatives, and trending.
 - Price intelligence controllers expose product and city analytics endpoints.
-- Matching, DRAP, source sync, and discovery review controllers are registered through Nest modules.
+- Matching, DRAP, source sync, discovery review, and prescription controllers are registered through Nest modules.
 - `AdminGuard` and `InternalGuard` are placeholders only and do not perform real authentication yet.
+
+## Prescription Processing Memory
+
+- Prescription processing lives in `src/modules/prescriptions/`.
+- Mock OCR abstraction lives in `src/modules/ocr/`.
+- The pipeline supports text input and mock uploads without a real OCR provider.
+- Parsing extracts raw medicine lines, dosage text, and quantity hints.
+- Matching uses canonical medicine identity and safety warnings for high-risk medicines.
+- Cost estimation uses matched prices, alternatives, city signals, and market signals.
+- Review workflows remain reviewable through dedicated DTOs and controller endpoints.
+- The safety wording should use: "Equivalent options with same active ingredient, strength, and dosage form."
 
 ## Next Task Recommendation
 
-Prescription Processing Pipeline.
+OCR Integration Layer.
+

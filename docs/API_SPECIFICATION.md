@@ -83,6 +83,29 @@ Search result DTOs:
 - `AlternativeResultDto`
 - `TrendingResultDto`
 
+## Prescription Processing Pipeline
+
+Prescription endpoints support text submission, mock uploads, item retrieval, cost estimates, and review actions.
+
+Prescription endpoints:
+
+- `POST /api/prescriptions/text`
+- `POST /api/prescriptions/mock-upload`
+- `GET /api/prescriptions/:id`
+- `GET /api/prescriptions/:id/items`
+- `GET /api/prescriptions/:id/cost-estimate`
+- `POST /api/prescriptions/:id/review`
+
+Prescription response contracts should preserve:
+
+- raw text provenance
+- extracted item lines
+- matched canonical medicine identity
+- confidence scores
+- review-required flags
+- cost estimate breakdowns
+- high-risk medication warnings
+
 ## Controller Layer
 
-The controller layer now exposes REST endpoints for search, discovery, matching, price intelligence, DRAP import, and source sync over the `/api` prefix. Swagger is available at `/api/docs`.
+The controller layer now exposes REST endpoints for search, discovery, matching, price intelligence, prescription processing, DRAP import, and source sync over the `/api` prefix. Swagger is available at `/api/docs`.

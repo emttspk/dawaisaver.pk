@@ -6,61 +6,49 @@
 
 ## Phase
 
-Phase 5 - API Controller Layer
+Phase 6 - Prescription Processing Pipeline
 
 ## Completed
 
-- Built REST controllers for search, autocomplete, alternatives, discovery review, discovery candidates, matching evaluation, price intelligence, DRAP import, and source sync/health.
-- Added DTO validation for the new controller layer.
-- Added placeholder `AdminGuard` and `InternalGuard`.
-- Added a global response envelope interceptor and standardized error envelope responses.
-- Added Swagger/OpenAPI generation at `/api/docs`.
-- Moved the public API prefix to `/api`.
-- Updated application composition to register the controller modules.
-- Added controller, DTO, API contract, and Swagger verification tests.
-- Updated the phase continuity and architecture documentation.
+- Added the prescription processing module under `src/modules/prescriptions/`.
+- Added the OCR abstraction under `src/modules/ocr/` with a mock provider only.
+- Added prescription parsing, item matching, cost estimation, and review services.
+- Added prescription controllers for text submission, mock upload, prescription retrieval, cost estimates, and review.
+- Added additive Prisma models and migration for prescription processing jobs, reviews, and cost estimates.
+- Added parser, mock OCR, item matching, cost estimate, review workflow, and controller tests.
+- Updated the prescription processing, API specification, system architecture, changelog, and recovery documentation.
+- Updated runtime module registration and app module imports for the prescription pipeline.
 
 ## Pending
 
-- Prescription Processing Pipeline.
-- Authentication and authorization beyond placeholder guards.
-- Production Railway secret provisioning.
-- Live migration execution against a configured PostgreSQL database.
+- Real OCR provider integration.
+- Live PostgreSQL migration execution.
 
 ## Risks
 
-- Source sync and DRAP import endpoints are structurally complete but still depend on provider adapters and external payloads to become fully operational.
-- Discovery and source sync paths persist records, but production authorization is still a placeholder.
-- API envelope standardization is global, so any future raw-response endpoint will need to opt out deliberately.
-- External data access remains the main runtime variable until production datasets and adapters are wired.
+- Prescription parsing and matching still need production OCR and human review before use on sensitive records.
+- The new prescription tables are additive but have not been applied to a live PostgreSQL instance yet.
+- Cost estimates depend on the availability and freshness of product price observations.
+- The mock OCR abstraction is intentionally limited and should be replaced before production use.
 
-## Build Status
+## Database Impact
 
-- `npm.cmd install`: completed after adding Swagger dependencies.
-- `npm.cmd run build`: passed.
-- `npm.cmd test`: passed, 18 suites and 28 tests.
+- Added `prescription_processing_jobs`.
+- Added `prescription_reviews`.
+- Added `prescription_cost_estimates`.
+- Added relations from prescriptions and prescription items to the new tables.
 
-## Dependency Status
+## Architecture Impact
 
-- Added `@nestjs/swagger` and `swagger-ui-express`.
-- Existing dependency warnings remain in `npm audit` output and should be reviewed before production deployment.
-
-## Runtime Status
-
-- API prefix is `/api`.
-- Swagger is served at `/api/docs`.
-- Response envelopes now follow:
-  - success: `{ success, data, meta, timestamp }`
-  - error: `{ success: false, error, code, timestamp }`
-- The runtime still boots through NestJS with Prisma, configuration validation, security headers, rate limiting, and health endpoints.
-
-## Deployment Status
-
-- Railway configuration remains in `railway.json`.
-- `RAILWAY_SETUP.md` documents the CLI and deployment steps.
-- Git repository is initialized locally.
-- `git push origin main` failed with `git@github.com: Permission denied (publickey)`.
+- Added `src/modules/prescriptions/` for prescription parsing, matching, cost estimation, and review flows.
+- Added `src/modules/ocr/` as the provider abstraction layer for future OCR vendors.
+- Registered the prescription pipeline in the NestJS app module and runtime feature registry.
 
 ## Next Task
 
-Prescription Processing Pipeline.
+OCR Integration Layer.
+
+## Verification
+
+- `npm.cmd run build`: passed.
+- `npm.cmd test`: passed, 24 suites and 34 tests.

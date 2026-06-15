@@ -520,6 +520,9 @@ model Prescription {
   deletedById     String?            @map("deleted_by_id") @db.Uuid
   user            User?              @relation(fields: [userId], references: [id])
   items           PrescriptionItem[]
+  processingJobs  PrescriptionProcessingJob[]
+  reviews         PrescriptionReview[]
+  costEstimates   PrescriptionCostEstimate[]
 
   @@index([userId])
   @@index([status])
@@ -547,11 +550,97 @@ model PrescriptionItem {
   deletedById     String?       @map("deleted_by_id") @db.Uuid
   prescription    Prescription  @relation(fields: [prescriptionId], references: [id])
   product         Product?      @relation(fields: [productId], references: [id])
+  reviews         PrescriptionReview[]
+  costEstimates   PrescriptionCostEstimate[]
 
   @@index([prescriptionId])
   @@index([productId])
   @@index([status])
   @@map("prescription_items")
+}
+
+model PrescriptionProcessingJob {
+  id              String       @id @default(uuid()) @db.Uuid
+  prescriptionId  String       @map("prescription_id") @db.Uuid
+  jobType         String       @map("job_type")
+  status          RecordStatus @default(PENDING_REVIEW)
+  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType?  @map("source_type")
+  sourceUrl       String?      @map("source_url")
+  city            String?
+  metadata        Json?
+  resultSummary   Json?        @map("result_summary")
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  deletedAt       DateTime?    @map("deleted_at")
+  createdById     String?      @map("created_by_id") @db.Uuid
+  updatedById     String?      @map("updated_by_id") @db.Uuid
+  deletedById     String?      @map("deleted_by_id") @db.Uuid
+  prescription    Prescription @relation(fields: [prescriptionId], references: [id])
+
+  @@index([prescriptionId])
+  @@index([jobType])
+  @@index([status])
+  @@map("prescription_processing_jobs")
+}
+
+model PrescriptionReview {
+  id              String       @id @default(uuid()) @db.Uuid
+  prescriptionId  String       @map("prescription_id") @db.Uuid
+  prescriptionItemId String?    @map("prescription_item_id") @db.Uuid
+  reviewStatus    String       @map("review_status")
+  reviewDecision  String       @map("review_decision")
+  reviewNotes     String?      @map("review_notes")
+  status          RecordStatus @default(PENDING_REVIEW)
+  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType?  @map("source_type")
+  sourceUrl       String?      @map("source_url")
+  metadata        Json?
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  deletedAt       DateTime?    @map("deleted_at")
+  createdById     String?      @map("created_by_id") @db.Uuid
+  updatedById     String?      @map("updated_by_id") @db.Uuid
+  deletedById     String?      @map("deleted_by_id") @db.Uuid
+  prescription    Prescription @relation(fields: [prescriptionId], references: [id])
+  prescriptionItem PrescriptionItem? @relation(fields: [prescriptionItemId], references: [id])
+
+  @@index([prescriptionId])
+  @@index([prescriptionItemId])
+  @@index([status])
+  @@map("prescription_reviews")
+}
+
+model PrescriptionCostEstimate {
+  id              String       @id @default(uuid()) @db.Uuid
+  prescriptionId  String       @map("prescription_id") @db.Uuid
+  prescriptionItemId String?    @map("prescription_item_id") @db.Uuid
+  city            String?
+  originalEstimatedCost Decimal @map("original_estimated_cost") @db.Decimal(12, 2)
+  cheapestEquivalentCost Decimal @map("cheapest_equivalent_cost") @db.Decimal(12, 2)
+  balancedOptionCost Decimal @map("balanced_option_cost") @db.Decimal(12, 2)
+  premiumOptionCost Decimal    @map("premium_option_cost") @db.Decimal(12, 2)
+  estimatedSaving Decimal      @map("estimated_saving") @db.Decimal(12, 2)
+  reviewRequired  Boolean      @default(false) @map("review_required")
+  status          RecordStatus @default(PENDING_REVIEW)
+  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType?  @map("source_type")
+  sourceUrl       String?      @map("source_url")
+  metadata        Json?
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  deletedAt       DateTime?    @map("deleted_at")
+  createdById     String?      @map("created_by_id") @db.Uuid
+  updatedById     String?      @map("updated_by_id") @db.Uuid
+  deletedById     String?      @map("deleted_by_id") @db.Uuid
+  prescription    Prescription @relation(fields: [prescriptionId], references: [id])
+  prescriptionItem PrescriptionItem? @relation(fields: [prescriptionItemId], references: [id])
+
+  @@index([prescriptionId])
+  @@index([prescriptionItemId])
+  @@index([city])
+  @@index([status])
+  @@map("prescription_cost_estimates")
 }
 
 model Bill {

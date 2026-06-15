@@ -69,3 +69,7 @@
 - Added the API controller layer under `src/modules/*/controllers/`.
 - Added DTO validation, standard response/error envelopes, placeholder guards, and Swagger/OpenAPI at `/api/docs`.
 - Updated the API prefix to `/api` and added controller layer tests.
+- Built the Prescription Processing Pipeline under `src/modules/prescriptions/` and the OCR abstraction under `src/modules/ocr/`.
+- Added prescription processing tables and migration for `prescription_processing_jobs`, `prescription_reviews`, and `prescription_cost_estimates`.
+- Added prescription parser, item matcher, cost estimator, review workflow, mock OCR, and controller tests.
+- Updated prescription processing, API specification, and system architecture documentation.

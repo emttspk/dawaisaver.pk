@@ -6,6 +6,8 @@ export type MatchResultStatus =
 
 export interface MatchCandidateInput {
   id?: string;
+  productId?: string;
+  canonicalProductId?: string;
   brandName?: string;
   genericName?: string;
   strength?: string;
@@ -20,7 +22,6 @@ export interface MatchCandidateInput {
 }
 
 export interface CanonicalMedicineInput extends MatchCandidateInput {
-  canonicalProductId?: string;
   canonicalName?: string;
 }
 
@@ -100,4 +101,3 @@ export const DEFAULT_MATCHING_WEIGHTS: MatchingWeights = {
   registrationNumber: 0.1,
   signature: 0.15,
 };
-

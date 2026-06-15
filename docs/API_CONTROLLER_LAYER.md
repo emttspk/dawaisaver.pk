@@ -11,6 +11,7 @@ Expose the existing runtime engines through REST APIs without adding new busines
 - Alternatives
 - Price intelligence
 - Matching evaluation
+- Prescription processing
 - DRAP import
 - Source sync and health
 - Discovery candidate review
@@ -26,6 +27,12 @@ Expose the existing runtime engines through REST APIs without adding new busines
 - `GET /api/prices/product/:id`
 - `GET /api/prices/city/:city`
 - `POST /api/matching/evaluate`
+- `POST /api/prescriptions/text`
+- `POST /api/prescriptions/mock-upload`
+- `GET /api/prescriptions/:id`
+- `GET /api/prescriptions/:id/items`
+- `GET /api/prescriptions/:id/cost-estimate`
+- `POST /api/prescriptions/:id/review`
 - `GET /api/discovery/candidates`
 - `POST /api/discovery/review`
 - `POST /api/drap/import`
@@ -69,3 +76,4 @@ Swagger is available at `/api/docs` and is generated from the live Nest controll
 - Keep the `/api` prefix stable for future controllers.
 - Keep controllers thin and delegate to the existing engine services.
 - Use placeholder guards only until real authentication is added.
+- Keep prescription comparisons phrased as equivalent options with the same active ingredient, strength, and dosage form.

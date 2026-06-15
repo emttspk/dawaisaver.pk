@@ -32,23 +32,29 @@
 - Prisma module, service, database bootstrap, and health checks.
 - Runtime configuration, validation, security, logging, tracing, and diagnostics.
 - Docker, Docker Compose, Railway, Jest, ESLint, and Prettier configuration.
-- Module registration for DRAP, sources, price intelligence, matching, search, and discovery.
+- Module registration for DRAP, sources, price intelligence, matching, prescriptions, search, and discovery.
 - Health module under `src/modules/health/`.
 - Repository initialized with git and remote configuration.
 - API Controller Layer.
-- REST controller modules for search, discovery, matching, price intelligence, DRAP, and sources.
+- REST controller modules for search, discovery, matching, price intelligence, DRAP, sources, and prescriptions.
 - Swagger/OpenAPI documentation and standardized API envelopes.
 - Controller, DTO, contract, and Swagger verification tests.
+- Prescription Processing Pipeline.
+- OCR abstraction with mock provider.
+- Prescription parsing, matching, cost estimation, and review workflow.
+- Prescription processing migration and additive database tables.
+- Prescription parser, mock OCR, item matching, cost estimate, review workflow, and controller tests.
+- Build and test verification passed for the prescription pipeline.
 
 ## In Progress
 
-- Prescription Processing Pipeline planning.
+- OCR Integration Layer planning.
 
 ## Not Started
 
 - Provider-specific source adapters.
 - Full source adapter runtime wired to a backend app shell.
-- OCR processing.
+- Real OCR provider integration.
 - PWA frontend.
 - Admin application.
 - Marketplace.
@@ -62,6 +68,6 @@
 - Phase 3: Search API foundation complete; product discovery complete
 - Phase 4: Backend runtime foundation complete
 - Phase 5: API controller layer complete
-- Phase 6: Not started
+- Phase 6: Prescription processing pipeline complete
 - Phase 7: Documentation only
 - Phase 8: Documentation only
