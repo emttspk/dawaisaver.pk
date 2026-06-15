@@ -2,18 +2,17 @@
 
 ## Immediate Next Task
 
-API Controller Layer.
+Prescription Processing Pipeline.
 
 ## Scope
 
-- Expose public and internal controllers over existing runtime modules.
-- Add DTO validation for search, alternatives, health-facing diagnostics, imports, sources, price intelligence, matching, and discovery where required.
-- Keep controllers thin and delegate to existing module services.
-- Preserve canonical identity, price intelligence, discovery, and source contracts.
+- Build prescription parsing and prescription-item matching workflows on top of the controller layer.
+- Preserve existing REST contracts, response envelopes, and Swagger docs while adding prescription-specific endpoints later.
+- Keep the new pipeline compatible with the current `/api` prefix and controller module structure.
 
 ## Preconditions
 
-- Backend Runtime Foundation exists and builds.
+- API Controller Layer exists and builds.
 - Product Discovery Engine exists.
 - Search API Foundation exists.
 - Canonical matching exists.

@@ -66,3 +66,6 @@
 - Installed dependencies, generated Prisma client, built the project, and ran the Jest suite successfully.
 - Initialized git for the workspace and configured the `origin` remote.
 - Added `src/modules/health/`, `RAILWAY_SETUP.md`, `.editorconfig`, and missing common runtime scaffolding directories.
+- Added the API controller layer under `src/modules/*/controllers/`.
+- Added DTO validation, standard response/error envelopes, placeholder guards, and Swagger/OpenAPI at `/api/docs`.
+- Updated the API prefix to `/api` and added controller layer tests.

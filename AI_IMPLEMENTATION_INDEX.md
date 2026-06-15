@@ -6,11 +6,11 @@ DawaiSaver.pk
 
 ## Current Phase
 
-Phase 4: Backend Runtime Foundation
+Phase 5: API Controller Layer
 
 ## Current Status
 
-The governance phase, database foundation, data collection engines, search/discovery layer, and backend runtime foundation are complete. The workspace now contains an executable NestJS backend shell with Prisma, configuration, health checks, observability, Docker, and Railway deployment scaffolding. No frontend, OCR, marketplace, or warehouse implementation has been started.
+The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, and API controller layer are complete. The workspace now contains an executable NestJS backend shell with Prisma, configuration, health checks, observability, Docker, Railway deployment scaffolding, REST controllers, and Swagger/OpenAPI documentation. No frontend, OCR, marketplace, or warehouse implementation has been started.
 
 ## Mandatory Read Order For Future AI Agents
 
@@ -28,8 +28,10 @@ The governance phase, database foundation, data collection engines, search/disco
 12. `docs/DATABASE_ARCHITECTURE.md`
 13. `docs/DATA_COLLECTION_ENGINE.md`
 14. `docs/MEDICINE_NORMALIZATION_ENGINE.md`
-15. `docs/ROADMAP.md`
-16. `docs/CHANGELOG.md`
+15. `docs/API_CONTROLLER_LAYER.md`
+16. `docs/API_SPECIFICATION.md`
+17. `docs/ROADMAP.md`
+18. `docs/CHANGELOG.md`
 
 ## Document Index
 
@@ -58,6 +60,7 @@ The governance phase, database foundation, data collection engines, search/disco
 - `docs/SEARCH_API_FOUNDATION.md`
 - `docs/PRODUCT_DISCOVERY_ENGINE.md`
 - `docs/BACKEND_RUNTIME_FOUNDATION.md`
+- `docs/API_CONTROLLER_LAYER.md`
 - `docs/DATA_INTELLIGENCE_ENGINE.md`
 - `docs/MEDICINE_NORMALIZATION_ENGINE.md`
 - `docs/PRESCRIPTION_PROCESSING_ENGINE.md`
@@ -198,6 +201,20 @@ The governance phase, database foundation, data collection engines, search/disco
 - `docs/BACKEND_RUNTIME_FOUNDATION.md`: runtime architecture, workflows, recovery, and deployment notes
 - `RAILWAY_SETUP.md`: Railway CLI and deployment steps
 
+### API Controller Layer Artifacts
+
+- `src/modules/search/controllers/`: search, autocomplete, and alternatives controllers
+- `src/modules/discovery/controllers/`: discovery and discovery review controllers
+- `src/modules/matching/controllers/`: medicine matching controller
+- `src/modules/price-intelligence/controllers/`: price intelligence controller
+- `src/modules/drap/controllers/`: DRAP import controller
+- `src/modules/sources/controllers/`: source sync and health controller
+- `src/common/interceptors/response-envelope.interceptor.ts`: standard success envelope wrapper
+- `src/common/guards/admin.guard.ts`: placeholder admin guard
+- `src/common/guards/internal.guard.ts`: placeholder internal guard
+- `test/api-controller-layer.*.test.ts`: controller, DTO, contract, and Swagger tests
+- `docs/API_CONTROLLER_LAYER.md`: API contracts, response standards, Swagger, and recovery notes
+
 ## Phase Gate Status
 
 - Phase 0 documentation: complete
@@ -210,6 +227,7 @@ The governance phase, database foundation, data collection engines, search/disco
 - Phase 3 search API foundation: complete
 - Phase 3 product discovery engine: complete
 - Phase 4 backend runtime foundation: complete
+- Phase 5 API controller layer: complete
 - Frontend implementation: not started
 - OCR implementation: not started
 - Marketplace implementation: not started
@@ -217,4 +235,4 @@ The governance phase, database foundation, data collection engines, search/disco
 
 ## Next Recommended Task
 
-API Controller Layer.
+Prescription Processing Pipeline.

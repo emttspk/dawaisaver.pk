@@ -3,9 +3,11 @@ import helmet from "helmet";
 import { Logger, RequestMethod, ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { ConfigService } from "@nestjs/config";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 import { GlobalExceptionFilter } from "./common/filters/global-exception.filter";
 import { RequestLoggerInterceptor } from "./common/interceptors/request-logger.interceptor";
+import { ResponseEnvelopeInterceptor } from "./common/interceptors/response-envelope.interceptor";
 import { StartupDiagnosticsService } from "./common/observability/startup-diagnostics.service";
 
 async function bootstrap(): Promise<void> {
@@ -39,7 +41,19 @@ async function bootstrap(): Promise<void> {
     }),
   );
   app.useGlobalFilters(new GlobalExceptionFilter());
-  app.useGlobalInterceptors(new RequestLoggerInterceptor());
+  app.useGlobalInterceptors(new ResponseEnvelopeInterceptor(), new RequestLoggerInterceptor());
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle("DawaiSaver.pk API")
+    .setDescription("Backend APIs for search, discovery, price intelligence, matching, DRAP, and source sync.")
+    .setVersion("1.0.0")
+    .build();
+  const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig, {
+    deepScanRoutes: true,
+  });
+  SwaggerModule.setup("docs", app, swaggerDocument, {
+    useGlobalPrefix: true,
+  });
 
   app.get(StartupDiagnosticsService).log();
 

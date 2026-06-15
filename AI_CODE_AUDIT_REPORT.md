@@ -6,74 +6,61 @@
 
 ## Phase
 
-Phase 4 - Backend Runtime Foundation
+Phase 5 - API Controller Layer
 
 ## Completed
 
-- Built executable NestJS backend runtime foundation.
-- Added package/build/test tooling, TypeScript config, Nest CLI config, ESLint, Prettier, Jest, Docker, Docker Compose, Railway config, and environment example.
-- Added application bootstrap with security, CORS, global validation, global exception filtering, request logging, tracing, and startup diagnostics.
-- Added app, runtime feature, config, database, common, and health modules.
-- Added the health module under `src/modules/health/`.
-- Registered DRAP, sources, price intelligence, matching, search, and discovery foundations in the runtime composition layer.
-- Added Prisma service, database bootstrap service, and database health checks.
-- Added health endpoints for application, database, and aggregate health status.
-- Created `docs/BACKEND_RUNTIME_FOUNDATION.md`.
-- Created `RAILWAY_SETUP.md` and `.editorconfig`.
-- Updated `docs/DEPLOYMENT_ARCHITECTURE.md` and `docs/SYSTEM_ARCHITECTURE.md`.
-- Updated recovery and continuity documents.
+- Built REST controllers for search, autocomplete, alternatives, discovery review, discovery candidates, matching evaluation, price intelligence, DRAP import, and source sync/health.
+- Added DTO validation for the new controller layer.
+- Added placeholder `AdminGuard` and `InternalGuard`.
+- Added a global response envelope interceptor and standardized error envelope responses.
+- Added Swagger/OpenAPI generation at `/api/docs`.
+- Moved the public API prefix to `/api`.
+- Updated application composition to register the controller modules.
+- Added controller, DTO, API contract, and Swagger verification tests.
+- Updated the phase continuity and architecture documentation.
 
 ## Pending
 
-- API Controller Layer for public/internal HTTP routes.
+- Prescription Processing Pipeline.
+- Authentication and authorization beyond placeholder guards.
+- Production Railway secret provisioning.
 - Live migration execution against a configured PostgreSQL database.
-- Production Railway variable provisioning.
-- Provider-specific online pharmacy adapters.
-- Authentication and authorization middleware for future admin/internal endpoints.
 
 ## Risks
 
-- Database runtime has not been exercised against a live PostgreSQL connection in this cycle.
-- `npm install` reported dependency vulnerabilities; these require a focused dependency audit before production deployment.
-- Runtime feature registration intentionally avoids exposing public controllers until the API Controller Layer is built.
-- Automatic migration execution is documented but not enabled by default to protect finalized schema structures.
+- Source sync and DRAP import endpoints are structurally complete but still depend on provider adapters and external payloads to become fully operational.
+- Discovery and source sync paths persist records, but production authorization is still a placeholder.
+- API envelope standardization is global, so any future raw-response endpoint will need to opt out deliberately.
+- External data access remains the main runtime variable until production datasets and adapters are wired.
 
 ## Build Status
 
-- Dependency installation completed with npm warnings.
-- Prisma client generation completed.
-- `npm.cmd run build` passed.
-- `npm.cmd test` passed: 14 test suites, 14 tests.
+- `npm.cmd install`: completed after adding Swagger dependencies.
+- `npm.cmd run build`: passed.
+- `npm.cmd test`: passed, 18 suites and 28 tests.
 
-## Database Status
+## Dependency Status
 
-- Prisma schema and migrations exist from previous database foundation phases.
-- Prisma client was generated successfully.
-- Database health check support is implemented.
-- Live migration runner is scaffolded but not executed because no live database connection was configured for this cycle.
+- Added `@nestjs/swagger` and `swagger-ui-express`.
+- Existing dependency warnings remain in `npm audit` output and should be reviewed before production deployment.
+
+## Runtime Status
+
+- API prefix is `/api`.
+- Swagger is served at `/api/docs`.
+- Response envelopes now follow:
+  - success: `{ success, data, meta, timestamp }`
+  - error: `{ success: false, error, code, timestamp }`
+- The runtime still boots through NestJS with Prisma, configuration validation, security headers, rate limiting, and health endpoints.
 
 ## Deployment Status
 
-- Dockerfile created for production API container builds.
-- Docker Compose created for local API, PostgreSQL, and Redis development.
-- Railway deployment config created in `railway.json`.
-- Railway deployment documentation updated.
-- Git repository initialized locally and remote configured.
-- Push to `origin main` was attempted but failed with `Permission denied (publickey)`.
-
-## Architecture Impact
-
-- Establishes the executable backend runtime boundary.
-- Centralizes configuration and environment validation.
-- Creates a common observability and error-handling layer.
-- Wires previous phase modules into a single NestJS application composition layer.
-
-## Database Impact
-
-- No new database tables were added in this phase.
-- Runtime database access now flows through Prisma service and health checks.
-- Migration execution remains explicit and protected.
+- Railway configuration remains in `railway.json`.
+- `RAILWAY_SETUP.md` documents the CLI and deployment steps.
+- Git repository is initialized locally.
+- `git push origin main` failed with `git@github.com: Permission denied (publickey)`.
 
 ## Next Task
 
-API Controller Layer.
+Prescription Processing Pipeline.

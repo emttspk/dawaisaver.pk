@@ -6,6 +6,12 @@ import { configuration } from "./config/configuration";
 import { validateEnvironment } from "./config/env.validation";
 import { DatabaseModule } from "./database/database.module";
 import { HealthModule } from "./modules/health/health.module";
+import { DrapModule } from "./modules/drap/drap.module";
+import { DiscoveryModule } from "./modules/discovery/discovery.module";
+import { MatchingModule } from "./modules/matching/matching.module";
+import { PriceIntelligenceModule } from "./modules/price-intelligence/price-intelligence.module";
+import { SearchModule } from "./modules/search/search.module";
+import { SourceModule } from "./modules/sources/source.module";
 import { RuntimeFeatureModule } from "./runtime-feature.module";
 
 @Module({
@@ -25,6 +31,12 @@ import { RuntimeFeatureModule } from "./runtime-feature.module";
     CommonModule,
     DatabaseModule,
     HealthModule,
+    DrapModule,
+    SourceModule,
+    PriceIntelligenceModule,
+    MatchingModule,
+    SearchModule,
+    DiscoveryModule,
     RuntimeFeatureModule,
   ],
 })

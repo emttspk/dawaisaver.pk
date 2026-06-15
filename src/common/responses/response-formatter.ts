@@ -9,21 +9,14 @@ export class ResponseFormatter {
   }
 
   static error(input: {
-    statusCode: number;
-    message: string;
-    path?: string;
-    traceId?: string;
+    code: number | string;
+    error: string;
   }) {
     return {
       success: false,
-      error: {
-        statusCode: input.statusCode,
-        message: input.message,
-        path: input.path,
-        traceId: input.traceId,
-      },
+      error: input.error,
+      code: input.code,
       timestamp: new Date().toISOString(),
     };
   }
 }
-

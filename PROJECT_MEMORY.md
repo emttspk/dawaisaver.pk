@@ -128,6 +128,16 @@ The platform should help users upload prescriptions, compare equivalent medicine
 - `RAILWAY_SETUP.md` captures the deployment steps and CLI commands for Railway.
 - `npm.cmd run build` and `npm.cmd test` passed after dependency installation and Prisma client generation.
 
+## API Controller Memory
+
+- API prefix is `/api` and Swagger is served at `/api/docs`.
+- Success responses are wrapped as `{ success, data, meta, timestamp }`.
+- Error responses are wrapped as `{ success: false, error, code, timestamp }`.
+- Search controllers expose search, products, generics, autocomplete, alternatives, and trending.
+- Price intelligence controllers expose product and city analytics endpoints.
+- Matching, DRAP, source sync, and discovery review controllers are registered through Nest modules.
+- `AdminGuard` and `InternalGuard` are placeholders only and do not perform real authentication yet.
+
 ## Next Task Recommendation
 
-API Controller Layer.
+Prescription Processing Pipeline.

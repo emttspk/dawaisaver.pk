@@ -32,7 +32,16 @@ Runtime foundation files:
 - `src/config/`
 - `src/database/`
 - `src/common/`
-- `src/health/`
+- `src/modules/health/`
+- `src/modules/*/controllers/`
+
+API controller layer traits:
+
+- REST surface under `/api`
+- Swagger/OpenAPI at `/api/docs`
+- Standard response envelope
+- Standard error envelope
+- Placeholder admin and internal guards
 
 ### Worker Application
 
@@ -86,5 +95,7 @@ flowchart LR
 - Search results use canonical medicine identity and expose confidence/review status metadata.
 - Product discovery candidates must preserve evidence and remain reviewable before promotion.
 - Runtime health endpoints must remain available at `/health`, `/health/database`, and `/health/application`.
+- API endpoints are exposed under `/api`.
+- API documentation is exposed under `/api/docs`.
 - Admin review can promote provisional records to verified records.
 - Medical advice is not provided; the platform surfaces intelligence and comparison data.

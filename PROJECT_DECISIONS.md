@@ -29,3 +29,15 @@ Reason: Medical and price intelligence must be explainable and safe.
 Decision: Place the health module at `src/modules/health/` so it matches the backend runtime layout and is easy to discover alongside other application modules.
 
 Reason: The runtime foundation should follow the same modular organization as the domain engines.
+
+## 2026-06-15: Keep Public APIs Under `/api`
+
+Decision: Expose the controller layer under the `/api` prefix and serve Swagger at `/api/docs`.
+
+Reason: The user requested `/api/...` endpoints, and keeping the prefix stable reduces confusion for future controllers.
+
+## 2026-06-15: Standardize API Envelopes
+
+Decision: Wrap successful and failed API responses in a stable envelope format.
+
+Reason: The controller layer needs predictable JSON contracts for client development and future versioning.

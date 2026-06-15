@@ -6,7 +6,7 @@
 
 ## Current Status
 
-The project is in Phase 4: Backend Runtime Foundation. Phase 0 governance, Phase 1 database foundation, Phase 2 data collection/intelligence foundations, Phase 3 search/discovery foundations, and the executable backend runtime foundation are complete.
+The project is in Phase 5: API Controller Layer. Phase 0 governance, Phase 1 database foundation, Phase 2 data collection/intelligence foundations, Phase 3 search/discovery foundations, Phase 4 backend runtime foundation, and the REST API controller layer are complete.
 
 ## Implemented
 
@@ -55,6 +55,12 @@ The project is in Phase 4: Backend Runtime Foundation. Phase 0 governance, Phase
 - Helmet, CORS, rate limiting, and request validation setup
 - Jest, TypeScript, ESLint, Prettier, Docker, Docker Compose, and Railway deployment configuration
 - Git repository initialized with `origin` remote configured
+- REST controller layer under `src/modules/*/controllers/`
+- DTO validation for controller requests
+- Global API prefix at `/api`
+- Swagger/OpenAPI documentation at `/api/docs`
+- Standard success/error API envelopes
+- Placeholder `AdminGuard` and `InternalGuard`
 
 ## Required Tables Covered
 
@@ -80,7 +86,6 @@ The project is in Phase 4: Backend Runtime Foundation. Phase 0 governance, Phase
 - Live database migration execution
 - Full backend source adapter runtime
 - Provider-specific source adapters for Dawaai, Sehat, DVAGO, Servaid, and other pharmacy sites
-- API Controller Layer
 - OCR pipeline
 - Frontend PWA
 - Admin application
@@ -89,4 +94,4 @@ The project is in Phase 4: Backend Runtime Foundation. Phase 0 governance, Phase
 
 ## Immediate Next Step
 
-API Controller Layer.
+Prescription Processing Pipeline.

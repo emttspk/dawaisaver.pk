@@ -35,16 +35,19 @@
 - Module registration for DRAP, sources, price intelligence, matching, search, and discovery.
 - Health module under `src/modules/health/`.
 - Repository initialized with git and remote configuration.
+- API Controller Layer.
+- REST controller modules for search, discovery, matching, price intelligence, DRAP, and sources.
+- Swagger/OpenAPI documentation and standardized API envelopes.
+- Controller, DTO, contract, and Swagger verification tests.
 
 ## In Progress
 
-- API Controller Layer planning.
+- Prescription Processing Pipeline planning.
 
 ## Not Started
 
 - Provider-specific source adapters.
 - Full source adapter runtime wired to a backend app shell.
-- Public API controllers.
 - OCR processing.
 - PWA frontend.
 - Admin application.
@@ -58,7 +61,7 @@
 - Phase 2: DRAP import foundation complete; online pharmacy framework complete; price intelligence complete; medicine matching complete; provider-specific adapters not started
 - Phase 3: Search API foundation complete; product discovery complete
 - Phase 4: Backend runtime foundation complete
-- Phase 5: Not started
+- Phase 5: API controller layer complete
 - Phase 6: Not started
 - Phase 7: Documentation only
 - Phase 8: Documentation only

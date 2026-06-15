@@ -4,7 +4,7 @@ export const configuration = () => ({
     nodeEnv: process.env.NODE_ENV || "development",
     port: Number(process.env.APP_PORT || 3000),
     host: process.env.APP_HOST || "0.0.0.0",
-    globalPrefix: process.env.APP_GLOBAL_PREFIX || "api/v1",
+    globalPrefix: process.env.APP_GLOBAL_PREFIX || "api",
     corsOrigins: parseList(process.env.CORS_ORIGINS),
   },
   database: {
@@ -33,4 +33,3 @@ function parseList(value?: string): string[] {
     .map((item) => item.trim())
     .filter(Boolean);
 }
-

@@ -15,24 +15,45 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
-    const request = ctx.getRequest();
     const status =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
-    const message =
-      exception instanceof Error ? exception.message : "Unexpected application error.";
+    const message = this.resolveMessage(exception);
 
     this.logger.error(message, exception instanceof Error ? exception.stack : undefined);
 
     response.status(status).json(
       ResponseFormatter.error({
-        statusCode: status,
-        message,
-        path: request?.url,
-        traceId: request?.headers?.["x-request-id"],
+        code: status,
+        error: message,
       }),
     );
   }
-}
 
+  private resolveMessage(exception: unknown): string {
+    if (exception instanceof HttpException) {
+      const response = exception.getResponse();
+      if (typeof response === "string") {
+        return response;
+      }
+      if (typeof response === "object" && response) {
+        const candidate = response as Record<string, unknown>;
+        const message = candidate.message;
+        if (Array.isArray(message)) {
+          return message.join(", ");
+        }
+        if (typeof message === "string") {
+          return message;
+        }
+      }
+      return exception.message;
+    }
+
+    if (exception instanceof Error) {
+      return exception.message;
+    }
+
+    return "Unexpected application error.";
+  }
+}
