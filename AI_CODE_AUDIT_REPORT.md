@@ -23,6 +23,7 @@ Phase 6 - Prescription Processing Pipeline
 
 - Real OCR provider integration.
 - Live PostgreSQL migration execution.
+- Git push remains blocked by SSH access to GitHub.
 
 ## Risks
 
@@ -52,3 +53,8 @@ OCR Integration Layer.
 
 - `npm.cmd run build`: passed.
 - `npm.cmd test`: passed, 24 suites and 34 tests.
+
+## Deployment Status
+
+- `git push origin main` failed with: `ssh: connect to host github.com port 22: Permission denied`
+- `fatal: Could not read from remote repository.`
