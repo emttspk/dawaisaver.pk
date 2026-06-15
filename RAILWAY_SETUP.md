@@ -22,6 +22,11 @@ railway status
 - `LOG_LEVEL`
 - `ENABLE_DB_MIGRATIONS`
 
+## Optional Environment Variables
+
+- `GOOGLE_CLOUD_VISION_API_KEY` - Google Cloud Vision API key for OCR
+- `UPLOAD_DIR` - Directory for uploaded files
+
 ## Deployment Steps
 
 1. Install the Railway CLI and authenticate.

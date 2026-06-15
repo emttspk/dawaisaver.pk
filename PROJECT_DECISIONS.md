@@ -54,3 +54,9 @@ Decision: Prescription alternatives should be described as "Equivalent options w
 
 Reason: The pipeline must avoid implying unsupported clinical substitution language.
 
+## 2026-06-15: Build Pluggable OCR Provider Architecture
+
+Decision: Implement OCR with a pluggable provider architecture supporting Google Vision, Tesseract, and Mock providers with priority-based fallback.
+
+Reason: The user requested replaceable mock OCR with provider abstraction for future vendor integration, and a priority-based approach ensures the best available provider is used automatically.
+

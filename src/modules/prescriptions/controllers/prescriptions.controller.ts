@@ -19,10 +19,12 @@ import {
 @Controller("prescriptions")
 export class PrescriptionsController {
   private readonly prescriptions = new PrescriptionsService();
-  private readonly ocr = new OcrService();
   private readonly priceIntelligence = new PriceIntelligenceService();
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly ocr: OcrService,
+  ) {}
 
   @Post("text")
   @ApiOperation({ summary: "Parse a prescription from plain text." })

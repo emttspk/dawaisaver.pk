@@ -1,10 +1,10 @@
 import { strict as assert } from "node:assert";
-import { OcrModule } from "../../ocr/ocr.module";
+import { MockOcrProvider } from "../../ocr/mock-ocr.provider";
 
 describe("Mock OCR provider", () => {
   it("returns deterministic text for mock uploads", async () => {
-    const ocr = OcrModule.createService();
-    const result = await ocr.extractText({
+    const mockProvider = new MockOcrProvider();
+    const result = await mockProvider.extractText({
       imageReference: "r2://prescriptions/sample-rx-1.jpg",
       mockText: "Augmentin 625mg tablet",
     });

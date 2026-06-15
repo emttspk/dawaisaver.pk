@@ -9,6 +9,7 @@ import { HealthModule } from "./modules/health/health.module";
 import { DrapModule } from "./modules/drap/drap.module";
 import { DiscoveryModule } from "./modules/discovery/discovery.module";
 import { MatchingModule } from "./modules/matching/matching.module";
+import { OcrModule } from "./modules/ocr/ocr.module";
 import { PrescriptionsModule } from "./modules/prescriptions/prescriptions.module";
 import { PriceIntelligenceModule } from "./modules/price-intelligence/price-intelligence.module";
 import { SearchModule } from "./modules/search/search.module";
@@ -36,6 +37,7 @@ import { RuntimeFeatureModule } from "./runtime-feature.module";
     SourceModule,
     PriceIntelligenceModule,
     MatchingModule,
+    OcrModule,
     PrescriptionsModule,
     SearchModule,
     DiscoveryModule,

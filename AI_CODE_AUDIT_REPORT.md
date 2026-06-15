@@ -6,53 +6,44 @@
 
 ## Phase
 
-Phase 6 - Prescription Processing Pipeline
+Phase 8 - Admin Review Panel Foundation
 
 ## Completed
 
-- Added the prescription processing module under `src/modules/prescriptions/`.
-- Added the OCR abstraction under `src/modules/ocr/` with a mock provider only.
-- Added prescription parsing, item matching, cost estimation, and review services.
-- Added prescription controllers for text submission, mock upload, prescription retrieval, cost estimates, and review.
-- Added additive Prisma models and migration for prescription processing jobs, reviews, and cost estimates.
-- Added parser, mock OCR, item matching, cost estimate, review workflow, and controller tests.
-- Updated the prescription processing, API specification, system architecture, changelog, and recovery documentation.
-- Updated runtime module registration and app module imports for the prescription pipeline.
+- Built Admin Review Panel Foundation with React + Vite + Tailwind
+- Created dashboard with tab navigation for review queues
+- Implemented OCR, Prescription, Discovery, Price, and Source review dashboards
+- Added authentication context and API client foundation
+- Created documentation for admin panel
 
 ## Pending
 
-- Real OCR provider integration.
-- Live PostgreSQL migration execution.
-- Git push remains blocked by SSH access to GitHub.
+- Live PostgreSQL migration execution
+- Git push remains blocked by SSH access to GitHub
+- Review workflow actions (approve/reject/edit) need backend integration
+- Data tables need sorting/filtering implementation
 
 ## Risks
 
-- Prescription parsing and matching still need production OCR and human review before use on sensitive records.
-- The new prescription tables are additive but have not been applied to a live PostgreSQL instance yet.
-- Cost estimates depend on the availability and freshness of product price observations.
-- The mock OCR abstraction is intentionally limited and should be replaced before production use.
-
-## Database Impact
-
-- Added `prescription_processing_jobs`.
-- Added `prescription_reviews`.
-- Added `prescription_cost_estimates`.
-- Added relations from prescriptions and prescription items to the new tables.
+- Admin panel is foundation-only; full review workflows pending
+- Authentication is a placeholder; production auth required
+- API client needs error handling and loading states
 
 ## Architecture Impact
 
-- Added `src/modules/prescriptions/` for prescription parsing, matching, cost estimation, and review flows.
-- Added `src/modules/ocr/` as the provider abstraction layer for future OCR vendors.
-- Registered the prescription pipeline in the NestJS app module and runtime feature registry.
+- Added `apps/admin/` for React admin application
+- Added `docs/ADMIN_REVIEW_PANEL.md` for documentation
+- Updated `docs/SYSTEM_ARCHITECTURE.md` with admin panel section
+- Updated `docs/ROADMAP.md` with phase 8 progression
 
 ## Next Task
 
-OCR Integration Layer.
+PWA Frontend Foundation
 
 ## Verification
 
-- `npm.cmd run build`: passed.
-- `npm.cmd test`: passed, 24 suites and 34 tests.
+- `npm run build`: passed (backend)
+- `npm test`: passed (backend, 34 tests)
 
 ## Deployment Status
 

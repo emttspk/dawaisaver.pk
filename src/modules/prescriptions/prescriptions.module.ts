@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { DatabaseModule } from "../../database/database.module";
+import { OcrModule } from "../ocr/ocr.module";
 import { PrescriptionReviewController } from "./controllers/prescription-review.controller";
 import { PrescriptionsController } from "./controllers/prescriptions.controller";
 import { PrescriptionCostEstimatorService } from "./prescription-cost-estimator.service";
@@ -9,19 +10,10 @@ import { PrescriptionReviewService } from "./prescription-review.service";
 import { PrescriptionsService } from "./prescriptions.service";
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, OcrModule],
   controllers: [PrescriptionsController, PrescriptionReviewController],
 })
-export class PrescriptionsModule {
-  static createService(): PrescriptionsService {
-    return new PrescriptionsService(
-      new PrescriptionParserService(),
-      new PrescriptionItemMatcherService(),
-      new PrescriptionCostEstimatorService(),
-      new PrescriptionReviewService(),
-    );
-  }
-}
+export class PrescriptionsModule {}
 
 export * from "./prescriptions.service";
 export * from "./prescription.types";

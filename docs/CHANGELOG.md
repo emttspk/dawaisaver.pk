@@ -73,3 +73,18 @@
 - Added prescription processing tables and migration for `prescription_processing_jobs`, `prescription_reviews`, and `prescription_cost_estimates`.
 - Added prescription parser, item matcher, cost estimator, review workflow, mock OCR, and controller tests.
 - Updated prescription processing, API specification, and system architecture documentation.
+- **Phase 7: OCR Integration Layer** - Built pluggable OCR provider architecture.
+- Added OCR tables: `ocr_jobs`, `ocr_results`, `ocr_provider_logs`.
+- Implemented Google Vision, Tesseract, and Mock OCR providers.
+- Created OCR provider factory and registry with priority-based fallback.
+- Built file upload, validation, and image preprocessing services.
+- Added OCR API endpoints: `/api/ocr/upload`, `/api/ocr/process`, `/api/ocr/:id`, `/api/ocr/:id/result`.
+- Created `docs/OCR_INTEGRATION_LAYER.md`.
+- Updated `docs/PRESCRIPTION_PROCESSING_ENGINE.md`, `docs/SYSTEM_ARCHITECTURE.md`, and `docs/API_SPECIFICATION.md`.
+- **Phase 8: Admin Review Panel Foundation** - Built admin panel with React + Vite + Tailwind.
+- Created dashboard with tab navigation for review queues.
+- Implemented OCR, Prescription, Discovery, Price, and Source review dashboards.
+- Added authentication context and API client foundation.
+- Created `docs/ADMIN_REVIEW_PANEL.md`.
+- Updated `docs/SYSTEM_ARCHITECTURE.md` and `docs/ROADMAP.md`.
+- Build and all 34 tests passing.

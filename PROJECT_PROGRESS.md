@@ -45,16 +45,23 @@
 - Prescription processing migration and additive database tables.
 - Prescription parser, mock OCR, item matching, cost estimate, review workflow, and controller tests.
 - Build and test verification passed for the prescription pipeline.
+- OCR Integration Layer.
+- OCR provider tables: `ocr_jobs`, `ocr_results`, `ocr_provider_logs`.
+- Google Vision, Tesseract, and Mock OCR providers.
+- File upload, validation, and image preprocessing services.
+- OCR API endpoints at `/api/ocr/*`.
+- OCR documentation.
 
 ## In Progress
 
-- OCR Integration Layer planning.
+## In Progress
+
+- Admin Review Panel Foundation.
 
 ## Not Started
 
 - Provider-specific source adapters.
 - Full source adapter runtime wired to a backend app shell.
-- Real OCR provider integration.
 - PWA frontend.
 - Admin application.
 - Marketplace.
@@ -69,5 +76,5 @@
 - Phase 4: Backend runtime foundation complete
 - Phase 5: API controller layer complete
 - Phase 6: Prescription processing pipeline complete
-- Phase 7: Documentation only
-- Phase 8: Documentation only
+- Phase 7: OCR Integration Layer complete
+- Phase 8: Admin Review Panel Foundation in progress

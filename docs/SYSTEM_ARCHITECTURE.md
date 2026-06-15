@@ -51,14 +51,33 @@ BullMQ workers process OCR, source ingestion, normalization, matching, crawl job
 
 The search layer exposes backend search services over canonical products, generic names, manufacturer names, medicine signatures, registration numbers, alternatives, popularity, price intelligence, and availability.
 
+### Admin Review Panel
+
+The admin panel provides human review workflows for OCR results, medicine matching, discovery candidates, and price anomalies.
+
+Admin panel files:
+
+- `apps/admin/` - React + Vite + Tailwind admin application
+- `docs/ADMIN_REVIEW_PANEL.md` - Admin panel documentation
+
 ### Prescription Processing Layer
 
-The prescription layer accepts text or mock upload inputs, extracts text through an OCR abstraction, matches medicine lines against canonical products, calculates cost estimates, and stores reviewable records.
+The prescription layer accepts text or uploaded images, extracts text through an OCR integration layer, matches medicine lines against canonical products, calculates cost estimates, and stores reviewable records.
 
 Prescription processing files:
 
 - `src/modules/prescriptions/`
 - `src/modules/ocr/`
+
+#### OCR Integration Layer
+
+The OCR layer provides a pluggable provider architecture for text extraction from prescription images:
+
+- `src/modules/ocr/providers/` - Google Vision, Tesseract, and Mock providers
+- `src/modules/ocr/upload.service.ts` - File upload handling
+- `src/modules/ocr/file-validator.service.ts` - File validation
+- `src/modules/ocr/image-preprocessor.service.ts` - Image preprocessing
+- `src/modules/ocr/ocr.service.ts` - OCR orchestration service
 
 ### Discovery Layer
 

@@ -23,8 +23,9 @@
 - Keep medical disclaimers and professional-confirmation language in user-facing flows.
 - Create audit logs for ingestion, review, and mutation actions.
 - Flag high-risk medicines such as insulin, blood thinners, anticonvulsants, steroids, and psychiatric medicines for manual review.
+- OCR confidence threshold of 0.7 triggers review requirement.
 
 ## Current Residual Risk
 
-The database foundation is documented and modeled, but it has not been applied to a live PostgreSQL database yet.
+The database foundation is documented and modeled, but it has not been applied to a live PostgreSQL database yet. OCR providers are stub implementations pending API key configuration for production use.
 

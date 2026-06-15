@@ -2,19 +2,18 @@
 
 ## Immediate Next Task
 
-OCR Integration Layer.
+Admin Review Panel Foundation.
 
 ## Scope
 
-- Replace the mock OCR provider with a real OCR integration path.
-- Preserve the prescription parsing, matching, and cost-estimation workflow already in place.
-- Keep the new OCR layer compatible with the current prescription pipeline and controller structure.
+- Create admin review panel for medicine matching, discovery, and prescription review.
+- Build review queue management and admin user interface endpoints.
+- Implement review decision workflows.
 
 ## Preconditions
 
+- OCR Integration Layer exists.
 - Prescription Processing Pipeline exists.
-- OCR abstraction exists.
-- API Controller Layer exists and builds.
 - Product Discovery Engine exists.
 - Search API Foundation exists.
 - Canonical matching exists.

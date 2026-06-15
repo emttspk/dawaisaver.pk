@@ -40,14 +40,19 @@
 
 ## Phase 6
 
-- Build admin application and review queues.
-- Add crawler and analytics dashboards.
+- Implement prescription processing pipeline.
+- Build OCR integration layer with pluggable providers.
 
 ## Phase 7
 
-- Implement verified pharmacy marketplace after legal and product validation.
+- Build admin application and review queues.
+- Add crawler and analytics dashboards.
 
 ## Phase 8
+
+- Implement verified pharmacy marketplace after legal and product validation.
+
+## Phase 9
 
 - Decide on warehouse expansion based on demand, savings, and operational evidence.
 

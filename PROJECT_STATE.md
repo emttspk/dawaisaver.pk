@@ -6,7 +6,7 @@
 
 ## Current Status
 
-The project is in Phase 6: Prescription Processing Pipeline. Phase 0 governance, Phase 1 database foundation, Phase 2 data collection and intelligence foundations, Phase 3 search and discovery foundations, Phase 4 backend runtime foundation, Phase 5 API controller layer, and the Phase 6 prescription pipeline are complete. The new prescription pipeline build and test verification passed.
+The project is in Phase 8: Admin Review Panel Foundation. Phase 0 governance, Phase 1 database foundation, Phase 2 data collection and intelligence foundations, Phase 3 search and discovery foundations, Phase 4 backend runtime foundation, Phase 5 API controller layer, Phase 6 prescription processing pipeline, Phase 7 OCR integration layer, and Phase 8 admin review panel foundation are in progress. The OCR integration layer is complete with pluggable provider architecture.
 
 ## Implemented
 
@@ -36,7 +36,6 @@ The project is in Phase 6: Prescription Processing Pipeline. Phase 0 governance,
 - Medicine Matching Engine under `src/modules/matching/`
 - Canonical medicine identity tables: `canonical_products`, `canonical_product_aliases`, `product_matches`, `match_reviews`, `matching_rules`
 - Matching datasets and test scaffolds
-- Medicine matching documentation
 - Search API Foundation under `src/modules/search/`
 - Search tables: `search_cache`, `search_popularity`, `search_suggestions`, `search_synonyms`
 - Search dataset and autocomplete/ranking/alternative test scaffolds
@@ -67,6 +66,11 @@ The project is in Phase 6: Prescription Processing Pipeline. Phase 0 governance,
 - Prescription parser, item matcher, cost estimator, review workflow, mock OCR, and controller tests
 - `npm.cmd run build` passed after the prescription pipeline changes
 - `npm.cmd test` passed after the prescription pipeline changes
+- OCR Integration Layer with pluggable provider architecture
+- OCR provider tables: `ocr_jobs`, `ocr_results`, `ocr_provider_logs`
+- Google Vision, Tesseract, and Mock OCR providers
+- File upload, validation, and image preprocessing services
+- OCR API endpoints at `/api/ocr/*`
 
 ## Required Tables Covered
 
@@ -90,7 +94,6 @@ The project is in Phase 6: Prescription Processing Pipeline. Phase 0 governance,
 ## Not Implemented
 
 - Live database migration execution
-- Real OCR provider integration
 - Provider-specific source adapters for Dawaai, Sehat, DVAGO, Servaid, and other pharmacy sites
 - Frontend PWA
 - Admin application
@@ -99,4 +102,4 @@ The project is in Phase 6: Prescription Processing Pipeline. Phase 0 governance,
 
 ## Immediate Next Step
 
-OCR Integration Layer.
+Admin Review Panel Foundation.

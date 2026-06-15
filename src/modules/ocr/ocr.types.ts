@@ -22,3 +22,10 @@ export interface OcrProvider {
   healthCheck(): boolean | Promise<boolean>;
 }
 
+export interface ConfidenceAnalysis {
+  textConfidence: number;
+  medicineConfidence: number;
+  overallConfidence: number;
+  reviewRequired: boolean;
+}
+

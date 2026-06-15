@@ -12,6 +12,7 @@ Initial API style is REST over JSON under `/api`.
 - `/generics`
 - `/products`
 - `/prices`
+- `/ocr`
 - `/prescriptions`
 - `/bills`
 - `/recommendations`
@@ -43,6 +44,10 @@ POST   /api/discovery/review
 POST   /api/sources/sync
 GET    /api/sources/health
 POST   /api/drap/import
+POST   /api/ocr/upload
+POST   /api/ocr/process
+GET    /api/ocr/:id
+GET    /api/ocr/:id/result
 POST   /api/prescriptions
 GET    /api/prescriptions/:id/report
 POST   /api/bills

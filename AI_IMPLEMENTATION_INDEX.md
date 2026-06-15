@@ -6,11 +6,11 @@ DawaiSaver.pk
 
 ## Current Phase
 
-Phase 6: Prescription Processing Pipeline
+Phase 8: Admin Review Panel Foundation
 
 ## Current Status
 
-The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, and prescription processing pipeline are complete. The workspace now contains an executable NestJS backend shell with Prisma, configuration, health checks, observability, Docker, Railway deployment scaffolding, REST controllers, prescription parsing and matching workflows, and Swagger/OpenAPI documentation. No frontend, marketplace, or warehouse implementation has been started.
+The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, and OCR integration layer are complete. The workspace now contains an executable NestJS backend shell with Prisma, configuration, health checks, observability, Docker, Railway deployment scaffolding, REST controllers, prescription parsing and matching workflows, OCR provider architecture, and Swagger/OpenAPI documentation. No frontend, marketplace, or warehouse implementation has been started.
 
 ## Mandatory Read Order For Future AI Agents
 
@@ -222,10 +222,24 @@ The governance phase, database foundation, data collection engines, search/disco
 ### Prescription Processing Pipeline Artifacts
 
 - `src/modules/prescriptions/`: prescription parser, matcher, cost estimator, review service, module, DTOs, and controllers
-- `src/modules/ocr/`: OCR abstraction with mock provider
+- `src/modules/ocr/`: OCR provider abstraction with mock provider
 - `prisma/migrations/20260615233000_add_prescription_processing_pipeline/migration.sql`: additive prescription processing migration
 - `docs/PRESCRIPTION_PROCESSING_ENGINE.md`: engine purpose, workflow, safety, and recovery
 - `docs/PRESCRIPTION_PIPELINE_IMPLEMENTATION.md`: implementation notes and recovery procedure
+
+### OCR Integration Layer Artifacts
+
+- `src/modules/ocr/providers/`: Google Vision, Tesseract, and Mock OCR providers
+- `src/modules/ocr/ocr-provider.factory.ts`: provider factory
+- `src/modules/ocr/providers/ocr-provider.registry.ts`: provider registry
+- `src/modules/ocr/upload.service.ts`: file upload service
+- `src/modules/ocr/file-validator.service.ts`: file validation service
+- `src/modules/ocr/image-preprocessor.service.ts`: image preprocessing service
+- `src/modules/ocr/ocr.controller.ts`: OCR API controller
+- `src/modules/ocr/ocr.service.ts`: OCR orchestration service
+- `src/modules/ocr/dto/ocr-requests.dto.ts`: OCR request DTOs
+- `prisma/migrations/*_add_ocr_integration_layer/migration.sql`: OCR tables migration (ocr_jobs, ocr_results, ocr_provider_logs)
+- `docs/OCR_INTEGRATION_LAYER.md`: OCR integration documentation
 
 ## Phase Gate Status
 
@@ -241,12 +255,12 @@ The governance phase, database foundation, data collection engines, search/disco
 - Phase 4 backend runtime foundation: complete
 - Phase 5 API controller layer: complete
 - Phase 6 prescription processing pipeline: complete
+- Phase 7 OCR integration layer: complete
 - Frontend implementation: not started
-- OCR provider integration: not started
 - Marketplace implementation: not started
 - Warehouse implementation: not started
 
 ## Next Recommended Task
 
-OCR Integration Layer.
+Admin Review Panel Foundation.
 

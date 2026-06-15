@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The prescription processing engine converts user-supplied prescription text or mock upload references into parsed medicine lines, canonical medicine matches, cost estimates, and reviewable records.
+The prescription processing engine converts user-supplied prescription text or uploaded images into parsed medicine lines, canonical medicine matches, cost estimates, and reviewable records.
 
 ## Architecture
 
@@ -16,7 +16,7 @@ sequenceDiagram
   participant Cost
   participant Review
 
-  User->>API: submit text or mock upload
+  User->>API: submit text or image
   API->>OCR: extract text when needed
   OCR->>Parser: raw prescription text
   Parser->>Matcher: candidate medicine lines
@@ -55,4 +55,14 @@ Modules:
 - Rebuild the price context from product price observations.
 - Re-run the cost estimator and review workflow.
 - Keep audit and provenance metadata intact.
+
+## OCR Integration
+
+The OCR Integration Layer (`src/modules/ocr/`) provides a pluggable architecture for text extraction:
+
+- **Google Vision Provider** - Primary cloud-based OCR
+- **Tesseract Provider** - Secondary local OCR engine
+- **Mock Provider** - Fallback for testing
+
+See `docs/OCR_INTEGRATION_LAYER.md` for details.
 

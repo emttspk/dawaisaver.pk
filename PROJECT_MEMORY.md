@@ -141,13 +141,37 @@ The platform should help users upload prescriptions, compare equivalent medicine
 ## Prescription Processing Memory
 
 - Prescription processing lives in `src/modules/prescriptions/`.
-- Mock OCR abstraction lives in `src/modules/ocr/`.
+- OCR abstraction lives in `src/modules/ocr/`.
 - The pipeline supports text input and mock uploads without a real OCR provider.
 - Parsing extracts raw medicine lines, dosage text, and quantity hints.
 - Matching uses canonical medicine identity and safety warnings for high-risk medicines.
 - Cost estimation uses matched prices, alternatives, city signals, and market signals.
 - Review workflows remain reviewable through dedicated DTOs and controller endpoints.
 - The safety wording should use: "Equivalent options with same active ingredient, strength, and dosage form."
+
+## OCR Integration Memory
+
+- OCR Integration Layer lives in `src/modules/ocr/`.
+- Provider architecture supports Google Vision, Tesseract, and Mock providers.
+- Provider factory creates providers by type; registry manages priority order.
+- Priority order: Google Vision (primary), Tesseract (secondary), Mock (fallback).
+- File upload service handles image uploads with validation.
+- Image preprocessor supports grayscale conversion and threshold adjustment.
+- OCR confidence analysis calculates text, medicine, and overall confidence scores.
+- Review is required when overall confidence < 0.7.
+- OCR tables: `ocr_jobs`, `ocr_results`, `ocr_provider_logs`.
+- API endpoints: `/api/ocr/upload`, `/api/ocr/process`, `/api/ocr/:id`, `/api/ocr/:id/result`.
+- Documentation lives in `docs/OCR_INTEGRATION_LAYER.md`.
+
+## Admin Review Panel Memory
+
+- Admin panel lives in `apps/admin/`.
+- Built with React + Vite + Tailwind CSS.
+- Dashboard provides tab navigation for review queues.
+- Review queues: OCR, Prescription, Discovery, Price Anomaly, Source Health.
+- Authentication context provides role-based access (USER, ADMIN, REVIEWER).
+- API client integrates with existing backend APIs.
+- Documentation lives in `docs/ADMIN_REVIEW_PANEL.md`.
 
 ## Next Task Recommendation
 

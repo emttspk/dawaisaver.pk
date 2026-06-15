@@ -1710,3 +1710,99 @@ model DiscoveryRule {
   @@index([status])
   @@map("discovery_rules")
 }
+
+enum OcrJobType {
+  OCR_EXTRACT
+  OCR_PROCESS
+  @@map("ocr_job_type")
+}
+
+enum OcrJobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  @@map("ocr_job_status")
+}
+
+model OcrJob {
+  id              String       @id @default(uuid()) @db.Uuid
+  jobType         OcrJobType   @map("job_type")
+  jobStatus       OcrJobStatus @default(PENDING) @map("job_status")
+  providerName    String       @map("provider_name")
+  sourceType      SourceType?  @map("source_type")
+  sourceUrl       String?      @map("source_url")
+  city            String?
+  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  rawText         String?      @map("raw_text")
+  resultSummary   Json?        @map("result_summary")
+  errorMessage    String?      @map("error_message")
+  recordStatus    RecordStatus @default(PENDING_REVIEW) @map("record_status")
+  metadata        Json?
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  deletedAt       DateTime?    @map("deleted_at")
+  createdById     String?      @map("created_by_id") @db.Uuid
+  updatedById     String?      @map("updated_by_id") @db.Uuid
+  deletedById     String?      @map("deleted_by_id") @db.Uuid
+
+  @@index([jobType])
+  @@index([jobStatus])
+  @@map("ocr_jobs")
+}
+
+model OcrResult {
+  id              String       @id @default(uuid()) @db.Uuid
+  jobId           String?      @map("job_id") @db.Uuid
+  providerName    String       @map("provider_name")
+  extractedText   String       @map("extracted_text")
+  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  textConfidence  Decimal?     @map("text_confidence") @db.Decimal(5, 4)
+  medicineConfidence Decimal? @map("medicine_confidence") @db.Decimal(5, 4)
+  overallConfidence Decimal?   @map("overall_confidence") @db.Decimal(5, 4)
+  reviewRequired  Boolean      @default(false) @map("review_required")
+  rawResponse     Json?        @map("raw_response")
+  status          RecordStatus @default(PENDING_REVIEW)
+  sourceType      SourceType?  @map("source_type")
+  sourceUrl       String?      @map("source_url")
+  metadata        Json?
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  deletedAt       DateTime?    @map("deleted_at")
+  createdById     String?      @map("created_by_id") @db.Uuid
+  updatedById     String?      @map("updated_by_id") @db.Uuid
+  deletedById     String?      @map("deleted_by_id") @db.Uuid
+
+  @@index([jobId])
+  @@index([providerName])
+  @@index([confidenceScore])
+  @@index([reviewRequired])
+  @@map("ocr_results")
+}
+
+model OcrProviderLog {
+  id              String       @id @default(uuid()) @db.Uuid
+  providerName    String       @map("provider_name")
+  jobId           String?      @map("job_id") @db.Uuid
+  requestMetadata Json?        @map("request_metadata")
+  responseData    Json?        @map("response_data")
+  statusCode      Int?         @map("status_code")
+  errorMessage    String?      @map("error_message")
+  durationMs      Int?         @map("duration_ms")
+  status          RecordStatus @default(ACTIVE)
+  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType?  @map("source_type")
+  sourceUrl       String?      @map("source_url")
+  metadata        Json?
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  deletedAt       DateTime?    @map("deleted_at")
+  createdById     String?      @map("created_by_id") @db.Uuid
+  updatedById     String?      @map("updated_by_id") @db.Uuid
+  deletedById     String?      @map("deleted_by_id") @db.Uuid
+
+  @@index([providerName])
+  @@index([jobId])
+  @@index([statusCode])
+  @@map("ocr_provider_logs")
+}

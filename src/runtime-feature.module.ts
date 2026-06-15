@@ -30,10 +30,6 @@ export const DISCOVERY_SERVICE = Symbol("DISCOVERY_SERVICE");
       useFactory: () => MatchingModule.createService(),
     },
     {
-      provide: PRESCRIPTION_SERVICE,
-      useFactory: () => PrescriptionsModule.createService(),
-    },
-    {
       provide: SEARCH_SERVICE,
       useFactory: () => SearchModule.createService(),
     },
@@ -51,7 +47,6 @@ export const DISCOVERY_SERVICE = Symbol("DISCOVERY_SERVICE");
     SOURCE_REGISTRY,
     PRICE_INTELLIGENCE_SERVICE,
     MATCHING_SERVICE,
-    PRESCRIPTION_SERVICE,
     SEARCH_SERVICE,
     DISCOVERY_SERVICE,
   ],

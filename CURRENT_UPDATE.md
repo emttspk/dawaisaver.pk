@@ -1,32 +1,38 @@
 # Current Update
 
-## Date
+## Phase 8 - Admin Review Panel Foundation
 
-2026-06-15
+### Status: In Progress
 
-## Phase
+### Completed Work
 
-Phase 6 - Prescription Processing Pipeline
+1. **Admin Application** (`apps/admin/`)
+   - React + Vite + Tailwind CSS setup
+   - Dashboard with tab navigation
+   - OCR Review Dashboard component
+   - Prescription Review Dashboard component
+   - Discovery Review Dashboard component
+   - Price Anomaly Dashboard component
+   - Source Health Dashboard component
+   - Admin authentication context foundation
+   - API client integration
 
-## Summary
+2. **Documentation**
+   - Created `docs/ADMIN_REVIEW_PANEL.md`
+   - Updated `docs/SYSTEM_ARCHITECTURE.md`
+   - Updated `docs/ROADMAP.md`
 
-The prescription processing pipeline has been added as a backend-only flow with text parsing, mock OCR abstraction, canonical medicine matching, cost estimation, review support, and new persistence tables for processing jobs, reviews, and estimates.
+### Next Steps
 
-## Completed
+- Implement review workflow actions (Approve/Reject/Edit)
+- Add review detail pages
+- Implement role-based access control
+- Connect to backend APIs
+- Add data tables with sorting/filtering
+- Add confirmation dialogs
 
-- Added `src/modules/prescriptions/` with parser, matcher, cost estimator, review service, module, DTOs, and controllers.
-- Added `src/modules/ocr/` with a mock OCR provider abstraction for future provider integration.
-- Added additive Prisma models and migration for `prescription_processing_jobs`, `prescription_reviews`, and `prescription_cost_estimates`.
-- Wired prescription processing into the NestJS runtime and feature registry.
-- Updated prescription, API specification, system architecture, and changelog documentation.
-- Added parser, mock OCR, item matching, cost estimation, review workflow, and controller test scaffolds.
-- Verified the prescription pipeline with `npm.cmd run build` and `npm.cmd test`.
+### Environment Variables
 
-## Pending
-
-- OCR provider integration beyond the mock abstraction.
-- Live PostgreSQL migration execution.
-
-## Next Task
-
-OCR Integration Layer.
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `VITE_API_URL` | No | Backend API URL (default: http://localhost:3000/api) |

@@ -1,5 +1,7 @@
 import { strict as assert } from "node:assert";
 import { PrescriptionsController } from "../controllers/prescriptions.controller";
+import { OcrService } from "../../ocr/ocr.service";
+import { OcrProviderRegistry } from "../../ocr/providers/ocr-provider.registry";
 import { sampleCanonicalCandidates, samplePrescriptionText } from "./sample-prescription.dataset";
 
 describe("Prescription controller", () => {
@@ -37,7 +39,8 @@ describe("Prescription controller", () => {
       },
     };
 
-    const controller = new PrescriptionsController(prisma);
+    const mockOcr = new OcrService(new OcrProviderRegistry());
+    const controller = new PrescriptionsController(prisma, mockOcr);
     const result = await controller.submitTextPrescription({
       text: samplePrescriptionText,
       city: "Karachi",
