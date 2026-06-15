@@ -1,0 +1,5 @@
+brand_name,generic_name,strength,dosage_form,manufacturer,registration_number,pack_size,source_url
+Augmentin,Amoxicillin + Clavulanic Acid,625 mg,Tablet,GlaxoSmithKline Pakistan,DRAP-001,14 tablets,https://example.drap.gov.pk/products/augmentin
+Calpol,Paracetamol,500 mg,Tablet,GSK Consumer Healthcare Pakistan,DRAP-002,20 tablets,https://example.drap.gov.pk/products/calpol
+Brufen,Ibuprofen,400 mg,Tablet,Abbott Laboratories Pakistan,DRAP-003,20 tablets,https://example.drap.gov.pk/products/brufen
+

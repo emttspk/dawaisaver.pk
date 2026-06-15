@@ -1,0 +1,68 @@
+# Changelog
+
+## 2026-06-15
+
+- Created Phase 0 project governance documentation.
+- Defined system, database, ingestion, normalization, prescription, marketplace, warehouse, security, API, deployment, business, legal, and roadmap documents.
+- Created recovery documentation at the project root.
+- Created implementation audit report for the initial documentation cycle.
+- Verified all governance documents before Phase 1 work.
+- Created `CURRENT_UPDATE.md`, `NEXT_ACTIONS.md`, `PROJECT_PROGRESS.md`, `PROJECT_RISKS.md`, and `DATA_SOURCES.md`.
+- Linked all governance, recovery, and database artifacts inside `AI_IMPLEMENTATION_INDEX.md`.
+- Created `prisma/schema.prisma` with all required database foundation tables.
+- Created initial PostgreSQL migration SQL.
+- Created seed structure.
+- Updated database architecture documentation with entity descriptions, relationships, indexing, search, and normalization strategy.
+- Started Phase 2 Data Collection Engine.
+- Built DRAP import engine foundation under `src/modules/drap/`.
+- Added DRAP module README with architecture diagram, sequence diagram, and test plan.
+- Added import tracking tables and migration for `import_batches`, `import_batch_items`, and `import_errors`.
+- Added DRAP normalizer functions and medicine signature generation.
+- Added sample DRAP CSV dataset.
+- Updated data collection documentation with DRAP import architecture, workflow, and recovery procedure.
+- Added `CURRENT_UPDATE.md` to `.gitignore`.
+- Built reusable Online Pharmacy Source Adapter Framework under `src/modules/sources/`.
+- Added source registry, source factory, adapter contracts, DTOs, matching utilities, and medicine signature generation.
+- Added source sync and price sync worker scaffolds.
+- Added mock source adapter, sample dataset, and adapter validation test scaffold.
+- Added source provider and sync tables: `source_providers`, `source_provider_configs`, `source_sync_jobs`, `source_sync_results`, `source_health_logs`.
+- Added price intelligence foundation tables: `price_snapshots`, `price_change_events`, `product_availability`.
+- Created `docs/ONLINE_PHARMACY_FRAMEWORK.md`.
+- Updated data collection documentation with online pharmacy framework architecture and recovery workflow.
+- Built Price Intelligence Engine under `src/modules/price-intelligence/`.
+- Added product statistics, city statistics, price change detection, anomaly detection, market signal generation, and trend calculation services.
+- Added price intelligence analytics tables and migration for `product_price_statistics`, `city_price_statistics`, `market_price_signals`, `price_anomalies`, and `price_trends`.
+- Added sample price dataset and analytics/change/city test scaffolds.
+- Created `docs/PRICE_INTELLIGENCE_ENGINE.md`.
+- Updated `docs/DATA_INTELLIGENCE_ENGINE.md` with price intelligence architecture and service API.
+- Built Medicine Matching Engine under `src/modules/matching/`.
+- Added canonical signature generation and brand, generic, strength, and manufacturer matchers.
+- Added confidence breakdown, match explanation, review DTOs, and match classification.
+- Added duplicate detection for brands, products, manufacturers, and signatures.
+- Added canonical matching tables and migration for `canonical_products`, `canonical_product_aliases`, `product_matches`, `match_reviews`, and `matching_rules`.
+- Added matching datasets and canonicalization/confidence/duplicate test scaffolds.
+- Created `docs/MEDICINE_MATCHING_ENGINE.md`.
+- Updated `docs/MEDICINE_NORMALIZATION_ENGINE.md` with matching engine details.
+- Started Phase 3 Search & Discovery Layer.
+- Built Search API Foundation under `src/modules/search/`.
+- Added product search, generic search, autocomplete, alternative search, and ranking services.
+- Added search schema and migration for `search_cache`, `search_popularity`, `search_suggestions`, and `search_synonyms`.
+- Added search dataset and autocomplete/ranking/alternative test scaffolds.
+- Created `docs/SEARCH_API_FOUNDATION.md`.
+- Updated `docs/API_SPECIFICATION.md` with search endpoint contracts.
+- Updated `docs/SYSTEM_ARCHITECTURE.md` with the search layer.
+- Built Product Discovery Engine under `src/modules/discovery/`.
+- Added candidate generation, evidence collection, discovery confidence calculation, review workflow, and duplicate detection.
+- Added discovery schema and migration for `discovery_candidates`, `discovery_evidence`, `discovery_reviews`, `discovery_jobs`, and `discovery_rules`.
+- Added discovery dataset and candidate/confidence/duplicate/review workflow test scaffolds.
+- Created `docs/PRODUCT_DISCOVERY_ENGINE.md`.
+- Updated `docs/DATA_INTELLIGENCE_ENGINE.md` and `docs/SYSTEM_ARCHITECTURE.md` with discovery architecture.
+- Built Backend Runtime Foundation as an executable NestJS application.
+- Added package, TypeScript, Nest CLI, ESLint, Prettier, Jest, environment, Docker, Docker Compose, and Railway configuration.
+- Added runtime bootstrap, root module, feature module registration, configuration validation, Prisma module/service, database bootstrap, and health endpoints.
+- Added global exception handling, response formatting, request logging, error logging, request tracing, startup diagnostics, Helmet, CORS, throttling, and request validation.
+- Created `docs/BACKEND_RUNTIME_FOUNDATION.md`.
+- Updated deployment and system architecture documentation for the backend runtime.
+- Installed dependencies, generated Prisma client, built the project, and ran the Jest suite successfully.
+- Initialized git for the workspace and configured the `origin` remote.
+- Added `src/modules/health/`, `RAILWAY_SETUP.md`, `.editorconfig`, and missing common runtime scaffolding directories.

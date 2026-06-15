@@ -1,0 +1,7 @@
+CURRENT_UPDATE.md
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+
