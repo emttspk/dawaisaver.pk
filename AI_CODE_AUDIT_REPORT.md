@@ -58,7 +58,8 @@ Phase 4 - Backend Runtime Foundation
 - Docker Compose created for local API, PostgreSQL, and Redis development.
 - Railway deployment config created in `railway.json`.
 - Railway deployment documentation updated.
-- No push was performed after the workspace was initialized locally; the remote is configured but this environment is not ready for a deployment step.
+- Git repository initialized locally and remote configured.
+- Push to `origin main` was attempted but failed with `Permission denied (publickey)`.
 
 ## Architecture Impact
 
