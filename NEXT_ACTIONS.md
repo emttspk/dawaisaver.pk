@@ -15,10 +15,9 @@ Beta Launch & User Acceptance Testing (P11).
 
 ## Pending
 
-- Obtain Railway token with access to dawaisaver.pk project
+- Configure DATABASE_URL
 - JWT authentication implementation
 - Admin guards implementation
-- Database migrations
 - Frontend API integration
 - Beta seed dataset preparation
 
