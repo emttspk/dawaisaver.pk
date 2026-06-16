@@ -27,7 +27,7 @@
 
 ### Git
 - Remote: ✅ git@github-emttspk:emttspk/dawaisaver.pk.git
-- SSH: ⚠️ Key belongs to gisupp@gmail.com, needs access to emttspk
+- SSH: ⚠️ Key belongs to gisupp@gmail.com, needs to be added to emttspk account
 
 ### Wrangler
 - `wrangler whoami`: ✅ gisupp@gmail.com
@@ -51,7 +51,8 @@
 
 ## Remaining Blockers
 
-1. **RAILWAY_TOKEN** - Required for Railway CLI
-2. **DATABASE_URL** - Required for migrations
-3. **JWT Authentication** - Placeholder guards
-4. **Admin Guards** - Placeholder implementation
+1. **SSH Access** - Add existing SSH key to emttspk GitHub account, OR generate new key for nazimsaeed@gmail.com
+2. **RAILWAY_TOKEN** - Required for Railway CLI
+3. **DATABASE_URL** - Required for migrations
+4. **JWT Authentication** - Placeholder guards
+5. **Admin Guards** - Placeholder implementation
