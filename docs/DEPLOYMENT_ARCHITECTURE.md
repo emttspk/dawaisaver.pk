@@ -13,8 +13,22 @@
 - worker service
 - PostgreSQL
 - Redis
-- Cloudflare R2
+- Cloudflare R2 (Primary Storage)
 - observability and logs
+
+## Storage Architecture
+
+**Cloudflare R2 is the single source of truth for all persistent storage.**
+
+| Storage Type | Purpose | Persistence |
+|--------------|---------|-------------|
+| Cloudflare R2 | All uploaded files, OCR artifacts, images | Permanent |
+| PostgreSQL | Metadata, records, relationships | Permanent |
+| Railway filesystem | Temporary build artifacts | Ephemeral |
+| Docker filesystem | Temporary build artifacts | Ephemeral |
+| Worker local storage | Temporary processing files | Ephemeral |
+
+All file uploads must be routed through the UploadService to Cloudflare R2. PostgreSQL stores only metadata references (URLs, paths, checksums).
 
 ## Backend Runtime
 

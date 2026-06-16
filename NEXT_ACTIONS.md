@@ -2,27 +2,32 @@
 
 ## Immediate Next Task
 
-Admin Review Panel Foundation.
+Beta Launch & User Acceptance Testing (P11).
 
-## Scope
+## Completed
 
-- Create admin review panel for medicine matching, discovery, and prescription review.
-- Build review queue management and admin user interface endpoints.
-- Implement review decision workflows.
+- ✅ Cloudflare R2 as Single Source of Truth (storage policy)
+- ✅ Wrangler CLI verification (whoami, R2 bucket list)
+- ✅ Repository migration to emttspk/dawaisaver.pk
+- ✅ Build and tests pass (34/34)
+
+## Pending
+
+- Railway CLI verification (whoami, status, variables) - RAILWAY_TOKEN needed
+- JWT authentication implementation
+- Admin guards implementation
+- Database migrations - DATABASE_URL needed
+- Frontend API integration
+- Beta seed dataset preparation
 
 ## Preconditions
 
-- OCR Integration Layer exists.
-- Prescription Processing Pipeline exists.
-- Product Discovery Engine exists.
-- Search API Foundation exists.
-- Canonical matching exists.
-- Price intelligence exists.
-- Source and DRAP ingestion foundations exist.
+- Backend build passes ✅
+- Tests pass (34/34) ✅
+- R2 storage policy documented ✅
 
 ## Out of Scope
 
-- Frontend
 - Marketplace
 - Warehouse fulfillment
 

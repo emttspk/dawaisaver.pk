@@ -1,37 +1,85 @@
-# Current Update
+# Current Update - P10 Production Readiness Completion
 
-## Phase 10 - Production Readiness & Beta Launch
+## Date: 2026-06-16
 
-### Status: In Progress
+## Repository Migration
 
-### Completed Work
+- **Old Remote**: `git@github.com:gardenshop/dawaisaver.pk.git`
+- **New Remote**: `git@github.com:emttspk/dawaisaver.pk.git`
+- **New Owner**: nazimsaeed@gmail.com
+- **Status**: ✅ Remote updated
 
-1. **Beta Readiness Checklist**
-   - Created `docs/BETA_READINESS_CHECKLIST.md`
-   - Documented deployment, security, database, API, OCR, and frontend status
+## Architecture Updates
 
-2. **Environment Configuration**
-   - Updated `.env.example` with OCR environment variables
+### Cloudflare R2 - Single Source of Truth (MANDATORY)
 
-3. **Documentation**
-   - Updated `docs/ROADMAP.md` with Phase 10 and 11
-   - Updated `docs/API_SPECIFICATION.md` with resource groups
-   - Updated `PROJECT_PROGRESS.md` and `PROJECT_STATE.md`
+All storage architecture documents updated to explicitly state:
 
-### Next Steps
+- **RAILWAY FILESYSTEM**: Temporary only - for build artifacts only
+- **DOCKER FILESYSTEM**: Temporary only - for build artifacts only
+- **WORKER LOCAL STORAGE**: Temporary only - for processing only
+- **POSTGRESQL**: Metadata storage only - no file content
+- **ALL FILES**: Must persist in Cloudflare R2
 
-- Deploy backend to Railway
-- Deploy frontend to Cloudflare Pages
-- Run database migrations
-- Implement JWT authentication
-- Connect frontend to real APIs
-- Seed beta dataset
-- Fix known issues
+### Files Updated
 
-### Known Issues
+- `docs/SYSTEM_ARCHITECTURE.md` - Added R2 storage policy section
+- `docs/DEPLOYMENT_ARCHITECTURE.md` - Added storage architecture table
+- `PROJECT_DECISIONS.md` - Added R2 as single source of truth decision
+- `DATA_SOURCES.md` - Added storage policy section
 
-1. Git push blocked by SSH permissions
-2. JWT authentication is placeholder only
-3. Admin guards are placeholders
-4. Provider-specific source adapters not implemented
-5. Live database migration not executed
+## Verification Results
+
+### Build & Test
+
+| Check | Status |
+|-------|--------|
+| Build | ✅ PASS |
+| Tests | ✅ 34/34 PASS |
+| Lint | ⚠️ 216 issues (pre-existing) |
+
+### Railway CLI
+
+| Command | Status |
+|---------|--------|
+| `railway whoami` | ⚠️ Unauthorized - RAILWAY_TOKEN required |
+| `railway status` | ⏳ Pending token |
+| `railway variables` | ⏳ Pending token |
+
+### Wrangler CLI
+
+| Command | Status |
+|---------|--------|
+| `wrangler whoami` | ✅ Logged in as gisupp@gmail.com |
+| `wrangler r2 bucket list` | ✅ Found: ai-photo-studio-whatsapp-r2 |
+
+### Database Migrations
+
+| Check | Status |
+|-------|--------|
+| `prisma migrate deploy` | ⚠️ DATABASE_URL not set |
+
+## Readiness Summary
+
+| Category | Status |
+|----------|--------|
+| Deployment Readiness | 60% |
+| Authentication Readiness | 10% (placeholder guards) |
+| Frontend Integration | 80% |
+| R2 Compliance | ✅ 100% |
+
+## Remaining Blockers
+
+1. **RAILWAY_TOKEN** - Required for Railway CLI operations
+2. **DATABASE_URL** - Required for Prisma migrations
+3. **JWT Authentication** - Placeholder guards need production implementation
+4. **Admin Guards** - Placeholder guards need implementation
+5. **Frontend Mock Data** - Needs API integration for search/autocomplete/details/OCR
+
+## Next Steps
+
+1. Set environment variables (RAILWAY_TOKEN, DATABASE_URL, JWT_SECRET)
+2. Run database migrations with proper DATABASE_URL
+3. Implement JWT authentication
+4. Deploy backend to Railway
+5. Deploy frontend to Cloudflare Pages

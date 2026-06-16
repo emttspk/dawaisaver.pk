@@ -1,8 +1,26 @@
 CURRENT_UPDATE.md
+CURRENT_UPDATE*.md
+AI_CODE_AUDIT_REPORT*.md
 node_modules/
 dist/
 .env
 .env.*
 !.env.example
 apps/admin/.env*
+
+# Temporary artifacts
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# Reports and exports
+docs/reports/
+docs/screenshots/
+docs/exports/
+screenshots/
+logs/
+temp/
+reports/
 

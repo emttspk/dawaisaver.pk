@@ -60,3 +60,9 @@ Decision: Implement OCR with a pluggable provider architecture supporting Google
 
 Reason: The user requested replaceable mock OCR with provider abstraction for future vendor integration, and a priority-based approach ensures the best available provider is used automatically.
 
+## 2026-06-16: Cloudflare R2 as Single Source of Truth
+
+Decision: All persistent file storage must use Cloudflare R2. Railway filesystem, Docker filesystem, and worker local storage are temporary only. PostgreSQL stores metadata only.
+
+Reason: Data persistence and consistency requirements for production deployment.
+

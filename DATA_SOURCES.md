@@ -40,6 +40,15 @@ Controlled import path for verified datasets and manual corrections.
 - adapter version
 - audit log reference
 
+## Storage Policy
+
+**Cloudflare R2 Storage Policy:**
+
+- All uploaded files must be stored in Cloudflare R2
+- PostgreSQL stores metadata references only
+- Railway/Docker local storage is ephemeral
+- Files must have checksums for integrity verification
+
 ## Historical Policy
 
 Source observations must be preserved. Canonical records can be corrected, but source evidence must not be overwritten.

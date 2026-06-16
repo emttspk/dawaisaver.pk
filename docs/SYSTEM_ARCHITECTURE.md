@@ -98,7 +98,13 @@ PostgreSQL stores canonical entities, source evidence, historical prices, prescr
 
 ### Object Storage
 
-Cloudflare R2 stores prescription images, bill images, imported datasets, OCR artifacts, and crawler snapshots.
+**Cloudflare R2 is the single source of truth for all file storage.** All uploaded files, OCR artifacts, prescription images, bill images, imported datasets, and crawler snapshots must persist in Cloudflare R2.
+
+**Temporary Storage Notice:**
+- Railway filesystem: Temporary only, not for persistent storage
+- Docker filesystem: Temporary only, not for persistent storage
+- Worker local storage: Temporary only, not for persistent storage
+- PostgreSQL: Stores metadata only, not file content
 
 ### Queue
 

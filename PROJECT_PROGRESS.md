@@ -54,9 +54,17 @@
 
 ## In Progress
 
-- Production Readiness & Beta Launch.
+- Production Readiness & Beta Launch (P10).
+- Cloudflare R2 Single Source of Truth: ✅ Complete
+- Repository migration: ✅ Complete
+- Wrangler verification: ✅ Complete
 
 ## Not Started
+
+- Provider-specific source adapters.
+- Full source adapter runtime wired to a backend app shell.
+- Marketplace.
+- Warehouse planning implementation.
 
 - Provider-specific source adapters.
 - Full source adapter runtime wired to a backend app shell.
