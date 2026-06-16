@@ -35,21 +35,20 @@
 | RAILWAY_TOKEN | ⚠️ Set (aa4c817f...) |
 | RAILWAY_API_TOKEN | ⚠️ Set (aa4c817f...) |
 
-## Required Action
+## STOPPED: Railway Authentication Required
 
-1. Remove tokens:
-   ```
-   unset RAILWAY_TOKEN
-   unset RAILWAY_API_TOKEN
-   ```
+### Tokens Status
+| Variable | Status |
+|----------|--------|
+| RAILWAY_TOKEN | ✅ Removed |
+| RAILWAY_API_TOKEN | ✅ Removed |
 
-2. Relink correct project:
-   ```
-   railway project link -p e38bb3da-7ab5-4654-b504-101e74c92d5b
-   ```
+### Cannot Relink - Requires Authentication
 
-3. Verify:
-   ```
-   railway status
-   railway status --json
-   ```
+Cannot proceed with `railway project link` - requires `railway login` with proper credentials.
+
+**Required Actions:**
+1. Run `railway login`
+2. Ensure token has access to `e38bb3da-7ab5-4654-b504-101e74c92d5b`
+3. Run `railway project link -p e38bb3da-7ab5-4654-b504-101e74c92d5b`
+4. Verify with `railway status`
