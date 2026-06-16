@@ -43,12 +43,9 @@
 | RAILWAY_TOKEN | ✅ Removed |
 | RAILWAY_API_TOKEN | ✅ Removed |
 
-### Cannot Relink - Requires Authentication
+### Non-Interactive Environment
 
-Cannot proceed with `railway project link` - requires `railway login` with proper credentials.
+Cannot login - environment is non-interactive.
 
-**Required Actions:**
-1. Run `railway login`
-2. Ensure token has access to `e38bb3da-7ab5-4654-b504-101e74c92d5b`
-3. Run `railway project link -p e38bb3da-7ab5-4654-b504-101e74c92d5b`
-4. Verify with `railway status`
+**Required:**
+Set `RAILWAY_API_TOKEN` or `RAILWAY_TOKEN` with access to project `e38bb3da-7ab5-4654-b504-101e74c92d5b`.

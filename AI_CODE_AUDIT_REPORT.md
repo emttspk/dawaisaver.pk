@@ -52,9 +52,14 @@ Phase 11 - Closed Beta Launch & User Acceptance Testing
 
 ## CRITICAL: Railway Authentication Required
 
-Cannot relink project - requires `railway login` with proper credentials.
+| Variable | Status |
+|----------|--------|
+| RAILWAY_TOKEN | Removed ✅ |
+| RAILWAY_API_TOKEN | Removed ✅ |
 
-**STOPPED** - Cannot proceed with deployment until:
-1. Login to Railway CLI
-2. Ensure token has access to dawaisaver.pk project
-3. Relink project
+### Non-Interactive Environment
+
+Cannot login - environment is non-interactive.
+
+**Required:**
+Set `RAILWAY_API_TOKEN` or `RAILWAY_TOKEN` with access to project `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
