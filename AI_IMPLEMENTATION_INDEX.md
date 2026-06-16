@@ -264,7 +264,7 @@ The governance phase, database foundation, data collection engines, search/disco
 
 ## Next Recommended Task
 
-Production Readiness & Beta Launch (P10).
+Beta Launch & User Acceptance Testing (P11).
 
 ## R2 Storage Compliance
 
