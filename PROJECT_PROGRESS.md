@@ -36,19 +36,17 @@
 - `npm test` passed with 24 suites and 34 tests.
 - GitHub SSH remains blocked by public key rejection.
 
-## In Progress
+## On Hold
 
-- Infrastructure Completion & Closed Beta Readiness.
-- Database restoration.
-- R2 runtime configuration.
-- GitHub SSH repair.
-- R2-backed upload persistence.
+- Production Deployment
+- Database restoration
+- R2 configuration
+- Feature development
 
-## Not Started
+## Access Recovery Required
 
-- Provider-specific source adapters.
-- Marketplace.
-- Warehouse planning implementation.
+- Railway authentication
+- GitHub SSH key acceptance
 
 ## Phase Status
 

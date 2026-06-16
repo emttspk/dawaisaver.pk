@@ -1,8 +1,22 @@
 # Next Actions
 
-## Immediate Next Task
+## STOPPED: Access Recovery
 
-Closed Beta User Testing preparation after infrastructure blockers are resolved.
+### Railway
+- ❌ Invalid token - cannot verify project
+- ❌ Cannot login - non-interactive environment
+- Required: Valid token for `e38bb3da-7ab5-4654-b504-101e74c92d5b`
+
+### GitHub SSH
+- ✅ Key exists: `~/.ssh/id_ed25519_emttspk`
+- ⚠️ Key needs added to emttspk GitHub account
+- Public key: `ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOV9e4Y3tvJY5fbXZCGns0YM8YmH+LN90fbQlu0QpcZT emttspk`
+
+### After Access Restored
+- Configure DATABASE_URL
+- Configure R2 variables
+- Run migrations
+- Deploy backend
 
 ## Must Resolve Before Closed Beta
 
