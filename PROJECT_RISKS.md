@@ -28,4 +28,11 @@
 ## Current Residual Risk
 
 The database foundation is documented and modeled, but it has not been applied to a live PostgreSQL database yet. OCR providers are stub implementations pending API key configuration for production use. DATABASE_URL and migrations need to be configured before deployment.
+# P10 Railway Link Risk - 2026-06-16
+
+Risk: Railway CLI status resolves to the wrong project, `AI Photo Studio WhatsApp` (`ad62f340-fcfd-4989-b5bb-18753b28d8c8`), instead of `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`).
+
+Impact: Any variable, migration, or deployment command could target the wrong Railway project until link validation succeeds.
+
+Mitigation: Keep deployment work stopped. Repair auth, relink with the explicit DawaiSaver project id, and require all validation commands to report the expected project id before continuing.
 

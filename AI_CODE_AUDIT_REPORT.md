@@ -94,3 +94,10 @@ Verification:
 - Admin build passed.
 - Tests passed: 24 suites, 34 tests.
 - Lint passed with existing warnings.
+# P10 Railway Link Forensic Repair - 2026-06-16
+
+Railway project identity is not verified. `railway status` and `railway status --json` return `AI Photo Studio WhatsApp` with project id `ad62f340-fcfd-4989-b5bb-18753b28d8c8`, while the expected project is `dawaisaver.pk` with id `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
+
+Root cause: stale/global Railway CLI project context plus unauthorized current Railway token. The stale linked service was cleared or already absent; project relink to the expected DawaiSaver project failed with `Unauthorized`.
+
+No variables, migrations, deployments, or production secrets were modified.
