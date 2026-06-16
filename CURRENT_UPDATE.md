@@ -37,8 +37,15 @@
 - `railway whoami`: ✅ Verified
 - `railway status`: ✅ Project linked
 
-## Database Requirements
-- DATABASE_URL: ⚠️ Not set
+## Missing Variables
+
+| Variable | Status |
+|----------|--------|
+| DATABASE_URL | ⚠️ Missing |
+| R2_ACCOUNT_ID | ⚠️ Missing |
+| R2_ACCESS_KEY_ID | ⚠️ Missing |
+| R2_SECRET_ACCESS_KEY | ⚠️ Missing |
+| GOOGLE_CLOUD_VISION_API_KEY | ⚠️ Missing |
 
 ## Readiness Summary
 

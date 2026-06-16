@@ -65,3 +65,13 @@ Phase 10 - Production Readiness & Beta Launch
 1. JWT authentication is placeholder
 2. Admin guards are placeholders
 3. DATABASE_URL missing for migrations
+
+## Missing Variables
+
+| Variable | Status |
+|----------|--------|
+| DATABASE_URL | ⚠️ Missing |
+| R2_ACCOUNT_ID | ⚠️ Missing |
+| R2_ACCESS_KEY_ID | ⚠️ Missing |
+| R2_SECRET_ACCESS_KEY | ⚠️ Missing |
+| GOOGLE_CLOUD_VISION_API_KEY | ⚠️ Missing |
