@@ -18,7 +18,15 @@
 - **CLI Resolves To**: AI Photo Studio WhatsApp (ad62f340-fcfd-4989-b5bb-18753b28d8c8)
 - **Project Link**: ❌ Unauthorized for dawaisaver.pk
 
-## Missing Production Variables
+## CRITICAL RAILWAY MISMATCH
+
+| Expected | Actual |
+|----------|--------|
+| Project: dawaisaver.pk | Project: AI Photo Studio WhatsApp |
+| Project ID: e38bb3da-7ab5-4654-b504-101e74c92d5b | Project ID: ad62f340-fcfd-4989-b5bb-18753b28d8c8 |
+| Service: dawaisaver.pk | Service: api |
+
+**Deployment STOPPED - Wrong project linked**
 
 | Variable | Status |
 |----------|--------|

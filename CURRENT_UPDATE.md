@@ -33,15 +33,15 @@
 | JWT_SECRET | ⚠️ Needs production value |
 | JWT_REFRESH_SECRET | ⚠️ Needs production value |
 
-## Readiness Summary
+## CRITICAL RAILWAY MISMATCH
 
-| Category | Status |
+| Expected | Actual |
 |----------|--------|
-| Environment | ✅ Verified |
-| Build | ✅ Pass |
-| Tests | ✅ 34/34 |
-| R2 Compliance | ✅ 100% |
-| Deployment | 60% |
+| Project: dawaisaver.pk | Project: AI Photo Studio WhatsApp |
+| Project ID: e38bb3da-7ab5-4654-b504-101e74c92d5b | Project ID: ad62f340-fcfd-4989-b5bb-18753b28d8c8 |
+| Service: dawaisaver.pk | Service: api |
+
+**STOP - Do not deploy to wrong project**
 
 ## Remaining Blockers
 
