@@ -95,3 +95,9 @@ Reason: The command can create a new public endpoint, which is a production-scop
 Decision: Presence checks may be documented, but raw `DATABASE_URL`, JWT secrets, and R2 credentials must not be printed or committed.
 
 Reason: The infrastructure completion phase touches production credentials and must preserve secret hygiene.
+
+## 2026-06-16: Treat GitHub SSH And Railway Tokens As Access Prerequisites
+
+Decision: Do not continue production mutation work until the GitHub SSH key is added to the `emttspk` account and Railway is re-authenticated with a valid token.
+
+Reason: Variables, Postgres, migrations, and deploys are all gated by those two credential paths.

@@ -109,3 +109,6 @@
 - Added minimal closed-beta seed dataset to `prisma/seed.ts`.
 - Verified `npx prisma generate`, backend build, backend tests, web build, and admin build.
 - Confirmed Wrangler is available through `npx wrangler` but unauthenticated, blocking R2 and Cloudflare Pages verification.
+- Confirmed `C:\Users\Nazim\.ssh\id_ed25519_emttspk.pub` exists, but GitHub still rejects the key until it is added to the `emttspk` account.
+- Confirmed `railway whoami` and `railway status` return `Unauthorized` once stale Railway env vars are cleared, so a fresh token is still required.
+- Began P14 infrastructure completion tracking and refreshed the access-recovery docs.

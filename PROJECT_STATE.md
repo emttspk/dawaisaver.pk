@@ -2,11 +2,11 @@
 
 ## Date
 
-2026-06-15
+2026-06-16
 
 ## Current Status
 
-The project is in Phase 10: Production Readiness & Beta Launch. Phase 0 governance, Phase 1 database foundation, Phase 2 data collection and intelligence foundations, Phase 3 search and discovery foundations, Phase 4 backend runtime foundation, Phase 5 API controller layer, Phase 6 prescription processing pipeline, Phase 7 OCR integration layer, Phase 8 admin review panel foundation, Phase 9 PWA frontend foundation, and Phase 10 production readiness are in progress. All core foundations are complete.
+The project is in P14 Infrastructure Completion. Core foundations are complete, the Railway API service is online, but the remaining production blockers are access recovery, database restoration, Railway R2 variables, R2-backed uploads, and GitHub push access.
 
 ## Implemented
 
@@ -71,6 +71,16 @@ The project is in Phase 10: Production Readiness & Beta Launch. Phase 0 governan
 - Google Vision, Tesseract, and Mock OCR providers
 - File upload, validation, and image preprocessing services
 - OCR API endpoints at `/api/ocr/*`
+
+## P14 Infrastructure Completion
+
+- `C:\Users\Nazim\.ssh\id_ed25519_emttspk.pub` exists.
+- GitHub still rejects the `emttspk` SSH key until it is added in GitHub settings.
+- Railway returns `Unauthorized` when stale env vars are cleared, so a new token is required.
+- `DATABASE_URL` is still missing from the Railway API service.
+- No Railway Postgres resource is visible in the current project resource list.
+- R2 runtime variables remain missing from Railway.
+- Upload persistence is still local-disk based.
 
 ## Required Tables Covered
 

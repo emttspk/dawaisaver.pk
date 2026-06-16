@@ -207,6 +207,9 @@ Repair Railway and Cloudflare authentication, then rerun production deployment s
 
 ## Infrastructure Completion Memory - 2026-06-16
 
+- The requested SSH public key file exists at `C:\Users\Nazim\.ssh\id_ed25519_emttspk.pub`.
+- GitHub still rejects the corresponding private key until the public key is added to the `emttspk` account.
+- Railway auth remains unavailable when stale env vars are cleared; a fresh token is still required.
 - Railway CLI now verifies the expected project: `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`) with service `dawaisaver.pk`.
 - Railway API service is Online and healthcheck reaches `/health/application`.
 - Railway project resource list currently shows only the `dawaisaver.pk` service; no Railway Postgres resource is visible.

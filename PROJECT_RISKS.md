@@ -69,3 +69,9 @@ Risk: GitHub SSH rejects the current key.
 Impact: Local infrastructure commits cannot be pushed to `origin/main`.
 
 Mitigation: Add the workstation public key to the GitHub account with access to `emttspk/dawaisaver.pk`, then rerun `ssh -T git@github.com` and push.
+
+Risk: Railway CLI returns `Unauthorized` once stale env vars are cleared.
+
+Impact: The workspace cannot safely verify variables, Postgres, migrations, or deployment changes.
+
+Mitigation: Obtain a fresh Railway token that can access `dawaisaver.pk`, then re-run `railway whoami` and `railway status`.

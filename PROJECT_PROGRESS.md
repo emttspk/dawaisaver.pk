@@ -36,6 +36,13 @@
 - `npm test` passed with 24 suites and 34 tests.
 - GitHub SSH remains blocked by public key rejection.
 
+## P14 Access Recovery
+
+- `C:\Users\Nazim\.ssh\id_ed25519_emttspk.pub` exists and matches the expected `emttspk` key.
+- GitHub SSH authentication still fails until the key is added to the account.
+- Railway `whoami` and `status` return `Unauthorized` when stale env vars are cleared.
+- A fresh Railway token is required before continuing with variables, Postgres, or migrations.
+
 ## On Hold
 
 - Production Deployment
