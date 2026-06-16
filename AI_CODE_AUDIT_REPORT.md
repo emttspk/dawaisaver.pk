@@ -6,11 +6,11 @@
 
 ## Phase
 
-Infrastructure Completion and Closed Beta Readiness
+Phase 12 - Production Hardening & Beta Release Blockers
 
 ## Summary
 
-The backend builds and tests pass, and the Railway API service is online in application-only mode. The earlier Railway project mismatch is obsolete for this workstation session: the CLI now verifies the expected `dawaisaver.pk` project and service. The remaining production blockers are database restoration, Railway R2 runtime variables, and GitHub SSH push access.
+The backend builds and tests pass, and the Railway API service is online in application-only mode. The remaining production blockers are database restoration, Railway R2 runtime variables, and GitHub SSH push access.
 
 ## Verification Results
 
@@ -22,10 +22,9 @@ The backend builds and tests pass, and the Railway API service is online in appl
 | `DATABASE_URL` | Blocked | Missing from API service environment |
 | Prisma generate | Pass | `npx prisma generate` completed |
 | Prisma migrate deploy | Blocked | Guard stopped because `DATABASE_URL` is missing |
-| Application health | Pass | `/health/application` returns OK locally and is reached by Railway |
+| Application health | Pass | `/health/application` returns OK locally |
 | Database health | Blocked | `/health/database` reports error without `DATABASE_URL` |
 | R2 bucket | Pass | `dawaisaver-pk` visible through Wrangler |
-| R2 remote object smoke test | Pass | Upload, readback hash match, and delete succeeded |
 | R2 Railway runtime variables | Blocked | Required service variables are missing |
 | GitHub SSH | Blocked | `ssh -T git@github.com` returns `Permission denied (publickey)` |
 | Build | Pass | `npm run build` completed |

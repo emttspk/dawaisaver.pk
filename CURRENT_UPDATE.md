@@ -1,61 +1,38 @@
-# Current Update - Infrastructure Completion and Closed Beta Readiness
+# Current Update - P12 Production Hardening
 
-## Date
+## Date: 2026-06-16
 
-2026-06-16
+## Environment Status
 
-## Scope
+| Check | Status |
+|-------|--------|
+| GitHub SSH | ⚠️ Permission denied |
+| Git Remote | ✅ git@github.com:emttspk/dawaisaver.pk.git |
+| Railway Project | ✅ dawaisaver.pk |
+| Railway Service | ✅ dawaisaver.pk (Online) |
+| R2 Bucket | ✅ dawaisaver-pk |
 
-Infrastructure Completion and Closed Beta Readiness for DawaiSaver.pk.
+## Verification Results
 
-## Verified
+| Area | Result |
+|------|--------|
+| Build | ✅ Pass |
+| Tests | ✅ 34/34 Pass |
+| Railway API | ✅ Online |
+| Postgres Resource | ⚠️ Missing |
+| DATABASE_URL | ⚠️ Missing |
+| R2 Runtime Variables | ⚠️ Missing |
 
-- Railway workspace: `emttspk's Projects`.
-- Railway project: `dawaisaver.pk`.
-- Railway project ID: `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
-- Railway service: `dawaisaver.pk`.
-- API deployment status: Online.
-- Latest deployed API listens on Railway `PORT` (`8080` in logs).
-- Railway healthcheck reaches `/health/application`.
-- `npx prisma generate`: passed.
-- `npm run build`: passed.
-- `npm test`: passed, 24 suites and 34 tests.
-- Cloudflare Wrangler auth: valid OAuth session.
-- R2 bucket `dawaisaver-pk`: visible.
-- R2 remote upload/read/delete smoke test: passed.
+## Current Blockers
 
-## Blocked
+1. **Postgres Resource** - Not found under Railway project resources
+2. **DATABASE_URL** - Missing from API service environment
+3. **R2 Runtime Variables** - R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_PUBLIC_BASE_URL missing
+4. **GitHub SSH** - `Permission denied (publickey)` for emttspk
 
-- Railway project currently lists only the `dawaisaver.pk` service; no Railway Postgres resource is listed.
-- `DATABASE_URL` is missing from the API service environment.
-- `npx prisma migrate deploy` was not run because the service environment has no `DATABASE_URL`.
-- `databaseConfigured=true` is not yet achievable.
-- `/health/database` reports `status=error` until a database URL is restored.
-- R2 runtime variables are missing from Railway: account id, bucket name, access key id, secret access key, and public base URL.
-- R2 credentials are not available locally, so they were not written into Railway.
-- GitHub SSH check fails with `Permission denied (publickey)`.
-- `git push origin main` remains blocked until GitHub SSH is repaired.
+## Next Actions
 
-## Health Endpoint Result
-
-Local production-mode probe with no database:
-
-- `/health`: HTTP 200, `status=degraded`.
-- `/health/database`: HTTP 200, `status=error`.
-- `/health/application`: HTTP 200, `status=ok`.
-
-Production Railway evidence:
-
-- Service is Online.
-- Runtime logs show `databaseConfigured:false`.
-- Railway healthcheck requested `/health/application` successfully.
-
-## Protected Scope Notes
-
-- No raw `DATABASE_URL`, JWT secrets, or R2 credentials were printed or written to reports.
-- No Railway project, PostgreSQL service, or existing service was recreated or deleted.
-- `railway domain` was not run because it can generate a public domain.
-
-## Next Task
-
-Closed Beta User Testing, after restoring `DATABASE_URL`, configuring R2 runtime credentials, and repairing GitHub SSH push access.
+1. Investigate missing Postgres resource
+2. Configure R2 runtime variables
+3. Repair GitHub SSH access
+4. Restore database
