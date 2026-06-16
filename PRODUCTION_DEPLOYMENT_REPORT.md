@@ -4,7 +4,7 @@
 
 ## Repository
 
-- **Remote**: `git@github-emttspk:emttspak/dawaisaver.pk.git`
+- **Remote**: `git@github.com:emttspk/dawaisaver.pk.git`
 - **Project**: dawaisaver.pk
 - **Project ID**: e38bb3da-7ab5-4654-b504-101e74c92d5b
 
@@ -14,19 +14,21 @@
 
 ## Railway Status
 
-- **Expected Project**: dawaisaver.pk
-- **CLI Resolves To**: AI Photo Studio WhatsApp (ad62f340-fcfd-4989-b5bb-18753b28d8c8)
-- **Project Link**: ❌ Unauthorized for dawaisaver.pk
+- **Project**: dawaisaver.pk ✅
+- **Project ID**: e38bb3da-7ab5-4654-b504-101e74c92d5b ✅
+- **Service**: dawaisaver.pk ✅
+- **Repository**: emttspk/dawaisaver.pk ✅
 
-## CRITICAL RAILWAY MISMATCH
+## Railway Services
 
-| Expected | Actual |
-|----------|--------|
-| Project: dawaisaver.pk | Project: AI Photo Studio WhatsApp |
-| Project ID: e38bb3da-7ab5-4654-b504-101e74c92d5b | Project ID: ad62f340-fcfd-4989-b5bb-18753b28d8c8 |
-| Service: dawaisaver.pk | Service: api |
+| Service | Status |
+|---------|--------|
+| api | ✅ Online |
+| Postgres | ✅ Online |
+| Redis | ✅ Online |
+| background-remover | ✅ Online |
 
-**Deployment STOPPED - Wrong project linked**
+## Missing Production Variables
 
 | Variable | Status |
 |----------|--------|
@@ -36,12 +38,12 @@
 | R2_SECRET_ACCESS_KEY | ⚠️ Missing |
 | GOOGLE_CLOUD_VISION_API_KEY | ⚠️ Missing |
 
-## Deployment Blockers
+## Remaining Blockers
 
-1. **RAILWAY_PROJECT** - Token lacks access to dawaisaver.pk project
-2. **DATABASE_URL** - Required for migrations
-3. **JWT Authentication** - Placeholder guards
-4. **Admin Guards** - Placeholder implementation
+1. **DATABASE_URL** - Required for migrations
+2. **JWT Authentication** - Placeholder guards
+3. **Admin Guards** - Placeholder implementation
+4. **R2 Credentials** - Missing Cloudflare keys
 
 ## Readiness Summary
 
