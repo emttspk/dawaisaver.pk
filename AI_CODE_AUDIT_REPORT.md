@@ -58,8 +58,7 @@ Phase 10 - Production Readiness & Beta Launch
 
 ## Known Issues
 
-1. **SSH Access** - Key `id_ed25519_emttspk` exists but needs to be added to emttspk/dawaisaver.pk repository
-2. JWT authentication is placeholder
-3. Admin guards are placeholders
-4. RAILWAY_TOKEN missing for CLI
-5. DATABASE_URL missing for migrations
+1. JWT authentication is placeholder
+2. Admin guards are placeholders
+3. RAILWAY_TOKEN missing for CLI
+4. DATABASE_URL missing for migrations
