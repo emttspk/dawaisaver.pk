@@ -54,13 +54,10 @@
 
 ## In Progress
 
-- Production Readiness & Beta Launch (P10).
-- Cloudflare R2 Single Source of Truth: ✅ Complete
-- Repository migration: ✅ Complete
-- Wrangler verification: ✅ Complete
-- Git push: ✅ Verified
-- Railway token: ✅ Configured
-- Railway project: ✅ Linked
+- Closed Beta Launch & User Acceptance Testing (P11).
+- Environment verification: ✅ Complete
+- Build and tests: ✅ Complete
+- R2 compliance: ✅ Complete
 
 ## Not Started
 
