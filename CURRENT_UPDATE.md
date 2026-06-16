@@ -59,6 +59,12 @@ Set `RAILWAY_API_TOKEN` or `RAILWAY_TOKEN` with access to project `e38bb3da-7ab5
 
 **Cache cleared**: Removed `$USERPROFILE\.railway` directory
 
+### Browser Login Blocked
+
+**Cannot proceed** - environment is non-interactive.
+
+**Must provide valid token** with access to `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
+
 ## Current Blockers
 
 1. **RAILWAY_AUTH** - Requires token with access to `e38bb3da-7ab5-4654-b504-101e74c92d5b`

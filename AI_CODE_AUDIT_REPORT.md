@@ -70,3 +70,9 @@ Cannot login - environment is non-interactive.
 
 **Required:**
 Set `RAILWAY_API_TOKEN` or `RAILWAY_TOKEN` with access to project `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
+
+### Browser Login Blocked
+
+**Cannot proceed with browser login** - environment is non-interactive.
+
+**Must provide valid token** with access to `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
