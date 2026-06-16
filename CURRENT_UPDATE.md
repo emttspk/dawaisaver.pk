@@ -51,8 +51,7 @@
 
 ## Remaining Blockers
 
-1. **SSH Access** - Add SSH key to emttspk GitHub account
-2. **RAILWAY_TOKEN** - Required for Railway CLI
-3. **DATABASE_URL** - Required for migrations
-4. **JWT Authentication** - Placeholder guards
-5. **Admin Guards** - Placeholder implementation
+1. **RAILWAY_TOKEN** - Required for Railway CLI
+2. **DATABASE_URL** - Required for migrations
+3. **JWT Authentication** - Placeholder guards
+4. **Admin Guards** - Placeholder implementation
