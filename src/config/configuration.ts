@@ -16,6 +16,14 @@ export const configuration = () => ({
     r2AccessKeyId: process.env.R2_ACCESS_KEY_ID,
     r2SecretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
     r2BucketName: process.env.R2_BUCKET_NAME,
+    r2PublicBaseUrl: process.env.R2_PUBLIC_BASE_URL,
+  },
+  auth: {
+    jwtSecret: process.env.JWT_SECRET || "development-access-secret",
+    jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || "development-refresh-secret",
+    jwtExpiresIn: process.env.JWT_EXPIRES_IN || "15m",
+    jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "7d",
+    internalApiKey: process.env.INTERNAL_API_KEY,
   },
   crawler: {
     userAgent: process.env.CRAWLER_USER_AGENT || "DawaiSaverBot/0.1",

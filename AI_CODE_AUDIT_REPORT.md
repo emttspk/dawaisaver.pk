@@ -75,3 +75,22 @@ Phase 10 - Production Readiness & Beta Launch
 | R2_ACCESS_KEY_ID | ⚠️ Missing |
 | R2_SECRET_ACCESS_KEY | ⚠️ Missing |
 | GOOGLE_CLOUD_VISION_API_KEY | ⚠️ Missing |
+# P10 Update - 2026-06-16
+
+Automated environment audit was partially completed under Protected Scope Protocol. Cloudflare R2 was verified, but Railway variable export and deployment were blocked because the linked Railway project is `AI Photo Studio WhatsApp`, not DawaiSaver.pk.
+
+Implemented backend authentication and authorization:
+
+- `src/modules/auth/`: access token, refresh token, register/login/refresh/me/logout.
+- `src/common/guards/auth.guard.ts`: Bearer token validation and request user hydration.
+- `src/common/guards/admin.guard.ts`: ADMIN/REVIEWER enforcement.
+- `src/common/guards/internal.guard.ts`: internal API key or elevated user role.
+- `prisma/migrations/20260616143000_add_auth_tokens_to_users/`: user password/refresh-token storage.
+
+Verification:
+
+- API build passed.
+- Web build passed.
+- Admin build passed.
+- Tests passed: 24 suites, 34 tests.
+- Lint passed with existing warnings.

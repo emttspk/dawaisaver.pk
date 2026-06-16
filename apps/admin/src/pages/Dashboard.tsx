@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AdminAuthContext";
+import DiscoveryReviewDashboard from "./DiscoveryReviewDashboard";
+import OcrReviewDashboard from "./OcrReviewDashboard";
+import PrescriptionReviewDashboard from "./PrescriptionReviewDashboard";
+import PriceAnomalyDashboard from "./PriceAnomalyDashboard";
+import SourceHealthDashboard from "./SourceHealthDashboard";
 
 type ReviewTab = "ocr" | "prescriptions" | "discovery" | "prices" | "sources";
 

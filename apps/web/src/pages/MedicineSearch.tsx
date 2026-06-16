@@ -2,11 +2,18 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { apiClient } from "../services/api-client";
 
+interface ProductSearchResult {
+  id: string;
+  brandName: string;
+  genericName?: string;
+  price?: number;
+}
+
 export default function MedicineSearch() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const [query, setQuery] = useState(queryParams.get("q") || "");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<ProductSearchResult[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -43,7 +50,7 @@ export default function MedicineSearch() {
         <p>Loading...</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {results.map((product: any) => (
+          {results.map((product) => (
             <div key={product.id} className="border rounded-lg p-4 hover:shadow">
               <h3 className="font-semibold">{product.brandName}</h3>
               <p className="text-sm text-gray-600">{product.genericName}</p>

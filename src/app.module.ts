@@ -6,6 +6,7 @@ import { configuration } from "./config/configuration";
 import { validateEnvironment } from "./config/env.validation";
 import { DatabaseModule } from "./database/database.module";
 import { HealthModule } from "./modules/health/health.module";
+import { AuthModule } from "./modules/auth/auth.module";
 import { DrapModule } from "./modules/drap/drap.module";
 import { DiscoveryModule } from "./modules/discovery/discovery.module";
 import { MatchingModule } from "./modules/matching/matching.module";
@@ -14,6 +15,7 @@ import { PrescriptionsModule } from "./modules/prescriptions/prescriptions.modul
 import { PriceIntelligenceModule } from "./modules/price-intelligence/price-intelligence.module";
 import { SearchModule } from "./modules/search/search.module";
 import { SourceModule } from "./modules/sources/source.module";
+import { StatsModule } from "./modules/stats/stats.module";
 import { RuntimeFeatureModule } from "./runtime-feature.module";
 
 @Module({
@@ -32,6 +34,7 @@ import { RuntimeFeatureModule } from "./runtime-feature.module";
     ]),
     CommonModule,
     DatabaseModule,
+    AuthModule,
     HealthModule,
     DrapModule,
     SourceModule,
@@ -41,6 +44,7 @@ import { RuntimeFeatureModule } from "./runtime-feature.module";
     PrescriptionsModule,
     SearchModule,
     DiscoveryModule,
+    StatsModule,
     RuntimeFeatureModule,
   ],
 })

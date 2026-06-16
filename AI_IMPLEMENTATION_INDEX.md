@@ -268,4 +268,14 @@ Production Readiness & Beta Launch (P10).
 ## R2 Storage Compliance
 
 Cloudflare R2 is the single source of truth for all persistent storage.
+# P10 Auth And Environment Audit Additions - 2026-06-16
+
+- `src/modules/auth/`: authentication module with JWT-style signed access tokens, refresh token rotation, password hashing, and auth controller.
+- `src/common/guards/auth.guard.ts`: protected route bearer-token guard.
+- `src/common/guards/admin.guard.ts`: role authorization for ADMIN and REVIEWER.
+- `src/common/guards/internal.guard.ts`: internal API key or elevated-role guard.
+- `src/modules/stats/`: protected user dashboard statistics endpoint.
+- `prisma/migrations/20260616143000_add_auth_tokens_to_users/`: user credential/token migration.
+- `apps/admin/src/contexts/AdminAuthContext.tsx`: API-backed admin login state.
+- `apps/web/src/services/api-client.ts`: token-aware frontend API client.
 

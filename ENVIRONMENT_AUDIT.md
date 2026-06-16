@@ -1,66 +1,77 @@
-# Environment Audit
+# P10 Environment Audit
 
-## Date: 2026-06-16
+Date: 2026-06-16
 
-## Railway Variables Status
+## Protected Scope Result
 
-### PRESENT
-| Variable | Status |
-|----------|--------|
-| NODE_ENV | development |
-| APP_NAME | DawaiSaver.pk API |
-| APP_PORT | 3000 |
-| APP_HOST | 0.0.0.0 |
-| APP_GLOBAL_PREFIX | api |
-| CORS_ORIGINS | http://localhost:5173 |
-| RATE_LIMIT_TTL_SECONDS | 60 |
-| RATE_LIMIT_MAX_REQUESTS | 120 |
-| RUN_MIGRATIONS_ON_BOOT | false |
-| R2_BUCKET_NAME | dawaisaver-pk |
-| JWT_SECRET | (set - change in production) |
-| JWT_REFRESH_SECRET | (set - change in production) |
-| JWT_EXPIRES_IN | 15m |
-| JWT_REFRESH_EXPIRES_IN | 7d |
-| CRAWLER_USER_AGENT | DawaiSaverBot/0.1 |
-| CRAWLER_CONCURRENCY | 2 |
-| UPLOAD_DIR | uploads |
+Railway remote variable export and deployment were stopped by Protected Scope Protocol.
 
-### MISSING
-| Variable | Required For |
-|----------|--------------|
-| DATABASE_URL | PostgreSQL connection |
-| R2_ACCOUNT_ID | Cloudflare R2 access |
-| R2_ACCESS_KEY_ID | Cloudflare R2 access |
-| R2_SECRET_ACCESS_KEY | Cloudflare R2 access |
-| GOOGLE_CLOUD_VISION_API_KEY | OCR service |
+`railway status` returned a linked project named `AI Photo Studio WhatsApp`, not a DawaiSaver.pk Railway project. It also reported the linked service id as not found in the project while listing available services `api`, `background-remover`, `Redis`, and `Postgres`.
 
-### OPTIONAL
-| Variable | Purpose |
-|----------|---------|
-| CORS_ORIGINS | CORS configuration |
-| RATE_LIMIT_TTL_SECONDS | Rate limiting window |
-| RATE_LIMIT_MAX_REQUESTS | Max requests per window |
-| RUN_MIGRATIONS_ON_BOOT | Auto-run migrations |
-| JWT_EXPIRES_IN | Token expiry |
-| JWT_REFRESH_EXPIRES_IN | Refresh token expiry |
-| CRAWLER_USER_AGENT | Web scraping identification |
-| CRAWLER_CONCURRENCY | Scraper concurrency |
-| UPLOAD_DIR | Local upload directory |
+Because of that mismatch, Railway variable reads, variable writes, migrations against Railway, and deployment were not performed.
 
-## R2 Compliance
+## Railway Commands
 
-| Requirement | Status |
-|-------------|--------|
-| R2 Bucket | ✅ dawaisaver-pk |
-| Railway filesystem | ✅ Temporary only |
-| Docker filesystem | ✅ Temporary only |
-| PostgreSQL | ✅ Metadata only |
+- `railway whoami`: blocked/unauthorized in this shell.
+- `railway status`: completed; linked project is not DawaiSaver.pk.
+- `railway variables`: blocked by protected-scope review because the linked project is not DawaiSaver.pk.
+
+## Cloudflare Commands
+
+- `npx wrangler --version`: 4.100.0
+- `npx wrangler whoami`: authenticated as Cloudflare account `85f6a6181b4653c2a45e69cb7ce8a474`.
+- `npx wrangler r2 bucket list`: verified bucket `dawaisaver-pk` exists.
+
+## Variable Classification
+
+### Present
+
+- `R2_BUCKET_NAME`: derivable and set in `.env.example` as `dawaisaver-pk`.
+- Cloudflare account id source: `wrangler whoami` account id `85f6a6181b4653c2a45e69cb7ce8a474`.
+
+### Missing Or Not Safely Exported
+
+- `DATABASE_URL`: not present in local shell; `prisma migrate deploy` failed with Prisma P1012.
+- `R2_ACCOUNT_ID`: derivable from `wrangler whoami`, but not written to Railway because Railway is linked to the wrong project.
+- `R2_ACCESS_KEY_ID`: cannot be derived from Wrangler bucket list. Source: Cloudflare Dashboard > R2 > Manage R2 API Tokens.
+- `R2_SECRET_ACCESS_KEY`: cannot be derived after creation. Source: Cloudflare Dashboard > R2 > Manage R2 API Tokens; create or rotate an R2 token.
+- `R2_PUBLIC_BASE_URL`: cannot be inferred from bucket existence. Source: Cloudflare Dashboard > R2 > bucket `dawaisaver-pk` > Settings > Public access/custom domain.
+- `JWT_SECRET`: required in production.
+- `JWT_REFRESH_SECRET`: required in production.
+- `INTERNAL_API_KEY`: optional but recommended for internal ingestion/source-sync endpoints.
+
+### Optional
+
+- `APP_NAME`
+- `APP_PORT`
+- `APP_HOST`
+- `APP_GLOBAL_PREFIX`
+- `CORS_ORIGINS`
+- `RATE_LIMIT_TTL_SECONDS`
+- `RATE_LIMIT_MAX_REQUESTS`
+- `RUN_MIGRATIONS_ON_BOOT`
+- `CRAWLER_USER_AGENT`
+- `CRAWLER_CONCURRENCY`
+- `GOOGLE_CLOUD_VISION_API_KEY`
+- `UPLOAD_DIR`
+
+## Database Status
+
+Railway status shows a Postgres database service exists, but the project linkage is outside protected scope. Local migration deployment could not run because `DATABASE_URL` was missing.
+
+## Migration Result
+
+Blocked locally:
+
+`prisma migrate deploy` failed with `Environment variable not found: DATABASE_URL`.
+
+New migration prepared:
+
+- `prisma/migrations/20260616143000_add_auth_tokens_to_users/migration.sql`
 
 ## Deployment Readiness
 
-| Component | Status |
-|-----------|--------|
-| Build | ✅ Pass |
-| Tests | ✅ 34/34 |
-| R2 Policy | ✅ Documented |
-| Environment | ⚠️ Missing production values |
+- Backend deployment readiness: 72%
+- Beta readiness: 64%
+
+Primary blocker: correct Railway project linkage and production variables.

@@ -14,6 +14,23 @@ export class PriceIntelligenceController {
 
   constructor(private readonly prisma: PrismaService) {}
 
+  @Get("anomalies")
+  @ApiOperation({ summary: "Return recent price anomalies for admin review." })
+  @ApiOkResponse({ description: "Price anomalies returned successfully." })
+  async getAnomalies(@Query("limit") limit?: string) {
+    const snapshots = await this.prisma.priceSnapshot.findMany({
+      where: { deletedAt: null },
+      include: { sourceProvider: true },
+      orderBy: { capturedAt: "desc" },
+      take: Math.min(Number(limit || 100), 250),
+    });
+    const anomalies = this.priceIntelligence.detectAnomalies(snapshots.map((snapshot) => this.mapSnapshot(snapshot)));
+    return {
+      items: anomalies.slice(0, Math.min(Number(limit || 20), 100)),
+      total: anomalies.length,
+    };
+  }
+
   @Get("product/:id")
   @ApiOperation({ summary: "Return price intelligence for a product." })
   @ApiOkResponse({ description: "Product price intelligence returned successfully." })

@@ -1,4 +1,5 @@
 import { OcrProvider } from "../ocr.types";
+import { MockOcrProvider } from "../mock-ocr.provider";
 import { GoogleVisionProvider } from "./google-vision.provider";
 import { TesseractProvider } from "./tesseract.provider";
 
@@ -13,7 +14,6 @@ export class OcrProviderFactory {
         return new TesseractProvider();
       case "mock":
       default:
-        const { MockOcrProvider } = require("../mock-ocr.provider");
         return new MockOcrProvider();
     }
   }

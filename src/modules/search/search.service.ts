@@ -72,8 +72,8 @@ export function normalizeSearchText(value?: string): string {
   return String(value || "")
     .toLowerCase()
     .replace(/\u00a0/g, " ")
-    .replace(/[^a-z0-9%+\-\s_]/g, " ")
-    .replace(/[_+\-]+/g, " ")
+    .replace(/[^a-z0-9%+\s_-]/g, " ")
+    .replace(/[_+-]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -108,4 +108,3 @@ function levenshtein(a: string, b: string): number {
   }
   return matrix[a.length][b.length];
 }
-

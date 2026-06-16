@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import MedicineSearch from "./pages/MedicineSearch";

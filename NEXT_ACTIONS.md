@@ -33,4 +33,11 @@ Beta Launch & User Acceptance Testing (P11).
 
 - Marketplace
 - Warehouse fulfillment
+# P10 Next Actions - 2026-06-16
+
+1. Relink Railway to the correct DawaiSaver.pk project and API service.
+2. Rerun `railway variables` only after the Railway project name and service are verified as DawaiSaver.pk.
+3. Set production variables: `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `R2_BUCKET_NAME`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, and `R2_PUBLIC_BASE_URL`.
+4. Run `prisma migrate deploy` against the verified DawaiSaver PostgreSQL database.
+5. Deploy backend to Railway and frontend to Cloudflare Pages after scope verification.
 

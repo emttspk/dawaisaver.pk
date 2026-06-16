@@ -1,4 +1,5 @@
-import { createContext, useContext, ReactNode } from "react";
+import { createContext, useContext, ReactNode, useMemo, useState } from "react";
+import { apiClient } from "../services/api-client";
 
 export type UserRole = "USER" | "ADMIN" | "REVIEWER";
 
@@ -28,25 +29,32 @@ export function useAuth() {
 }
 
 export function AdminAuthProvider({ children }: { children: ReactNode }) {
-  const login = async (_email: string, _password: string) => {
-    console.log("Login placeholder");
+  const [user, setUser] = useState<AuthUser | null>(() => {
+    const stored = localStorage.getItem("dawaisaver.admin.user");
+    return stored ? JSON.parse(stored) as AuthUser : null;
+  });
+
+  const login = async (email: string, password: string) => {
+    const response = await apiClient.login(email, password);
+    setUser(response.data.user as AuthUser);
   };
 
   const logout = () => {
-    console.log("Logout placeholder");
+    apiClient.logout();
+    setUser(null);
   };
 
   const hasRole = (role: UserRole): boolean => {
-    return true;
+    return user?.role === role;
   };
 
-  const value: AuthContextValue = {
-    user: null,
+  const value = useMemo<AuthContextValue>(() => ({
+    user,
     login,
     logout,
-    isAuthenticated: false,
+    isAuthenticated: Boolean(user),
     hasRole,
-  };
+  }), [user]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

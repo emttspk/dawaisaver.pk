@@ -16,6 +16,11 @@ apps/admin/.env*
 Thumbs.db
 
 # Reports and exports
+ENVIRONMENT_AUDIT.md
+ENVIRONMENT_AUDIT*.md
+RAILWAY_VARIABLE_EXPORT*.env
+RAILWAY_VARIABLE_EXPORT*.txt
+WRANGLER_R2_BUCKET_LIST*.txt
 docs/reports/
 docs/screenshots/
 docs/exports/
@@ -23,4 +28,3 @@ screenshots/
 logs/
 temp/
 reports/
-

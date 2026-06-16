@@ -1,6 +1,7 @@
-import { Body, Controller, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from "@nestjs/common";
 import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { SourceType } from "@prisma/client";
+import { AdminGuard } from "../../../common/guards/admin.guard";
 import { PrismaService } from "../../../database/prisma.service";
 import { PrescriptionReviewRequestDto } from "../dto/prescription-requests.dto";
 import { PrescriptionsService } from "../prescriptions.service";
@@ -13,7 +14,28 @@ export class PrescriptionReviewController {
 
   constructor(private readonly prisma: PrismaService) {}
 
+  @Get("reviews")
+  @UseGuards(AdminGuard)
+  @ApiOperation({ summary: "List prescriptions needing review." })
+  @ApiOkResponse({ description: "Prescription review queue returned successfully." })
+  async reviews(@Query("limit") limit?: string) {
+    const take = Math.min(Number(limit || 20), 100);
+    const where = { deletedAt: null, status: "PENDING_REVIEW" as const };
+    const [items, total] = await Promise.all([
+      this.prisma.prescription.findMany({
+        where,
+        include: { items: true, reviews: true },
+        orderBy: { createdAt: "desc" },
+        take,
+      }),
+      this.prisma.prescription.count({ where }),
+    ]);
+
+    return { items, total };
+  }
+
   @Post(":id/review")
+  @UseGuards(AdminGuard)
   @ApiOperation({ summary: "Review a prescription and its items." })
   @ApiBody({ type: PrescriptionReviewRequestDto })
   @ApiOkResponse({ description: "Prescription review stored successfully." })

@@ -1,5 +1,7 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from "@nestjs/common";
 import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { AdminGuard } from "../../common/guards/admin.guard";
+import { PrismaService } from "../../database/prisma.service";
 import { OcrProviderRegistry } from "./providers/ocr-provider.registry";
 import { OcrService } from "./ocr.service";
 import { OcrProcessDto, OcrUploadDto } from "./dto/ocr-requests.dto";
@@ -10,7 +12,25 @@ export class OcrController {
   constructor(
     private readonly registry: OcrProviderRegistry,
     private readonly ocr: OcrService,
+    private readonly prisma: PrismaService,
   ) {}
+
+  @Get("jobs")
+  @UseGuards(AdminGuard)
+  @ApiOperation({ summary: "List OCR jobs for admin review." })
+  @ApiOkResponse({ description: "OCR jobs returned successfully." })
+  async getOcrJobs(@Query("limit") limit?: string) {
+    const take = Math.min(Number(limit || 20), 100);
+    const [items, total] = await Promise.all([
+      this.prisma.ocrJob.findMany({
+        where: { deletedAt: null },
+        orderBy: { createdAt: "desc" },
+        take,
+      }),
+      this.prisma.ocrJob.count({ where: { deletedAt: null } }),
+    ]);
+    return { items, total };
+  }
 
   @Post("upload")
   @ApiOperation({ summary: "Upload an image for OCR processing." })

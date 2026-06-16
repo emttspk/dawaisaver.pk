@@ -54,8 +54,8 @@ export function normalizeText(value: string): string {
   return String(value || "")
     .toLowerCase()
     .replace(/\u00a0/g, " ")
-    .replace(/[^a-z0-9%+\-\s]/g, " ")
-    .replace(/[_+\-]+/g, " ")
+    .replace(/[^a-z0-9%+\s-]/g, " ")
+    .replace(/[_+-]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
