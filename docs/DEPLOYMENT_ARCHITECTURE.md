@@ -28,7 +28,7 @@
 | Docker filesystem | Temporary build artifacts | Ephemeral |
 | Worker local storage | Temporary processing files | Ephemeral |
 
-**R2 Bucket**: `dawaisaver-pk`
+**R2 Bucket**: `dawaisaver-pk` ✅ Created 2026-06-16
 
 All file uploads must be routed through the UploadService to Cloudflare R2. PostgreSQL stores only metadata references (URLs, paths, checksums).
 
