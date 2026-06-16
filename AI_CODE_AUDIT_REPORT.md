@@ -6,7 +6,7 @@
 
 ## Phase
 
-P14 Infrastructure Completion
+P15 Access Recovery and Production Database Setup
 
 ## Status
 
@@ -18,7 +18,7 @@ Blocked on access recovery.
 | --- | --- | --- |
 | SSH key file | Pass | `C:\Users\Nazim\.ssh\id_ed25519_emttspk.pub` exists |
 | GitHub SSH auth | Blocked | `ssh -T git@github.com` returns `Permission denied (publickey)` |
-| Railway auth with current env | Blocked | `railway whoami` and `railway status` return `Unauthorized` when stale env vars are cleared |
+| Railway auth with current env | Blocked | Clearing stale env vars leaves `railway whoami` and `railway status` unauthorized |
 | Railway project identity | Previously verified | `dawaisaver.pk`, project ID `e38bb3da-7ab5-4654-b504-101e74c92d5b` |
 | Postgres | Blocked | No production mutation attempted until Railway auth is restored |
 | `DATABASE_URL` | Blocked | Cannot attach without Railway access |
@@ -28,4 +28,4 @@ Blocked on access recovery.
 
 ## Audit Conclusion
 
-The repository is in a clean documentation state, but production completion is credential-blocked. The next real move is to add the SSH key to GitHub and replace the invalid Railway token with a valid one that can see `dawaisaver.pk`.
+The repository is ready for access repair work, but production setup remains credential-blocked. The next action is to add the SSH key to GitHub and replace the invalid Railway token with one that can access `dawaisaver.pk`.

@@ -50,7 +50,7 @@ The governance phase, database foundation, data collection engines, search/disco
 - `DATA_SOURCES.md`: planned data source inventory
 - `AI_CODE_AUDIT_REPORT.md`: latest implementation audit
 - `PRODUCTION_DEPLOYMENT_REPORT.md`: production setup status and blockers
-- `P14_INFRASTRUCTURE_COMPLETION_REPORT.md`: current P14 access recovery and infrastructure blocker summary
+- `P15_ACCESS_AND_DATABASE_REPORT.md`: current P15 access recovery and production database blocker summary
 - `INFRASTRUCTURE_COMPLETION_REPORT.md`: current infrastructure completion status
 - `BETA_READINESS_REPORT.md`: closed beta readiness gate
 - `BETA_TEST_SCENARIOS.md`: beta test scenarios

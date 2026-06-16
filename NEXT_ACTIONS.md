@@ -10,7 +10,7 @@
 
 ### Railway
 
-- Obtain a new Railway token with access to `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`).
+- Obtain a fresh Railway token with access to `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`).
 - Set the token for the CLI and verify `railway whoami`.
 - Verify `railway status` returns the `dawaisaver.pk` project.
 
@@ -23,12 +23,12 @@
 5. Run `npx prisma migrate deploy`.
 6. Run `npx prisma db seed`.
 7. Verify R2 variables.
-8. Replace local upload persistence with R2 persistence.
-9. Verify `/health`, `/health/database`, and `/health/application`.
-10. Run `npm run build` and `npm test`.
+8. Verify health endpoints.
+9. Run `npm run build` and `npm test`.
+10. Push the resulting commit.
 
 ## Current State
 
-- Local repository is clean.
+- Local repository is clean before the next change set.
 - No production mutation was performed in this turn.
 - Railway and GitHub access are the remaining blockers.
