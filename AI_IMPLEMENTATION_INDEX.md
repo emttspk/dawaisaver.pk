@@ -6,11 +6,11 @@ DawaiSaver.pk
 
 ## Current Phase
 
-Phase 10: Production Readiness & Beta Launch
+Infrastructure Completion & Closed Beta Readiness
 
 ## Current Status
 
-The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, and admin review panel foundation are complete. The workspace now contains an executable NestJS backend shell with Prisma, configuration, health checks, observability, Docker, Railway deployment scaffolding, REST controllers, prescription parsing and matching workflows, OCR provider architecture, admin panel, and Swagger/OpenAPI documentation. The PWA frontend foundation is in progress.
+The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, admin review panel foundation, and PWA frontend foundation are implemented. The Railway API service for `dawaisaver.pk` is online and application health passes, but closed beta is blocked by missing `DATABASE_URL`, missing Railway R2 runtime variables, local-disk upload persistence, and GitHub SSH push failure.
 
 ## Mandatory Read Order For Future AI Agents
 
@@ -50,6 +50,11 @@ The governance phase, database foundation, data collection engines, search/disco
 - `DATA_SOURCES.md`: planned data source inventory
 - `AI_CODE_AUDIT_REPORT.md`: latest implementation audit
 - `PRODUCTION_DEPLOYMENT_REPORT.md`: production setup status and blockers
+- `INFRASTRUCTURE_COMPLETION_REPORT.md`: current infrastructure completion status
+- `BETA_READINESS_REPORT.md`: closed beta readiness gate
+- `BETA_TEST_SCENARIOS.md`: beta test scenarios
+- `KNOWN_LIMITATIONS.md`: current limitations for testers and operators
+- `UAT_CHECKLIST.md`: UAT gate checklist
 
 ### Governance Documents
 
@@ -264,7 +269,7 @@ The governance phase, database foundation, data collection engines, search/disco
 
 ## Next Recommended Task
 
-Beta Launch & User Acceptance Testing (P11).
+Restore production database configuration and R2 runtime variables, then proceed to Closed Beta User Testing.
 
 ## R2 Storage Compliance
 
@@ -290,3 +295,15 @@ Cloudflare R2 is the single source of truth for all persistent storage.
 - `prisma/migrations/20260616143000_add_auth_tokens_to_users/`: user credential/token migration.
 - `apps/admin/src/contexts/AdminAuthContext.tsx`: API-backed admin login state.
 - `apps/web/src/services/api-client.ts`: token-aware frontend API client.
+
+# Infrastructure Completion Audit - 2026-06-16
+
+- Fresh `CURRENT_UPDATE.md`, `AI_CODE_AUDIT_REPORT.md`, `PRODUCTION_DEPLOYMENT_REPORT.md`, and `INFRASTRUCTURE_COMPLETION_REPORT.md` created.
+- Closed beta package created: `BETA_READINESS_REPORT.md`, `BETA_TEST_SCENARIOS.md`, `KNOWN_LIMITATIONS.md`, and `UAT_CHECKLIST.md`.
+- Obsolete root reports archived under `docs/archive/`.
+- Railway project `dawaisaver.pk` and service `dawaisaver.pk` verified.
+- API service is Online with `/health/application` healthcheck.
+- `DATABASE_URL` is missing and no Railway Postgres resource is visible in `railway status`.
+- R2 bucket `dawaisaver-pk` passed remote object smoke testing, but Railway R2 variables are missing.
+- GitHub SSH remains blocked by public key rejection.
+- `npx prisma generate`, `npm run build`, and `npm test` passed.

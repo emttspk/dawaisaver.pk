@@ -1,78 +1,61 @@
-# Current Update - P11 Railway Forensic Verification
+# Current Update - Infrastructure Completion and Closed Beta Readiness
 
-## Date: 2026-06-16
+## Date
 
-## CRITICAL: Railway Project Mismatch Confirmed
+2026-06-16
 
-### Expected Project
-- **Name**: dawaisaver.pk
-- **Project ID**: e38bb3da-7ab5-4654-b504-101e74c92d5b
-- **Service**: dawaisaver.pk
-- **Repository**: emttspk/dawaisaver.pk
+## Scope
 
-### Actual Project (from `railway status --json`)
-- **Name**: AI Photo Studio WhatsApp
-- **Project ID**: ad62f340-fcfd-4989-b5bb-18753b28d8c8
+Infrastructure Completion and Closed Beta Readiness for DawaiSaver.pk.
 
-### Services Found
-| Service | Status |
-|---------|--------|
-| Redis | Online |
-| api | Online |
-| background-remover | Online |
-| Postgres | Online |
+## Verified
 
-## STOPPED Actions
+- Railway workspace: `emttspk's Projects`.
+- Railway project: `dawaisaver.pk`.
+- Railway project ID: `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
+- Railway service: `dawaisaver.pk`.
+- API deployment status: Online.
+- Latest deployed API listens on Railway `PORT` (`8080` in logs).
+- Railway healthcheck reaches `/health/application`.
+- `npx prisma generate`: passed.
+- `npm run build`: passed.
+- `npm test`: passed, 24 suites and 34 tests.
+- Cloudflare Wrangler auth: valid OAuth session.
+- R2 bucket `dawaisaver-pk`: visible.
+- R2 remote upload/read/delete smoke test: passed.
 
-- ❌ No migrations run
-- ❌ No backend deployment
-- ❌ No variable changes
+## Blocked
 
-## Environment Tokens Detected
+- Railway project currently lists only the `dawaisaver.pk` service; no Railway Postgres resource is listed.
+- `DATABASE_URL` is missing from the API service environment.
+- `npx prisma migrate deploy` was not run because the service environment has no `DATABASE_URL`.
+- `databaseConfigured=true` is not yet achievable.
+- `/health/database` reports `status=error` until a database URL is restored.
+- R2 runtime variables are missing from Railway: account id, bucket name, access key id, secret access key, and public base URL.
+- R2 credentials are not available locally, so they were not written into Railway.
+- GitHub SSH check fails with `Permission denied (publickey)`.
+- `git push origin main` remains blocked until GitHub SSH is repaired.
 
-| Variable | Status |
-|----------|--------|
-| RAILWAY_TOKEN | ⚠️ Set (aa4c817f...) |
-| RAILWAY_API_TOKEN | ⚠️ Set (aa4c817f...) |
+## Health Endpoint Result
 
-## STOPPED: Railway Authentication Required
+Local production-mode probe with no database:
 
-### Tokens Status
-| Variable | Status |
-|----------|--------|
-| RAILWAY_TOKEN | ✅ Removed |
-| RAILWAY_API_TOKEN | ✅ Removed |
+- `/health`: HTTP 200, `status=degraded`.
+- `/health/database`: HTTP 200, `status=error`.
+- `/health/application`: HTTP 200, `status=ok`.
 
-### Non-Interactive Environment
+Production Railway evidence:
 
-Cannot login - environment is non-interactive.
+- Service is Online.
+- Runtime logs show `databaseConfigured:false`.
+- Railway healthcheck requested `/health/application` successfully.
 
-**Required:**
-Set `RAILWAY_API_TOKEN` or `RAILWAY_TOKEN` with access to project `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
+## Protected Scope Notes
 
-### Token Investigation
+- No raw `DATABASE_URL`, JWT secrets, or R2 credentials were printed or written to reports.
+- No Railway project, PostgreSQL service, or existing service was recreated or deleted.
+- `railway domain` was not run because it can generate a public domain.
 
-| Token | Status |
-|-------|--------|
-| aa4c817f... | Invalid |
-| ac3502e8... | Invalid |
+## Next Task
 
-**Cache cleared**: Removed `$USERPROFILE\.railway` directory
-
-### Browser Login Blocked
-
-**Cannot proceed** - environment is non-interactive.
-
-**Must provide valid token** with access to `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
-
-### Environment Token Storage
-
-| Location | Status |
-|----------|--------|
-| User env vars | ⚠️ RAILWAY_TOKEN, RAILWAY_API_TOKEN stored |
-| Cannot modify | Registry access denied |
-
-## Current Blockers
-
-1. **RAILWAY_AUTH** - Requires token with access to `e38bb3da-7ab5-4654-b504-101e74c92d5b`
-2. **DATABASE_URL** - To be verified after correct project linkage
+Closed Beta User Testing, after restoring `DATABASE_URL`, configuring R2 runtime credentials, and repairing GitHub SSH push access.

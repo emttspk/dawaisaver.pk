@@ -1,102 +1,66 @@
 # Project Progress
 
-## Completed
+## Completed Foundations
 
 - Phase 0 governance package.
-- Phase 1 database foundation documentation.
-- Prisma schema for core medicine intelligence entities.
-- Initial PostgreSQL migration SQL.
-- Database ERD.
-- Seed structure.
+- Phase 1 database foundation and Prisma schema.
 - DRAP import engine foundation.
-- Import batch tracking schema.
-- Sample DRAP dataset.
 - Online pharmacy source adapter framework.
-- Source sync and price sync worker scaffolds.
-- Mock source adapter, sample source dataset, and adapter validation test scaffold.
-- Source provider and price snapshot schema.
 - Price Intelligence Engine.
-- Price intelligence analytics schema.
-- Sample price datasets and analytics test scaffolds.
 - Medicine Matching Engine.
-- Canonical medicine identity schema.
-- Matching datasets and canonicalization/confidence/duplicate test scaffolds.
 - Search API Foundation.
-- Search cache, popularity, suggestions, and synonyms schema.
-- Search dataset and autocomplete/ranking/alternative test scaffolds.
 - Product Discovery Engine.
-- Discovery candidates, evidence, reviews, jobs, and rules schema.
-- Discovery dataset and candidate/confidence/duplicate/review workflow test scaffolds.
 - Backend Runtime Foundation.
-- Executable NestJS application bootstrap.
-- Prisma module, service, database bootstrap, and health checks.
-- Runtime configuration, validation, security, logging, tracing, and diagnostics.
-- Docker, Docker Compose, Railway, Jest, ESLint, and Prettier configuration.
-- Module registration for DRAP, sources, price intelligence, matching, prescriptions, search, and discovery.
-- Health module under `src/modules/health/`.
-- Repository initialized with git and remote configuration.
 - API Controller Layer.
-- REST controller modules for search, discovery, matching, price intelligence, DRAP, sources, and prescriptions.
-- Swagger/OpenAPI documentation and standardized API envelopes.
-- Controller, DTO, contract, and Swagger verification tests.
 - Prescription Processing Pipeline.
-- OCR abstraction with mock provider.
-- Prescription parsing, matching, cost estimation, and review workflow.
-- Prescription processing migration and additive database tables.
-- Prescription parser, mock OCR, item matching, cost estimate, review workflow, and controller tests.
-- Build and test verification passed for the prescription pipeline.
 - OCR Integration Layer.
-- OCR provider tables: `ocr_jobs`, `ocr_results`, `ocr_provider_logs`.
-- Google Vision, Tesseract, and Mock OCR providers.
-- File upload, validation, and image preprocessing services.
-- OCR API endpoints at `/api/ocr/*`.
-- OCR documentation.
+- Admin Review Panel Foundation.
+- PWA Frontend Foundation.
+- Authentication module and role/internal guards.
+- Minimal closed-beta seed dataset in `prisma/seed.ts`.
+- Cloudflare R2 bucket `dawaisaver-pk` exists.
+
+## Infrastructure Completion Cycle - 2026-06-16
+
+- Railway project `dawaisaver.pk` verified with project ID `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
+- Railway service `dawaisaver.pk` is Online.
+- Railway healthcheck reaches `/health/application`.
+- `JWT_SECRET` and `JWT_REFRESH_SECRET` are present.
+- `DATABASE_URL` is missing.
+- No Railway Postgres resource is visible in the current project resource list.
+- Railway R2 runtime variables are missing.
+- Wrangler is authenticated and R2 remote upload/read/delete smoke testing passed.
+- `npx prisma generate` passed.
+- `npx prisma migrate deploy` was stopped because `DATABASE_URL` is missing.
+- `npm run build` passed.
+- `npm test` passed with 24 suites and 34 tests.
+- GitHub SSH remains blocked by public key rejection.
 
 ## In Progress
 
-- Closed Beta Launch & User Acceptance Testing (P11).
-- Environment verification: ✅ Complete
-- Build and tests: ✅ Complete
-- R2 compliance: ✅ Complete
+- Infrastructure Completion & Closed Beta Readiness.
+- Database restoration.
+- R2 runtime configuration.
+- GitHub SSH repair.
+- R2-backed upload persistence.
 
 ## Not Started
 
 - Provider-specific source adapters.
-- Full source adapter runtime wired to a backend app shell.
-- Marketplace.
-- Warehouse planning implementation.
-
-- Provider-specific source adapters.
-- Full source adapter runtime wired to a backend app shell.
 - Marketplace.
 - Warehouse planning implementation.
 
 ## Phase Status
 
 - Phase 0: Complete
-- Phase 1: Database foundation complete; backend runtime complete
-- Phase 2: DRAP import foundation complete; online pharmacy framework complete; price intelligence complete; medicine matching complete; provider-specific adapters not started
-- Phase 3: Search API foundation complete; product discovery complete
+- Phase 1: Database foundation complete; production database not restored
+- Phase 2: Core intelligence foundations complete; provider-specific adapters not started
+- Phase 3: Search and discovery foundations complete
 - Phase 4: Backend runtime foundation complete
 - Phase 5: API controller layer complete
 - Phase 6: Prescription processing pipeline complete
 - Phase 7: OCR Integration Layer complete
 - Phase 8: Admin Review Panel Foundation complete
 - Phase 9: PWA Frontend Foundation complete
-- Phase 10: Production Readiness & Beta Launch in progress
-# P10 Progress - 2026-06-16
-
-- Authentication placeholder work replaced with real access/refresh token flow.
-- Admin/internal guards now enforce elevated roles or internal API key.
-- Web and admin frontends now build successfully with corrected dependencies.
-- R2 bucket `dawaisaver-pk` verified through Wrangler.
-- Railway deployment remains blocked by wrong linked project.
-
-# Production Deployment Setup Audit - 2026-06-16
-
-- Railway expected project `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`) was not verified.
-- Railway actual project is `AI Photo Studio WhatsApp` (`ad62f340-fcfd-4989-b5bb-18753b28d8c8`) with no linked service.
-- Explicit Railway relink failed with `Unauthorized`.
-- `npx prisma generate`, backend build, backend tests, web build, and admin build passed.
-- `prisma/seed.ts` now contains a minimal closed-beta dataset.
-- R2 and Cloudflare Pages checks are blocked because Wrangler is unauthenticated in this workspace.
+- Phase 10/Infrastructure: In progress
+- Closed Beta User Testing: Blocked pending database and R2 runtime configuration

@@ -49,3 +49,23 @@ Risk: Wrangler is unauthenticated in this workspace.
 Impact: R2 bucket access, upload access, public URL verification, and Cloudflare Pages deployment cannot be completed.
 
 Mitigation: Provide `CLOUDFLARE_API_TOKEN` or complete `wrangler login`, then rerun R2 and Pages checks.
+
+# Infrastructure Completion Risks - 2026-06-16
+
+Risk: `DATABASE_URL` is missing and no Railway Postgres resource is visible.
+
+Impact: Migrations, seed data, database-backed search, auth persistence, prescriptions, reviews, and database health cannot be production-ready.
+
+Mitigation: Restore or attach the intended PostgreSQL database, configure `DATABASE_URL`, run `npx prisma migrate deploy`, seed minimal beta data, and require `databaseConfigured=true`.
+
+Risk: Railway R2 runtime variables are missing and uploads still use local filesystem persistence.
+
+Impact: User-uploaded prescription files would not meet the R2 single-source-of-truth requirement.
+
+Mitigation: Configure protected R2 variables and replace `UploadService` local writes with R2 object storage before upload UAT.
+
+Risk: GitHub SSH rejects the current key.
+
+Impact: Local infrastructure commits cannot be pushed to `origin/main`.
+
+Mitigation: Add the workstation public key to the GitHub account with access to `emttspk/dawaisaver.pk`, then rerun `ssh -T git@github.com` and push.

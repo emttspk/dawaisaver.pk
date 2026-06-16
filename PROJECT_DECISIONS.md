@@ -77,3 +77,21 @@ Reason: Protected Scope Protocol applies to production variables, deployment con
 Decision: Seed only a tiny medicine/manufacturer/generic/alternative dataset for closed beta verification until audited DRAP/import data is available.
 
 Reason: Beta launch needs searchable and reviewable records without overstating corpus completeness.
+
+## 2026-06-16: Keep API Observable Without Database
+
+Decision: The Railway healthcheck uses `/health/application`, while `/health` and `/health/database` continue to expose degraded database status until `DATABASE_URL` is restored.
+
+Reason: The API process should remain observable during infrastructure repair, but database readiness must not be falsely reported as healthy.
+
+## 2026-06-16: Do Not Generate Public Railway Domain During Audit
+
+Decision: Do not run `railway domain` during infrastructure audit.
+
+Reason: The command can create a new public endpoint, which is a production-scope mutation not needed for database or R2 verification.
+
+## 2026-06-16: Protect Secret Values In Reports
+
+Decision: Presence checks may be documented, but raw `DATABASE_URL`, JWT secrets, and R2 credentials must not be printed or committed.
+
+Reason: The infrastructure completion phase touches production credentials and must preserve secret hygiene.

@@ -113,3 +113,16 @@ Repair Railway authentication/link for project `e38bb3da-7ab5-4654-b504-101e74c9
 - Production variables, migrations, backend deployment, and production health checks were not run.
 - Wrangler is available through `npx wrangler` but unauthenticated, so R2 and Cloudflare Pages verification are blocked.
 - Minimal closed-beta seed dataset is implemented in `prisma/seed.ts`.
+
+## Infrastructure Completion Status - 2026-06-16
+
+This section supersedes the earlier production deployment setup status for the current workstation session.
+
+- Railway CLI verifies project `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`) and service `dawaisaver.pk`.
+- API service is Online.
+- `DATABASE_URL` is missing and no Railway Postgres resource is visible in the current project resource list.
+- JWT secrets are present.
+- R2 bucket `dawaisaver-pk` exists and passed remote upload/read/delete smoke testing.
+- Railway R2 runtime variables are missing.
+- GitHub SSH push remains blocked by public key rejection.
+- `npx prisma generate`, `npm run build`, and `npm test` pass.

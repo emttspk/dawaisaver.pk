@@ -2,57 +2,37 @@
 
 ## Immediate Next Task
 
-Closed Beta Launch & User Acceptance Testing (P11).
+Closed Beta User Testing preparation after infrastructure blockers are resolved.
 
-## Completed
+## Must Resolve Before Closed Beta
 
-- ✅ Environment verification complete
-- ✅ Build and tests pass
-- ✅ R2 compliance verified
+1. Restore or attach the intended PostgreSQL database for Railway project `dawaisaver.pk`.
+2. Configure `DATABASE_URL` on the existing API service without printing or committing the value.
+3. Run `npx prisma migrate deploy` against the verified production database.
+4. Apply the minimal seed dataset from `prisma/seed.ts`.
+5. Confirm startup diagnostics show `databaseConfigured=true`.
+6. Verify `/health`, `/health/database`, and `/health/application` against production.
+7. Configure Railway R2 runtime variables from the protected credential source.
+8. Replace local upload persistence in `src/modules/ocr/upload.service.ts` with R2-backed persistence.
+9. Repair GitHub SSH so `ssh -T git@github.com` authenticates as an account with access to `emttspk/dawaisaver.pk`.
+10. Push local commits to `origin/main`.
 
-## Pending
+## Completed In This Cycle
 
-- Configure DATABASE_URL
-- Configure R2 credentials
-- Configure JWT secrets
-- JWT authentication implementation
-- Admin guards implementation
-- Database migrations
-- Railway deployment
-- Cloudflare Pages deployment
-- Beta test scenarios
+- Verified Railway project identity.
+- Verified API service is Online.
+- Verified `JWT_SECRET` and `JWT_REFRESH_SECRET` are present.
+- Verified `DATABASE_URL` is missing.
+- Verified R2 bucket access with remote upload/read/delete.
+- Verified `npx prisma generate`.
+- Verified `npm run build`.
+- Verified `npm test` with 24 suites and 34 tests passing.
+- Created beta readiness, test scenario, known limitations, UAT, audit, and infrastructure reports.
 
-## Preconditions
+## Out Of Scope
 
-- Backend build passes ✅
-- Tests pass (34/34) ✅
-- R2 storage policy documented ✅
-
-## Out of Scope
-
-- Marketplace
-- Warehouse fulfillment
-# P10 Next Actions - 2026-06-16
-
-1. Relink Railway to the correct DawaiSaver.pk project and API service.
-2. Rerun `railway variables` only after the Railway project name and service are verified as DawaiSaver.pk.
-3. Set production variables: `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `R2_BUCKET_NAME`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, and `R2_PUBLIC_BASE_URL`.
-4. Run `prisma migrate deploy` against the verified DawaiSaver PostgreSQL database.
-5. Deploy backend to Railway and frontend to Cloudflare Pages after scope verification.
-# P10 Railway Link Repair Next Actions - 2026-06-16
-
-1. Authenticate Railway CLI with a token/account that can access project `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`).
-2. Run `railway link --project e38bb3da-7ab5-4654-b504-101e74c92d5b --environment production --service dawaisaver.pk --workspace emttspk`.
-3. Validate with `railway status --json`; project id must equal `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
-4. Only after validation, run `railway variables` and classify required variables.
-5. Only after validation and variable audit, run migrations/deployments.
-
-# Production Deployment Setup Next Actions - 2026-06-16
-
-1. Authenticate Railway with a token that can access project `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
-2. Relink Railway to project `dawaisaver.pk`, environment `production`, service `dawaisaver.pk`.
-3. Confirm `railway status --json` returns project id `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
-4. Verify production variables: `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `R2_BUCKET_NAME`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_PUBLIC_BASE_URL`, and `GOOGLE_CLOUD_VISION_API_KEY`.
-5. Run `npx prisma migrate deploy`, `npx prisma generate`, and migration status against the verified database.
-6. Run `railway up` and verify `/health`, `/health/database`, and `/api/docs`.
-7. Authenticate Wrangler, verify R2 bucket access/upload/public URL, then prepare Cloudflare Pages deployment with `VITE_API_URL`.
+- Recreating Railway project.
+- Recreating PostgreSQL without explicit approval.
+- Deleting services.
+- Resetting infrastructure.
+- Marketplace and warehouse fulfillment.

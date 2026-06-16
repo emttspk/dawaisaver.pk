@@ -204,3 +204,21 @@ The platform should help users upload prescriptions, compare equivalent medicine
 ## Next Task Recommendation
 
 Repair Railway and Cloudflare authentication, then rerun production deployment setup.
+
+## Infrastructure Completion Memory - 2026-06-16
+
+- Railway CLI now verifies the expected project: `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`) with service `dawaisaver.pk`.
+- Railway API service is Online and healthcheck reaches `/health/application`.
+- Railway project resource list currently shows only the `dawaisaver.pk` service; no Railway Postgres resource is visible.
+- `DATABASE_URL` is missing from the API service, so startup diagnostics show `databaseConfigured:false`.
+- JWT access and refresh secrets are present in Railway.
+- R2 bucket `dawaisaver-pk` exists and passed remote upload/read/delete smoke testing through Wrangler.
+- Railway R2 runtime variables are missing and must be configured from the protected credential source.
+- Wrangler is authenticated locally through OAuth.
+- GitHub SSH is not repaired: `ssh -T git@github.com` returns `Permission denied (publickey)`.
+- `npx prisma generate` passed.
+- `npx prisma migrate deploy` was guarded and stopped because `DATABASE_URL` is missing.
+- `npm run build` passed.
+- `npm test` passed with 24 suites and 34 tests.
+- Local production-mode health behavior without DB: `/health/application` OK, `/health/database` error, `/health` degraded.
+- Upload persistence is not production-complete because `UploadService` still writes to local filesystem.

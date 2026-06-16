@@ -6,80 +6,44 @@
 
 ## Phase
 
-Phase 11 - Closed Beta Launch & User Acceptance Testing
+Infrastructure Completion and Closed Beta Readiness
 
-## Environment Status
+## Summary
 
-| Check | Status |
-|-------|--------|
-| GitHub SSH | ✅ PASS |
-| Git Remote | ✅ git@github.com:emttspk/dawaisaver.pk.git |
-| Wrangler | ✅ Available |
+The backend builds and tests pass, and the Railway API service is online in application-only mode. The earlier Railway project mismatch is obsolete for this workstation session: the CLI now verifies the expected `dawaisaver.pk` project and service. The remaining production blockers are database restoration, Railway R2 runtime variables, and GitHub SSH push access.
 
-## CRITICAL: Railway Project Mismatch
+## Verification Results
 
-| Expected | Actual |
-|----------|--------|
-| dawaisaver.pk (e38bb3da-7ab5-4654-b504-101e74c92d5b) | AI Photo Studio WhatsApp (ad62f340-fcfd-4989-b5bb-18753b28d8c8) |
+| Area | Result | Evidence |
+| --- | --- | --- |
+| Railway project identity | Pass | `dawaisaver.pk`, project ID `e38bb3da-7ab5-4654-b504-101e74c92d5b` |
+| Railway API service | Pass | Service `dawaisaver.pk` is Online |
+| Railway Postgres resource | Blocked | No Postgres resource listed under project resources |
+| `DATABASE_URL` | Blocked | Missing from API service environment |
+| Prisma generate | Pass | `npx prisma generate` completed |
+| Prisma migrate deploy | Blocked | Guard stopped because `DATABASE_URL` is missing |
+| Application health | Pass | `/health/application` returns OK locally and is reached by Railway |
+| Database health | Blocked | `/health/database` reports error without `DATABASE_URL` |
+| R2 bucket | Pass | `dawaisaver-pk` visible through Wrangler |
+| R2 remote object smoke test | Pass | Upload, readback hash match, and delete succeeded |
+| R2 Railway runtime variables | Blocked | Required service variables are missing |
+| GitHub SSH | Blocked | `ssh -T git@github.com` returns `Permission denied (publickey)` |
+| Build | Pass | `npm run build` completed |
+| Tests | Pass | 24 suites, 34 tests passed |
 
-**STOPPED - Wrong project linked**
+## Code Risks
 
-## Token Investigation
+1. `src/modules/ocr/upload.service.ts` still writes uploaded files to local disk and returns `/uploads/...`. This violates the R2 single-source-of-truth decision for production uploads.
+2. The API intentionally starts without `DATABASE_URL` so Railway can remain observable, but most data-backed beta workflows remain unavailable until database restoration is complete.
+3. `R2_PUBLIC_BASE_URL` cannot be inferred from bucket existence; it must come from Cloudflare R2 public access or custom domain configuration.
+4. GitHub push cannot complete from this workstation until the SSH key is accepted by GitHub for `emttspk`.
 
-| Token | Status |
-|-------|--------|
-| aa4c817f... | Invalid |
-| ac3502e8... | Invalid |
+## Protected Scope
 
-**Cache cleared**: Removed `$USERPROFILE\.railway` directory
+- Secret values were not printed.
+- Railway variable checks used presence-only output.
+- No infrastructure reset, project recreation, PostgreSQL recreation, service deletion, or public domain generation was performed.
 
-## Missing Production Variables
+## Audit Conclusion
 
-| Variable | Status |
-|----------|--------|
-| DATABASE_URL | ⚠️ Missing |
-| R2_ACCOUNT_ID | ⚠️ Missing |
-| R2_ACCESS_KEY_ID | ⚠️ Missing |
-| R2_SECRET_ACCESS_KEY | ⚠️ Missing |
-| GOOGLE_CLOUD_VISION_API_KEY | ⚠️ Missing |
-| JWT_SECRET | ⚠️ Needs production value |
-| JWT_REFRESH_SECRET | ⚠️ Needs production value |
-
-## Known Issues
-
-1. RAILWAY_AUTH - Requires token with access to `e38bb3da-7ab5-4654-b504-101e74c92d5b`
-2. DATABASE_URL - To be verified after correct project linkage
-
-## Environment Tokens Detected
-
-| Variable | Status |
-|----------|--------|
-| RAILWAY_TOKEN | Removed ✅ |
-| RAILWAY_API_TOKEN | Removed ✅ |
-
-## CRITICAL: Railway Authentication Required
-
-| Variable | Status |
-|----------|--------|
-| RAILWAY_TOKEN | Removed ✅ |
-| RAILWAY_API_TOKEN | Removed ✅ |
-
-### Non-Interactive Environment
-
-Cannot login - environment is non-interactive.
-
-**Required:**
-Set `RAILWAY_API_TOKEN` or `RAILWAY_TOKEN` with access to project `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
-
-### Browser Login Blocked
-
-**Cannot proceed with browser login** - environment is non-interactive.
-
-**Must provide valid token** with access to `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
-
-### Environment Token Storage
-
-| Location | Status |
-|----------|--------|
-| User env vars | ⚠️ RAILWAY_TOKEN, RAILWAY_API_TOKEN stored |
-| Cannot modify | Registry access denied |
+Code quality gates pass, but closed beta is not production-complete until the database is restored, R2 runtime credentials are configured in Railway, and upload persistence is moved from local disk to R2.
