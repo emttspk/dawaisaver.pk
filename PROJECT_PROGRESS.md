@@ -26,12 +26,12 @@
 - Railway service `dawaisaver.pk` is Online.
 - Railway healthcheck reaches `/health/application`.
 - `JWT_SECRET` and `JWT_REFRESH_SECRET` are present.
-- `DATABASE_URL` still needs to be attached to the API service.
-- Railway Postgres attachment still needs confirmation in the live runtime environment.
-- Railway R2 runtime variables still need confirmation in the live runtime environment.
+- `DATABASE_URL` is present on the API service.
+- Railway Postgres service `Postgres` is attached.
+- Railway R2 runtime variables still need confirmation before upload UAT.
 - `npx.cmd prisma generate` passed.
 - `npx.cmd prisma db seed` ran.
-- `npx.cmd prisma migrate deploy` requires `DATABASE_URL`.
+- `npx.cmd prisma migrate deploy` passed with all 9 migrations applied.
 - `npm.cmd run build` passed.
 - `npm.cmd test` passed with 25 suites and 36 tests.
 
@@ -60,13 +60,23 @@
 - Phase 8: Admin Review Panel Foundation complete
 - Phase 9: PWA Frontend Foundation complete
 - Phase 10/Infrastructure: In progress
-- Closed Beta User Testing: Pending database and R2 runtime verification
+- Closed Beta User Testing: Ready to start for database-backed flows; confirm R2 runtime variables before file-upload UAT
 
 ## P17 Production Database Completion
 
 - Build and tests pass (25 suites, 36 tests)
 - OCR uploads use R2 signed requests
 - `/health`, `/health/database`, `/health/application` routes registered
-- `databaseConfigured` returns false without `DATABASE_URL`
-- **BLOCKED**: Railway authentication required for deployment
-- **NEXT**: Attach PostgreSQL, configure DATABASE_URL, run migrations
+- Superseded by P18 database finalization.
+
+## P18 Production Database Finalization
+
+- PostgreSQL service `Postgres` exists with service ID `1a43f63e-4686-43c5-84e2-1b9a4180f79f`.
+- `DATABASE_URL` is present on API service `dawaisaver.pk`.
+- `npx.cmd prisma generate` passed.
+- `npx.cmd prisma migrate deploy` passed and applied 9 migrations.
+- `npx.cmd prisma db seed` passed.
+- `databaseConfigured=true` confirmed.
+- `/health`, `/health/application`, and `/health/database` pass against Railway Postgres.
+- `npm.cmd run build` and `npm.cmd test` pass.
+- Next task: Closed Beta User Testing.

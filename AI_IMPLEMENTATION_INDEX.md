@@ -10,7 +10,7 @@ Infrastructure Completion & Closed Beta Readiness
 
 ## Current Status
 
-The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, admin review panel foundation, and PWA frontend foundation are implemented. The OCR upload path now targets Cloudflare R2, the build and tests pass (25 suites, 36 tests), Prisma client generation passes, and the remaining production blocker is attaching `DATABASE_URL` plus the Railway R2 runtime variables. Railway authentication is required for deployment.
+The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, admin review panel foundation, and PWA frontend foundation are implemented. Production Postgres is attached, `DATABASE_URL` is present, Prisma migrations and seed are complete, `databaseConfigured=true` is confirmed, health checks pass, and build/tests pass. The next task is Closed Beta User Testing.
 
 ## Mandatory Read Order For Future AI Agents
 
@@ -51,6 +51,7 @@ The governance phase, database foundation, data collection engines, search/disco
 - `AI_CODE_AUDIT_REPORT.md`: latest implementation audit
 - `PRODUCTION_DEPLOYMENT_REPORT.md`: production setup status and blockers
 - `P16_DATABASE_R2_REPORT.md`: current P16 database and R2 completion summary
+- `P18_DATABASE_FINALIZATION_REPORT.md`: production database finalization report
 - `INFRASTRUCTURE_COMPLETION_REPORT.md`: current infrastructure completion status
 - `BETA_READINESS_REPORT.md`: closed beta readiness gate
 - `BETA_TEST_SCENARIOS.md`: beta test scenarios
@@ -270,7 +271,7 @@ The governance phase, database foundation, data collection engines, search/disco
 
 ## Next Recommended Task
 
-Restore production database configuration and R2 runtime variables, then proceed to Closed Beta User Testing.
+Proceed to Closed Beta User Testing.
 
 ## R2 Storage Compliance
 
@@ -301,7 +302,7 @@ Cloudflare R2 is the single source of truth for all persistent storage.
 - Obsolete root reports archived under `docs/archive/`.
 - Railway project `dawaisaver.pk` and service `dawaisaver.pk` verified.
 - API service is Online with `/health/application` healthcheck.
-- `DATABASE_URL` remains the remaining runtime attachment required for migrations.
+- `DATABASE_URL` is present on the API service.
 - R2 bucket `dawaisaver-pk` passed remote object smoke testing, and the runtime R2 variables remain to be confirmed.
 - `npx prisma generate`, `npm run build`, and `npm test` passed.
 
@@ -310,6 +311,16 @@ Cloudflare R2 is the single source of truth for all persistent storage.
 - Build and tests pass (25 suites, 36 tests).
 - OCR uploads use signed Cloudflare R2 requests.
 - `/health`, `/health/database`, `/health/application` routes registered.
-- `databaseConfigured` returns false without `DATABASE_URL`.
-- **BLOCKED**: Railway authentication required for deployment.
-- **NEXT**: Attach PostgreSQL, configure DATABASE_URL, run migrations.
+- Superseded by P18 database finalization.
+
+# P18 Production Database Finalization - 2026-06-16
+
+- PostgreSQL service `Postgres` exists.
+- API service `DATABASE_URL` is present.
+- `npx.cmd prisma generate` passed.
+- `npx.cmd prisma migrate deploy` passed and applied 9 migrations.
+- `npx.cmd prisma db seed` passed.
+- `databaseConfigured=true` confirmed.
+- `/health`, `/health/application`, and `/health/database` pass.
+- `npm.cmd run build` and `npm.cmd test` pass.
+- Next task: Closed Beta User Testing.
