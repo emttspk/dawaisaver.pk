@@ -11,10 +11,10 @@ Phase 10 - Production Readiness & Beta Launch
 ## Completed
 
 - Created Beta Readiness Checklist documenting all component statuses
-- Updated environment configuration with OCR variables
+- Updated environment configuration with OCR and JWT variables
 - Updated all architecture documents with R2 Single Source of Truth policy
-- SYSTEM_ARCHITECTURE.md - Added R2 storage policy
-- DEPLOYMENT_ARCHITECTURE.md - Added storage architecture table
+- SYSTEM_ARCHITECTURE.md - Added R2 storage policy section
+- DEPLOYMENT_ARCHITECTURE.md - Added storage architecture table and environment variables
 - PROJECT_DECISIONS.md - Added R2 decision record
 - DATA_SOURCES.md - Added storage policy section
 - Build and tests pass (34/34 tests)
@@ -30,6 +30,7 @@ Phase 10 - Production Readiness & Beta Launch
 - Seed beta dataset
 - Fix git push SSH permissions issue
 - Set RAILWAY_TOKEN for CLI access
+- Add SSH key for nazimsaeed@gmail.com to emttspk/dawaisaver.pk
 
 ## Deployment Status
 
@@ -59,6 +60,7 @@ Phase 10 - Production Readiness & Beta Launch
 | Railway filesystem: temporary | ✅ Documented |
 | Docker filesystem: temporary | ✅ Documented |
 | PostgreSQL: metadata only | ✅ Documented |
+| R2 Bucket | ✅ dawaisaver-pk |
 
 ## Verification Results
 
@@ -72,20 +74,21 @@ Phase 10 - Production Readiness & Beta Launch
 
 ### Wrangler CLI
 - `wrangler whoami`: ✅ gisupp@gmail.com
-- `wrangler r2 bucket list`: ✅ ai-photo-studio-whatsapp-r2
+- `wrangler r2 bucket list`: ✅ ai-photo-studio-whatsapp-r2 (needs dawaisaver-pk)
 
 ### Database
 - `prisma migrate deploy`: ⚠️ DATABASE_URL not set
 
 ## Known Issues
 
-1. Git push blocked by SSH permissions
+1. SSH key mismatch (gisupp@gmail.com vs nazimsaeed@gmail.com)
 2. JWT authentication is placeholder
 3. Admin guards are placeholders
 4. Provider-specific source adapters not implemented
 5. Live database migration not executed
 6. RAILWAY_TOKEN missing for CLI operations
 7. DATABASE_URL missing for migrations
+8. R2 bucket needs to be dawaisaver-pk
 
 ## Next Task
 
