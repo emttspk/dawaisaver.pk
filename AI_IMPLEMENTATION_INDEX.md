@@ -49,6 +49,7 @@ The governance phase, database foundation, data collection engines, search/disco
 - `PROJECT_RISKS.md`: current risks and controls
 - `DATA_SOURCES.md`: planned data source inventory
 - `AI_CODE_AUDIT_REPORT.md`: latest implementation audit
+- `PRODUCTION_DEPLOYMENT_REPORT.md`: production setup status and blockers
 
 ### Governance Documents
 
@@ -268,6 +269,17 @@ Production Readiness & Beta Launch (P10).
 ## R2 Storage Compliance
 
 Cloudflare R2 is the single source of truth for all persistent storage.
+
+# Production Deployment Setup Audit - 2026-06-16
+
+- Fresh `AI_CODE_AUDIT_REPORT.md` created.
+- `PRODUCTION_DEPLOYMENT_REPORT.md` created.
+- Obsolete audit content archived under `docs/archive/`.
+- Railway expected project remains `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`), but CLI currently resolves to `AI Photo Studio WhatsApp` (`ad62f340-fcfd-4989-b5bb-18753b28d8c8`).
+- Railway relink failed with `Unauthorized`.
+- Production variables, migrations, deployment, and health endpoint checks are blocked until Railway identity is verified.
+- Wrangler is unauthenticated; R2 and Cloudflare Pages checks are blocked.
+- Minimal closed-beta seed dataset added to `prisma/seed.ts`.
 # P10 Auth And Environment Audit Additions - 2026-06-16
 
 - `src/modules/auth/`: authentication module with JWT-style signed access tokens, refresh token rotation, password hashing, and auth controller.
@@ -278,4 +290,3 @@ Cloudflare R2 is the single source of truth for all persistent storage.
 - `prisma/migrations/20260616143000_add_auth_tokens_to_users/`: user credential/token migration.
 - `apps/admin/src/contexts/AdminAuthContext.tsx`: API-backed admin login state.
 - `apps/web/src/services/api-client.ts`: token-aware frontend API client.
-

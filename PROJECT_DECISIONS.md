@@ -66,3 +66,14 @@ Decision: All persistent file storage must use Cloudflare R2. Railway filesystem
 
 Reason: Data persistence and consistency requirements for production deployment.
 
+## 2026-06-16: Block Production Deployment On Project Identity
+
+Decision: Do not run Railway variables, migrations, or deployment commands while `railway status` resolves to any project other than `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`).
+
+Reason: Protected Scope Protocol applies to production variables, deployment configuration, database migrations, R2 configuration, and authentication.
+
+## 2026-06-16: Use Minimal Seed Data For Closed Beta
+
+Decision: Seed only a tiny medicine/manufacturer/generic/alternative dataset for closed beta verification until audited DRAP/import data is available.
+
+Reason: Beta launch needs searchable and reviewable records without overstating corpus completeness.

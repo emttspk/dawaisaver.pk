@@ -97,3 +97,15 @@
 - Created `docs/BETA_READINESS_CHECKLIST.md` with component statuses.
 - Updated `.env.example` with OCR environment variables.
 - Build and all 34 tests passing.
+
+## 2026-06-16
+
+- Archived obsolete audit report content under `docs/archive/`.
+- Created fresh `AI_CODE_AUDIT_REPORT.md`.
+- Created `PRODUCTION_DEPLOYMENT_REPORT.md`.
+- Confirmed Railway CLI still resolves to wrong project `AI Photo Studio WhatsApp` (`ad62f340-fcfd-4989-b5bb-18753b28d8c8`) instead of `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`).
+- Confirmed Railway relink to DawaiSaver.pk fails with `Unauthorized`.
+- Blocked Railway variable audit, migrations, and `railway up` until identity is verified.
+- Added minimal closed-beta seed dataset to `prisma/seed.ts`.
+- Verified `npx prisma generate`, backend build, backend tests, web build, and admin build.
+- Confirmed Wrangler is available through `npx wrangler` but unauthenticated, blocking R2 and Cloudflare Pages verification.

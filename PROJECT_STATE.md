@@ -102,4 +102,14 @@ The project is in Phase 10: Production Readiness & Beta Launch. Phase 0 governan
 
 ## Immediate Next Step
 
-Admin Review Panel Foundation.
+Repair Railway authentication/link for project `e38bb3da-7ab5-4654-b504-101e74c92d5b`, then rerun production variable audit and migrations.
+
+## Production Deployment Setup Status - 2026-06-16
+
+- Phase 10 production deployment setup is blocked before production mutation.
+- Expected Railway project is `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`) with service `dawaisaver.pk`.
+- Actual Railway CLI project is `AI Photo Studio WhatsApp` (`ad62f340-fcfd-4989-b5bb-18753b28d8c8`) with service `None`.
+- Explicit Railway relink failed with `Unauthorized`.
+- Production variables, migrations, backend deployment, and production health checks were not run.
+- Wrangler is available through `npx wrangler` but unauthenticated, so R2 and Cloudflare Pages verification are blocked.
+- Minimal closed-beta seed dataset is implemented in `prisma/seed.ts`.

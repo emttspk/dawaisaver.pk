@@ -36,3 +36,16 @@ Impact: Any variable, migration, or deployment command could target the wrong Ra
 
 Mitigation: Keep deployment work stopped. Repair auth, relink with the explicit DawaiSaver project id, and require all validation commands to report the expected project id before continuing.
 
+# P10 Production Deployment Setup Risks - 2026-06-16
+
+Risk: Railway relink to `dawaisaver.pk` failed with `Unauthorized`, so production variables and deployments cannot be safely audited.
+
+Impact: Running `railway variables`, `npx prisma migrate deploy`, or `railway up` could target the wrong project if attempted without identity repair.
+
+Mitigation: Require `railway status --json` to return project id `e38bb3da-7ab5-4654-b504-101e74c92d5b` before any production mutation.
+
+Risk: Wrangler is unauthenticated in this workspace.
+
+Impact: R2 bucket access, upload access, public URL verification, and Cloudflare Pages deployment cannot be completed.
+
+Mitigation: Provide `CLOUDFLARE_API_TOKEN` or complete `wrangler login`, then rerun R2 and Pages checks.

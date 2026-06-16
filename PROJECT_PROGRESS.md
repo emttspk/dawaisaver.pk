@@ -94,3 +94,12 @@
 - Web and admin frontends now build successfully with corrected dependencies.
 - R2 bucket `dawaisaver-pk` verified through Wrangler.
 - Railway deployment remains blocked by wrong linked project.
+
+# Production Deployment Setup Audit - 2026-06-16
+
+- Railway expected project `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`) was not verified.
+- Railway actual project is `AI Photo Studio WhatsApp` (`ad62f340-fcfd-4989-b5bb-18753b28d8c8`) with no linked service.
+- Explicit Railway relink failed with `Unauthorized`.
+- `npx prisma generate`, backend build, backend tests, web build, and admin build passed.
+- `prisma/seed.ts` now contains a minimal closed-beta dataset.
+- R2 and Cloudflare Pages checks are blocked because Wrangler is unauthenticated in this workspace.

@@ -6,98 +6,111 @@
 
 ## Phase
 
-Phase 10 - Production Readiness & Beta Launch
+Phase 10 - Production Deployment & Beta Launch
 
-## Completed
+## Scope
 
-- Created Beta Readiness Checklist
-- Updated environment with OCR/JWT variables
-- Updated architecture docs with R2 policy
-- Build and tests pass (34/34)
-- Repository remote updated to `git@github-emttspk:emttspk/dawaisaver.pk.git`
-- R2 bucket `dawaisaver-pk` created
-- SSH verified and operational
-- Git push verified
-- Railway token configured
-- Railway project linked
+Production environment setup audit under Protected Scope Protocol for production variables, deployment configuration, database migrations, R2 configuration, and authentication.
 
-## Pending
+## Executive Result
 
-- Deploy backend to Railway
-- Deploy frontend to Cloudflare Pages
-- Run database migrations
-- Implement JWT authentication
-- Connect frontend to real APIs
-- Seed beta dataset
+Production deployment is blocked. Railway CLI identity is still not verified for the expected DawaiSaver.pk project, and Cloudflare Wrangler is not authenticated in this non-interactive workspace. No production variables, migrations, deployments, or secrets were changed.
 
-## Deployment Status
+## Railway Identity
 
-| Component | Status |
-|-----------|--------|
-| Backend Build | ✅ Pass |
-| Backend Tests | ✅ Pass (34 tests) |
-| Frontend Build | ✅ Pass |
-| Railway Deployment | ⏳ Pending |
-| Cloudflare Pages | ⏳ Pending |
+Expected:
 
-## Security Status
+- Project: `dawaisaver.pk`
+- Project ID: `e38bb3da-7ab5-4654-b504-101e74c92d5b`
+- Service: `dawaisaver.pk`
+- Environment: `production`
 
-| Component | Status |
-|-----------|--------|
-| Helmet | ✅ Configured |
-| CORS | ✅ Configured |
-| Rate Limiting | ✅ Configured |
-| JWT Authentication | ⏳ Placeholder |
-| Admin Guards | ⏳ Placeholder |
+Verified CLI status:
 
-## R2 Compliance
+- Project: `AI Photo Studio WhatsApp`
+- Project ID: `ad62f340-fcfd-4989-b5bb-18753b28d8c8`
+- Service: `None`
+- Environment: `production`
 
-| Requirement | Status |
-|-------------|--------|
-| R2 as Single Source of Truth | ✅ Documented |
-| Railway filesystem: temporary | ✅ Documented |
-| Docker filesystem: temporary | ✅ Documented |
-| PostgreSQL: metadata only | ✅ Documented |
-| R2 Bucket: dawaisaver-pk | ✅ Created |
+Relink attempt:
 
-## Known Issues
+- Command: `railway link --project e38bb3da-7ab5-4654-b504-101e74c92d5b --environment production --service dawaisaver.pk --workspace emttspk`
+- Result: `Unauthorized`
 
-1. JWT authentication is placeholder
-2. Admin guards are placeholders
-3. DATABASE_URL missing for migrations
+## Variable Audit
 
-## Missing Variables
+Railway variable audit was not run because the Railway project identity is wrong. Required variables remain unverified in production:
 
-| Variable | Status |
-|----------|--------|
-| DATABASE_URL | ⚠️ Missing |
-| R2_ACCOUNT_ID | ⚠️ Missing |
-| R2_ACCESS_KEY_ID | ⚠️ Missing |
-| R2_SECRET_ACCESS_KEY | ⚠️ Missing |
-| GOOGLE_CLOUD_VISION_API_KEY | ⚠️ Missing |
-# P10 Update - 2026-06-16
+- `DATABASE_URL`
+- `JWT_SECRET`
+- `JWT_REFRESH_SECRET`
+- `R2_BUCKET_NAME`
+- `R2_ACCOUNT_ID`
+- `R2_ACCESS_KEY_ID`
+- `R2_SECRET_ACCESS_KEY`
+- `R2_PUBLIC_BASE_URL`
+- `GOOGLE_CLOUD_VISION_API_KEY`
 
-Automated environment audit was partially completed under Protected Scope Protocol. Cloudflare R2 was verified, but Railway variable export and deployment were blocked because the linked Railway project is `AI Photo Studio WhatsApp`, not DawaiSaver.pk.
+Local workspace check found no `.env` entries for these keys.
 
-Implemented backend authentication and authorization:
+## Database And Migrations
 
-- `src/modules/auth/`: access token, refresh token, register/login/refresh/me/logout.
-- `src/common/guards/auth.guard.ts`: Bearer token validation and request user hydration.
-- `src/common/guards/admin.guard.ts`: ADMIN/REVIEWER enforcement.
-- `src/common/guards/internal.guard.ts`: internal API key or elevated user role.
-- `prisma/migrations/20260616143000_add_auth_tokens_to_users/`: user password/refresh-token storage.
+- `npx prisma generate`: passed.
+- `npx prisma migrate deploy`: not run because no verified `DATABASE_URL` is available.
+- Migration status against production: blocked until Railway identity and `DATABASE_URL` are verified.
 
-Verification:
+## R2 And Cloudflare
 
-- API build passed.
-- Web build passed.
-- Admin build passed.
-- Tests passed: 24 suites, 34 tests.
-- Lint passed with existing warnings.
-# P10 Railway Link Forensic Repair - 2026-06-16
+- Wrangler version available through `npx wrangler`: `4.100.0`.
+- `wrangler whoami`: not authenticated.
+- `wrangler r2 bucket list`: blocked because `CLOUDFLARE_API_TOKEN` is not set.
+- `wrangler r2 bucket info dawaisaver-pk`: blocked because `CLOUDFLARE_API_TOKEN` is not set.
+- R2 bucket access, upload access, and public URL are not verified in this run.
 
-Railway project identity is not verified. `railway status` and `railway status --json` return `AI Photo Studio WhatsApp` with project id `ad62f340-fcfd-4989-b5bb-18753b28d8c8`, while the expected project is `dawaisaver.pk` with id `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
+## Security Review
 
-Root cause: stale/global Railway CLI project context plus unauthorized current Railway token. The stale linked service was cleared or already absent; project relink to the expected DawaiSaver project failed with `Unauthorized`.
+- JWT access and refresh token code exists in `src/modules/auth/`.
+- `AuthGuard` validates bearer tokens and active users.
+- `AdminGuard` enforces `ADMIN` or `REVIEWER`.
+- `InternalGuard` accepts a configured internal API key or elevated role.
+- Helmet is enabled in `src/main.ts`.
+- CORS is configured from `CORS_ORIGINS`, with permissive fallback when unset.
+- Rate limiting is configured with `@nestjs/throttler`.
 
-No variables, migrations, deployments, or production secrets were modified.
+Security residual risk: production JWT secrets, internal API key, and CORS origins cannot be verified until the correct Railway project is linked.
+
+## Beta Dataset
+
+`prisma/seed.ts` now creates a minimal closed-beta dataset with:
+
+- Manufacturers
+- Generics
+- Medicines
+- Product compositions
+- Equivalence groups
+- Product alternatives
+- Audit log entry
+
+Dataset is intentionally small and tagged as system seed data for beta verification.
+
+## Verification
+
+- `npx prisma generate`: passed.
+- `npm run build`: passed.
+- `npm test`: passed, 24 suites and 34 tests.
+- `npm run build` in `apps/web`: passed.
+- `npm run build` in `apps/admin`: passed.
+
+Known test note: Jest emitted the existing forced-exit warning after all suites passed.
+
+## Blockers
+
+1. Railway CLI is linked to the wrong project and the available token cannot relink to DawaiSaver.pk.
+2. Railway production variables cannot be audited safely until project identity is verified.
+3. Production migrations cannot run until `DATABASE_URL` is verified on the correct project.
+4. `railway up` is blocked to avoid deploying to the wrong project.
+5. Wrangler is unauthenticated, so R2 and Cloudflare Pages checks are blocked.
+
+## Recommendation
+
+Authenticate Railway with a token that can access project `e38bb3da-7ab5-4654-b504-101e74c92d5b`, relink the workspace, verify `railway status --json`, then rerun the variable audit, migrations, backend deployment, health checks, R2 upload probe, and Cloudflare Pages deployment preparation.

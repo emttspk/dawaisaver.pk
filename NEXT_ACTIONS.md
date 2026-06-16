@@ -48,3 +48,12 @@ Beta Launch & User Acceptance Testing (P11).
 4. Only after validation, run `railway variables` and classify required variables.
 5. Only after validation and variable audit, run migrations/deployments.
 
+# Production Deployment Setup Next Actions - 2026-06-16
+
+1. Authenticate Railway with a token that can access project `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
+2. Relink Railway to project `dawaisaver.pk`, environment `production`, service `dawaisaver.pk`.
+3. Confirm `railway status --json` returns project id `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
+4. Verify production variables: `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `R2_BUCKET_NAME`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_PUBLIC_BASE_URL`, and `GOOGLE_CLOUD_VISION_API_KEY`.
+5. Run `npx prisma migrate deploy`, `npx prisma generate`, and migration status against the verified database.
+6. Run `railway up` and verify `/health`, `/health/database`, and `/api/docs`.
+7. Authenticate Wrangler, verify R2 bucket access/upload/public URL, then prepare Cloudflare Pages deployment with `VITE_API_URL`.
