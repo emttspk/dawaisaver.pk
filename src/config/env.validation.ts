@@ -8,7 +8,7 @@ export interface RuntimeEnvironment {
 }
 
 export function validateEnvironment(config: Record<string, unknown>): RuntimeEnvironment {
-  const port = Number(config.APP_PORT || 3000);
+  const port = Number(config.APP_PORT || config.PORT || 3000);
   if (!Number.isInteger(port) || port <= 0) {
     throw new Error("APP_PORT must be a positive integer.");
   }
