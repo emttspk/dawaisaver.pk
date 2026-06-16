@@ -20,8 +20,13 @@ Beta Launch & User Acceptance Testing (P11).
 - Configure DATABASE_URL
 - JWT authentication implementation
 - Admin guards implementation
+- Database migrations
 - Frontend API integration
 - Beta seed dataset preparation
+
+## Blocked
+
+- Railway variable audit: Environment verified, proceed with deployment
 
 ## Preconditions
 

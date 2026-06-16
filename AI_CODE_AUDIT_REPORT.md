@@ -105,11 +105,9 @@ Known test note: Jest emitted the existing forced-exit warning after all suites 
 
 ## Blockers
 
-1. Railway CLI is linked to the wrong project and the available token cannot relink to DawaiSaver.pk.
-2. Railway production variables cannot be audited safely until project identity is verified.
-3. Production migrations cannot run until `DATABASE_URL` is verified on the correct project.
-4. `railway up` is blocked to avoid deploying to the wrong project.
-5. Wrangler is unauthenticated, so R2 and Cloudflare Pages checks are blocked.
+1. DATABASE_URL missing for migrations
+2. JWT authentication is placeholder
+3. Admin guards are placeholders
 
 ## Recommendation
 
