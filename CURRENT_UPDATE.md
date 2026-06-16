@@ -51,7 +51,7 @@
 
 ## Remaining Blockers
 
-1. **SSH Access** - Add existing SSH key to emttspk GitHub account, OR generate new key for nazimsaeed@gmail.com
+1. **SSH Access** - Add `id_ed25519_emttspk.pub` key to emttspk GitHub account
 2. **RAILWAY_TOKEN** - Required for Railway CLI
 3. **DATABASE_URL** - Required for migrations
 4. **JWT Authentication** - Placeholder guards
