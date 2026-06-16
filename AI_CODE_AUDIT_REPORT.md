@@ -6,26 +6,24 @@
 
 ## Phase
 
-P15 Access Recovery and Production Database Setup
+P16 Database and R2 Completion
 
 ## Status
 
-Blocked on access recovery.
+In progress; repo-side R2 storage work is complete, but live PostgreSQL attachment still requires `DATABASE_URL` in the runtime environment.
 
 ## Findings
 
 | Area | Result | Evidence |
 | --- | --- | --- |
-| SSH key file | Pass | `C:\Users\Nazim\.ssh\id_ed25519_emttspk.pub` exists |
-| GitHub SSH auth | Blocked | `ssh -T git@github.com` returns `Permission denied (publickey)` |
-| Railway auth with current env | Blocked | Clearing stale env vars leaves `railway whoami` and `railway status` unauthorized |
-| Railway project identity | Previously verified | `dawaisaver.pk`, project ID `e38bb3da-7ab5-4654-b504-101e74c92d5b` |
-| Postgres | Blocked | No production mutation attempted until Railway auth is restored |
-| `DATABASE_URL` | Blocked | Cannot attach without Railway access |
-| R2 runtime vars | Blocked | Cannot verify or configure without Railway access |
-| Build | Pass | `npm run build` passed in the prior verified cycle |
-| Tests | Pass | `npm test` passed in the prior verified cycle |
+| OCR upload storage | Pass | `src/modules/ocr/upload.service.ts` now signs R2 requests instead of writing locally |
+| Upload storage test | Pass | `src/modules/ocr/upload.service.test.ts` covers upload and delete behavior |
+| Prisma client generation | Pass | `npx.cmd prisma generate` passed |
+| Migration deploy | Blocked | `npx.cmd prisma migrate deploy` still fails because `DATABASE_URL` is not configured locally |
+| App boot | Pass | The app boots and registers `/health`, `/health/database`, and `/health/application` |
+| Build | Pass | `npm.cmd run build` passed |
+| Tests | Pass | `npm.cmd test` passed |
 
 ## Audit Conclusion
 
-The repository is ready for access repair work, but production setup remains credential-blocked. The next action is to add the SSH key to GitHub and replace the invalid Railway token with one that can access `dawaisaver.pk`.
+The repository is now ready for runtime database attachment and R2 variable confirmation. The remaining production work is to attach `DATABASE_URL`, verify the Railway R2 variables, and rerun migrations and seed against the live database.

@@ -101,3 +101,15 @@ Reason: The infrastructure completion phase touches production credentials and m
 Decision: Do not continue production mutation work until the GitHub SSH key is added to the `emttspk` account and Railway is re-authenticated with a valid token.
 
 Reason: Variables, Postgres, migrations, and deploys are all gated by those two credential paths.
+
+## 2026-06-16: Route Uploads Through R2 Only
+
+Decision: The OCR upload service must write to Cloudflare R2 via signed object requests and must not use the local filesystem for persistent uploads.
+
+Reason: The production storage model requires R2 as the single source of truth for uploaded files, OCR artifacts, and image payloads.
+
+## 2026-06-16: Keep R2 Upload Verification Local When Railway Is Unavailable
+
+Decision: Verify the R2 upload path with local tests and build checks when the live Railway environment is not available for mutation.
+
+Reason: The upload code path can still be validated in repo without printing or exposing protected credentials.

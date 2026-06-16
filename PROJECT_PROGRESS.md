@@ -69,3 +69,12 @@
 - Phase 9: PWA Frontend Foundation complete
 - Phase 10/Infrastructure: In progress
 - Closed Beta User Testing: Blocked pending database and R2 runtime configuration
+
+## P16 Database and R2 Completion
+
+- OCR uploads now use signed Cloudflare R2 requests instead of local filesystem writes.
+- R2 upload and delete behavior is covered by `src/modules/ocr/upload.service.test.ts`.
+- `npm.cmd run build` and `npm.cmd test` pass.
+- `npx.cmd prisma generate` passes.
+- `npx.cmd prisma migrate deploy` is still blocked in this shell because `DATABASE_URL` is not configured locally.
+- The application boots and exposes the `/health`, `/health/database`, and `/health/application` routes.

@@ -75,3 +75,19 @@ Risk: Railway CLI returns `Unauthorized` once stale env vars are cleared.
 Impact: The workspace cannot safely verify variables, Postgres, migrations, or deployment changes.
 
 Mitigation: Obtain a fresh Railway token that can access `dawaisaver.pk`, then re-run `railway whoami` and `railway status`.
+
+## P16 Residual Risk - Missing Production Database Attachment
+
+Risk: `DATABASE_URL` is still absent in the current shell session.
+
+Impact: `npx prisma migrate deploy` cannot be completed locally until the production database URL is attached in the runtime environment.
+
+Mitigation: Attach the Railway Postgres connection string to the API service, then rerun Prisma migrate and seed commands.
+
+## P16 Residual Risk - R2 Variables Need Production Confirmation
+
+Risk: The R2 upload code path is implemented, but the runtime environment variables still need production confirmation.
+
+Impact: Uploads cannot be considered production-complete until the R2 bucket and credentials are attached in the live deployment environment.
+
+Mitigation: Verify `R2_BUCKET_NAME`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, and `R2_PUBLIC_BASE_URL` in Railway, then smoke test upload and delete behavior.

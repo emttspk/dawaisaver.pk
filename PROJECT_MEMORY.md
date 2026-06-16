@@ -225,3 +225,12 @@ Repair Railway and Cloudflare authentication, then rerun production deployment s
 - `npm test` passed with 24 suites and 34 tests.
 - Local production-mode health behavior without DB: `/health/application` OK, `/health/database` error, `/health` degraded.
 - Upload persistence is not production-complete because `UploadService` still writes to local filesystem.
+
+## P16 Database and R2 Memory
+
+- `src/modules/ocr/upload.service.ts` now signs Cloudflare R2 requests instead of writing to local disk.
+- `src/modules/ocr/upload.service.test.ts` verifies the upload and delete request flow against the R2 endpoint shape.
+- `npx.cmd prisma generate` passed after the storage change.
+- `npx.cmd prisma migrate deploy` still fails in this shell because `DATABASE_URL` is absent.
+- `npm.cmd run build` and `npm.cmd test` pass after the storage change.
+- The application boots successfully and registers `/health`, `/health/database`, and `/health/application`.

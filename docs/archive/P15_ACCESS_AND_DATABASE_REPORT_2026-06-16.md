@@ -12,9 +12,9 @@ Restore access and the production database path for DawaiSaver.pk without adding
 
 - `C:\Users\Nazim\.ssh\id_ed25519_emttspk.pub` exists.
 - `ssh -i C:\Users\Nazim\.ssh\id_ed25519_emttspk -o IdentitiesOnly=yes -o BatchMode=yes -T git@github.com` still returns `Permission denied (publickey)`.
-- GitHub has not yet accepted the `emttspk` SSH key.
-- Clearing stale Railway env vars leaves `railway whoami` unauthorized.
-- Clearing stale Railway env vars leaves `railway status` unauthorized.
+- GitHub had not yet accepted the `emttspk` SSH key at the time of this report.
+- Clearing stale Railway env vars left `railway whoami` unauthorized.
+- Clearing stale Railway env vars left `railway status` unauthorized.
 
 ## Remaining Blockers
 

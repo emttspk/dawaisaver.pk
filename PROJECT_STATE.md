@@ -6,7 +6,7 @@
 
 ## Current Status
 
-The project is in P14 Infrastructure Completion. Core foundations are complete, the Railway API service is online, but the remaining production blockers are access recovery, database restoration, Railway R2 variables, R2-backed uploads, and GitHub push access.
+The project is in P16 Database and R2 Completion. Core foundations are complete, the OCR upload path now writes to Cloudflare R2, Prisma client generation passes, and the remaining production blocker is attaching `DATABASE_URL` plus the Railway R2 runtime variables.
 
 ## Implemented
 
@@ -81,6 +81,17 @@ The project is in P14 Infrastructure Completion. Core foundations are complete, 
 - No Railway Postgres resource is visible in the current project resource list.
 - R2 runtime variables remain missing from Railway.
 - Upload persistence is still local-disk based.
+
+## P16 Database and R2 Completion
+
+- `src/modules/ocr/upload.service.ts` now signs requests to Cloudflare R2.
+- `src/modules/ocr/upload.service.test.ts` covers upload and delete behavior.
+- `npm.cmd run build` passes.
+- `npm.cmd test` passes.
+- `npx.cmd prisma generate` passes.
+- `npx.cmd prisma migrate deploy` still fails in this shell because `DATABASE_URL` is not configured locally.
+- The application boots and registers `/health`, `/health/database`, and `/health/application`.
+- Startup diagnostics report `databaseConfigured: false` until the database URL is attached.
 
 ## Required Tables Covered
 

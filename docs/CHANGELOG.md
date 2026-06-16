@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-06-16
+
+- Completed the OCR upload storage swap from local filesystem persistence to signed Cloudflare R2 requests.
+- Added `src/modules/ocr/upload.service.test.ts` to verify R2 upload and delete behavior.
+- Confirmed `npm.cmd run build`, `npm.cmd test`, and `npx.cmd prisma generate` pass after the storage update.
+- Confirmed the app boots and registers `/health`, `/health/database`, and `/health/application`.
+- `npx.cmd prisma migrate deploy` still requires `DATABASE_URL` from the production PostgreSQL environment.
+
 ## 2026-06-15
 
 - Created Phase 0 project governance documentation.

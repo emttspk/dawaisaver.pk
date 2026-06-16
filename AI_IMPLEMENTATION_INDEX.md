@@ -10,7 +10,7 @@ Infrastructure Completion & Closed Beta Readiness
 
 ## Current Status
 
-The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, admin review panel foundation, and PWA frontend foundation are implemented. The Railway API service for `dawaisaver.pk` is online and application health passes, but closed beta is blocked by missing `DATABASE_URL`, missing Railway R2 runtime variables, local-disk upload persistence, and GitHub SSH push failure.
+The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, admin review panel foundation, and PWA frontend foundation are implemented. The OCR upload path now targets Cloudflare R2, the build and tests pass, Prisma client generation passes, and the remaining production blocker is attaching `DATABASE_URL` plus the Railway R2 runtime variables.
 
 ## Mandatory Read Order For Future AI Agents
 
@@ -50,7 +50,7 @@ The governance phase, database foundation, data collection engines, search/disco
 - `DATA_SOURCES.md`: planned data source inventory
 - `AI_CODE_AUDIT_REPORT.md`: latest implementation audit
 - `PRODUCTION_DEPLOYMENT_REPORT.md`: production setup status and blockers
-- `P15_ACCESS_AND_DATABASE_REPORT.md`: current P15 access recovery and production database blocker summary
+- `P16_DATABASE_R2_REPORT.md`: current P16 database and R2 completion summary
 - `INFRASTRUCTURE_COMPLETION_REPORT.md`: current infrastructure completion status
 - `BETA_READINESS_REPORT.md`: closed beta readiness gate
 - `BETA_TEST_SCENARIOS.md`: beta test scenarios
