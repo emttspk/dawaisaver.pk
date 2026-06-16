@@ -173,6 +173,15 @@ The platform should help users upload prescriptions, compare equivalent medicine
 - API client integrates with existing backend APIs.
 - Documentation lives in `docs/ADMIN_REVIEW_PANEL.md`.
 
+## PWA Frontend Memory
+
+- PWA frontend lives in `apps/web/`.
+- Built with React + Vite + Tailwind CSS + PWA plugin.
+- Pages: Home, Search, Details, Upload, Dashboard, Login.
+- Connects to backend APIs for search, upload, and prescription data.
+- PWA features: install prompt, offline shell, manifest, service worker.
+- Documentation lives in `docs/PWA_FRONTEND_FOUNDATION.md`.
+
 ## Next Task Recommendation
 
 OCR Integration Layer.

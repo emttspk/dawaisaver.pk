@@ -27,6 +27,30 @@ Initial API style is REST over JSON under `/api`.
 - `/audit-logs`
 - `/docs`
 
+## User-Facing API Endpoints
+
+### Search API
+- `GET /api/search?q=` - Product search
+- `GET /api/search/products?q=` - Product search
+- `GET /api/search/generics?q=` - Generic search
+- `GET /api/search/autocomplete?q=` - Autocomplete
+- `GET /api/search/alternatives/:id` - Alternative search
+- `GET /api/search/trending` - Trending medicines
+
+### Prescription API
+- `POST /api/prescriptions/text` - Text prescription submission
+- `POST /api/prescriptions/mock-upload` - Mock upload
+- `GET /api/prescriptions/:id` - Get prescription
+- `GET /api/prescriptions/:id/items` - Get items
+- `GET /api/prescriptions/:id/cost-estimate` - Get cost estimate
+- `POST /api/prescriptions/:id/review` - Review action
+
+### OCR API
+- `POST /api/ocr/upload`
+- `POST /api/ocr/process`
+- `GET /api/ocr/:id`
+- `GET /api/ocr/:id/result`
+
 ## Example Endpoints
 
 ```text

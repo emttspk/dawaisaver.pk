@@ -54,16 +54,12 @@
 
 ## In Progress
 
-## In Progress
-
-- Admin Review Panel Foundation.
+- PWA Frontend Foundation.
 
 ## Not Started
 
 - Provider-specific source adapters.
 - Full source adapter runtime wired to a backend app shell.
-- PWA frontend.
-- Admin application.
 - Marketplace.
 - Warehouse planning implementation.
 
@@ -77,4 +73,5 @@
 - Phase 5: API controller layer complete
 - Phase 6: Prescription processing pipeline complete
 - Phase 7: OCR Integration Layer complete
-- Phase 8: Admin Review Panel Foundation in progress
+- Phase 8: Admin Review Panel Foundation complete
+- Phase 9: PWA Frontend Foundation in progress

@@ -50,9 +50,19 @@
 
 ## Phase 8
 
-- Implement verified pharmacy marketplace after legal and product validation.
+- Build admin application and review queues.
+- Add crawler and analytics dashboards.
 
 ## Phase 9
+
+- Build PWA frontend with search, upload, and dashboard.
+- Add mobile-responsive design and PWA features.
+
+## Phase 10
+
+- Implement verified pharmacy marketplace after legal and product validation.
+
+## Phase 11
 
 - Decide on warehouse expansion based on demand, savings, and operational evidence.
 

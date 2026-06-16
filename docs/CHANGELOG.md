@@ -87,4 +87,9 @@
 - Added authentication context and API client foundation.
 - Created `docs/ADMIN_REVIEW_PANEL.md`.
 - Updated `docs/SYSTEM_ARCHITECTURE.md` and `docs/ROADMAP.md`.
+- **Phase 9: PWA Frontend Foundation** - Built customer-facing PWA frontend.
+- Created React + Vite + Tailwind application in `apps/web/`.
+- Implemented pages: Home, Search, Details, Upload, Dashboard, Login.
+- Added PWA features: manifest, service worker, install prompt.
+- Created `docs/PWA_FRONTEND_FOUNDATION.md`.
 - Build and all 34 tests passing.
