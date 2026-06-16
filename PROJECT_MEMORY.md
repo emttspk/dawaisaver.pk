@@ -182,6 +182,16 @@ The platform should help users upload prescriptions, compare equivalent medicine
 - PWA features: install prompt, offline shell, manifest, service worker.
 - Documentation lives in `docs/PWA_FRONTEND_FOUNDATION.md`.
 
+## Production Readiness Memory
+
+- Beta readiness checklist in `docs/BETA_READINESS_CHECKLIST.md`.
+- Backend and frontend builds pass.
+- Database migrations pending live PostgreSQL instance.
+- JWT authentication is placeholder; needs implementation.
+- Admin guards are placeholders; need implementation.
+- Provider-specific source adapters not implemented.
+- Git push blocked by SSH permissions.
+
 ## Next Task Recommendation
 
 OCR Integration Layer.

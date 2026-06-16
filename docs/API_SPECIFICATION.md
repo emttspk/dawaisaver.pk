@@ -6,6 +6,29 @@ Initial API style is REST over JSON under `/api`.
 
 ## Core Resource Groups
 
+- `/auth` - Authentication endpoints
+- `/users` - User management
+- `/medicines` - Medicine catalog
+- `/generics` - Generic names
+- `/products` - Product data
+- `/prices` - Price intelligence
+- `/ocr` - OCR processing
+- `/prescriptions` - Prescription processing
+- `/bills` - Bill intelligence
+- `/recommendations` - Medicine recommendations
+- `/search` - Search functionality
+- `/matching` - Medicine matching
+- `/discovery` - Product discovery
+- `/sources` - Data sources
+- `/drap` - DRAP import
+- `/admin/review` - Admin review queues
+- `/admin/crawl-jobs` - Crawler jobs
+- `/admin/imports` - Admin imports
+- `/audit-logs` - Audit trail
+- `/docs` - Swagger documentation
+
+## Core Resource Groups
+
 - `/auth`
 - `/users`
 - `/medicines`

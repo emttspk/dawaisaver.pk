@@ -60,9 +60,17 @@
 
 ## Phase 10
 
-- Implement verified pharmacy marketplace after legal and product validation.
+- Production readiness and beta launch preparation.
+- Deploy backend and frontend.
+- Implement JWT authentication.
+- Run database migrations.
+- Create beta readiness checklist.
+- Seed beta dataset.
 
 ## Phase 11
 
-- Decide on warehouse expansion based on demand, savings, and operational evidence.
+- Beta Launch & User Acceptance Testing.
+- Collect user feedback.
+- Monitor system performance.
+- Fix critical issues.
 

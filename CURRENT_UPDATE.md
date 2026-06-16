@@ -1,41 +1,37 @@
 # Current Update
 
-## Phase 9 - PWA Frontend Foundation
+## Phase 10 - Production Readiness & Beta Launch
 
 ### Status: In Progress
 
 ### Completed Work
 
-1. **PWA Application** (`apps/web/`)
-   - React + Vite + Tailwind CSS setup
-   - PWA plugin with manifest and service worker
-   - Dashboard with navigation
-   - Home page with search bar
-   - Medicine Search page
-   - Medicine Details page
-   - Prescription Upload page
-   - User Dashboard page
-   - Login page
-   - API client integration
+1. **Beta Readiness Checklist**
+   - Created `docs/BETA_READINESS_CHECKLIST.md`
+   - Documented deployment, security, database, API, OCR, and frontend status
 
-2. **Documentation**
-   - Created `docs/PWA_FRONTEND_FOUNDATION.md`
-   - Updated `docs/SYSTEM_ARCHITECTURE.md`
-   - Updated `docs/ROADMAP.md`
+2. **Environment Configuration**
+   - Updated `.env.example` with OCR environment variables
+
+3. **Documentation**
+   - Updated `docs/ROADMAP.md` with Phase 10 and 11
+   - Updated `docs/API_SPECIFICATION.md` with resource groups
+   - Updated `PROJECT_PROGRESS.md` and `PROJECT_STATE.md`
 
 ### Next Steps
 
-- Implement search results page with data
-- Add prescription upload workflow
-- Implement savings report display
-- Add offline support
-- Add install prompt
-- Connect to backend APIs with real data
-- Add user authentication
-- Add search history
+- Deploy backend to Railway
+- Deploy frontend to Cloudflare Pages
+- Run database migrations
+- Implement JWT authentication
+- Connect frontend to real APIs
+- Seed beta dataset
+- Fix known issues
 
-### Environment Variables
+### Known Issues
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `VITE_API_URL` | No | Backend API URL (default: http://localhost:3000/api) |
+1. Git push blocked by SSH permissions
+2. JWT authentication is placeholder only
+3. Admin guards are placeholders
+4. Provider-specific source adapters not implemented
+5. Live database migration not executed

@@ -92,4 +92,8 @@
 - Implemented pages: Home, Search, Details, Upload, Dashboard, Login.
 - Added PWA features: manifest, service worker, install prompt.
 - Created `docs/PWA_FRONTEND_FOUNDATION.md`.
+- Updated `docs/SYSTEM_ARCHITECTURE.md` and `docs/ROADMAP.md`.
+- **Phase 10: Production Readiness & Beta Launch** - Prepared for beta deployment.
+- Created `docs/BETA_READINESS_CHECKLIST.md` with component statuses.
+- Updated `.env.example` with OCR environment variables.
 - Build and all 34 tests passing.

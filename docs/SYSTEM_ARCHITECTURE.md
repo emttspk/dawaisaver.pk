@@ -51,6 +51,15 @@ BullMQ workers process OCR, source ingestion, normalization, matching, crawl job
 
 The search layer exposes backend search services over canonical products, generic names, manufacturer names, medicine signatures, registration numbers, alternatives, popularity, price intelligence, and availability.
 
+### Admin Review Panel
+
+The admin panel provides human review workflows for OCR results, medicine matching, discovery candidates, and price anomalies.
+
+Admin panel files:
+
+- `apps/admin/` - React + Vite + Tailwind admin application
+- `docs/ADMIN_REVIEW_PANEL.md` - Admin panel documentation
+
 ### PWA Frontend
 
 The PWA frontend provides the customer-facing application for searching medicines, uploading prescriptions, and viewing savings reports.
@@ -59,13 +68,6 @@ PWA frontend files:
 
 - `apps/web/` - React + Vite + Tailwind + PWA
 - `docs/PWA_FRONTEND_FOUNDATION.md` - PWA documentation
-
-The admin panel provides human review workflows for OCR results, medicine matching, discovery candidates, and price anomalies.
-
-Admin panel files:
-
-- `apps/admin/` - React + Vite + Tailwind admin application
-- `docs/ADMIN_REVIEW_PANEL.md` - Admin panel documentation
 
 ### Prescription Processing Layer
 
