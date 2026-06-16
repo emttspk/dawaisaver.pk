@@ -76,3 +76,10 @@ Set `RAILWAY_API_TOKEN` or `RAILWAY_TOKEN` with access to project `e38bb3da-7ab5
 **Cannot proceed with browser login** - environment is non-interactive.
 
 **Must provide valid token** with access to `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
+
+### Environment Token Storage
+
+| Location | Status |
+|----------|--------|
+| User env vars | ⚠️ RAILWAY_TOKEN, RAILWAY_API_TOKEN stored |
+| Cannot modify | Registry access denied |
