@@ -6,7 +6,7 @@
 
 ## Status
 
-Repo-side database and R2 storage work is in place. The OCR upload service now writes to Cloudflare R2 instead of the local filesystem, Prisma client generation passes, the application boots successfully, and the full test suite passes. `npx prisma migrate deploy` still fails in this shell because `DATABASE_URL` is not configured locally.
+Repo-side database and R2 storage work is in place. The OCR upload service now writes to Cloudflare R2 instead of the local filesystem, Prisma client generation passes, the application boots successfully, and the full test suite passes. The remaining production work is attaching `DATABASE_URL`, confirming the Railway Postgres link, and validating the live R2 runtime variables.
 
 ## Verified
 
@@ -16,6 +16,7 @@ Repo-side database and R2 storage work is in place. The OCR upload service now w
 - `npm.cmd test` passes.
 - `npx.cmd prisma generate` passes.
 - The application boots and registers `/health`, `/health/database`, and `/health/application`.
+- Health route logic is covered by `src/health/health.controller.ts` and `src/health/health.service.spec.ts`.
 - Startup diagnostics report `databaseConfigured: false` when `DATABASE_URL` is absent.
 
 ## Remaining Work

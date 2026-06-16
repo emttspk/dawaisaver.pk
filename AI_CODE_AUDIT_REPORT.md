@@ -21,6 +21,7 @@ In progress; repo-side R2 storage work is complete, but live PostgreSQL attachme
 | Prisma client generation | Pass | `npx.cmd prisma generate` passed |
 | Migration deploy | Blocked | `npx.cmd prisma migrate deploy` still fails because `DATABASE_URL` is not configured locally |
 | App boot | Pass | The app boots and registers `/health`, `/health/database`, and `/health/application` |
+| Health route logic | Pass | `src/health/health.controller.ts` and `src/health/health.service.spec.ts` cover the application, database, and combined health paths |
 | Build | Pass | `npm.cmd run build` passed |
 | Tests | Pass | `npm.cmd test` passed |
 

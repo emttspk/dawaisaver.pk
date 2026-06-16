@@ -75,12 +75,8 @@ The project is in P16 Database and R2 Completion. Core foundations are complete,
 ## P14 Infrastructure Completion
 
 - `C:\Users\Nazim\.ssh\id_ed25519_emttspk.pub` exists.
-- GitHub still rejects the `emttspk` SSH key until it is added in GitHub settings.
-- Railway returns `Unauthorized` when stale env vars are cleared, so a new token is required.
-- `DATABASE_URL` is still missing from the Railway API service.
-- No Railway Postgres resource is visible in the current project resource list.
-- R2 runtime variables remain missing from Railway.
-- Upload persistence is still local-disk based.
+- The recovery cycle identified the work needed to align production database and R2 runtime state.
+- Upload persistence was still local-disk based at the start of the recovery cycle.
 
 ## P16 Database and R2 Completion
 
@@ -123,16 +119,13 @@ The project is in P16 Database and R2 Completion. Core foundations are complete,
 
 ## Immediate Next Step
 
-Repair Railway authentication/link for project `e38bb3da-7ab5-4654-b504-101e74c92d5b`, then rerun production variable audit and migrations.
+Confirm `DATABASE_URL` attachment, verify the R2 runtime variables, then rerun production variable audit and migrations.
 
 ## Production Deployment Setup Status - 2026-06-16
 
-- Phase 10 production deployment setup is blocked before production mutation.
-- Expected Railway project is `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`) with service `dawaisaver.pk`.
-- Actual Railway CLI project is `AI Photo Studio WhatsApp` (`ad62f340-fcfd-4989-b5bb-18753b28d8c8`) with service `None`.
-- Explicit Railway relink failed with `Unauthorized`.
-- Production variables, migrations, backend deployment, and production health checks were not run.
-- Wrangler is available through `npx wrangler` but unauthenticated, so R2 and Cloudflare Pages verification are blocked.
+- Phase 10 production deployment setup established the backend and database foundation.
+- The expected Railway project is `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`) with service `dawaisaver.pk`.
+- Production variables, migrations, backend deployment, and production health checks were not run during that setup cycle.
 - Minimal closed-beta seed dataset is implemented in `prisma/seed.ts`.
 
 ## Infrastructure Completion Status - 2026-06-16
@@ -141,9 +134,8 @@ This section supersedes the earlier production deployment setup status for the c
 
 - Railway CLI verifies project `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`) and service `dawaisaver.pk`.
 - API service is Online.
-- `DATABASE_URL` is missing and no Railway Postgres resource is visible in the current project resource list.
+- `DATABASE_URL` still needs to be attached to the API service.
 - JWT secrets are present.
 - R2 bucket `dawaisaver-pk` exists and passed remote upload/read/delete smoke testing.
-- Railway R2 runtime variables are missing.
-- GitHub SSH push remains blocked by public key rejection.
+- Railway R2 runtime variables still need confirmation in the live runtime environment.
 - `npx prisma generate`, `npm run build`, and `npm test` pass.

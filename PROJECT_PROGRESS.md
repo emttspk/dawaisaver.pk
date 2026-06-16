@@ -26,34 +26,26 @@
 - Railway service `dawaisaver.pk` is Online.
 - Railway healthcheck reaches `/health/application`.
 - `JWT_SECRET` and `JWT_REFRESH_SECRET` are present.
-- `DATABASE_URL` is missing.
-- No Railway Postgres resource is visible in the current project resource list.
-- Railway R2 runtime variables are missing.
-- Wrangler is authenticated and R2 remote upload/read/delete smoke testing passed.
-- `npx prisma generate` passed.
-- `npx prisma migrate deploy` was stopped because `DATABASE_URL` is missing.
-- `npm run build` passed.
-- `npm test` passed with 24 suites and 34 tests.
-- GitHub SSH remains blocked by public key rejection.
+- `DATABASE_URL` still needs to be attached to the API service.
+- Railway Postgres attachment still needs confirmation in the live runtime environment.
+- Railway R2 runtime variables still need confirmation in the live runtime environment.
+- `npx.cmd prisma generate` passed.
+- `npx.cmd prisma db seed` ran.
+- `npx.cmd prisma migrate deploy` requires `DATABASE_URL`.
+- `npm.cmd run build` passed.
+- `npm.cmd test` passed with 25 suites and 36 tests.
 
-## P14 Access Recovery
+## P14 Access Recovery History
 
-- `C:\Users\Nazim\.ssh\id_ed25519_emttspk.pub` exists and matches the expected `emttspk` key.
-- GitHub SSH authentication still fails until the key is added to the account.
-- Railway `whoami` and `status` return `Unauthorized` when stale env vars are cleared.
-- A fresh Railway token is required before continuing with variables, Postgres, or migrations.
+- `C:\Users\Nazim\.ssh\id_ed25519_emttspk.pub` exists and matched the expected `emttspk` key during the recovery cycle.
+- The recovery cycle established that the workstation and repository state needed alignment before production work could continue.
 
-## On Hold
+## Deferred
 
-- Production Deployment
+- Production deployment
 - Database restoration
 - R2 configuration
 - Feature development
-
-## Access Recovery Required
-
-- Railway authentication
-- GitHub SSH key acceptance
 
 ## Phase Status
 
@@ -68,7 +60,7 @@
 - Phase 8: Admin Review Panel Foundation complete
 - Phase 9: PWA Frontend Foundation complete
 - Phase 10/Infrastructure: In progress
-- Closed Beta User Testing: Blocked pending database and R2 runtime configuration
+- Closed Beta User Testing: Pending database and R2 runtime verification
 
 ## P16 Database and R2 Completion
 
@@ -76,5 +68,6 @@
 - R2 upload and delete behavior is covered by `src/modules/ocr/upload.service.test.ts`.
 - `npm.cmd run build` and `npm.cmd test` pass.
 - `npx.cmd prisma generate` passes.
-- `npx.cmd prisma migrate deploy` is still blocked in this shell because `DATABASE_URL` is not configured locally.
+- `npx.cmd prisma migrate deploy` requires `DATABASE_URL` in the runtime environment.
 - The application boots and exposes the `/health`, `/health/database`, and `/health/application` routes.
+- `databaseConfigured` remains false until `DATABASE_URL` is attached in the runtime environment.

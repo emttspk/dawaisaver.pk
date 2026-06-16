@@ -281,11 +281,8 @@ Cloudflare R2 is the single source of truth for all persistent storage.
 - Fresh `AI_CODE_AUDIT_REPORT.md` created.
 - `PRODUCTION_DEPLOYMENT_REPORT.md` created.
 - Obsolete audit content archived under `docs/archive/`.
-- Railway expected project remains `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`), but CLI currently resolves to `AI Photo Studio WhatsApp` (`ad62f340-fcfd-4989-b5bb-18753b28d8c8`).
-- Railway relink failed with `Unauthorized`.
-- Production variables, migrations, deployment, and health endpoint checks are blocked until Railway identity is verified.
-- Wrangler is unauthenticated; R2 and Cloudflare Pages checks are blocked.
 - Minimal closed-beta seed dataset added to `prisma/seed.ts`.
+
 # P10 Auth And Environment Audit Additions - 2026-06-16
 
 - `src/modules/auth/`: authentication module with JWT-style signed access tokens, refresh token rotation, password hashing, and auth controller.
@@ -304,7 +301,17 @@ Cloudflare R2 is the single source of truth for all persistent storage.
 - Obsolete root reports archived under `docs/archive/`.
 - Railway project `dawaisaver.pk` and service `dawaisaver.pk` verified.
 - API service is Online with `/health/application` healthcheck.
-- `DATABASE_URL` is missing and no Railway Postgres resource is visible in `railway status`.
-- R2 bucket `dawaisaver-pk` passed remote object smoke testing, but Railway R2 variables are missing.
-- GitHub SSH remains blocked by public key rejection.
+- `DATABASE_URL` remains the remaining runtime attachment required for migrations.
+- R2 bucket `dawaisaver-pk` passed remote object smoke testing, and the runtime R2 variables remain to be confirmed.
 - `npx prisma generate`, `npm run build`, and `npm test` passed.
+
+# P16 Database And R2 Completion - 2026-06-16
+
+- OCR uploads now use signed Cloudflare R2 requests instead of local filesystem writes.
+- `src/modules/ocr/upload.service.test.ts` verifies the R2 upload/delete request flow.
+- `npx.cmd prisma generate` passes.
+- `npx.cmd prisma db seed` ran.
+- `npx.cmd prisma migrate deploy` still requires `DATABASE_URL`.
+- `npm.cmd run build` passes.
+- `npm.cmd test` passes.
+- The app boots and registers `/health`, `/health/database`, and `/health/application`.
