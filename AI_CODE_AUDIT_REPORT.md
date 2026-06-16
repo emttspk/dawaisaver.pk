@@ -60,5 +60,5 @@ Phase 10 - Production Readiness & Beta Launch
 
 1. JWT authentication is placeholder
 2. Admin guards are placeholders
-3. RAILWAY_TOKEN missing for CLI
-4. DATABASE_URL missing for migrations
+3. DATABASE_URL missing for migrations
+4. RAILWAY_TOKEN has access to different project (AI Photo Studio WhatsApp)

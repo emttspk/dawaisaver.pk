@@ -15,10 +15,10 @@ Beta Launch & User Acceptance Testing (P11).
 
 ## Pending
 
-- Railway CLI verification (whoami, status, variables) - RAILWAY_TOKEN needed
+- Link Railway project to dawaisaver.pk
 - JWT authentication implementation
 - Admin guards implementation
-- Database migrations - DATABASE_URL needed
+- Database migrations
 - Frontend API integration
 - Beta seed dataset preparation
 
