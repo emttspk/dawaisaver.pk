@@ -38,10 +38,8 @@ Phase 11 - Closed Beta Launch & User Acceptance Testing
 
 ## Known Issues
 
-1. DATABASE_URL missing for migrations
-2. JWT authentication is placeholder
-3. Admin guards are placeholders
-4. R2 credentials missing
+1. RAILWAY_AUTH - Requires token with access to `e38bb3da-7ab5-4654-b504-101e74c92d5b`
+2. DATABASE_URL - To be verified after correct project linkage
 
 ## Environment Tokens Detected
 
