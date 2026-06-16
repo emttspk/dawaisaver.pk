@@ -10,7 +10,7 @@ Infrastructure Completion & Closed Beta Readiness
 
 ## Current Status
 
-The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, admin review panel foundation, and PWA frontend foundation are implemented. Production Postgres is attached, `DATABASE_URL` is present, Prisma migrations and seed are complete, `databaseConfigured=true` is confirmed, health checks pass, and build/tests pass. The next task is Closed Beta User Testing.
+The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, admin review panel foundation, and PWA frontend foundation are implemented. Production Postgres is attached, `DATABASE_URL` is present, Prisma migrations and seed are complete, `databaseConfigured=true` is confirmed, health checks pass, and build/tests pass. R2 bucket verification is complete, the bucket-level smoke test passed, and the remaining beta-runtime gap is the manual Cloudflare-sourced secret pair and public base URL. The next task is Closed Beta User Testing.
 
 ## Mandatory Read Order For Future AI Agents
 
@@ -52,8 +52,10 @@ The governance phase, database foundation, data collection engines, search/disco
 - `PRODUCTION_DEPLOYMENT_REPORT.md`: production setup status and blockers
 - `P16_DATABASE_R2_REPORT.md`: current P16 database and R2 completion summary
 - `P18_DATABASE_FINALIZATION_REPORT.md`: production database finalization report
+- `P19_R2_RUNTIME_VERIFICATION_REPORT.md`: current P19 R2 runtime verification summary
 - `INFRASTRUCTURE_COMPLETION_REPORT.md`: current infrastructure completion status
 - `BETA_READINESS_REPORT.md`: closed beta readiness gate
+- `CLOSED_BETA_UAT_REPORT.md`: closed beta UAT report
 - `BETA_TEST_SCENARIOS.md`: beta test scenarios
 - `KNOWN_LIMITATIONS.md`: current limitations for testers and operators
 - `UAT_CHECKLIST.md`: UAT gate checklist
@@ -324,3 +326,14 @@ Cloudflare R2 is the single source of truth for all persistent storage.
 - `/health`, `/health/application`, and `/health/database` pass.
 - `npm.cmd run build` and `npm.cmd test` pass.
 - Next task: Closed Beta User Testing.
+
+# P19 R2 Runtime Verification and Closed Beta Start - 2026-06-17
+
+- `wrangler whoami` verified the authenticated Cloudflare account.
+- R2 bucket `dawaisaver-pk` exists.
+- Railway API service variables `R2_ACCOUNT_ID` and `R2_BUCKET_NAME` are present.
+- Railway API service variables `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, and `R2_PUBLIC_BASE_URL` are still missing.
+- Remote R2 object put/get/delete smoke testing passed.
+- `src/modules/ocr/upload.service.ts` signs requests to R2 and avoids local filesystem persistence.
+- `npm.cmd run build` and `npm.cmd test` pass.
+- Closed beta package created for UAT execution.

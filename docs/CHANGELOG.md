@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-06-17
+
+- Verified Wrangler authentication and confirmed the `dawaisaver-pk` R2 bucket exists.
+- Confirmed `R2_ACCOUNT_ID` and `R2_BUCKET_NAME` are present in the Railway API service.
+- Verified remote R2 object put/get/delete smoke testing against `dawaisaver-pk`.
+- Confirmed the upload service uses signed R2 requests and no local filesystem persistence.
+- Added closed-beta UAT documentation and a P19 runtime verification report.
+
 ## 2026-06-16
 
 - Completed the OCR upload storage swap from local filesystem persistence to signed Cloudflare R2 requests.

@@ -1,23 +1,18 @@
 # Known Limitations
 
-## Production Infrastructure
+## Runtime
 
-- `DATABASE_URL` is missing from Railway.
-- No Railway Postgres resource is visible in the current project resource list.
-- Production migrations have not been applied.
-- Production seed data has not been applied.
-- Railway R2 runtime variables are missing.
-- GitHub SSH push is blocked by public key rejection.
+- `R2_ACCESS_KEY_ID` is still a manual Cloudflare Dashboard value.
+- `R2_SECRET_ACCESS_KEY` is still a manual Cloudflare Dashboard value.
+- `R2_PUBLIC_BASE_URL` is still a manual Cloudflare Dashboard value.
+- Public access via `r2.dev` is disabled for `dawaisaver-pk`.
 
-## Product Capability
+## Upload Path
 
-- Provider-specific pharmacy source adapters are not implemented.
-- OCR providers are scaffolded; production provider credentials are not configured.
-- Upload service currently writes to local filesystem and must be migrated to R2.
-- Minimal seed data is intentionally tiny and is not a full medicine corpus.
-- Marketplace and warehouse workflows are out of scope for closed beta.
+- The current upload service is R2-backed and avoids local filesystem persistence.
+- The live app-level upload flow still needs the manual Cloudflare values attached in Railway before end-to-end production upload verification can be repeated there.
 
-## Operational
+## UAT Scope
 
-- Railway public domain was not generated during this task to avoid creating an unrequested external endpoint.
-- Reports avoid raw secret values by design.
+- Bucket-level R2 smoke testing is complete.
+- Full closed-beta upload UAT should be re-run after the missing runtime values are attached.

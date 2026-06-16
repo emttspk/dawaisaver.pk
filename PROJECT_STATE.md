@@ -2,11 +2,19 @@
 
 ## Date
 
-2026-06-16
+2026-06-17
 
 ## Current Status
 
-The project is in P16 Database and R2 Completion. Core foundations are complete, the OCR upload path now writes to Cloudflare R2, Prisma client generation passes, and the remaining production blocker is attaching `DATABASE_URL` plus the Railway R2 runtime variables.
+The project is in P19 R2 Runtime Verification and Closed Beta Start. Core foundations and production database setup are complete, the OCR upload path is already R2-backed, the R2 bucket exists and passed smoke testing, and the remaining runtime gap is the manual Cloudflare-sourced secret pair plus public base URL.
+
+## Current Verification
+
+- Wrangler authenticated and R2 bucket `dawaisaver-pk` exists.
+- Railway API service has `R2_ACCOUNT_ID` and `R2_BUCKET_NAME` present.
+- `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, and `R2_PUBLIC_BASE_URL` still need manual Cloudflare provisioning.
+- Remote R2 object put/get/delete smoke testing passed.
+- Build and tests pass.
 
 ## Implemented
 
@@ -139,3 +147,10 @@ This section supersedes the earlier production deployment setup status for the c
 - R2 bucket `dawaisaver-pk` exists and passed remote upload/read/delete smoke testing.
 - Railway R2 runtime variables still need confirmation in the live runtime environment.
 - `npx prisma generate`, `npm run build`, and `npm test` pass.
+
+## P19 R2 Runtime Verification - 2026-06-17
+
+- Wrangler account verification passed.
+- Bucket-level R2 upload verification passed.
+- The current upload service uses signed R2 requests and avoids local filesystem persistence.
+- Closed beta UAT docs are prepared for the remaining manual Cloudflare values and live upload verification.

@@ -2,33 +2,36 @@
 
 ## Date
 
-2026-06-16
+2026-06-17
 
 ## Phase
 
-P18 Production Database Finalization
+P19 R2 Runtime Verification and Closed Beta Start
 
 ## Status
 
-Production database finalization passed.
+R2 runtime verification is partially complete and the production database remains healthy. The R2 bucket exists, the bucket-level smoke test passed, and the application upload service is already using signed R2 requests. The remaining gaps are the manual Cloudflare-sourced secret pair and public base URL.
 
 ## Findings
 
 | Area | Result | Evidence |
 | --- | --- | --- |
-| PostgreSQL service | Pass | Railway service `Postgres` exists with service ID `1a43f63e-4686-43c5-84e2-1b9a4180f79f` |
-| API `DATABASE_URL` | Pass | Present on API service `dawaisaver.pk`; value not printed |
-| Prisma generate | Pass | `npx.cmd prisma generate` completed |
-| Prisma migrations | Pass | `npx.cmd prisma migrate deploy` applied all 9 migrations |
-| Prisma seed | Pass | `npx.cmd prisma db seed` completed |
-| Database configured | Pass | `databaseConfigured=true` confirmed through Railway service environment |
-| Health root | Pass | `/health` returned `status: ok` with database `status: ok` |
-| Health application | Pass | `/health/application` returned `status: ok` |
-| Health database | Pass | `/health/database` returned `status: ok` |
+| Wrangler auth | Pass | `wrangler whoami` returned the authenticated Cloudflare account |
+| R2 bucket | Pass | `wrangler r2 bucket list` includes `dawaisaver-pk` |
+| R2 bucket info | Pass | `wrangler r2 bucket info dawaisaver-pk` shows the bucket exists |
+| Railway R2 vars | Partial | `R2_ACCOUNT_ID` and `R2_BUCKET_NAME` are present; secret pair and public base URL are missing |
+| R2 smoke test | Pass | Remote `r2 object put`, `get`, and `delete` succeeded for `dawaisaver-pk/p19-uat/smoke-test.txt` |
+| Upload service path | Pass | `src/modules/ocr/upload.service.ts` signs requests to R2 and does not write to local disk |
+| Upload URL construction | Pass | Public URL is derived from `R2_PUBLIC_BASE_URL` in the service |
 | Build | Pass | `npm.cmd run build` completed |
 | Tests | Pass | `npm.cmd test` completed, 25 suites and 36 tests passed |
-| R2 runtime variables | Follow-up | API service variable presence check reports the R2 variables missing |
+
+## Audit Notes
+
+- The R2 smoke test verified object creation and readback through the expected signed/object path.
+- The current upload service returns the object key and public URL, but it does not add custom object metadata headers during upload.
+- `r2.dev` public access is disabled for `dawaisaver-pk`, so the beta package should treat public URL provisioning as a manual Cloudflare dashboard step.
 
 ## Audit Conclusion
 
-Production database setup is complete and healthy. Closed Beta User Testing can proceed for database-backed flows. Upload UAT should confirm the protected R2 runtime variables before testing prescription file uploads in production.
+The production database is healthy and the R2 storage path is working at the bucket level. Closed beta can proceed for non-upload flows now, while production upload UAT should wait for the missing Cloudflare dashboard values to be attached in Railway.

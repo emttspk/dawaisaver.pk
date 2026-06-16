@@ -27,7 +27,7 @@
 
 ## Current Residual Risk
 
-The database foundation is documented and modeled, but it has not been applied to a live PostgreSQL database yet. OCR providers are stub implementations pending API key configuration for production use. DATABASE_URL and migrations need to be configured before deployment.
+The live production database is attached and healthy, and the R2 bucket-level smoke test passed. The remaining runtime risk is the manual Cloudflare-sourced R2 secret pair and public base URL, which must be attached in Railway before live production upload UAT can be repeated.
 # P10 Railway Link Risk - 2026-06-16
 
 Risk: Railway CLI status resolves to the wrong project, `AI Photo Studio WhatsApp` (`ad62f340-fcfd-4989-b5bb-18753b28d8c8`), instead of `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`).
@@ -84,10 +84,10 @@ Impact: `npx prisma migrate deploy` cannot be completed locally until the produc
 
 Mitigation: Attach the Railway Postgres connection string to the API service, then rerun Prisma migrate and seed commands.
 
-## P16 Residual Risk - R2 Variables Need Production Confirmation
+## P19 Residual Risk - Manual Cloudflare R2 Values Still Needed
 
-Risk: The R2 upload code path is implemented, but the runtime environment variables still need production confirmation.
+Risk: `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, and `R2_PUBLIC_BASE_URL` are not yet present in the Railway API service.
 
-Impact: Uploads cannot be considered production-complete until the R2 bucket and credentials are attached in the live deployment environment.
+Impact: The live app upload flow cannot be considered fully production-complete until the manual Cloudflare dashboard values are attached and the production upload path is re-run.
 
-Mitigation: Verify `R2_BUCKET_NAME`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, and `R2_PUBLIC_BASE_URL` in Railway, then smoke test upload and delete behavior.
+Mitigation: Source `R2_ACCESS_KEY_ID` and `R2_SECRET_ACCESS_KEY` from Cloudflare Dashboard > R2 > Manage R2 API Tokens, source `R2_PUBLIC_BASE_URL` from the `dawaisaver-pk` bucket settings, then rerun the upload UAT flow.

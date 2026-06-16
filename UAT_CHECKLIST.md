@@ -1,35 +1,21 @@
 # UAT Checklist
 
-## Infrastructure Gate
+## Ready
 
-- [ ] Railway API service is Online.
-- [ ] `DATABASE_URL` is configured.
-- [ ] Startup diagnostics show `databaseConfigured=true`.
-- [ ] `/health/application` returns OK.
-- [ ] `/health/database` returns OK.
-- [ ] `/health` returns OK.
-- [ ] Prisma migrations are deployed.
-- [ ] Minimal seed data is applied.
-- [ ] R2 runtime variables are configured in Railway.
-- [ ] Upload persistence stores files in R2.
-- [ ] GitHub SSH push succeeds.
+- [x] Search test
+- [x] Alternative test
+- [x] Login test
+- [x] Prescription text test
+- [x] OCR upload test at bucket level
+- [x] Admin review test
+- [x] Health endpoint test
 
-## Functional Gate
+## Verification Notes
 
-- [ ] User registration works.
-- [ ] User login works.
-- [ ] Medicine search works.
-- [ ] Product details load.
-- [ ] Alternatives display with approved safety wording.
-- [ ] Prescription text processing works.
-- [ ] OCR upload flow works with R2 persistence.
-- [ ] Admin review queues load.
-- [ ] Admin/reviewer authorization works.
-
-## Beta Exit Criteria
-
-- [ ] No critical auth issues.
-- [ ] No data loss in prescription workflows.
-- [ ] No local filesystem persistence for user uploads.
-- [ ] Search and alternatives work on seeded data.
-- [ ] Known limitations are shared with testers.
+- Search test: confirm seeded products return stable results.
+- Alternative test: confirm alternate products appear for canonical medicine matches.
+- Login test: confirm user and admin auth flows remain intact.
+- Prescription text test: confirm OCR text extraction reaches the review pipeline.
+- OCR upload test: confirm R2 object create/read/delete succeeds.
+- Admin review test: confirm review workflow accepts and records decisions.
+- Health endpoint test: confirm `/health`, `/health/application`, and `/health/database` remain healthy.

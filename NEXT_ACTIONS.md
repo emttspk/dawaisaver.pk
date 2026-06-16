@@ -4,22 +4,17 @@
 
 Closed Beta User Testing.
 
-## P18 Completed
+## Current Focus
 
-- PostgreSQL service exists in Railway.
-- `DATABASE_URL` is present on the API service.
-- Prisma client generation passed.
-- Prisma migrations completed.
-- Prisma seed completed.
-- `databaseConfigured=true` is confirmed.
-- `/health`, `/health/application`, and `/health/database` pass.
+1. Attach the remaining Cloudflare R2 runtime values to the Railway API service.
+2. Re-run live upload UAT against the production app path.
+3. Confirm the beta scenarios against seeded data.
+4. Record any residual limitations for testers.
+
+## Current Beta Gate
+
+- Production database setup is complete.
+- R2 bucket verification passed.
+- Bucket-level upload smoke test passed.
 - Build passes.
 - Tests pass.
-
-## Closed Beta UAT Focus
-
-1. Verify beta search and alternatives against seeded data.
-2. Verify authentication and protected dashboard flows.
-3. Verify prescription text processing and review workflows.
-4. Confirm protected R2 runtime variables before testing production file uploads.
-5. Record known limitations and UAT findings before expanding beta access.

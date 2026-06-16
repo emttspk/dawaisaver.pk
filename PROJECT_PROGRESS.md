@@ -28,7 +28,7 @@
 - `JWT_SECRET` and `JWT_REFRESH_SECRET` are present.
 - `DATABASE_URL` is present on the API service.
 - Railway Postgres service `Postgres` is attached.
-- Railway R2 runtime variables still need confirmation before upload UAT.
+- Railway R2 runtime variables still need confirmation before live upload UAT.
 - `npx.cmd prisma generate` passed.
 - `npx.cmd prisma db seed` ran.
 - `npx.cmd prisma migrate deploy` passed with all 9 migrations applied.
@@ -60,7 +60,7 @@
 - Phase 8: Admin Review Panel Foundation complete
 - Phase 9: PWA Frontend Foundation complete
 - Phase 10/Infrastructure: In progress
-- Closed Beta User Testing: Ready to start for database-backed flows; confirm R2 runtime variables before file-upload UAT
+- Closed Beta User Testing: Ready to start for database-backed flows; confirm the remaining R2 runtime values before live upload UAT
 
 ## P17 Production Database Completion
 
@@ -80,3 +80,14 @@
 - `/health`, `/health/application`, and `/health/database` pass against Railway Postgres.
 - `npm.cmd run build` and `npm.cmd test` pass.
 - Next task: Closed Beta User Testing.
+
+## P19 R2 Runtime Verification and Closed Beta Start
+
+- Wrangler account verification passed.
+- R2 bucket `dawaisaver-pk` exists.
+- Railway API service has `R2_ACCOUNT_ID` and `R2_BUCKET_NAME` present.
+- `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, and `R2_PUBLIC_BASE_URL` are still pending manual Cloudflare provisioning.
+- Remote R2 object put/get/delete smoke testing passed.
+- `src/modules/ocr/upload.service.ts` uses signed R2 requests and avoids local filesystem writes.
+- Build passes.
+- Tests pass.

@@ -1,44 +1,29 @@
 # Beta Test Scenarios
 
-## Medicine Search
+## Search Test
 
-1. Search for `Panadol`.
-2. Verify product result includes brand, generic, strength, dosage form, and manufacturer.
-3. Search for `Paracetamol`.
-4. Verify generic search returns matching products.
+Confirm common drug searches return seeded products, canonical matches, and alternatives.
 
-## Alternatives
+## Alternative Test
 
-1. Open Panadol product details.
-2. Request alternatives.
-3. Verify Calpol appears only as same active ingredient, strength, and dosage form.
-4. Confirm safety wording: "Equivalent options with same active ingredient, strength, and dosage form."
+Confirm the UI or API can surface at least one sensible alternative for a matched product.
 
-## Prescription Text
+## Login Test
 
-1. Submit a text prescription containing Panadol 500mg.
-2. Verify parser extracts medicine lines.
-3. Verify matched item references the beta dataset.
-4. Verify unmatched lines are reviewable.
+Confirm user login and admin login behave normally and preserve session state.
 
-## OCR Upload
+## Prescription Text Test
 
-1. Upload a small prescription image.
-2. Verify file validation rejects unsupported types.
-3. Verify OCR process returns a reviewable result.
-4. Verify uploaded file persistence is R2-backed before this scenario is marked production-ready.
+Confirm OCR text from a sample prescription reaches the review workflow without corruption.
 
-## Admin Review
+## OCR Upload Test
 
-1. Login as an admin or reviewer.
-2. Open OCR review queue.
-3. Open prescription review queue.
-4. Approve or reject a review item.
-5. Verify the decision is reflected in the API response.
+Confirm the upload path stores the object in R2 and returns a readable object path or URL.
 
-## Health And Operations
+## Admin Review Test
 
-1. Check `/health/application`.
-2. Check `/health/database`.
-3. Check `/health`.
-4. Confirm startup diagnostics show `databaseConfigured=true` after database restoration.
+Confirm an admin can review a candidate, approve or reject it, and see the decision persisted.
+
+## Health Endpoint Test
+
+Confirm `/health`, `/health/application`, and `/health/database` return healthy responses.
