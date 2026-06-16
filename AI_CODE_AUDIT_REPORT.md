@@ -43,6 +43,11 @@ Phase 11 - Closed Beta Launch & User Acceptance Testing
 3. Admin guards are placeholders
 4. R2 credentials missing
 
-## Recommendation
+## Environment Tokens Detected
 
-Obtain a Railway token with access to project `e38bb3da-7ab5-4654-b504-101e74c92d5b`, relink the workspace, and verify with `railway status --json`.
+| Variable | Status |
+|----------|--------|
+| RAILWAY_TOKEN | ⚠️ Set (aa4c817f...) |
+| RAILWAY_API_TOKEN | ⚠️ Set (aa4c817f...) |
+
+**STOP - Tokens must be removed before proceeding**

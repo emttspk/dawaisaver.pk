@@ -28,6 +28,28 @@
 - ❌ No backend deployment
 - ❌ No variable changes
 
+## Environment Tokens Detected
+
+| Variable | Status |
+|----------|--------|
+| RAILWAY_TOKEN | ⚠️ Set (aa4c817f...) |
+| RAILWAY_API_TOKEN | ⚠️ Set (aa4c817f...) |
+
 ## Required Action
 
-Obtain a Railway token with access to project `e38bb3da-7ab5-4654-b504-101e74c92d5b` and relink the workspace.
+1. Remove tokens:
+   ```
+   unset RAILWAY_TOKEN
+   unset RAILWAY_API_TOKEN
+   ```
+
+2. Relink correct project:
+   ```
+   railway project link -p e38bb3da-7ab5-4654-b504-101e74c92d5b
+   ```
+
+3. Verify:
+   ```
+   railway status
+   railway status --json
+   ```
