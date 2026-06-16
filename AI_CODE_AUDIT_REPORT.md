@@ -24,6 +24,15 @@ Phase 11 - Closed Beta Launch & User Acceptance Testing
 
 **STOPPED - Wrong project linked**
 
+## Token Investigation
+
+| Token | Status |
+|-------|--------|
+| aa4c817f... | Invalid |
+| ac3502e8... | Invalid |
+
+**Cache cleared**: Removed `$USERPROFILE\.railway` directory
+
 ## Missing Production Variables
 
 | Variable | Status |

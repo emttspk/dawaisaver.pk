@@ -50,6 +50,15 @@ Cannot login - environment is non-interactive.
 **Required:**
 Set `RAILWAY_API_TOKEN` or `RAILWAY_TOKEN` with access to project `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
 
+### Token Investigation
+
+| Token | Status |
+|-------|--------|
+| aa4c817f... | Invalid |
+| ac3502e8... | Invalid |
+
+**Cache cleared**: Removed `$USERPROFILE\.railway` directory
+
 ## Current Blockers
 
 1. **RAILWAY_AUTH** - Requires token with access to `e38bb3da-7ab5-4654-b504-101e74c92d5b`
