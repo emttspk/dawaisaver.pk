@@ -10,7 +10,7 @@ Infrastructure Completion & Closed Beta Readiness
 
 ## Current Status
 
-The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, admin review panel foundation, and PWA frontend foundation are implemented. The OCR upload path now targets Cloudflare R2, the build and tests pass, Prisma client generation passes, and the remaining production blocker is attaching `DATABASE_URL` plus the Railway R2 runtime variables.
+The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, admin review panel foundation, and PWA frontend foundation are implemented. The OCR upload path now targets Cloudflare R2, the build and tests pass (25 suites, 36 tests), Prisma client generation passes, and the remaining production blocker is attaching `DATABASE_URL` plus the Railway R2 runtime variables. Railway authentication is required for deployment.
 
 ## Mandatory Read Order For Future AI Agents
 
@@ -305,13 +305,11 @@ Cloudflare R2 is the single source of truth for all persistent storage.
 - R2 bucket `dawaisaver-pk` passed remote object smoke testing, and the runtime R2 variables remain to be confirmed.
 - `npx prisma generate`, `npm run build`, and `npm test` passed.
 
-# P16 Database And R2 Completion - 2026-06-16
+# P17 Production Database Completion - 2026-06-16
 
-- OCR uploads now use signed Cloudflare R2 requests instead of local filesystem writes.
-- `src/modules/ocr/upload.service.test.ts` verifies the R2 upload/delete request flow.
-- `npx.cmd prisma generate` passes.
-- `npx.cmd prisma db seed` ran.
-- `npx.cmd prisma migrate deploy` still requires `DATABASE_URL`.
-- `npm.cmd run build` passes.
-- `npm.cmd test` passes.
-- The app boots and registers `/health`, `/health/database`, and `/health/application`.
+- Build and tests pass (25 suites, 36 tests).
+- OCR uploads use signed Cloudflare R2 requests.
+- `/health`, `/health/database`, `/health/application` routes registered.
+- `databaseConfigured` returns false without `DATABASE_URL`.
+- **BLOCKED**: Railway authentication required for deployment.
+- **NEXT**: Attach PostgreSQL, configure DATABASE_URL, run migrations.
