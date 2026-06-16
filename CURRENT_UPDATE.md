@@ -35,9 +35,9 @@
 - `wrangler r2 bucket list`: ✅ dawaisaver-pk found
 
 ### Railway
-- `railway whoami`: ⚠️ Token valid but linked to wrong project (AI Photo Studio WhatsApp)
-- `railway status`: ⚠️ Need to link to dawaisaver.pk project
-- `railway variables`: ⚠️ No service linked
+- `railway whoami`: ⚠️ Token lacks access to dawaisaver.pk project
+- `railway status`: ⚠️ Linked to AI Photo Studio WhatsApp
+- `railway variables`: ⚠️ Service relink required
 
 ### Database
 - `prisma migrate deploy`: ⚠️ DATABASE_URL not set
@@ -53,7 +53,7 @@
 
 ## Remaining Blockers
 
-1. **RAILWAY_PROJECT** - Token linked to wrong project, need to link to dawaisaver.pk
+1. **RAILWAY_ACCESS** - Token needs access to dawaisaver.pk project
 2. **DATABASE_URL** - Required for migrations
 3. **JWT Authentication** - Placeholder guards
 4. **Admin Guards** - Placeholder implementation

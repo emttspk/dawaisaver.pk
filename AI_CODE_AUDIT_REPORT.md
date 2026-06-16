@@ -61,4 +61,4 @@ Phase 10 - Production Readiness & Beta Launch
 1. JWT authentication is placeholder
 2. Admin guards are placeholders
 3. DATABASE_URL missing for migrations
-4. RAILWAY_TOKEN has access to different project (AI Photo Studio WhatsApp)
+4. RAILWAY_TOKEN lacks access to dawaisaver.pk project
