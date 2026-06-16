@@ -36,4 +36,4 @@ In progress; repo-side R2 storage work is complete, but live PostgreSQL attachme
 
 ## Audit Conclusion
 
-The repository is now ready for runtime database attachment and R2 variable confirmation. The remaining production work is to attach `DATABASE_URL`, verify the Railway R2 variables, and rerun migrations and seed against the live database.
+The repository is ready for production deployment once Railway authentication is restored. The OCR module uses R2 signed requests, health endpoints are registered, and tests pass. Remaining work is runtime database attachment, R2 variable confirmation, and deployment for closed beta.

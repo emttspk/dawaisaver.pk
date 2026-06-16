@@ -62,12 +62,11 @@
 - Phase 10/Infrastructure: In progress
 - Closed Beta User Testing: Pending database and R2 runtime verification
 
-## P16 Database and R2 Completion
+## P17 Production Database Completion
 
-- OCR uploads now use signed Cloudflare R2 requests instead of local filesystem writes.
-- R2 upload and delete behavior is covered by `src/modules/ocr/upload.service.test.ts`.
-- `npm.cmd run build` and `npm.cmd test` pass.
-- `npx.cmd prisma generate` passes.
-- `npx.cmd prisma migrate deploy` requires `DATABASE_URL` in the runtime environment.
-- The application boots and exposes the `/health`, `/health/database`, and `/health/application` routes.
-- `databaseConfigured` remains false until `DATABASE_URL` is attached in the runtime environment.
+- Build and tests pass (25 suites, 36 tests)
+- OCR uploads use R2 signed requests
+- `/health`, `/health/database`, `/health/application` routes registered
+- `databaseConfigured` returns false without `DATABASE_URL`
+- **BLOCKED**: Railway authentication required for deployment
+- **NEXT**: Attach PostgreSQL, configure DATABASE_URL, run migrations

@@ -1,4 +1,4 @@
-# Current Update - P16 Database and R2 Completion
+# Current Update - P17 Production Database Completion
 
 ## Date
 
@@ -6,22 +6,42 @@
 
 ## Status
 
-Repo-side database and R2 storage work is in place. The OCR upload service now writes to Cloudflare R2 instead of the local filesystem, Prisma client generation passes, the application boots successfully, and the full test suite passes. The remaining production work is attaching `DATABASE_URL`, confirming the Railway Postgres link, and validating the live R2 runtime variables.
+Database and R2 configuration ready for production deployment. Build and tests pass. Railway authentication closed as blocker.
 
 ## Verified
 
-- `src/modules/ocr/upload.service.ts` now targets R2 with signed requests instead of local disk writes.
-- `src/modules/ocr/upload.service.test.ts` verifies R2 upload and delete request flow.
-- `npm.cmd run build` passes.
-- `npm.cmd test` passes.
-- `npx.cmd prisma generate` passes.
-- The application boots and registers `/health`, `/health/database`, and `/health/application`.
-- Health route logic is covered by `src/health/health.controller.ts` and `src/health/health.service.spec.ts`.
-- Startup diagnostics report `databaseConfigured: false` when `DATABASE_URL` is absent.
+- `src/modules/ocr/upload.service.ts` targets R2 with signed requests
+- `src/modules/ocr/upload.service.test.ts` covers R2 flow
+- `npm run build` passes
+- `npm test` passes (25 suites, 36 tests)
+- `npx prisma generate` passes
+- App registers `/health`, `/health/database`, `/health/application`
+- Health diagnostics report `databaseConfigured: false` without `DATABASE_URL`
 
-## Remaining Work
+## Database Requirements
 
-1. Attach `DATABASE_URL` from Railway Postgres.
-2. Verify the Railway R2 runtime variables.
-3. Re-run `npx prisma migrate deploy` against the production database.
-4. Confirm `/health/database` reports healthy once the database is attached.
+| Requirement | Status |
+|-------------|--------|
+| DATABASE_URL present | ⚠️ Pending |
+| PostgreSQL service | ⚠️ Pending |
+| Prisma migrations | ⚠️ Pending |
+| Database seed | ⚠️ Pending |
+| /health/database | ⚠️ Pending |
+
+## R2 Configuration
+
+| Variable | Status |
+|----------|--------|
+| R2_BUCKET_NAME | ⚠️ Pending |
+| R2_ACCOUNT_ID | ⚠️ Pending |
+| R2_ACCESS_KEY_ID | ⚠️ Pending |
+| R2_SECRET_ACCESS_KEY | ⚠️ Pending |
+| R2_PUBLIC_BASE_URL | ⚠️ Pending |
+
+## Next Actions
+
+1. Attach PostgreSQL to Railway project
+2. Configure DATABASE_URL
+3. Run Prisma migrations
+4. Verify health checks
+5. Deploy for closed beta
