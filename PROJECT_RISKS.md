@@ -27,5 +27,5 @@
 
 ## Current Residual Risk
 
-The database foundation is documented and modeled, but it has not been applied to a live PostgreSQL database yet. OCR providers are stub implementations pending API key configuration for production use.
+The database foundation is documented and modeled, but it has not been applied to a live PostgreSQL database yet. OCR providers are stub implementations pending API key configuration for production use. DATABASE_URL and migrations need to be configured before deployment.
 

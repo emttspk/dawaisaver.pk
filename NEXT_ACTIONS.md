@@ -12,6 +12,8 @@ Beta Launch & User Acceptance Testing (P11).
 - ✅ Build and tests pass (34/34)
 - ✅ SSH verified and operational
 - ✅ Git push verified
+- ✅ Railway token configured
+- ✅ Railway project linked
 
 ## Pending
 
