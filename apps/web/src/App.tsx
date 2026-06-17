@@ -1,40 +1,107 @@
-import { Routes, Route, Link } from "react-router-dom";
-import Home from "./pages/Home";
-import MedicineSearch from "./pages/MedicineSearch";
-import MedicineDetails from "./pages/MedicineDetails";
-import PrescriptionUpload from "./pages/PrescriptionUpload";
+import { NavLink, Navigate, Route, Routes } from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import Alternatives from "./pages/Alternatives";
+import CostSavingsReport from "./pages/CostSavingsReport";
 import Dashboard from "./pages/Dashboard";
+import HelpFaq from "./pages/HelpFaq";
+import Home from "./pages/Home";
 import Login from "./pages/Login";
+import MedicineDetails from "./pages/MedicineDetails";
+import MedicineSearch from "./pages/MedicineSearch";
+import OcrResultReview from "./pages/OcrResultReview";
+import PrescriptionTextEntry from "./pages/PrescriptionTextEntry";
+import PrescriptionUpload from "./pages/PrescriptionUpload";
+import Profile from "./pages/Profile";
+import Register from "./pages/Register";
+import SearchHistory from "./pages/SearchHistory";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <Link to="/" className="text-2xl font-bold text-primary-600">
+    <AuthProvider>
+      <AppShell />
+    </AuthProvider>
+  );
+}
+
+function AppShell() {
+  const { isAuthenticated, logout, user } = useAuth();
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-950">
+      <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <NavLink to="/" className="text-xl font-bold text-emerald-700">
             DawaiSaver.pk
-          </Link>
-          <nav className="flex gap-4">
-            <Link to="/search" className="text-gray-700 hover:text-primary-600">Search</Link>
-            <Link to="/upload" className="text-gray-700 hover:text-primary-600">Upload</Link>
-            <Link to="/dashboard" className="text-gray-700 hover:text-primary-600">Dashboard</Link>
-            <Link to="/login" className="text-gray-700 hover:text-primary-600">Login</Link>
+          </NavLink>
+          <nav className="flex flex-wrap items-center gap-2 text-sm">
+            <NavItem to="/search">Search</NavItem>
+            <NavItem to="/prescription/text">Text Rx</NavItem>
+            <NavItem to="/prescription/upload">Upload</NavItem>
+            <NavItem to="/help">Help</NavItem>
+            {isAuthenticated ? (
+              <>
+                <NavItem to="/dashboard">Dashboard</NavItem>
+                <NavItem to="/profile">{user?.name || "Profile"}</NavItem>
+                <button onClick={logout} className="rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <NavItem to="/login">Login</NavItem>
+                <NavLink to="/register" className="rounded-md bg-emerald-700 px-3 py-2 font-medium text-white">
+                  Register
+                </NavLink>
+              </>
+            )}
           </nav>
         </div>
       </header>
-      
-      <main className="max-w-7xl mx-auto px-4 py-6">
+
+      <main className="mx-auto max-w-7xl px-4 py-6">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/search" element={<MedicineSearch />} />
           <Route path="/medicine/:id" element={<MedicineDetails />} />
-          <Route path="/upload" element={<PrescriptionUpload />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/medicine/:id/alternatives" element={<Alternatives />} />
+          <Route path="/prescription/text" element={<PrescriptionTextEntry />} />
+          <Route path="/prescription/upload" element={<PrescriptionUpload />} />
+          <Route path="/prescription/review" element={<OcrResultReview />} />
+          <Route path="/prescription/report" element={<CostSavingsReport />} />
+          <Route path="/history" element={<SearchHistory />} />
+          <Route path="/help" element={<HelpFaq />} />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
     </div>
   );
+}
+
+function NavItem({ to, children }: { to: string; children: string }) {
+  return (
+    <NavLink
+      to={to}
+      className={({ isActive }) =>
+        `rounded-md px-3 py-2 ${
+          isActive ? "bg-emerald-50 font-medium text-emerald-800" : "text-slate-700 hover:bg-slate-100"
+        }`
+      }
+    >
+      {children}
+    </NavLink>
+  );
+}
+
+function ProtectedRoute({ children }: { children: JSX.Element }) {
+  const { isAuthenticated } = useAuth();
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
 }
 
 export default App;

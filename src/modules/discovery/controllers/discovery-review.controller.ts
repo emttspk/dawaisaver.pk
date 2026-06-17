@@ -76,6 +76,7 @@ export class DiscoveryReviewController {
     }
 
     return {
+      id: candidate.id,
       candidateName: candidate.candidateName,
       normalizedBrand: candidate.normalizedBrand || undefined,
       normalizedGeneric: candidate.normalizedGeneric || undefined,

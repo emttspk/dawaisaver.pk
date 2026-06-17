@@ -2,7 +2,7 @@
 
 ## Current Status
 
-P20 Closed Beta UAT is complete. The beta flows passed, the OCR upload endpoint limitation is documented, and the next task is Public Beta Launch Preparation.
+P24 Full Customer UI and Admin UI Completion is complete for public beta readiness. Customer and admin frontend builds pass, backend build passes, and the next task is Cloudflare Pages Deployment and Public Beta Release.
 
 ## Completed Foundations
 
@@ -20,6 +20,8 @@ P20 Closed Beta UAT is complete. The beta flows passed, the OCR upload endpoint 
 - OCR Integration Layer.
 - Admin Review Panel Foundation.
 - PWA Frontend Foundation.
+- Customer web UI public beta completion.
+- Admin UI public beta completion.
 - Authentication module and role/internal guards.
 - Minimal closed-beta seed dataset in `prisma/seed.ts`.
 - Cloudflare R2 bucket `dawaisaver-pk` exists.
@@ -122,3 +124,16 @@ P20 Closed Beta UAT is complete. The beta flows passed, the OCR upload endpoint 
 - Rate limiting active (120 req/min).
 - Frontend foundation exists, deployment pending.
 - **Public Beta Launched**
+
+## P24 Full Customer UI and Admin UI Completion
+
+- Customer pages completed: Home, Register, Login, Dashboard, Medicine Search, Medicine Details, Alternatives, Prescription Text Entry, Prescription Upload, OCR Result Review, Cost Savings Report, Search History, Profile, Help and FAQ.
+- Customer API flows connected to live backend contracts.
+- Admin pages completed: Admin Login, Admin Dashboard, OCR Review Queue, Prescription Review Queue, Medicine Match Review, Discovery Candidate Review, Price Anomaly Review, Source Health Dashboard, User Activity Dashboard, System Health Dashboard.
+- Admin review queues include search/filter UI, confidence scores, source evidence, health status, and audit-friendly notes/actions.
+- Discovery candidate list now exposes `id` for existing review endpoint actions.
+- Web build passes.
+- Admin build passes.
+- Backend build passes.
+- Root tests pass with 25 suites and 36 tests.
+- Next task: Cloudflare Pages Deployment and Public Beta Release.

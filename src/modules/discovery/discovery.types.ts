@@ -40,6 +40,7 @@ export interface DiscoveryInput {
 }
 
 export interface DiscoveryCandidateDto {
+  id?: string;
   candidateName: string;
   normalizedBrand?: string;
   normalizedGeneric?: string;
@@ -98,4 +99,3 @@ export interface KnownMedicineIdentity {
   medicineSignature?: string;
   aliases?: string[];
 }
-

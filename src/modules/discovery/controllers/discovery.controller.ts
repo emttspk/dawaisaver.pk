@@ -34,6 +34,7 @@ export class DiscoveryController {
     });
 
     return (candidates as any[]).map((candidate: any) => ({
+      id: candidate.id,
       candidateName: candidate.candidateName,
       normalizedBrand: candidate.normalizedBrand || undefined,
       normalizedGeneric: candidate.normalizedGeneric || undefined,

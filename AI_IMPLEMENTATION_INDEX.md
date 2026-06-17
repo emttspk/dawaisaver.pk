@@ -6,11 +6,11 @@ DawaiSaver.pk
 
 ## Current Phase
 
-Public Beta Launch
+Cloudflare Pages Deployment and Public Beta Release
 
 ## Current Status
 
-The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, admin review panel foundation, and PWA frontend foundation are implemented. Production Postgres is attached, `DATABASE_URL` is present, Prisma migrations and seed are complete, `databaseConfigured=true` is confirmed, health checks pass, and build/tests pass. R2 bucket verification is complete. The backend is deployed on Railway. The frontend foundation exists but requires deployment to Cloudflare Pages for public beta.
+The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, customer web UI, and admin UI are implemented. Production Postgres is attached, `DATABASE_URL` is present, Prisma migrations and seed are complete, `databaseConfigured=true` is confirmed, health checks pass, and R2 bucket verification is complete. The backend is deployed on Railway. Customer and admin frontend builds pass and are ready for Cloudflare Pages deployment configuration.
 
 ## Mandatory Read Order For Future AI Agents
 
@@ -269,13 +269,14 @@ The governance phase, database foundation, data collection engines, search/disco
 - Phase 6 prescription processing pipeline: complete
 - Phase 7 OCR integration layer: complete
 - Phase 10 R2 Single Source of Truth: complete
-- Frontend implementation: not started
+- Frontend implementation: complete for public beta
+- Admin UI implementation: complete for public beta
 - Marketplace implementation: not started
 - Warehouse implementation: not started
 
 ## Next Recommended Task
 
-Proceed to Public Beta Launch Preparation.
+Proceed to Cloudflare Pages Deployment and Public Beta Release.
 
 ## R2 Storage Compliance
 
@@ -349,3 +350,13 @@ Cloudflare R2 is the single source of truth for all persistent storage.
 - `src/modules/ocr/ocr.service.ts` defaults to registry providers and can reject text-only mock-upload flows without compatible OCR input.
 - Build and tests pass.
 - Next task: Public Beta Launch Preparation.
+
+# P24 Full Customer UI and Admin UI Completion - 2026-06-17
+
+- Customer web UI completed across all required public beta pages.
+- Admin UI completed across all required review, health, and activity pages.
+- Customer UI connects to auth, search, autocomplete, alternatives, prescription text, OCR upload/process, OCR review, cost estimate, stats, and local beta history flows.
+- Admin UI connects to admin login, OCR jobs, prescription reviews, discovery candidates/review, price anomalies, source health, matching evaluation, and system health.
+- Discovery candidate responses now include `id` so the existing discovery review endpoint can act on selected UI rows.
+- `apps/web npm.cmd run build`, `apps/admin npm.cmd run build`, and root `npm.cmd run build` pass.
+- Next task: Cloudflare Pages Deployment and Public Beta Release.

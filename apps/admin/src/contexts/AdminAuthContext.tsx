@@ -1,42 +1,28 @@
-import { createContext, useContext, ReactNode, useMemo, useState } from "react";
-import { apiClient } from "../services/api-client";
-
-export type UserRole = "USER" | "ADMIN" | "REVIEWER";
-
-export interface AuthUser {
-  id: string;
-  email: string;
-  name: string;
-  role: UserRole;
-}
+import { ReactNode, createContext, useContext, useMemo, useState } from "react";
+import { AdminRole, AdminUser, apiClient } from "../services/api-client";
 
 interface AuthContextValue {
-  user: AuthUser | null;
+  user: AdminUser | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
-  hasRole: (role: UserRole) => boolean;
+  hasRole: (role: AdminRole) => boolean;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within AdminAuthProvider");
-  }
+  if (!context) throw new Error("useAuth must be used within AdminAuthProvider");
   return context;
 }
 
 export function AdminAuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(() => {
-    const stored = localStorage.getItem("dawaisaver.admin.user");
-    return stored ? JSON.parse(stored) as AuthUser : null;
-  });
+  const [user, setUser] = useState<AdminUser | null>(() => apiClient.getStoredUser());
 
   const login = async (email: string, password: string) => {
     const response = await apiClient.login(email, password);
-    setUser(response.data.user as AuthUser);
+    setUser(response.user);
   };
 
   const logout = () => {
@@ -44,17 +30,12 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   };
 
-  const hasRole = (role: UserRole): boolean => {
-    return user?.role === role;
-  };
+  const hasRole = (role: AdminRole) => user?.role === role;
 
-  const value = useMemo<AuthContextValue>(() => ({
-    user,
-    login,
-    logout,
-    isAuthenticated: Boolean(user),
-    hasRole,
-  }), [user]);
+  const value = useMemo<AuthContextValue>(
+    () => ({ user, login, logout, isAuthenticated: Boolean(user), hasRole }),
+    [user],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

@@ -2,6 +2,17 @@
 
 ## 2026-06-17
 
+- Completed P24 customer web UI for public beta across all required pages.
+- Completed P24 admin UI for public beta across all required review, health, and activity pages.
+- Added customer JWT auth context, protected routes, search/autocomplete, alternatives, prescription text, OCR upload/review, cost savings report, local search/report history, PWA install prompt, equivalence wording, and high-risk warning display.
+- Added admin/reviewer login guard, searchable review queues, prescription/discovery review actions, medicine match review, price anomaly/source/system health views, and user activity placeholder view.
+- Added `id` to discovery candidate response DTOs so the existing discovery review endpoint can act on selected UI rows.
+- Created `P24_FRONTEND_ADMIN_UI_REPORT.md`.
+- Updated current update, audit report, implementation index, next actions, and progress tracker for P24.
+- Verified `apps/web npm.cmd run build`, `apps/admin npm.cmd run build`, root `npm.cmd run build`, and root `npm.cmd test`.
+
+## 2026-06-17
+
 - Completed closed beta UAT for registration, login, protected dashboard, search, autocomplete, alternatives, prescription processing, OCR text workflow, cost estimation, savings reporting, and admin review.
 - Captured UAT findings for the OCR upload endpoint and OCR provider selection behavior.
 - Added `UAT_FINDINGS_REPORT.md` and `P20_CLOSED_BETA_REPORT.md`.
