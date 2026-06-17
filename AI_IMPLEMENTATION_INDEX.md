@@ -53,8 +53,8 @@ The governance phase, database foundation, data collection engines, search/disco
 - `P16_DATABASE_R2_REPORT.md`: current P16 database and R2 completion summary
 - `P18_DATABASE_FINALIZATION_REPORT.md`: production database finalization report
 - `P19_R2_RUNTIME_VERIFICATION_REPORT.md`: current P19 R2 runtime verification summary
-- `P20_CLOSED_BETA_REPORT.md`: closed beta UAT summary
-- `UAT_FINDINGS_REPORT.md`: closed beta findings report
+- `P20_CLOSED_BETA_REPORT.md`: archived to `docs/archive/`
+- `UAT_FINDINGS_REPORT.md`: archived to `docs/archive/`
 - `INFRASTRUCTURE_COMPLETION_REPORT.md`: current infrastructure completion status
 - `BETA_READINESS_REPORT.md`: closed beta readiness gate
 - `CLOSED_BETA_UAT_REPORT.md`: closed beta UAT report
