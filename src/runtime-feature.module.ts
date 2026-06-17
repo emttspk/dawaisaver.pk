@@ -6,6 +6,7 @@ import { MatchingModule } from "./modules/matching/matching.module";
 import { PrescriptionsModule } from "./modules/prescriptions/prescriptions.module";
 import { SearchModule } from "./modules/search/search.module";
 import { DiscoveryModule } from "./modules/discovery/discovery.module";
+import { AtcModule } from "./modules/atc/atc.module";
 
 export const DRAP_IMPORTER = Symbol("DRAP_IMPORTER");
 export const SOURCE_REGISTRY = Symbol("SOURCE_REGISTRY");
@@ -14,8 +15,10 @@ export const MATCHING_SERVICE = Symbol("MATCHING_SERVICE");
 export const PRESCRIPTION_SERVICE = Symbol("PRESCRIPTION_SERVICE");
 export const SEARCH_SERVICE = Symbol("SEARCH_SERVICE");
 export const DISCOVERY_SERVICE = Symbol("DISCOVERY_SERVICE");
+export const ATC_SERVICE = Symbol("ATC_SERVICE");
 
 @Module({
+  imports: [AtcModule],
   providers: [
     {
       provide: SOURCE_REGISTRY,
@@ -49,6 +52,7 @@ export const DISCOVERY_SERVICE = Symbol("DISCOVERY_SERVICE");
     MATCHING_SERVICE,
     SEARCH_SERVICE,
     DISCOVERY_SERVICE,
+    AtcModule,
   ],
 })
 export class RuntimeFeatureModule {}

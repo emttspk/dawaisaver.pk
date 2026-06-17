@@ -242,65 +242,43 @@ enum AuditAction {
 }
 
 model User {
-  id              String           @id @default(uuid()) @db.Uuid
-  email           String?          @unique
-  phone           String?          @unique
-  name            String?
-  passwordHash    String?          @map("password_hash")
-  refreshTokenHash String?         @map("refresh_token_hash")
-  refreshTokenExpiresAt DateTime?  @map("refresh_token_expires_at")
-  role            UserRole         @default(USER)
-  status          RecordStatus     @default(ACTIVE)
-  confidenceScore Decimal?         @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType?      @map("source_type")
-  sourceUrl       String?          @map("source_url")
-  metadata        Json?
-  createdAt       DateTime         @default(now()) @map("created_at")
-  updatedAt       DateTime         @updatedAt @map("updated_at")
-  deletedAt       DateTime?        @map("deleted_at")
-  createdById     String?          @map("created_by_id") @db.Uuid
-  updatedById     String?          @map("updated_by_id") @db.Uuid
-  deletedById     String?          @map("deleted_by_id") @db.Uuid
-  prescriptions   Prescription[]
-  bills           Bill[]
-  searchLogs      SearchLog[]
-  auditLogs       AuditLog[]
-  matchReviews    MatchReview[]
+  id                    String         @id @default(uuid()) @db.Uuid
+  email                 String?        @unique
+  phone                 String?        @unique
+  name                  String?
+  passwordHash          String?        @map("password_hash")
+  refreshTokenHash      String?        @map("refresh_token_hash")
+  refreshTokenExpiresAt DateTime?      @map("refresh_token_expires_at")
+  role                  UserRole       @default(USER)
+  status                RecordStatus   @default(ACTIVE)
+  confidenceScore       Decimal?       @map("confidence_score") @db.Decimal(5, 4)
+  sourceType            SourceType?    @map("source_type")
+  sourceUrl             String?        @map("source_url")
+  metadata              Json?
+  createdAt             DateTime       @default(now()) @map("created_at")
+  updatedAt             DateTime       @updatedAt @map("updated_at")
+  deletedAt             DateTime?      @map("deleted_at")
+  createdById           String?        @map("created_by_id") @db.Uuid
+  updatedById           String?        @map("updated_by_id") @db.Uuid
+  deletedById           String?        @map("deleted_by_id") @db.Uuid
+  prescriptions         Prescription[]
+  bills                 Bill[]
+  searchLogs            SearchLog[]
+  auditLogs             AuditLog[]
+  matchReviews          MatchReview[]
+  reportedReports       UserReport[]   @relation("UserReports")
+  reviewedReports       UserReport[]   @relation("UserReviewedReports")
 
   @@map("users")
 }
 
 model Manufacturer {
-  id              String         @id @default(uuid()) @db.Uuid
-  name            String
-  normalizedName  String         @map("normalized_name")
-  aliases         String[]       @default([])
-  country         String?
-  websiteUrl      String?        @map("website_url")
-  status          RecordStatus   @default(PENDING_REVIEW)
-  confidenceScore Decimal?       @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType?    @map("source_type")
-  sourceUrl       String?        @map("source_url")
-  metadata        Json?
-  createdAt       DateTime       @default(now()) @map("created_at")
-  updatedAt       DateTime       @updatedAt @map("updated_at")
-  deletedAt       DateTime?      @map("deleted_at")
-  createdById     String?        @map("created_by_id") @db.Uuid
-  updatedById     String?        @map("updated_by_id") @db.Uuid
-  deletedById     String?        @map("deleted_by_id") @db.Uuid
-  products        Product[]
-  importItems     ImportBatchItem[]
-
-  @@index([normalizedName])
-  @@index([status])
-  @@map("manufacturers")
-}
-
-model Generic {
   id              String               @id @default(uuid()) @db.Uuid
   name            String
   normalizedName  String               @map("normalized_name")
   aliases         String[]             @default([])
+  country         String?
+  websiteUrl      String?              @map("website_url")
   status          RecordStatus         @default(PENDING_REVIEW)
   confidenceScore Decimal?             @map("confidence_score") @db.Decimal(5, 4)
   sourceType      SourceType?          @map("source_type")
@@ -312,7 +290,34 @@ model Generic {
   createdById     String?              @map("created_by_id") @db.Uuid
   updatedById     String?              @map("updated_by_id") @db.Uuid
   deletedById     String?              @map("deleted_by_id") @db.Uuid
-  compositions    ProductComposition[]
+  products        Product[]
+  importItems     ImportBatchItem[]
+  profile         ManufacturerProfile?
+
+  @@index([normalizedName])
+  @@index([status])
+  @@map("manufacturers")
+}
+
+model Generic {
+  id                 String                        @id @default(uuid()) @db.Uuid
+  name               String
+  normalizedName     String                        @map("normalized_name")
+  aliases            String[]                      @default([])
+  status             RecordStatus                  @default(PENDING_REVIEW)
+  confidenceScore    Decimal?                      @map("confidence_score") @db.Decimal(5, 4)
+  sourceType         SourceType?                   @map("source_type")
+  sourceUrl          String?                       @map("source_url")
+  metadata           Json?
+  createdAt          DateTime                      @default(now()) @map("created_at")
+  updatedAt          DateTime                      @updatedAt @map("updated_at")
+  deletedAt          DateTime?                     @map("deleted_at")
+  createdById        String?                       @map("created_by_id") @db.Uuid
+  updatedById        String?                       @map("updated_by_id") @db.Uuid
+  deletedById        String?                       @map("deleted_by_id") @db.Uuid
+  compositions       ProductComposition[]
+  compositionGroups  CompositionGroupComposition[]
+  atcClassifications GenericAtcClassification[]
 
   @@unique([normalizedName])
   @@index([status])
@@ -320,45 +325,47 @@ model Generic {
 }
 
 model Product {
-  id                 String               @id @default(uuid()) @db.Uuid
-  manufacturerId     String?              @map("manufacturer_id") @db.Uuid
-  brandName          String               @map("brand_name")
-  normalizedBrand    String               @map("normalized_brand")
-  displayName        String               @map("display_name")
-  dosageForm         String?              @map("dosage_form")
-  normalizedForm     String?              @map("normalized_form")
-  strengthText       String?              @map("strength_text")
-  packSize           String?              @map("pack_size")
-  registrationNumber String?              @map("registration_number")
-  signature          String?
-  status             RecordStatus         @default(PENDING_REVIEW)
-  confidenceScore    Decimal?             @map("confidence_score") @db.Decimal(5, 4)
-  sourceType         SourceType?          @map("source_type")
-  sourceUrl          String?              @map("source_url")
-  metadata           Json?
-  createdAt          DateTime             @default(now()) @map("created_at")
-  updatedAt          DateTime             @updatedAt @map("updated_at")
-  deletedAt          DateTime?            @map("deleted_at")
-  createdById        String?              @map("created_by_id") @db.Uuid
-  updatedById        String?              @map("updated_by_id") @db.Uuid
-  deletedById        String?              @map("deleted_by_id") @db.Uuid
-  manufacturer       Manufacturer?        @relation(fields: [manufacturerId], references: [id])
-  compositions       ProductComposition[]
-  equivalences       ProductEquivalence[]
-  prices             ProductPrice[]
-  prescriptionItems  PrescriptionItem[]
-  billItems          BillItem[]
-  importItems        ImportBatchItem[]
-  priceSnapshots     PriceSnapshot[]
-  priceChangeEvents  PriceChangeEvent[]
-  availability       ProductAvailability[]
-  priceStatistics    ProductPriceStatistic[]
-  cityPriceStatistics CityPriceStatistic[]
-  marketSignals      MarketPriceSignal[]
-  priceAnomalies     PriceAnomaly[]
-  priceTrends        PriceTrend[]
-  canonicalProduct    CanonicalProduct?
-  productMatches      ProductMatch[]
+  id                    String                       @id @default(uuid()) @db.Uuid
+  manufacturerId        String?                      @map("manufacturer_id") @db.Uuid
+  brandName             String                       @map("brand_name")
+  normalizedBrand       String                       @map("normalized_brand")
+  displayName           String                       @map("display_name")
+  dosageForm            String?                      @map("dosage_form")
+  normalizedForm        String?                      @map("normalized_form")
+  strengthText          String?                      @map("strength_text")
+  packSize              String?                      @map("pack_size")
+  registrationNumber    String?                      @map("registration_number")
+  signature             String?
+  status                RecordStatus                 @default(PENDING_REVIEW)
+  confidenceScore       Decimal?                     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType            SourceType?                  @map("source_type")
+  sourceUrl             String?                      @map("source_url")
+  metadata              Json?
+  createdAt             DateTime                     @default(now()) @map("created_at")
+  updatedAt             DateTime                     @updatedAt @map("updated_at")
+  deletedAt             DateTime?                    @map("deleted_at")
+  createdById           String?                      @map("created_by_id") @db.Uuid
+  updatedById           String?                      @map("updated_by_id") @db.Uuid
+  deletedById           String?                      @map("deleted_by_id") @db.Uuid
+  manufacturer          Manufacturer?                @relation(fields: [manufacturerId], references: [id])
+  compositions          ProductComposition[]
+  equivalences          ProductEquivalence[]
+  prices                ProductPrice[]
+  prescriptionItems     PrescriptionItem[]
+  billItems             BillItem[]
+  importItems           ImportBatchItem[]
+  priceSnapshots        PriceSnapshot[]
+  priceChangeEvents     PriceChangeEvent[]
+  availability          ProductAvailability[]
+  priceStatistics       ProductPriceStatistic[]
+  cityPriceStatistics   CityPriceStatistic[]
+  marketSignals         MarketPriceSignal[]
+  priceAnomalies        PriceAnomaly[]
+  priceTrends           PriceTrend[]
+  canonicalProduct      CanonicalProduct?
+  productMatches        ProductMatch[]
+  packs                 ProductPack[]
+  therapeuticCategories ProductTherapeuticCategory[]
 
   @@index([manufacturerId])
   @@index([normalizedBrand])
@@ -506,22 +513,22 @@ model ProductPrice {
 }
 
 model Prescription {
-  id              String             @id @default(uuid()) @db.Uuid
-  userId          String?            @map("user_id") @db.Uuid
-  uploadUrl       String?            @map("upload_url")
-  ocrText         String?            @map("ocr_text")
-  status          RecordStatus       @default(PENDING_REVIEW)
-  confidenceScore Decimal?           @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType?        @map("source_type")
-  sourceUrl       String?            @map("source_url")
+  id              String                      @id @default(uuid()) @db.Uuid
+  userId          String?                     @map("user_id") @db.Uuid
+  uploadUrl       String?                     @map("upload_url")
+  ocrText         String?                     @map("ocr_text")
+  status          RecordStatus                @default(PENDING_REVIEW)
+  confidenceScore Decimal?                    @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType?                 @map("source_type")
+  sourceUrl       String?                     @map("source_url")
   metadata        Json?
-  createdAt       DateTime           @default(now()) @map("created_at")
-  updatedAt       DateTime           @updatedAt @map("updated_at")
-  deletedAt       DateTime?          @map("deleted_at")
-  createdById     String?            @map("created_by_id") @db.Uuid
-  updatedById     String?            @map("updated_by_id") @db.Uuid
-  deletedById     String?            @map("deleted_by_id") @db.Uuid
-  user            User?              @relation(fields: [userId], references: [id])
+  createdAt       DateTime                    @default(now()) @map("created_at")
+  updatedAt       DateTime                    @updatedAt @map("updated_at")
+  deletedAt       DateTime?                   @map("deleted_at")
+  createdById     String?                     @map("created_by_id") @db.Uuid
+  updatedById     String?                     @map("updated_by_id") @db.Uuid
+  deletedById     String?                     @map("deleted_by_id") @db.Uuid
+  user            User?                       @relation(fields: [userId], references: [id])
   items           PrescriptionItem[]
   processingJobs  PrescriptionProcessingJob[]
   reviews         PrescriptionReview[]
@@ -533,26 +540,26 @@ model Prescription {
 }
 
 model PrescriptionItem {
-  id              String        @id @default(uuid()) @db.Uuid
-  prescriptionId  String        @map("prescription_id") @db.Uuid
-  productId       String?       @map("product_id") @db.Uuid
-  rawText         String        @map("raw_text")
-  parsedName      String?       @map("parsed_name")
-  dosageText      String?       @map("dosage_text")
-  quantity        Decimal?      @db.Decimal(12, 4)
-  status          RecordStatus  @default(PENDING_REVIEW)
-  confidenceScore Decimal?      @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType?   @map("source_type")
-  sourceUrl       String?       @map("source_url")
+  id              String                     @id @default(uuid()) @db.Uuid
+  prescriptionId  String                     @map("prescription_id") @db.Uuid
+  productId       String?                    @map("product_id") @db.Uuid
+  rawText         String                     @map("raw_text")
+  parsedName      String?                    @map("parsed_name")
+  dosageText      String?                    @map("dosage_text")
+  quantity        Decimal?                   @db.Decimal(12, 4)
+  status          RecordStatus               @default(PENDING_REVIEW)
+  confidenceScore Decimal?                   @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType?                @map("source_type")
+  sourceUrl       String?                    @map("source_url")
   metadata        Json?
-  createdAt       DateTime      @default(now()) @map("created_at")
-  updatedAt       DateTime      @updatedAt @map("updated_at")
-  deletedAt       DateTime?     @map("deleted_at")
-  createdById     String?       @map("created_by_id") @db.Uuid
-  updatedById     String?       @map("updated_by_id") @db.Uuid
-  deletedById     String?       @map("deleted_by_id") @db.Uuid
-  prescription    Prescription  @relation(fields: [prescriptionId], references: [id])
-  product         Product?      @relation(fields: [productId], references: [id])
+  createdAt       DateTime                   @default(now()) @map("created_at")
+  updatedAt       DateTime                   @updatedAt @map("updated_at")
+  deletedAt       DateTime?                  @map("deleted_at")
+  createdById     String?                    @map("created_by_id") @db.Uuid
+  updatedById     String?                    @map("updated_by_id") @db.Uuid
+  deletedById     String?                    @map("deleted_by_id") @db.Uuid
+  prescription    Prescription               @relation(fields: [prescriptionId], references: [id])
+  product         Product?                   @relation(fields: [productId], references: [id])
   reviews         PrescriptionReview[]
   costEstimates   PrescriptionCostEstimate[]
 
@@ -588,25 +595,25 @@ model PrescriptionProcessingJob {
 }
 
 model PrescriptionReview {
-  id              String       @id @default(uuid()) @db.Uuid
-  prescriptionId  String       @map("prescription_id") @db.Uuid
-  prescriptionItemId String?    @map("prescription_item_id") @db.Uuid
-  reviewStatus    String       @map("review_status")
-  reviewDecision  String       @map("review_decision")
-  reviewNotes     String?      @map("review_notes")
-  status          RecordStatus @default(PENDING_REVIEW)
-  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType?  @map("source_type")
-  sourceUrl       String?      @map("source_url")
-  metadata        Json?
-  createdAt       DateTime     @default(now()) @map("created_at")
-  updatedAt       DateTime     @updatedAt @map("updated_at")
-  deletedAt       DateTime?    @map("deleted_at")
-  createdById     String?      @map("created_by_id") @db.Uuid
-  updatedById     String?      @map("updated_by_id") @db.Uuid
-  deletedById     String?      @map("deleted_by_id") @db.Uuid
-  prescription    Prescription @relation(fields: [prescriptionId], references: [id])
-  prescriptionItem PrescriptionItem? @relation(fields: [prescriptionItemId], references: [id])
+  id                 String            @id @default(uuid()) @db.Uuid
+  prescriptionId     String            @map("prescription_id") @db.Uuid
+  prescriptionItemId String?           @map("prescription_item_id") @db.Uuid
+  reviewStatus       String            @map("review_status")
+  reviewDecision     String            @map("review_decision")
+  reviewNotes        String?           @map("review_notes")
+  status             RecordStatus      @default(PENDING_REVIEW)
+  confidenceScore    Decimal?          @map("confidence_score") @db.Decimal(5, 4)
+  sourceType         SourceType?       @map("source_type")
+  sourceUrl          String?           @map("source_url")
+  metadata           Json?
+  createdAt          DateTime          @default(now()) @map("created_at")
+  updatedAt          DateTime          @updatedAt @map("updated_at")
+  deletedAt          DateTime?         @map("deleted_at")
+  createdById        String?           @map("created_by_id") @db.Uuid
+  updatedById        String?           @map("updated_by_id") @db.Uuid
+  deletedById        String?           @map("deleted_by_id") @db.Uuid
+  prescription       Prescription      @relation(fields: [prescriptionId], references: [id])
+  prescriptionItem   PrescriptionItem? @relation(fields: [prescriptionItemId], references: [id])
 
   @@index([prescriptionId])
   @@index([prescriptionItemId])
@@ -615,29 +622,29 @@ model PrescriptionReview {
 }
 
 model PrescriptionCostEstimate {
-  id              String       @id @default(uuid()) @db.Uuid
-  prescriptionId  String       @map("prescription_id") @db.Uuid
-  prescriptionItemId String?    @map("prescription_item_id") @db.Uuid
-  city            String?
-  originalEstimatedCost Decimal @map("original_estimated_cost") @db.Decimal(12, 2)
-  cheapestEquivalentCost Decimal @map("cheapest_equivalent_cost") @db.Decimal(12, 2)
-  balancedOptionCost Decimal @map("balanced_option_cost") @db.Decimal(12, 2)
-  premiumOptionCost Decimal    @map("premium_option_cost") @db.Decimal(12, 2)
-  estimatedSaving Decimal      @map("estimated_saving") @db.Decimal(12, 2)
-  reviewRequired  Boolean      @default(false) @map("review_required")
-  status          RecordStatus @default(PENDING_REVIEW)
-  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType?  @map("source_type")
-  sourceUrl       String?      @map("source_url")
-  metadata        Json?
-  createdAt       DateTime     @default(now()) @map("created_at")
-  updatedAt       DateTime     @updatedAt @map("updated_at")
-  deletedAt       DateTime?    @map("deleted_at")
-  createdById     String?      @map("created_by_id") @db.Uuid
-  updatedById     String?      @map("updated_by_id") @db.Uuid
-  deletedById     String?      @map("deleted_by_id") @db.Uuid
-  prescription    Prescription @relation(fields: [prescriptionId], references: [id])
-  prescriptionItem PrescriptionItem? @relation(fields: [prescriptionItemId], references: [id])
+  id                     String            @id @default(uuid()) @db.Uuid
+  prescriptionId         String            @map("prescription_id") @db.Uuid
+  prescriptionItemId     String?           @map("prescription_item_id") @db.Uuid
+  city                   String?
+  originalEstimatedCost  Decimal           @map("original_estimated_cost") @db.Decimal(12, 2)
+  cheapestEquivalentCost Decimal           @map("cheapest_equivalent_cost") @db.Decimal(12, 2)
+  balancedOptionCost     Decimal           @map("balanced_option_cost") @db.Decimal(12, 2)
+  premiumOptionCost      Decimal           @map("premium_option_cost") @db.Decimal(12, 2)
+  estimatedSaving        Decimal           @map("estimated_saving") @db.Decimal(12, 2)
+  reviewRequired         Boolean           @default(false) @map("review_required")
+  status                 RecordStatus      @default(PENDING_REVIEW)
+  confidenceScore        Decimal?          @map("confidence_score") @db.Decimal(5, 4)
+  sourceType             SourceType?       @map("source_type")
+  sourceUrl              String?           @map("source_url")
+  metadata               Json?
+  createdAt              DateTime          @default(now()) @map("created_at")
+  updatedAt              DateTime          @updatedAt @map("updated_at")
+  deletedAt              DateTime?         @map("deleted_at")
+  createdById            String?           @map("created_by_id") @db.Uuid
+  updatedById            String?           @map("updated_by_id") @db.Uuid
+  deletedById            String?           @map("deleted_by_id") @db.Uuid
+  prescription           Prescription      @relation(fields: [prescriptionId], references: [id])
+  prescriptionItem       PrescriptionItem? @relation(fields: [prescriptionItemId], references: [id])
 
   @@index([prescriptionId])
   @@index([prescriptionItemId])
@@ -647,26 +654,26 @@ model PrescriptionCostEstimate {
 }
 
 model Bill {
-  id              String     @id @default(uuid()) @db.Uuid
-  userId          String?    @map("user_id") @db.Uuid
-  pharmacyId      String?    @map("pharmacy_id") @db.Uuid
-  uploadUrl       String?    @map("upload_url")
-  ocrText         String?    @map("ocr_text")
-  purchasedAt     DateTime?  @map("purchased_at")
-  totalAmount     Decimal?   @map("total_amount") @db.Decimal(12, 2)
+  id              String       @id @default(uuid()) @db.Uuid
+  userId          String?      @map("user_id") @db.Uuid
+  pharmacyId      String?      @map("pharmacy_id") @db.Uuid
+  uploadUrl       String?      @map("upload_url")
+  ocrText         String?      @map("ocr_text")
+  purchasedAt     DateTime?    @map("purchased_at")
+  totalAmount     Decimal?     @map("total_amount") @db.Decimal(12, 2)
   status          RecordStatus @default(PENDING_REVIEW)
-  confidenceScore Decimal?   @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType? @map("source_type")
-  sourceUrl       String?    @map("source_url")
+  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType?  @map("source_type")
+  sourceUrl       String?      @map("source_url")
   metadata        Json?
-  createdAt       DateTime   @default(now()) @map("created_at")
-  updatedAt       DateTime   @updatedAt @map("updated_at")
-  deletedAt       DateTime?  @map("deleted_at")
-  createdById     String?    @map("created_by_id") @db.Uuid
-  updatedById     String?    @map("updated_by_id") @db.Uuid
-  deletedById     String?    @map("deleted_by_id") @db.Uuid
-  user            User?      @relation(fields: [userId], references: [id])
-  pharmacy        Pharmacy?  @relation(fields: [pharmacyId], references: [id])
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  deletedAt       DateTime?    @map("deleted_at")
+  createdById     String?      @map("created_by_id") @db.Uuid
+  updatedById     String?      @map("updated_by_id") @db.Uuid
+  deletedById     String?      @map("deleted_by_id") @db.Uuid
+  user            User?        @relation(fields: [userId], references: [id])
+  pharmacy        Pharmacy?    @relation(fields: [pharmacyId], references: [id])
   items           BillItem[]
 
   @@index([userId])
@@ -855,24 +862,24 @@ model ImportBatchItem {
 }
 
 model ImportError {
-  id              String      @id @default(uuid()) @db.Uuid
-  importBatchId   String      @map("import_batch_id") @db.Uuid
-  rowNumber       Int?        @map("row_number")
-  errorCode       String      @map("error_code")
-  errorMessage    String      @map("error_message")
-  rawData         Json?       @map("raw_data")
+  id              String       @id @default(uuid()) @db.Uuid
+  importBatchId   String       @map("import_batch_id") @db.Uuid
+  rowNumber       Int?         @map("row_number")
+  errorCode       String       @map("error_code")
+  errorMessage    String       @map("error_message")
+  rawData         Json?        @map("raw_data")
   status          RecordStatus @default(ACTIVE)
-  confidenceScore Decimal?    @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType  @map("source_type")
-  sourceUrl       String?     @map("source_url")
+  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType   @map("source_type")
+  sourceUrl       String?      @map("source_url")
   metadata        Json?
-  createdAt       DateTime    @default(now()) @map("created_at")
-  updatedAt       DateTime    @updatedAt @map("updated_at")
-  deletedAt       DateTime?   @map("deleted_at")
-  createdById     String?     @map("created_by_id") @db.Uuid
-  updatedById     String?     @map("updated_by_id") @db.Uuid
-  deletedById     String?     @map("deleted_by_id") @db.Uuid
-  importBatch     ImportBatch @relation(fields: [importBatchId], references: [id])
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  deletedAt       DateTime?    @map("deleted_at")
+  createdById     String?      @map("created_by_id") @db.Uuid
+  updatedById     String?      @map("updated_by_id") @db.Uuid
+  deletedById     String?      @map("deleted_by_id") @db.Uuid
+  importBatch     ImportBatch  @relation(fields: [importBatchId], references: [id])
 
   @@index([importBatchId])
   @@index([errorCode])
@@ -911,23 +918,23 @@ model SourceProvider {
 }
 
 model SourceProviderConfig {
-  id              String         @id @default(uuid()) @db.Uuid
-  sourceProviderId String        @map("source_provider_id") @db.Uuid
-  configKey       String         @map("config_key")
-  configValue     Json           @map("config_value")
-  isSecret        Boolean        @default(false) @map("is_secret")
-  status          RecordStatus   @default(ACTIVE)
-  confidenceScore Decimal?       @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType     @default(ONLINE_PHARMACY) @map("source_type")
-  sourceUrl       String?        @map("source_url")
-  metadata        Json?
-  createdAt       DateTime       @default(now()) @map("created_at")
-  updatedAt       DateTime       @updatedAt @map("updated_at")
-  deletedAt       DateTime?      @map("deleted_at")
-  createdById     String?        @map("created_by_id") @db.Uuid
-  updatedById     String?        @map("updated_by_id") @db.Uuid
-  deletedById     String?        @map("deleted_by_id") @db.Uuid
-  sourceProvider  SourceProvider @relation(fields: [sourceProviderId], references: [id])
+  id               String         @id @default(uuid()) @db.Uuid
+  sourceProviderId String         @map("source_provider_id") @db.Uuid
+  configKey        String         @map("config_key")
+  configValue      Json           @map("config_value")
+  isSecret         Boolean        @default(false) @map("is_secret")
+  status           RecordStatus   @default(ACTIVE)
+  confidenceScore  Decimal?       @map("confidence_score") @db.Decimal(5, 4)
+  sourceType       SourceType     @default(ONLINE_PHARMACY) @map("source_type")
+  sourceUrl        String?        @map("source_url")
+  metadata         Json?
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+  deletedAt        DateTime?      @map("deleted_at")
+  createdById      String?        @map("created_by_id") @db.Uuid
+  updatedById      String?        @map("updated_by_id") @db.Uuid
+  deletedById      String?        @map("deleted_by_id") @db.Uuid
+  sourceProvider   SourceProvider @relation(fields: [sourceProviderId], references: [id])
 
   @@unique([sourceProviderId, configKey])
   @@index([status])
@@ -935,27 +942,27 @@ model SourceProviderConfig {
 }
 
 model SourceSyncJob {
-  id              String             @id @default(uuid()) @db.Uuid
-  sourceProviderId String            @map("source_provider_id") @db.Uuid
-  jobType         String             @map("job_type")
-  status          SourceSyncStatus   @default(PENDING)
-  scheduledAt     DateTime?          @map("scheduled_at")
-  startedAt       DateTime?          @map("started_at")
-  finishedAt      DateTime?          @map("finished_at")
-  resultSummary   Json?              @map("result_summary")
-  errorMessage    String?            @map("error_message")
-  confidenceScore Decimal?           @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType         @default(ONLINE_PHARMACY) @map("source_type")
-  sourceUrl       String?            @map("source_url")
-  metadata        Json?
-  createdAt       DateTime           @default(now()) @map("created_at")
-  updatedAt       DateTime           @updatedAt @map("updated_at")
-  deletedAt       DateTime?          @map("deleted_at")
-  createdById     String?            @map("created_by_id") @db.Uuid
-  updatedById     String?            @map("updated_by_id") @db.Uuid
-  deletedById     String?            @map("deleted_by_id") @db.Uuid
-  sourceProvider  SourceProvider     @relation(fields: [sourceProviderId], references: [id])
-  results         SourceSyncResult[]
+  id               String             @id @default(uuid()) @db.Uuid
+  sourceProviderId String             @map("source_provider_id") @db.Uuid
+  jobType          String             @map("job_type")
+  status           SourceSyncStatus   @default(PENDING)
+  scheduledAt      DateTime?          @map("scheduled_at")
+  startedAt        DateTime?          @map("started_at")
+  finishedAt       DateTime?          @map("finished_at")
+  resultSummary    Json?              @map("result_summary")
+  errorMessage     String?            @map("error_message")
+  confidenceScore  Decimal?           @map("confidence_score") @db.Decimal(5, 4)
+  sourceType       SourceType         @default(ONLINE_PHARMACY) @map("source_type")
+  sourceUrl        String?            @map("source_url")
+  metadata         Json?
+  createdAt        DateTime           @default(now()) @map("created_at")
+  updatedAt        DateTime           @updatedAt @map("updated_at")
+  deletedAt        DateTime?          @map("deleted_at")
+  createdById      String?            @map("created_by_id") @db.Uuid
+  updatedById      String?            @map("updated_by_id") @db.Uuid
+  deletedById      String?            @map("deleted_by_id") @db.Uuid
+  sourceProvider   SourceProvider     @relation(fields: [sourceProviderId], references: [id])
+  results          SourceSyncResult[]
 
   @@index([sourceProviderId])
   @@index([jobType])
@@ -965,28 +972,28 @@ model SourceSyncJob {
 }
 
 model SourceSyncResult {
-  id              String           @id @default(uuid()) @db.Uuid
-  sourceSyncJobId String           @map("source_sync_job_id") @db.Uuid
-  sourceProviderId String          @map("source_provider_id") @db.Uuid
-  totalProducts   Int              @default(0) @map("total_products")
-  matchedProducts Int              @default(0) @map("matched_products")
-  priceSnapshots  Int              @default(0) @map("price_snapshots")
-  errorCount      Int              @default(0) @map("error_count")
-  status          SourceSyncStatus @default(COMPLETED)
-  rawData         Json?            @map("raw_data")
-  normalizedData  Json?            @map("normalized_data")
-  confidenceScore Decimal?         @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType       @default(ONLINE_PHARMACY) @map("source_type")
-  sourceUrl       String?          @map("source_url")
-  metadata        Json?
-  createdAt       DateTime         @default(now()) @map("created_at")
-  updatedAt       DateTime         @updatedAt @map("updated_at")
-  deletedAt       DateTime?        @map("deleted_at")
-  createdById     String?          @map("created_by_id") @db.Uuid
-  updatedById     String?          @map("updated_by_id") @db.Uuid
-  deletedById     String?          @map("deleted_by_id") @db.Uuid
-  sourceSyncJob   SourceSyncJob    @relation(fields: [sourceSyncJobId], references: [id])
-  sourceProvider  SourceProvider   @relation(fields: [sourceProviderId], references: [id])
+  id               String           @id @default(uuid()) @db.Uuid
+  sourceSyncJobId  String           @map("source_sync_job_id") @db.Uuid
+  sourceProviderId String           @map("source_provider_id") @db.Uuid
+  totalProducts    Int              @default(0) @map("total_products")
+  matchedProducts  Int              @default(0) @map("matched_products")
+  priceSnapshots   Int              @default(0) @map("price_snapshots")
+  errorCount       Int              @default(0) @map("error_count")
+  status           SourceSyncStatus @default(COMPLETED)
+  rawData          Json?            @map("raw_data")
+  normalizedData   Json?            @map("normalized_data")
+  confidenceScore  Decimal?         @map("confidence_score") @db.Decimal(5, 4)
+  sourceType       SourceType       @default(ONLINE_PHARMACY) @map("source_type")
+  sourceUrl        String?          @map("source_url")
+  metadata         Json?
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+  deletedAt        DateTime?        @map("deleted_at")
+  createdById      String?          @map("created_by_id") @db.Uuid
+  updatedById      String?          @map("updated_by_id") @db.Uuid
+  deletedById      String?          @map("deleted_by_id") @db.Uuid
+  sourceSyncJob    SourceSyncJob    @relation(fields: [sourceSyncJobId], references: [id])
+  sourceProvider   SourceProvider   @relation(fields: [sourceProviderId], references: [id])
 
   @@index([sourceSyncJobId])
   @@index([sourceProviderId])
@@ -995,25 +1002,25 @@ model SourceSyncResult {
 }
 
 model SourceHealthLog {
-  id              String         @id @default(uuid()) @db.Uuid
-  sourceProviderId String        @map("source_provider_id") @db.Uuid
-  healthy         Boolean
-  statusCode      Int?           @map("status_code")
-  responseTimeMs  Int?           @map("response_time_ms")
-  checkedAt       DateTime       @default(now()) @map("checked_at")
-  message         String?
-  status          RecordStatus   @default(ACTIVE)
-  confidenceScore Decimal?       @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType     @default(ONLINE_PHARMACY) @map("source_type")
-  sourceUrl       String?        @map("source_url")
-  metadata        Json?
-  createdAt       DateTime       @default(now()) @map("created_at")
-  updatedAt       DateTime       @updatedAt @map("updated_at")
-  deletedAt       DateTime?      @map("deleted_at")
-  createdById     String?        @map("created_by_id") @db.Uuid
-  updatedById     String?        @map("updated_by_id") @db.Uuid
-  deletedById     String?        @map("deleted_by_id") @db.Uuid
-  sourceProvider  SourceProvider @relation(fields: [sourceProviderId], references: [id])
+  id               String         @id @default(uuid()) @db.Uuid
+  sourceProviderId String         @map("source_provider_id") @db.Uuid
+  healthy          Boolean
+  statusCode       Int?           @map("status_code")
+  responseTimeMs   Int?           @map("response_time_ms")
+  checkedAt        DateTime       @default(now()) @map("checked_at")
+  message          String?
+  status           RecordStatus   @default(ACTIVE)
+  confidenceScore  Decimal?       @map("confidence_score") @db.Decimal(5, 4)
+  sourceType       SourceType     @default(ONLINE_PHARMACY) @map("source_type")
+  sourceUrl        String?        @map("source_url")
+  metadata         Json?
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+  deletedAt        DateTime?      @map("deleted_at")
+  createdById      String?        @map("created_by_id") @db.Uuid
+  updatedById      String?        @map("updated_by_id") @db.Uuid
+  deletedById      String?        @map("deleted_by_id") @db.Uuid
+  sourceProvider   SourceProvider @relation(fields: [sourceProviderId], references: [id])
 
   @@index([sourceProviderId])
   @@index([healthy])
@@ -1022,37 +1029,37 @@ model SourceHealthLog {
 }
 
 model PriceSnapshot {
-  id              String         @id @default(uuid()) @db.Uuid
-  sourceProviderId String        @map("source_provider_id") @db.Uuid
-  productId       String?        @map("product_id") @db.Uuid
-  externalProductId String?      @map("external_product_id")
-  brandName       String?        @map("brand_name")
-  normalizedBrand String?        @map("normalized_brand")
-  genericName     String?        @map("generic_name")
-  normalizedGeneric String?      @map("normalized_generic")
-  strengthText    String?        @map("strength_text")
-  dosageForm      String?        @map("dosage_form")
-  medicineSignature String?      @map("medicine_signature")
-  price           Decimal        @db.Decimal(12, 2)
-  currency        String         @default("PKR")
-  stockStatus     StockStatus    @default(UNKNOWN) @map("stock_status")
-  city            String?
-  capturedAt      DateTime       @default(now()) @map("captured_at")
-  status          RecordStatus   @default(PENDING_REVIEW)
-  confidenceScore Decimal?       @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType     @default(ONLINE_PHARMACY) @map("source_type")
-  sourceUrl       String?        @map("source_url")
-  metadata        Json?
-  createdAt       DateTime       @default(now()) @map("created_at")
-  updatedAt       DateTime       @updatedAt @map("updated_at")
-  deletedAt       DateTime?      @map("deleted_at")
-  createdById     String?        @map("created_by_id") @db.Uuid
-  updatedById     String?        @map("updated_by_id") @db.Uuid
-  deletedById     String?        @map("deleted_by_id") @db.Uuid
-  sourceProvider  SourceProvider @relation(fields: [sourceProviderId], references: [id])
-  product         Product?       @relation(fields: [productId], references: [id])
-  priceEvents     PriceChangeEvent[]
-  anomalies       PriceAnomaly[]
+  id                String             @id @default(uuid()) @db.Uuid
+  sourceProviderId  String             @map("source_provider_id") @db.Uuid
+  productId         String?            @map("product_id") @db.Uuid
+  externalProductId String?            @map("external_product_id")
+  brandName         String?            @map("brand_name")
+  normalizedBrand   String?            @map("normalized_brand")
+  genericName       String?            @map("generic_name")
+  normalizedGeneric String?            @map("normalized_generic")
+  strengthText      String?            @map("strength_text")
+  dosageForm        String?            @map("dosage_form")
+  medicineSignature String?            @map("medicine_signature")
+  price             Decimal            @db.Decimal(12, 2)
+  currency          String             @default("PKR")
+  stockStatus       StockStatus        @default(UNKNOWN) @map("stock_status")
+  city              String?
+  capturedAt        DateTime           @default(now()) @map("captured_at")
+  status            RecordStatus       @default(PENDING_REVIEW)
+  confidenceScore   Decimal?           @map("confidence_score") @db.Decimal(5, 4)
+  sourceType        SourceType         @default(ONLINE_PHARMACY) @map("source_type")
+  sourceUrl         String?            @map("source_url")
+  metadata          Json?
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  deletedAt         DateTime?          @map("deleted_at")
+  createdById       String?            @map("created_by_id") @db.Uuid
+  updatedById       String?            @map("updated_by_id") @db.Uuid
+  deletedById       String?            @map("deleted_by_id") @db.Uuid
+  sourceProvider    SourceProvider     @relation(fields: [sourceProviderId], references: [id])
+  product           Product?           @relation(fields: [productId], references: [id])
+  priceEvents       PriceChangeEvent[]
+  anomalies         PriceAnomaly[]
 
   @@index([sourceProviderId])
   @@index([productId])
@@ -1064,31 +1071,31 @@ model PriceSnapshot {
 }
 
 model PriceChangeEvent {
-  id              String               @id @default(uuid()) @db.Uuid
-  priceSnapshotId String               @map("price_snapshot_id") @db.Uuid
-  sourceProviderId String              @map("source_provider_id") @db.Uuid
-  productId       String?              @map("product_id") @db.Uuid
-  previousPrice   Decimal?             @map("previous_price") @db.Decimal(12, 2)
-  currentPrice    Decimal              @map("current_price") @db.Decimal(12, 2)
-  changeAmount    Decimal?             @map("change_amount") @db.Decimal(12, 2)
-  changePercent   Decimal?             @map("change_percent") @db.Decimal(8, 4)
-  direction       PriceChangeDirection
-  city            String?
-  capturedAt      DateTime             @default(now()) @map("captured_at")
-  status          RecordStatus         @default(ACTIVE)
-  confidenceScore Decimal?             @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType           @default(ONLINE_PHARMACY) @map("source_type")
-  sourceUrl       String?              @map("source_url")
-  metadata        Json?
-  createdAt       DateTime             @default(now()) @map("created_at")
-  updatedAt       DateTime             @updatedAt @map("updated_at")
-  deletedAt       DateTime?            @map("deleted_at")
-  createdById     String?              @map("created_by_id") @db.Uuid
-  updatedById     String?              @map("updated_by_id") @db.Uuid
-  deletedById     String?              @map("deleted_by_id") @db.Uuid
-  priceSnapshot   PriceSnapshot        @relation(fields: [priceSnapshotId], references: [id])
-  sourceProvider  SourceProvider       @relation(fields: [sourceProviderId], references: [id])
-  product         Product?             @relation(fields: [productId], references: [id])
+  id               String               @id @default(uuid()) @db.Uuid
+  priceSnapshotId  String               @map("price_snapshot_id") @db.Uuid
+  sourceProviderId String               @map("source_provider_id") @db.Uuid
+  productId        String?              @map("product_id") @db.Uuid
+  previousPrice    Decimal?             @map("previous_price") @db.Decimal(12, 2)
+  currentPrice     Decimal              @map("current_price") @db.Decimal(12, 2)
+  changeAmount     Decimal?             @map("change_amount") @db.Decimal(12, 2)
+  changePercent    Decimal?             @map("change_percent") @db.Decimal(8, 4)
+  direction        PriceChangeDirection
+  city             String?
+  capturedAt       DateTime             @default(now()) @map("captured_at")
+  status           RecordStatus         @default(ACTIVE)
+  confidenceScore  Decimal?             @map("confidence_score") @db.Decimal(5, 4)
+  sourceType       SourceType           @default(ONLINE_PHARMACY) @map("source_type")
+  sourceUrl        String?              @map("source_url")
+  metadata         Json?
+  createdAt        DateTime             @default(now()) @map("created_at")
+  updatedAt        DateTime             @updatedAt @map("updated_at")
+  deletedAt        DateTime?            @map("deleted_at")
+  createdById      String?              @map("created_by_id") @db.Uuid
+  updatedById      String?              @map("updated_by_id") @db.Uuid
+  deletedById      String?              @map("deleted_by_id") @db.Uuid
+  priceSnapshot    PriceSnapshot        @relation(fields: [priceSnapshotId], references: [id])
+  sourceProvider   SourceProvider       @relation(fields: [sourceProviderId], references: [id])
+  product          Product?             @relation(fields: [productId], references: [id])
 
   @@index([priceSnapshotId])
   @@index([sourceProviderId])
@@ -1099,27 +1106,27 @@ model PriceChangeEvent {
 }
 
 model ProductAvailability {
-  id              String         @id @default(uuid()) @db.Uuid
-  sourceProviderId String        @map("source_provider_id") @db.Uuid
-  productId       String?        @map("product_id") @db.Uuid
-  externalProductId String?      @map("external_product_id")
-  medicineSignature String?      @map("medicine_signature")
-  stockStatus     StockStatus    @default(UNKNOWN) @map("stock_status")
-  city            String?
-  capturedAt      DateTime       @default(now()) @map("captured_at")
-  status          RecordStatus   @default(PENDING_REVIEW)
-  confidenceScore Decimal?       @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType     @default(ONLINE_PHARMACY) @map("source_type")
-  sourceUrl       String?        @map("source_url")
-  metadata        Json?
-  createdAt       DateTime       @default(now()) @map("created_at")
-  updatedAt       DateTime       @updatedAt @map("updated_at")
-  deletedAt       DateTime?      @map("deleted_at")
-  createdById     String?        @map("created_by_id") @db.Uuid
-  updatedById     String?        @map("updated_by_id") @db.Uuid
-  deletedById     String?        @map("deleted_by_id") @db.Uuid
-  sourceProvider  SourceProvider @relation(fields: [sourceProviderId], references: [id])
-  product         Product?       @relation(fields: [productId], references: [id])
+  id                String         @id @default(uuid()) @db.Uuid
+  sourceProviderId  String         @map("source_provider_id") @db.Uuid
+  productId         String?        @map("product_id") @db.Uuid
+  externalProductId String?        @map("external_product_id")
+  medicineSignature String?        @map("medicine_signature")
+  stockStatus       StockStatus    @default(UNKNOWN) @map("stock_status")
+  city              String?
+  capturedAt        DateTime       @default(now()) @map("captured_at")
+  status            RecordStatus   @default(PENDING_REVIEW)
+  confidenceScore   Decimal?       @map("confidence_score") @db.Decimal(5, 4)
+  sourceType        SourceType     @default(ONLINE_PHARMACY) @map("source_type")
+  sourceUrl         String?        @map("source_url")
+  metadata          Json?
+  createdAt         DateTime       @default(now()) @map("created_at")
+  updatedAt         DateTime       @updatedAt @map("updated_at")
+  deletedAt         DateTime?      @map("deleted_at")
+  createdById       String?        @map("created_by_id") @db.Uuid
+  updatedById       String?        @map("updated_by_id") @db.Uuid
+  deletedById       String?        @map("deleted_by_id") @db.Uuid
+  sourceProvider    SourceProvider @relation(fields: [sourceProviderId], references: [id])
+  product           Product?       @relation(fields: [productId], references: [id])
 
   @@index([sourceProviderId])
   @@index([productId])
@@ -1131,31 +1138,31 @@ model ProductAvailability {
 }
 
 model ProductPriceStatistic {
-  id              String       @id @default(uuid()) @db.Uuid
-  productId       String       @map("product_id") @db.Uuid
-  medicineSignature String?    @map("medicine_signature")
-  lowestPrice     Decimal      @map("lowest_price") @db.Decimal(12, 2)
-  highestPrice    Decimal      @map("highest_price") @db.Decimal(12, 2)
-  averagePrice    Decimal      @map("average_price") @db.Decimal(12, 2)
-  medianPrice     Decimal      @map("median_price") @db.Decimal(12, 2)
-  latestPrice     Decimal      @map("latest_price") @db.Decimal(12, 2)
-  priceVariance   Decimal      @map("price_variance") @db.Decimal(14, 4)
-  availabilityScore Decimal    @map("availability_score") @db.Decimal(6, 4)
-  sourceCount     Int          @map("source_count")
-  sampleCount     Int          @map("sample_count")
-  calculatedAt    DateTime     @default(now()) @map("calculated_at")
-  status          RecordStatus @default(ACTIVE)
-  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType   @default(SYSTEM) @map("source_type")
-  sourceUrl       String?      @map("source_url")
-  metadata        Json?
-  createdAt       DateTime     @default(now()) @map("created_at")
-  updatedAt       DateTime     @updatedAt @map("updated_at")
-  deletedAt       DateTime?    @map("deleted_at")
-  createdById     String?      @map("created_by_id") @db.Uuid
-  updatedById     String?      @map("updated_by_id") @db.Uuid
-  deletedById     String?      @map("deleted_by_id") @db.Uuid
-  product         Product      @relation(fields: [productId], references: [id])
+  id                String       @id @default(uuid()) @db.Uuid
+  productId         String       @map("product_id") @db.Uuid
+  medicineSignature String?      @map("medicine_signature")
+  lowestPrice       Decimal      @map("lowest_price") @db.Decimal(12, 2)
+  highestPrice      Decimal      @map("highest_price") @db.Decimal(12, 2)
+  averagePrice      Decimal      @map("average_price") @db.Decimal(12, 2)
+  medianPrice       Decimal      @map("median_price") @db.Decimal(12, 2)
+  latestPrice       Decimal      @map("latest_price") @db.Decimal(12, 2)
+  priceVariance     Decimal      @map("price_variance") @db.Decimal(14, 4)
+  availabilityScore Decimal      @map("availability_score") @db.Decimal(6, 4)
+  sourceCount       Int          @map("source_count")
+  sampleCount       Int          @map("sample_count")
+  calculatedAt      DateTime     @default(now()) @map("calculated_at")
+  status            RecordStatus @default(ACTIVE)
+  confidenceScore   Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType        SourceType   @default(SYSTEM) @map("source_type")
+  sourceUrl         String?      @map("source_url")
+  metadata          Json?
+  createdAt         DateTime     @default(now()) @map("created_at")
+  updatedAt         DateTime     @updatedAt @map("updated_at")
+  deletedAt         DateTime?    @map("deleted_at")
+  createdById       String?      @map("created_by_id") @db.Uuid
+  updatedById       String?      @map("updated_by_id") @db.Uuid
+  deletedById       String?      @map("deleted_by_id") @db.Uuid
+  product           Product      @relation(fields: [productId], references: [id])
 
   @@index([productId])
   @@index([medicineSignature])
@@ -1164,29 +1171,29 @@ model ProductPriceStatistic {
 }
 
 model CityPriceStatistic {
-  id              String       @id @default(uuid()) @db.Uuid
-  productId       String?      @map("product_id") @db.Uuid
-  medicineSignature String?    @map("medicine_signature")
-  city            String
-  lowestObservedPrice Decimal  @map("lowest_observed_price") @db.Decimal(12, 2)
-  highestObservedPrice Decimal @map("highest_observed_price") @db.Decimal(12, 2)
-  averagePrice    Decimal      @map("average_price") @db.Decimal(12, 2)
-  availabilityPercentage Decimal @map("availability_percentage") @db.Decimal(6, 4)
-  sourceCount     Int          @map("source_count")
-  sampleCount     Int          @map("sample_count")
-  calculatedAt    DateTime     @default(now()) @map("calculated_at")
-  status          RecordStatus @default(ACTIVE)
-  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType   @default(SYSTEM) @map("source_type")
-  sourceUrl       String?      @map("source_url")
-  metadata        Json?
-  createdAt       DateTime     @default(now()) @map("created_at")
-  updatedAt       DateTime     @updatedAt @map("updated_at")
-  deletedAt       DateTime?    @map("deleted_at")
-  createdById     String?      @map("created_by_id") @db.Uuid
-  updatedById     String?      @map("updated_by_id") @db.Uuid
-  deletedById     String?      @map("deleted_by_id") @db.Uuid
-  product         Product?     @relation(fields: [productId], references: [id])
+  id                     String       @id @default(uuid()) @db.Uuid
+  productId              String?      @map("product_id") @db.Uuid
+  medicineSignature      String?      @map("medicine_signature")
+  city                   String
+  lowestObservedPrice    Decimal      @map("lowest_observed_price") @db.Decimal(12, 2)
+  highestObservedPrice   Decimal      @map("highest_observed_price") @db.Decimal(12, 2)
+  averagePrice           Decimal      @map("average_price") @db.Decimal(12, 2)
+  availabilityPercentage Decimal      @map("availability_percentage") @db.Decimal(6, 4)
+  sourceCount            Int          @map("source_count")
+  sampleCount            Int          @map("sample_count")
+  calculatedAt           DateTime     @default(now()) @map("calculated_at")
+  status                 RecordStatus @default(ACTIVE)
+  confidenceScore        Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType             SourceType   @default(SYSTEM) @map("source_type")
+  sourceUrl              String?      @map("source_url")
+  metadata               Json?
+  createdAt              DateTime     @default(now()) @map("created_at")
+  updatedAt              DateTime     @updatedAt @map("updated_at")
+  deletedAt              DateTime?    @map("deleted_at")
+  createdById            String?      @map("created_by_id") @db.Uuid
+  updatedById            String?      @map("updated_by_id") @db.Uuid
+  deletedById            String?      @map("deleted_by_id") @db.Uuid
+  product                Product?     @relation(fields: [productId], references: [id])
 
   @@index([productId])
   @@index([medicineSignature])
@@ -1196,28 +1203,28 @@ model CityPriceStatistic {
 }
 
 model MarketPriceSignal {
-  id              String           @id @default(uuid()) @db.Uuid
-  productId       String?          @map("product_id") @db.Uuid
-  medicineSignature String?        @map("medicine_signature")
-  signalType      MarketSignalType @map("signal_type")
-  bestPrice       Decimal?         @map("best_price") @db.Decimal(12, 2)
-  recommendedPrice Decimal?        @map("recommended_price") @db.Decimal(12, 2)
-  marketAverage   Decimal?         @map("market_average") @db.Decimal(12, 2)
-  priceStabilityScore Decimal      @map("price_stability_score") @db.Decimal(6, 4)
-  city            String?
-  calculatedAt    DateTime         @default(now()) @map("calculated_at")
-  status          RecordStatus     @default(ACTIVE)
-  confidenceScore Decimal?         @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType       @default(SYSTEM) @map("source_type")
-  sourceUrl       String?          @map("source_url")
-  metadata        Json?
-  createdAt       DateTime         @default(now()) @map("created_at")
-  updatedAt       DateTime         @updatedAt @map("updated_at")
-  deletedAt       DateTime?        @map("deleted_at")
-  createdById     String?          @map("created_by_id") @db.Uuid
-  updatedById     String?          @map("updated_by_id") @db.Uuid
-  deletedById     String?          @map("deleted_by_id") @db.Uuid
-  product         Product?         @relation(fields: [productId], references: [id])
+  id                  String           @id @default(uuid()) @db.Uuid
+  productId           String?          @map("product_id") @db.Uuid
+  medicineSignature   String?          @map("medicine_signature")
+  signalType          MarketSignalType @map("signal_type")
+  bestPrice           Decimal?         @map("best_price") @db.Decimal(12, 2)
+  recommendedPrice    Decimal?         @map("recommended_price") @db.Decimal(12, 2)
+  marketAverage       Decimal?         @map("market_average") @db.Decimal(12, 2)
+  priceStabilityScore Decimal          @map("price_stability_score") @db.Decimal(6, 4)
+  city                String?
+  calculatedAt        DateTime         @default(now()) @map("calculated_at")
+  status              RecordStatus     @default(ACTIVE)
+  confidenceScore     Decimal?         @map("confidence_score") @db.Decimal(5, 4)
+  sourceType          SourceType       @default(SYSTEM) @map("source_type")
+  sourceUrl           String?          @map("source_url")
+  metadata            Json?
+  createdAt           DateTime         @default(now()) @map("created_at")
+  updatedAt           DateTime         @updatedAt @map("updated_at")
+  deletedAt           DateTime?        @map("deleted_at")
+  createdById         String?          @map("created_by_id") @db.Uuid
+  updatedById         String?          @map("updated_by_id") @db.Uuid
+  deletedById         String?          @map("deleted_by_id") @db.Uuid
+  product             Product?         @relation(fields: [productId], references: [id])
 
   @@index([productId])
   @@index([medicineSignature])
@@ -1228,30 +1235,30 @@ model MarketPriceSignal {
 }
 
 model PriceAnomaly {
-  id              String           @id @default(uuid()) @db.Uuid
-  productId       String?          @map("product_id") @db.Uuid
-  priceSnapshotId String?          @map("price_snapshot_id") @db.Uuid
-  medicineSignature String?        @map("medicine_signature")
-  anomalyType     PriceAnomalyType @map("anomaly_type")
-  price           Decimal?         @db.Decimal(12, 2)
-  expectedMin     Decimal?         @map("expected_min") @db.Decimal(12, 2)
-  expectedMax     Decimal?         @map("expected_max") @db.Decimal(12, 2)
-  severityScore   Decimal          @map("severity_score") @db.Decimal(6, 4)
-  city            String?
-  detectedAt      DateTime         @default(now()) @map("detected_at")
-  status          RecordStatus     @default(PENDING_REVIEW)
-  confidenceScore Decimal?         @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType       @default(SYSTEM) @map("source_type")
-  sourceUrl       String?          @map("source_url")
-  metadata        Json?
-  createdAt       DateTime         @default(now()) @map("created_at")
-  updatedAt       DateTime         @updatedAt @map("updated_at")
-  deletedAt       DateTime?        @map("deleted_at")
-  createdById     String?          @map("created_by_id") @db.Uuid
-  updatedById     String?          @map("updated_by_id") @db.Uuid
-  deletedById     String?          @map("deleted_by_id") @db.Uuid
-  product         Product?         @relation(fields: [productId], references: [id])
-  priceSnapshot   PriceSnapshot?   @relation(fields: [priceSnapshotId], references: [id])
+  id                String           @id @default(uuid()) @db.Uuid
+  productId         String?          @map("product_id") @db.Uuid
+  priceSnapshotId   String?          @map("price_snapshot_id") @db.Uuid
+  medicineSignature String?          @map("medicine_signature")
+  anomalyType       PriceAnomalyType @map("anomaly_type")
+  price             Decimal?         @db.Decimal(12, 2)
+  expectedMin       Decimal?         @map("expected_min") @db.Decimal(12, 2)
+  expectedMax       Decimal?         @map("expected_max") @db.Decimal(12, 2)
+  severityScore     Decimal          @map("severity_score") @db.Decimal(6, 4)
+  city              String?
+  detectedAt        DateTime         @default(now()) @map("detected_at")
+  status            RecordStatus     @default(PENDING_REVIEW)
+  confidenceScore   Decimal?         @map("confidence_score") @db.Decimal(5, 4)
+  sourceType        SourceType       @default(SYSTEM) @map("source_type")
+  sourceUrl         String?          @map("source_url")
+  metadata          Json?
+  createdAt         DateTime         @default(now()) @map("created_at")
+  updatedAt         DateTime         @updatedAt @map("updated_at")
+  deletedAt         DateTime?        @map("deleted_at")
+  createdById       String?          @map("created_by_id") @db.Uuid
+  updatedById       String?          @map("updated_by_id") @db.Uuid
+  deletedById       String?          @map("deleted_by_id") @db.Uuid
+  product           Product?         @relation(fields: [productId], references: [id])
+  priceSnapshot     PriceSnapshot?   @relation(fields: [priceSnapshotId], references: [id])
 
   @@index([productId])
   @@index([priceSnapshotId])
@@ -1262,31 +1269,31 @@ model PriceAnomaly {
 }
 
 model PriceTrend {
-  id              String       @id @default(uuid()) @db.Uuid
-  productId       String?      @map("product_id") @db.Uuid
-  medicineSignature String?    @map("medicine_signature")
-  city            String?
-  windowDays      Int          @map("window_days")
-  startPrice      Decimal?     @map("start_price") @db.Decimal(12, 2)
-  endPrice        Decimal?     @map("end_price") @db.Decimal(12, 2)
-  minPrice        Decimal?     @map("min_price") @db.Decimal(12, 2)
-  maxPrice        Decimal?     @map("max_price") @db.Decimal(12, 2)
-  averagePrice    Decimal?     @map("average_price") @db.Decimal(12, 2)
-  direction       PriceChangeDirection
-  volatilityScore Decimal      @map("volatility_score") @db.Decimal(6, 4)
-  calculatedAt    DateTime     @default(now()) @map("calculated_at")
-  status          RecordStatus @default(ACTIVE)
-  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType   @default(SYSTEM) @map("source_type")
-  sourceUrl       String?      @map("source_url")
-  metadata        Json?
-  createdAt       DateTime     @default(now()) @map("created_at")
-  updatedAt       DateTime     @updatedAt @map("updated_at")
-  deletedAt       DateTime?    @map("deleted_at")
-  createdById     String?      @map("created_by_id") @db.Uuid
-  updatedById     String?      @map("updated_by_id") @db.Uuid
-  deletedById     String?      @map("deleted_by_id") @db.Uuid
-  product         Product?     @relation(fields: [productId], references: [id])
+  id                String               @id @default(uuid()) @db.Uuid
+  productId         String?              @map("product_id") @db.Uuid
+  medicineSignature String?              @map("medicine_signature")
+  city              String?
+  windowDays        Int                  @map("window_days")
+  startPrice        Decimal?             @map("start_price") @db.Decimal(12, 2)
+  endPrice          Decimal?             @map("end_price") @db.Decimal(12, 2)
+  minPrice          Decimal?             @map("min_price") @db.Decimal(12, 2)
+  maxPrice          Decimal?             @map("max_price") @db.Decimal(12, 2)
+  averagePrice      Decimal?             @map("average_price") @db.Decimal(12, 2)
+  direction         PriceChangeDirection
+  volatilityScore   Decimal              @map("volatility_score") @db.Decimal(6, 4)
+  calculatedAt      DateTime             @default(now()) @map("calculated_at")
+  status            RecordStatus         @default(ACTIVE)
+  confidenceScore   Decimal?             @map("confidence_score") @db.Decimal(5, 4)
+  sourceType        SourceType           @default(SYSTEM) @map("source_type")
+  sourceUrl         String?              @map("source_url")
+  metadata          Json?
+  createdAt         DateTime             @default(now()) @map("created_at")
+  updatedAt         DateTime             @updatedAt @map("updated_at")
+  deletedAt         DateTime?            @map("deleted_at")
+  createdById       String?              @map("created_by_id") @db.Uuid
+  updatedById       String?              @map("updated_by_id") @db.Uuid
+  deletedById       String?              @map("deleted_by_id") @db.Uuid
+  product           Product?             @relation(fields: [productId], references: [id])
 
   @@index([productId])
   @@index([medicineSignature])
@@ -1297,32 +1304,32 @@ model PriceTrend {
 }
 
 model CanonicalProduct {
-  id                 String                  @id @default(uuid()) @db.Uuid
-  productId          String?                 @unique @map("product_id") @db.Uuid
-  canonicalName      String                  @map("canonical_name")
-  normalizedBrand    String                  @map("normalized_brand")
-  normalizedGeneric  String                  @map("normalized_generic")
-  normalizedStrength String?                 @map("normalized_strength")
-  normalizedDosageForm String?               @map("normalized_dosage_form")
-  normalizedManufacturer String?             @map("normalized_manufacturer")
-  packSize           String?                 @map("pack_size")
-  registrationNumber String?                 @map("registration_number")
-  medicineSignature  String                  @unique @map("medicine_signature")
-  status             RecordStatus            @default(PENDING_REVIEW)
-  confidenceScore    Decimal?                @map("confidence_score") @db.Decimal(5, 4)
-  sourceType         SourceType              @default(SYSTEM) @map("source_type")
-  sourceUrl          String?                 @map("source_url")
-  metadata           Json?
-  createdAt          DateTime                @default(now()) @map("created_at")
-  updatedAt          DateTime                @updatedAt @map("updated_at")
-  deletedAt          DateTime?               @map("deleted_at")
-  createdById        String?                 @map("created_by_id") @db.Uuid
-  updatedById        String?                 @map("updated_by_id") @db.Uuid
-  deletedById        String?                 @map("deleted_by_id") @db.Uuid
-  product            Product?                @relation(fields: [productId], references: [id])
-  aliases            CanonicalProductAlias[]
-  matches            ProductMatch[]
-  reviews            MatchReview[]
+  id                     String                  @id @default(uuid()) @db.Uuid
+  productId              String?                 @unique @map("product_id") @db.Uuid
+  canonicalName          String                  @map("canonical_name")
+  normalizedBrand        String                  @map("normalized_brand")
+  normalizedGeneric      String                  @map("normalized_generic")
+  normalizedStrength     String?                 @map("normalized_strength")
+  normalizedDosageForm   String?                 @map("normalized_dosage_form")
+  normalizedManufacturer String?                 @map("normalized_manufacturer")
+  packSize               String?                 @map("pack_size")
+  registrationNumber     String?                 @map("registration_number")
+  medicineSignature      String                  @unique @map("medicine_signature")
+  status                 RecordStatus            @default(PENDING_REVIEW)
+  confidenceScore        Decimal?                @map("confidence_score") @db.Decimal(5, 4)
+  sourceType             SourceType              @default(SYSTEM) @map("source_type")
+  sourceUrl              String?                 @map("source_url")
+  metadata               Json?
+  createdAt              DateTime                @default(now()) @map("created_at")
+  updatedAt              DateTime                @updatedAt @map("updated_at")
+  deletedAt              DateTime?               @map("deleted_at")
+  createdById            String?                 @map("created_by_id") @db.Uuid
+  updatedById            String?                 @map("updated_by_id") @db.Uuid
+  deletedById            String?                 @map("deleted_by_id") @db.Uuid
+  product                Product?                @relation(fields: [productId], references: [id])
+  aliases                CanonicalProductAlias[]
+  matches                ProductMatch[]
+  reviews                MatchReview[]
 
   @@index([normalizedBrand])
   @@index([normalizedGeneric])
@@ -1396,28 +1403,28 @@ model ProductMatch {
 }
 
 model MatchReview {
-  id                 String            @id @default(uuid()) @db.Uuid
-  productMatchId     String            @map("product_match_id") @db.Uuid
-  canonicalProductId String?           @map("canonical_product_id") @db.Uuid
-  reviewerUserId     String?           @map("reviewer_user_id") @db.Uuid
-  reviewStatus       MatchReviewStatus @default(PENDING) @map("review_status")
-  reviewNotes        String?           @map("review_notes")
-  confidenceBreakdown Json?            @map("confidence_breakdown")
-  explanation        Json?
-  status             RecordStatus      @default(PENDING_REVIEW)
-  confidenceScore    Decimal?          @map("confidence_score") @db.Decimal(5, 4)
-  sourceType         SourceType        @default(ADMIN_REVIEW) @map("source_type")
-  sourceUrl          String?           @map("source_url")
-  metadata           Json?
-  createdAt          DateTime          @default(now()) @map("created_at")
-  updatedAt          DateTime          @updatedAt @map("updated_at")
-  deletedAt          DateTime?         @map("deleted_at")
-  createdById        String?           @map("created_by_id") @db.Uuid
-  updatedById        String?           @map("updated_by_id") @db.Uuid
-  deletedById        String?           @map("deleted_by_id") @db.Uuid
-  productMatch       ProductMatch      @relation(fields: [productMatchId], references: [id])
-  canonicalProduct   CanonicalProduct? @relation(fields: [canonicalProductId], references: [id])
-  reviewer           User?             @relation(fields: [reviewerUserId], references: [id])
+  id                  String            @id @default(uuid()) @db.Uuid
+  productMatchId      String            @map("product_match_id") @db.Uuid
+  canonicalProductId  String?           @map("canonical_product_id") @db.Uuid
+  reviewerUserId      String?           @map("reviewer_user_id") @db.Uuid
+  reviewStatus        MatchReviewStatus @default(PENDING) @map("review_status")
+  reviewNotes         String?           @map("review_notes")
+  confidenceBreakdown Json?             @map("confidence_breakdown")
+  explanation         Json?
+  status              RecordStatus      @default(PENDING_REVIEW)
+  confidenceScore     Decimal?          @map("confidence_score") @db.Decimal(5, 4)
+  sourceType          SourceType        @default(ADMIN_REVIEW) @map("source_type")
+  sourceUrl           String?           @map("source_url")
+  metadata            Json?
+  createdAt           DateTime          @default(now()) @map("created_at")
+  updatedAt           DateTime          @updatedAt @map("updated_at")
+  deletedAt           DateTime?         @map("deleted_at")
+  createdById         String?           @map("created_by_id") @db.Uuid
+  updatedById         String?           @map("updated_by_id") @db.Uuid
+  deletedById         String?           @map("deleted_by_id") @db.Uuid
+  productMatch        ProductMatch      @relation(fields: [productMatchId], references: [id])
+  canonicalProduct    CanonicalProduct? @relation(fields: [canonicalProductId], references: [id])
+  reviewer            User?             @relation(fields: [reviewerUserId], references: [id])
 
   @@index([productMatchId])
   @@index([canonicalProductId])
@@ -1453,25 +1460,25 @@ model MatchingRule {
 }
 
 model SearchCache {
-  id              String       @id @default(uuid()) @db.Uuid
-  cacheKey        String       @unique @map("cache_key")
+  id              String           @id @default(uuid()) @db.Uuid
+  cacheKey        String           @unique @map("cache_key")
   query           String
-  normalizedQuery String       @map("normalized_query")
+  normalizedQuery String           @map("normalized_query")
   entityType      SearchEntityType @map("entity_type")
   filters         Json?
-  resultData      Json         @map("result_data")
-  expiresAt       DateTime     @map("expires_at")
-  status          RecordStatus @default(ACTIVE)
-  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType   @default(SYSTEM) @map("source_type")
-  sourceUrl       String?      @map("source_url")
+  resultData      Json             @map("result_data")
+  expiresAt       DateTime         @map("expires_at")
+  status          RecordStatus     @default(ACTIVE)
+  confidenceScore Decimal?         @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType       @default(SYSTEM) @map("source_type")
+  sourceUrl       String?          @map("source_url")
   metadata        Json?
-  createdAt       DateTime     @default(now()) @map("created_at")
-  updatedAt       DateTime     @updatedAt @map("updated_at")
-  deletedAt       DateTime?    @map("deleted_at")
-  createdById     String?      @map("created_by_id") @db.Uuid
-  updatedById     String?      @map("updated_by_id") @db.Uuid
-  deletedById     String?      @map("deleted_by_id") @db.Uuid
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  deletedAt       DateTime?        @map("deleted_at")
+  createdById     String?          @map("created_by_id") @db.Uuid
+  updatedById     String?          @map("updated_by_id") @db.Uuid
+  deletedById     String?          @map("deleted_by_id") @db.Uuid
 
   @@index([normalizedQuery])
   @@index([entityType])
@@ -1481,26 +1488,26 @@ model SearchCache {
 }
 
 model SearchPopularity {
-  id              String       @id @default(uuid()) @db.Uuid
+  id              String           @id @default(uuid()) @db.Uuid
   entityType      SearchEntityType @map("entity_type")
-  entityId        String?      @map("entity_id") @db.Uuid
+  entityId        String?          @map("entity_id") @db.Uuid
   query           String
-  normalizedQuery String       @map("normalized_query")
+  normalizedQuery String           @map("normalized_query")
   city            String?
-  searchCount     Int          @default(0) @map("search_count")
-  lastSearchedAt  DateTime?    @map("last_searched_at")
-  trendingScore   Decimal      @default(0) @map("trending_score") @db.Decimal(10, 4)
-  status          RecordStatus @default(ACTIVE)
-  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType   @default(SYSTEM) @map("source_type")
-  sourceUrl       String?      @map("source_url")
+  searchCount     Int              @default(0) @map("search_count")
+  lastSearchedAt  DateTime?        @map("last_searched_at")
+  trendingScore   Decimal          @default(0) @map("trending_score") @db.Decimal(10, 4)
+  status          RecordStatus     @default(ACTIVE)
+  confidenceScore Decimal?         @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType       @default(SYSTEM) @map("source_type")
+  sourceUrl       String?          @map("source_url")
   metadata        Json?
-  createdAt       DateTime     @default(now()) @map("created_at")
-  updatedAt       DateTime     @updatedAt @map("updated_at")
-  deletedAt       DateTime?    @map("deleted_at")
-  createdById     String?      @map("created_by_id") @db.Uuid
-  updatedById     String?      @map("updated_by_id") @db.Uuid
-  deletedById     String?      @map("deleted_by_id") @db.Uuid
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  deletedAt       DateTime?        @map("deleted_at")
+  createdById     String?          @map("created_by_id") @db.Uuid
+  updatedById     String?          @map("updated_by_id") @db.Uuid
+  deletedById     String?          @map("deleted_by_id") @db.Uuid
 
   @@unique([entityType, normalizedQuery, city])
   @@index([entityType])
@@ -1512,23 +1519,23 @@ model SearchPopularity {
 }
 
 model SearchSuggestion {
-  id              String               @id @default(uuid()) @db.Uuid
-  suggestion      String
-  normalizedSuggestion String          @map("normalized_suggestion")
-  suggestionType  SearchSuggestionType @map("suggestion_type")
-  entityId        String?              @map("entity_id") @db.Uuid
-  popularityScore Decimal              @default(0) @map("popularity_score") @db.Decimal(10, 4)
-  status          RecordStatus         @default(ACTIVE)
-  confidenceScore Decimal?             @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType           @default(SYSTEM) @map("source_type")
-  sourceUrl       String?              @map("source_url")
-  metadata        Json?
-  createdAt       DateTime             @default(now()) @map("created_at")
-  updatedAt       DateTime             @updatedAt @map("updated_at")
-  deletedAt       DateTime?            @map("deleted_at")
-  createdById     String?              @map("created_by_id") @db.Uuid
-  updatedById     String?              @map("updated_by_id") @db.Uuid
-  deletedById     String?              @map("deleted_by_id") @db.Uuid
+  id                   String               @id @default(uuid()) @db.Uuid
+  suggestion           String
+  normalizedSuggestion String               @map("normalized_suggestion")
+  suggestionType       SearchSuggestionType @map("suggestion_type")
+  entityId             String?              @map("entity_id") @db.Uuid
+  popularityScore      Decimal              @default(0) @map("popularity_score") @db.Decimal(10, 4)
+  status               RecordStatus         @default(ACTIVE)
+  confidenceScore      Decimal?             @map("confidence_score") @db.Decimal(5, 4)
+  sourceType           SourceType           @default(SYSTEM) @map("source_type")
+  sourceUrl            String?              @map("source_url")
+  metadata             Json?
+  createdAt            DateTime             @default(now()) @map("created_at")
+  updatedAt            DateTime             @updatedAt @map("updated_at")
+  deletedAt            DateTime?            @map("deleted_at")
+  createdById          String?              @map("created_by_id") @db.Uuid
+  updatedById          String?              @map("updated_by_id") @db.Uuid
+  deletedById          String?              @map("deleted_by_id") @db.Uuid
 
   @@unique([suggestionType, normalizedSuggestion])
   @@index([normalizedSuggestion])
@@ -1539,23 +1546,23 @@ model SearchSuggestion {
 }
 
 model SearchSynonym {
-  id              String       @id @default(uuid()) @db.Uuid
-  term            String
-  normalizedTerm  String       @map("normalized_term")
-  synonym         String
-  normalizedSynonym String     @map("normalized_synonym")
-  language        String       @default("en")
-  status          RecordStatus @default(ACTIVE)
-  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType   @default(SYSTEM) @map("source_type")
-  sourceUrl       String?      @map("source_url")
-  metadata        Json?
-  createdAt       DateTime     @default(now()) @map("created_at")
-  updatedAt       DateTime     @updatedAt @map("updated_at")
-  deletedAt       DateTime?    @map("deleted_at")
-  createdById     String?      @map("created_by_id") @db.Uuid
-  updatedById     String?      @map("updated_by_id") @db.Uuid
-  deletedById     String?      @map("deleted_by_id") @db.Uuid
+  id                String       @id @default(uuid()) @db.Uuid
+  term              String
+  normalizedTerm    String       @map("normalized_term")
+  synonym           String
+  normalizedSynonym String       @map("normalized_synonym")
+  language          String       @default("en")
+  status            RecordStatus @default(ACTIVE)
+  confidenceScore   Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType        SourceType   @default(SYSTEM) @map("source_type")
+  sourceUrl         String?      @map("source_url")
+  metadata          Json?
+  createdAt         DateTime     @default(now()) @map("created_at")
+  updatedAt         DateTime     @updatedAt @map("updated_at")
+  deletedAt         DateTime?    @map("deleted_at")
+  createdById       String?      @map("created_by_id") @db.Uuid
+  updatedById       String?      @map("updated_by_id") @db.Uuid
+  deletedById       String?      @map("deleted_by_id") @db.Uuid
 
   @@unique([normalizedTerm, normalizedSynonym, language])
   @@index([normalizedTerm])
@@ -1565,36 +1572,36 @@ model SearchSynonym {
 }
 
 model DiscoveryCandidate {
-  id                 String          @id @default(uuid()) @db.Uuid
-  candidateName      String          @map("candidate_name")
-  normalizedBrand    String?         @map("normalized_brand")
-  normalizedGeneric  String?         @map("normalized_generic")
-  normalizedStrength String?         @map("normalized_strength")
-  normalizedDosageForm String?       @map("normalized_dosage_form")
-  normalizedManufacturer String?     @map("normalized_manufacturer")
-  medicineSignature  String?         @map("medicine_signature")
-  registrationNumber String?         @map("registration_number")
-  packSize           String?         @map("pack_size")
-  discoveryStatus    DiscoveryStatus @default(NEW) @map("discovery_status")
-  sourceConfidence   Decimal         @default(0) @map("source_confidence") @db.Decimal(5, 4)
-  matchingConfidence Decimal         @default(0) @map("matching_confidence") @db.Decimal(5, 4)
-  evidenceConfidence Decimal         @default(0) @map("evidence_confidence") @db.Decimal(5, 4)
-  overallConfidence  Decimal         @default(0) @map("overall_confidence") @db.Decimal(5, 4)
-  duplicateOfCanonicalProductId String? @map("duplicate_of_canonical_product_id") @db.Uuid
-  duplicateOfProductId String?      @map("duplicate_of_product_id") @db.Uuid
-  status             RecordStatus    @default(PENDING_REVIEW)
-  confidenceScore    Decimal?        @map("confidence_score") @db.Decimal(5, 4)
-  sourceType         SourceType      @default(SYSTEM) @map("source_type")
-  sourceUrl          String?         @map("source_url")
-  metadata           Json?
-  createdAt          DateTime        @default(now()) @map("created_at")
-  updatedAt          DateTime        @updatedAt @map("updated_at")
-  deletedAt          DateTime?       @map("deleted_at")
-  createdById        String?         @map("created_by_id") @db.Uuid
-  updatedById        String?         @map("updated_by_id") @db.Uuid
-  deletedById        String?         @map("deleted_by_id") @db.Uuid
-  evidence           DiscoveryEvidence[]
-  reviews            DiscoveryReview[]
+  id                            String              @id @default(uuid()) @db.Uuid
+  candidateName                 String              @map("candidate_name")
+  normalizedBrand               String?             @map("normalized_brand")
+  normalizedGeneric             String?             @map("normalized_generic")
+  normalizedStrength            String?             @map("normalized_strength")
+  normalizedDosageForm          String?             @map("normalized_dosage_form")
+  normalizedManufacturer        String?             @map("normalized_manufacturer")
+  medicineSignature             String?             @map("medicine_signature")
+  registrationNumber            String?             @map("registration_number")
+  packSize                      String?             @map("pack_size")
+  discoveryStatus               DiscoveryStatus     @default(NEW) @map("discovery_status")
+  sourceConfidence              Decimal             @default(0) @map("source_confidence") @db.Decimal(5, 4)
+  matchingConfidence            Decimal             @default(0) @map("matching_confidence") @db.Decimal(5, 4)
+  evidenceConfidence            Decimal             @default(0) @map("evidence_confidence") @db.Decimal(5, 4)
+  overallConfidence             Decimal             @default(0) @map("overall_confidence") @db.Decimal(5, 4)
+  duplicateOfCanonicalProductId String?             @map("duplicate_of_canonical_product_id") @db.Uuid
+  duplicateOfProductId          String?             @map("duplicate_of_product_id") @db.Uuid
+  status                        RecordStatus        @default(PENDING_REVIEW)
+  confidenceScore               Decimal?            @map("confidence_score") @db.Decimal(5, 4)
+  sourceType                    SourceType          @default(SYSTEM) @map("source_type")
+  sourceUrl                     String?             @map("source_url")
+  metadata                      Json?
+  createdAt                     DateTime            @default(now()) @map("created_at")
+  updatedAt                     DateTime            @updatedAt @map("updated_at")
+  deletedAt                     DateTime?           @map("deleted_at")
+  createdById                   String?             @map("created_by_id") @db.Uuid
+  updatedById                   String?             @map("updated_by_id") @db.Uuid
+  deletedById                   String?             @map("deleted_by_id") @db.Uuid
+  evidence                      DiscoveryEvidence[]
+  reviews                       DiscoveryReview[]
 
   @@index([medicineSignature])
   @@index([normalizedBrand])
@@ -1605,26 +1612,26 @@ model DiscoveryCandidate {
 }
 
 model DiscoveryEvidence {
-  id                  String              @id @default(uuid()) @db.Uuid
-  discoveryCandidateId String             @map("discovery_candidate_id") @db.Uuid
-  source              String
-  discoverySourceType DiscoverySourceType @map("discovery_source_type")
-  sourceUrl           String?             @map("source_url")
-  captureDate         DateTime            @default(now()) @map("capture_date")
-  supportingFields    Json                @map("supporting_fields")
-  sourceRecordId      String?             @map("source_record_id") @db.Uuid
-  confidence          Decimal             @default(0) @db.Decimal(5, 4)
-  status              RecordStatus        @default(ACTIVE)
-  confidenceScore     Decimal?            @map("confidence_score") @db.Decimal(5, 4)
-  sourceType          SourceType          @default(SYSTEM) @map("source_type")
-  metadata            Json?
-  createdAt           DateTime            @default(now()) @map("created_at")
-  updatedAt           DateTime            @updatedAt @map("updated_at")
-  deletedAt           DateTime?           @map("deleted_at")
-  createdById         String?             @map("created_by_id") @db.Uuid
-  updatedById         String?             @map("updated_by_id") @db.Uuid
-  deletedById         String?             @map("deleted_by_id") @db.Uuid
-  candidate           DiscoveryCandidate  @relation(fields: [discoveryCandidateId], references: [id])
+  id                   String              @id @default(uuid()) @db.Uuid
+  discoveryCandidateId String              @map("discovery_candidate_id") @db.Uuid
+  source               String
+  discoverySourceType  DiscoverySourceType @map("discovery_source_type")
+  sourceUrl            String?             @map("source_url")
+  captureDate          DateTime            @default(now()) @map("capture_date")
+  supportingFields     Json                @map("supporting_fields")
+  sourceRecordId       String?             @map("source_record_id") @db.Uuid
+  confidence           Decimal             @default(0) @db.Decimal(5, 4)
+  status               RecordStatus        @default(ACTIVE)
+  confidenceScore      Decimal?            @map("confidence_score") @db.Decimal(5, 4)
+  sourceType           SourceType          @default(SYSTEM) @map("source_type")
+  metadata             Json?
+  createdAt            DateTime            @default(now()) @map("created_at")
+  updatedAt            DateTime            @updatedAt @map("updated_at")
+  deletedAt            DateTime?           @map("deleted_at")
+  createdById          String?             @map("created_by_id") @db.Uuid
+  updatedById          String?             @map("updated_by_id") @db.Uuid
+  deletedById          String?             @map("deleted_by_id") @db.Uuid
+  candidate            DiscoveryCandidate  @relation(fields: [discoveryCandidateId], references: [id])
 
   @@index([discoveryCandidateId])
   @@index([discoverySourceType])
@@ -1634,24 +1641,24 @@ model DiscoveryEvidence {
 }
 
 model DiscoveryReview {
-  id                  String                  @id @default(uuid()) @db.Uuid
-  discoveryCandidateId String                 @map("discovery_candidate_id") @db.Uuid
-  reviewerUserId      String?                 @map("reviewer_user_id") @db.Uuid
-  decision            DiscoveryReviewDecision
-  reviewNotes         String?                 @map("review_notes")
-  mergeTargetCanonicalProductId String?       @map("merge_target_canonical_product_id") @db.Uuid
-  status              RecordStatus            @default(PENDING_REVIEW)
-  confidenceScore     Decimal?                @map("confidence_score") @db.Decimal(5, 4)
-  sourceType          SourceType              @default(ADMIN_REVIEW) @map("source_type")
-  sourceUrl           String?                 @map("source_url")
-  metadata            Json?
-  createdAt           DateTime                @default(now()) @map("created_at")
-  updatedAt           DateTime                @updatedAt @map("updated_at")
-  deletedAt           DateTime?               @map("deleted_at")
-  createdById         String?                 @map("created_by_id") @db.Uuid
-  updatedById         String?                 @map("updated_by_id") @db.Uuid
-  deletedById         String?                 @map("deleted_by_id") @db.Uuid
-  candidate           DiscoveryCandidate      @relation(fields: [discoveryCandidateId], references: [id])
+  id                            String                  @id @default(uuid()) @db.Uuid
+  discoveryCandidateId          String                  @map("discovery_candidate_id") @db.Uuid
+  reviewerUserId                String?                 @map("reviewer_user_id") @db.Uuid
+  decision                      DiscoveryReviewDecision
+  reviewNotes                   String?                 @map("review_notes")
+  mergeTargetCanonicalProductId String?                 @map("merge_target_canonical_product_id") @db.Uuid
+  status                        RecordStatus            @default(PENDING_REVIEW)
+  confidenceScore               Decimal?                @map("confidence_score") @db.Decimal(5, 4)
+  sourceType                    SourceType              @default(ADMIN_REVIEW) @map("source_type")
+  sourceUrl                     String?                 @map("source_url")
+  metadata                      Json?
+  createdAt                     DateTime                @default(now()) @map("created_at")
+  updatedAt                     DateTime                @updatedAt @map("updated_at")
+  deletedAt                     DateTime?               @map("deleted_at")
+  createdById                   String?                 @map("created_by_id") @db.Uuid
+  updatedById                   String?                 @map("updated_by_id") @db.Uuid
+  deletedById                   String?                 @map("deleted_by_id") @db.Uuid
+  candidate                     DiscoveryCandidate      @relation(fields: [discoveryCandidateId], references: [id])
 
   @@index([discoveryCandidateId])
   @@index([reviewerUserId])
@@ -1660,26 +1667,26 @@ model DiscoveryReview {
 }
 
 model DiscoveryJob {
-  id              String          @id @default(uuid()) @db.Uuid
-  jobType         String          @map("job_type")
+  id                  String              @id @default(uuid()) @db.Uuid
+  jobType             String              @map("job_type")
   discoverySourceType DiscoverySourceType @map("discovery_source_type")
-  discoveryStatus DiscoveryStatus @default(NEW) @map("discovery_status")
-  scheduledAt     DateTime?       @map("scheduled_at")
-  startedAt       DateTime?       @map("started_at")
-  finishedAt      DateTime?       @map("finished_at")
-  resultSummary   Json?           @map("result_summary")
-  errorMessage    String?         @map("error_message")
-  status          RecordStatus    @default(PENDING_REVIEW)
-  confidenceScore Decimal?        @map("confidence_score") @db.Decimal(5, 4)
-  sourceType      SourceType      @default(SYSTEM) @map("source_type")
-  sourceUrl       String?         @map("source_url")
-  metadata        Json?
-  createdAt       DateTime        @default(now()) @map("created_at")
-  updatedAt       DateTime        @updatedAt @map("updated_at")
-  deletedAt       DateTime?       @map("deleted_at")
-  createdById     String?         @map("created_by_id") @db.Uuid
-  updatedById     String?         @map("updated_by_id") @db.Uuid
-  deletedById     String?         @map("deleted_by_id") @db.Uuid
+  discoveryStatus     DiscoveryStatus     @default(NEW) @map("discovery_status")
+  scheduledAt         DateTime?           @map("scheduled_at")
+  startedAt           DateTime?           @map("started_at")
+  finishedAt          DateTime?           @map("finished_at")
+  resultSummary       Json?               @map("result_summary")
+  errorMessage        String?             @map("error_message")
+  status              RecordStatus        @default(PENDING_REVIEW)
+  confidenceScore     Decimal?            @map("confidence_score") @db.Decimal(5, 4)
+  sourceType          SourceType          @default(SYSTEM) @map("source_type")
+  sourceUrl           String?             @map("source_url")
+  metadata            Json?
+  createdAt           DateTime            @default(now()) @map("created_at")
+  updatedAt           DateTime            @updatedAt @map("updated_at")
+  deletedAt           DateTime?           @map("deleted_at")
+  createdById         String?             @map("created_by_id") @db.Uuid
+  updatedById         String?             @map("updated_by_id") @db.Uuid
+  deletedById         String?             @map("deleted_by_id") @db.Uuid
 
   @@index([jobType])
   @@index([discoverySourceType])
@@ -1717,6 +1724,7 @@ model DiscoveryRule {
 enum OcrJobType {
   OCR_EXTRACT
   OCR_PROCESS
+
   @@map("ocr_job_type")
 }
 
@@ -1725,6 +1733,7 @@ enum OcrJobStatus {
   RUNNING
   COMPLETED
   FAILED
+
   @@map("ocr_job_status")
 }
 
@@ -1755,26 +1764,26 @@ model OcrJob {
 }
 
 model OcrResult {
-  id              String       @id @default(uuid()) @db.Uuid
-  jobId           String?      @map("job_id") @db.Uuid
-  providerName    String       @map("provider_name")
-  extractedText   String       @map("extracted_text")
-  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
-  textConfidence  Decimal?     @map("text_confidence") @db.Decimal(5, 4)
-  medicineConfidence Decimal? @map("medicine_confidence") @db.Decimal(5, 4)
-  overallConfidence Decimal?   @map("overall_confidence") @db.Decimal(5, 4)
-  reviewRequired  Boolean      @default(false) @map("review_required")
-  rawResponse     Json?        @map("raw_response")
-  status          RecordStatus @default(PENDING_REVIEW)
-  sourceType      SourceType?  @map("source_type")
-  sourceUrl       String?      @map("source_url")
-  metadata        Json?
-  createdAt       DateTime     @default(now()) @map("created_at")
-  updatedAt       DateTime     @updatedAt @map("updated_at")
-  deletedAt       DateTime?    @map("deleted_at")
-  createdById     String?      @map("created_by_id") @db.Uuid
-  updatedById     String?      @map("updated_by_id") @db.Uuid
-  deletedById     String?      @map("deleted_by_id") @db.Uuid
+  id                 String       @id @default(uuid()) @db.Uuid
+  jobId              String?      @map("job_id") @db.Uuid
+  providerName       String       @map("provider_name")
+  extractedText      String       @map("extracted_text")
+  confidenceScore    Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  textConfidence     Decimal?     @map("text_confidence") @db.Decimal(5, 4)
+  medicineConfidence Decimal?     @map("medicine_confidence") @db.Decimal(5, 4)
+  overallConfidence  Decimal?     @map("overall_confidence") @db.Decimal(5, 4)
+  reviewRequired     Boolean      @default(false) @map("review_required")
+  rawResponse        Json?        @map("raw_response")
+  status             RecordStatus @default(PENDING_REVIEW)
+  sourceType         SourceType?  @map("source_type")
+  sourceUrl          String?      @map("source_url")
+  metadata           Json?
+  createdAt          DateTime     @default(now()) @map("created_at")
+  updatedAt          DateTime     @updatedAt @map("updated_at")
+  deletedAt          DateTime?    @map("deleted_at")
+  createdById        String?      @map("created_by_id") @db.Uuid
+  updatedById        String?      @map("updated_by_id") @db.Uuid
+  deletedById        String?      @map("deleted_by_id") @db.Uuid
 
   @@index([jobId])
   @@index([providerName])
@@ -1808,4 +1817,264 @@ model OcrProviderLog {
   @@index([jobId])
   @@index([statusCode])
   @@map("ocr_provider_logs")
+}
+
+model TherapeuticCategory {
+  id               String                       @id @default(uuid()) @db.Uuid
+  code             String                       @unique
+  name             String
+  description      String?
+  parentCategoryId String?                      @map("parent_category_id") @db.Uuid
+  sortOrder        Int                          @default(0) @map("sort_order")
+  status           RecordStatus                 @default(ACTIVE)
+  confidenceScore  Decimal?                     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType       SourceType?                  @map("source_type")
+  sourceUrl        String?                      @map("source_url")
+  createdAt        DateTime                     @default(now()) @map("created_at")
+  updatedAt        DateTime                     @updatedAt @map("updated_at")
+  deletedAt        DateTime?                    @map("deleted_at")
+  products         ProductTherapeuticCategory[]
+
+  @@index([code])
+  @@index([status])
+  @@map("therapeutic_categories")
+}
+
+model AtcClassification {
+  id                    String                     @id @default(uuid()) @db.Uuid
+  code                  String                     @unique
+  name                  String
+  level                 Int                        @default(1)
+  parentId              String?                    @db.Uuid
+  therapeuticCategoryId String?                    @map("therapeutic_category_id") @db.Uuid
+  status                RecordStatus               @default(ACTIVE)
+  confidenceScore       Decimal?                   @map("confidence_score") @db.Decimal(5, 4)
+  sourceType            SourceType?                @map("source_type")
+  sourceUrl             String?                    @map("source_url")
+  createdAt             DateTime                   @default(now()) @map("created_at")
+  updatedAt             DateTime                   @updatedAt @map("updated_at")
+  deletedAt             DateTime?                  @map("deleted_at")
+  generics              GenericAtcClassification[]
+
+  @@index([code])
+  @@index([therapeuticCategoryId])
+  @@map("atc_classifications")
+}
+
+model CompositionGroup {
+  id                   String                        @id @default(uuid()) @db.Uuid
+  signature            String                        @unique
+  moleculesHash        String                        @map("molecules_hash")
+  dosageForm           String                        @map("dosage_form")
+  normalizedDosageForm String                        @map("normalized_dosage_form")
+  status               RecordStatus                  @default(ACTIVE)
+  confidenceScore      Decimal?                      @map("confidence_score") @db.Decimal(5, 4)
+  sourceType           SourceType?                   @map("source_type")
+  sourceUrl            String?                       @map("source_url")
+  createdAt            DateTime                      @default(now()) @map("created_at")
+  updatedAt            DateTime                      @updatedAt @map("updated_at")
+  deletedAt            DateTime?                     @map("deleted_at")
+  compositions         CompositionGroupComposition[]
+
+  @@index([signature])
+  @@index([moleculesHash])
+  @@map("composition_groups")
+}
+
+model CompositionGroupComposition {
+  id                 String           @id @default(uuid()) @db.Uuid
+  compositionGroupId String           @map("composition_group_id") @db.Uuid
+  genericId          String           @map("generic_id") @db.Uuid
+  strengthValue      Decimal?         @map("strength_value") @db.Decimal(12, 4)
+  strengthUnit       String?          @map("strength_unit")
+  ingredientOrder    Int              @default(1) @map("ingredient_order")
+  status             RecordStatus     @default(ACTIVE)
+  confidenceScore    Decimal?         @map("confidence_score") @db.Decimal(5, 4)
+  sourceType         SourceType?      @map("source_type")
+  sourceUrl          String?          @map("source_url")
+  createdAt          DateTime         @default(now()) @map("created_at")
+  updatedAt          DateTime         @updatedAt @map("updated_at")
+  deletedAt          DateTime?        @map("deleted_at")
+  compositionGroup   CompositionGroup @relation(fields: [compositionGroupId], references: [id])
+  generic            Generic          @relation(fields: [genericId], references: [id])
+
+  @@unique([compositionGroupId, genericId, ingredientOrder])
+  @@index([compositionGroupId])
+  @@index([genericId])
+  @@map("composition_group_compositions")
+}
+
+model ProductPack {
+  id               String             @id @default(uuid()) @db.Uuid
+  productId        String             @map("product_id") @db.Uuid
+  packSize         String             @map("pack_size")
+  packSizeMl       String?            @map("pack_size_ml")
+  packSizeUnits    String?            @map("pack_size_units")
+  unitType         String?            @map("unit_type")
+  conversionFactor Decimal?           @map("conversion_factor") @db.Decimal(10, 4)
+  pricePerUnit     Decimal?           @map("price_per_unit") @db.Decimal(12, 2)
+  status           RecordStatus       @default(ACTIVE)
+  confidenceScore  Decimal?           @map("confidence_score") @db.Decimal(5, 4)
+  sourceType       SourceType?        @map("source_type")
+  sourceUrl        String?            @map("source_url")
+  createdAt        DateTime           @default(now()) @map("created_at")
+  updatedAt        DateTime           @updatedAt @map("updated_at")
+  deletedAt        DateTime?          @map("deleted_at")
+  product          Product            @relation(fields: [productId], references: [id])
+  prices           ProductPackPrice[]
+
+  @@index([productId])
+  @@index([status])
+  @@map("product_packs")
+}
+
+model ProductPackPrice {
+  id              String       @id @default(uuid()) @db.Uuid
+  productPackId   String       @map("product_pack_id") @db.Uuid
+  city            String?
+  price           Decimal      @db.Decimal(12, 2)
+  currency        String       @default("PKR")
+  observedAt      DateTime     @default(now()) @map("observed_at")
+  availability    String?
+  status          RecordStatus @default(ACTIVE)
+  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType?  @map("source_type")
+  sourceUrl       String?      @map("source_url")
+  metadata        Json?
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  deletedAt       DateTime?    @map("deleted_at")
+  productPack     ProductPack  @relation(fields: [productPackId], references: [id])
+
+  @@index([productPackId, observedAt])
+  @@index([city])
+  @@map("product_pack_prices")
+}
+
+model DataSource {
+  id               String       @id @default(uuid()) @db.Uuid
+  sourceType       SourceType   @map("source_type")
+  sourceName       String       @map("source_name")
+  sourceUrl        String?      @map("source_url")
+  trustLevel       Int          @default(1) @map("trust_level")
+  reliabilityScore Decimal?     @map("reliability_score") @db.Decimal(5, 4)
+  lastSyncAt       DateTime?    @map("last_sync_at")
+  status           RecordStatus @default(ACTIVE)
+  metadata         Json?
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @updatedAt @map("updated_at")
+  deletedAt        DateTime?    @map("deleted_at")
+
+  @@index([sourceType])
+  @@index([trustLevel])
+  @@map("data_sources")
+}
+
+model UserReport {
+  id              String       @id @default(uuid()) @db.Uuid
+  userId          String?      @map("user_id") @db.Uuid
+  entityType      String       @map("entity_type")
+  entityId        String?      @map("entity_id") @db.Uuid
+  reportType      String       @map("report_type")
+  reason          String
+  details         Json?
+  status          RecordStatus @default(ACTIVE)
+  reviewedById    String?      @map("reviewed_by_id") @db.Uuid
+  reviewNotes     String?      @map("review_notes")
+  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType?  @map("source_type")
+  sourceUrl       String?      @map("source_url")
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  deletedAt       DateTime?    @map("deleted_at")
+  user            User?        @relation("UserReports", fields: [userId], references: [id])
+  reviewer        User?        @relation("UserReviewedReports", fields: [reviewedById], references: [id])
+
+  @@index([entityType, entityId])
+  @@index([reportType])
+  @@index([status])
+  @@map("user_reports")
+}
+
+model DataQualityFlag {
+  id              String       @id @default(uuid()) @db.Uuid
+  entityType      String       @map("entity_type")
+  entityId        String       @map("entity_id") @db.Uuid
+  flagType        String       @map("flag_type")
+  severity        String       @default("medium")
+  description     String       @map("description")
+  resolved        Boolean      @default(false)
+  resolvedAt      DateTime?    @map("resolved_at")
+  resolvedById    String?      @map("resolved_by_id") @db.Uuid
+  status          RecordStatus @default(ACTIVE)
+  confidenceScore Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType?  @map("source_type")
+  sourceUrl       String?      @map("source_url")
+  metadata        Json?
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  deletedAt       DateTime?    @map("deleted_at")
+
+  @@index([entityType, entityId])
+  @@index([flagType])
+  @@index([severity])
+  @@index([resolved])
+  @@map("data_quality_flags")
+}
+
+model GenericAtcClassification {
+  genericId       String            @map("generic_id") @db.Uuid
+  atcId           String            @map("atc_id") @db.Uuid
+  status          RecordStatus      @default(ACTIVE)
+  confidenceScore Decimal?          @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType?       @map("source_type")
+  sourceUrl       String?           @map("source_url")
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+  deletedAt       DateTime?         @map("deleted_at")
+  generic         Generic           @relation(fields: [genericId], references: [id])
+  atc             AtcClassification @relation(fields: [atcId], references: [id])
+
+  @@unique([genericId, atcId])
+  @@map("generic_atc_classifications")
+}
+
+model ProductTherapeuticCategory {
+  productId       String              @map("product_id") @db.Uuid
+  categoryId      String              @map("category_id") @db.Uuid
+  primary         Boolean             @default(false)
+  status          RecordStatus        @default(ACTIVE)
+  confidenceScore Decimal?            @map("confidence_score") @db.Decimal(5, 4)
+  sourceType      SourceType?         @map("source_type")
+  sourceUrl       String?             @map("source_url")
+  createdAt       DateTime            @default(now()) @map("created_at")
+  updatedAt       DateTime            @updatedAt @map("updated_at")
+  deletedAt       DateTime?           @map("deleted_at")
+  product         Product             @relation(fields: [productId], references: [id])
+  category        TherapeuticCategory @relation(fields: [categoryId], references: [id])
+
+  @@unique([productId, categoryId])
+  @@map("product_therapeutic_categories")
+}
+
+model ManufacturerProfile {
+  id                  String       @id @default(uuid()) @db.Uuid
+  manufacturerId      String       @unique @map("manufacturer_id") @db.Uuid
+  country             String?
+  drapStatus          String?      @map("drap_status")
+  totalProducts       Int          @default(0) @map("total_products")
+  totalMolecules      Int          @default(0) @map("total_molecules")
+  trustScore          Decimal?     @map("trust_score") @db.Decimal(5, 4)
+  marketPresenceScore Decimal?     @map("market_presence_score") @db.Decimal(5, 4)
+  status              RecordStatus @default(ACTIVE)
+  confidenceScore     Decimal?     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType          SourceType?  @map("source_type")
+  sourceUrl           String?      @map("source_url")
+  createdAt           DateTime     @default(now()) @map("created_at")
+  updatedAt           DateTime     @updatedAt @map("updated_at")
+  deletedAt           DateTime?    @map("deleted_at")
+  manufacturer        Manufacturer @relation(fields: [manufacturerId], references: [id])
+
+  @@index([manufacturerId])
+  @@map("manufacturer_profiles")
 }
