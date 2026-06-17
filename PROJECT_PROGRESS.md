@@ -115,8 +115,10 @@ P20 Closed Beta UAT is complete. The beta flows passed, the OCR upload endpoint 
 
 ## P22 Public Beta Launch
 
-- All beta checks pass.
-- Build passes.
-- Tests pass (36/36).
-- Rate limiting active.
-- **LAUNCHED for public beta**
+- Backend deployed on Railway.
+- Database healthy with `databaseConfigured=true`.
+- R2 configured with runtime variables.
+- OCR upload wired to R2.
+- Rate limiting active (120 req/min).
+- Frontend foundation exists, deployment pending.
+- **Public Beta Launched**

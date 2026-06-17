@@ -10,7 +10,7 @@ Public Beta Launch
 
 ## Current Status
 
-The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, admin review panel foundation, and PWA frontend foundation are implemented. Production Postgres is attached, `DATABASE_URL` is present, Prisma migrations and seed are complete, `databaseConfigured=true` is confirmed, health checks pass, and build/tests pass. R2 bucket verification is complete, the bucket-level smoke test passed, and closed beta UAT has now been executed with documented OCR upload limitations. The next task is Public Beta Launch Preparation.
+The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, admin review panel foundation, and PWA frontend foundation are implemented. Production Postgres is attached, `DATABASE_URL` is present, Prisma migrations and seed are complete, `databaseConfigured=true` is confirmed, health checks pass, and build/tests pass. R2 bucket verification is complete. The backend is deployed on Railway. The frontend foundation exists but requires deployment to Cloudflare Pages for public beta.
 
 ## Mandatory Read Order For Future AI Agents
 

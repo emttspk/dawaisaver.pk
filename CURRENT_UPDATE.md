@@ -1,4 +1,4 @@
-# Current Update - P22 Public Beta Launch
+# Current Update - P23 Public Beta Launch
 
 ## Date
 
@@ -6,32 +6,30 @@
 
 ## Status
 
-Public Beta Launch preparation complete. Rate limiting already configured. All beta checks pass.
+Backend deployed on Railway. Frontend foundation exists but not yet deployed. Public beta launch plan and feedback workflow created.
+
+## Deployment
+
+| Component | Status |
+|-----------|--------|
+| Backend API | ✅ Railway |
+| Database | ✅ Healthy |
+| R2 | ✅ Configured |
+| Frontend PWA | ⚠️ Foundation only |
+| Admin | ⚠️ Foundation only |
 
 ## Verified
 
-- OCR upload: wired to R2 via `UploadService`
 - Registration: pass
 - Login: pass
 - Dashboard: pass
 - Search: pass
-- OCR: pass
+- OCR upload: R2 wired
 - Admin review: pass
-- Database: `databaseConfigured=true`
-- R2: signed requests
+- Health checks: pass
 - Build: pass
 - Tests: 36/36 pass
-- Rate limiting: 120 req/min globally
 
-## Public Beta Readiness
+## Next
 
-| Classification | Status |
-|----------------|--------|
-| Core flows | ✅ Ready |
-| Database | ✅ Ready |
-| R2 | ✅ Ready |
-| Rate limiting | ✅ 120 req/min |
-
-## Next Task
-
-Public Beta Launch
+Deploy frontend to Cloudflare Pages and launch public beta.
