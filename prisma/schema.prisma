@@ -318,6 +318,7 @@ model Generic {
   compositions       ProductComposition[]
   compositionGroups  CompositionGroupComposition[]
   atcClassifications GenericAtcClassification[]
+  moleculeAliases    MoleculeAlias[]
 
   @@unique([normalizedName])
   @@index([status])
@@ -797,30 +798,31 @@ model AuditLog {
 }
 
 model ImportBatch {
-  id              String            @id @default(uuid()) @db.Uuid
-  sourceType      SourceType        @map("source_type")
-  sourceUrl       String?           @map("source_url")
-  fileName        String?           @map("file_name")
-  adapterType     String            @map("adapter_type")
-  status          ImportBatchStatus @default(PENDING)
-  totalRows       Int               @default(0) @map("total_rows")
-  validRows       Int               @default(0) @map("valid_rows")
-  invalidRows     Int               @default(0) @map("invalid_rows")
-  duplicateRows   Int               @default(0) @map("duplicate_rows")
-  savedRows       Int               @default(0) @map("saved_rows")
-  startedAt       DateTime?         @map("started_at")
-  finishedAt      DateTime?         @map("finished_at")
-  importReport    Json?             @map("import_report")
-  confidenceScore Decimal?          @map("confidence_score") @db.Decimal(5, 4)
-  metadata        Json?
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt @map("updated_at")
-  deletedAt       DateTime?         @map("deleted_at")
-  createdById     String?           @map("created_by_id") @db.Uuid
-  updatedById     String?           @map("updated_by_id") @db.Uuid
-  deletedById     String?           @map("deleted_by_id") @db.Uuid
-  items           ImportBatchItem[]
-  errors          ImportError[]
+  id                 String              @id @default(uuid()) @db.Uuid
+  sourceType         SourceType          @map("source_type")
+  sourceUrl          String?             @map("source_url")
+  fileName           String?             @map("file_name")
+  adapterType        String              @map("adapter_type")
+  status             ImportBatchStatus   @default(PENDING)
+  totalRows          Int                 @default(0) @map("total_rows")
+  validRows          Int                 @default(0) @map("valid_rows")
+  invalidRows        Int                 @default(0) @map("invalid_rows")
+  duplicateRows      Int                 @default(0) @map("duplicate_rows")
+  savedRows          Int                 @default(0) @map("saved_rows")
+  startedAt          DateTime?           @map("started_at")
+  finishedAt         DateTime?           @map("finished_at")
+  importReport       Json?               @map("import_report")
+  confidenceScore    Decimal?            @map("confidence_score") @db.Decimal(5, 4)
+  metadata           Json?
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  deletedAt          DateTime?           @map("deleted_at")
+  createdById        String?             @map("created_by_id") @db.Uuid
+  updatedById        String?             @map("updated_by_id") @db.Uuid
+  deletedById        String?             @map("deleted_by_id") @db.Uuid
+  items              ImportBatchItem[]
+  errors             ImportError[]
+  atcClassifications AtcClassification[]
 
   @@index([sourceType])
   @@index([adapterType])
@@ -1820,20 +1822,21 @@ model OcrProviderLog {
 }
 
 model TherapeuticCategory {
-  id               String                       @id @default(uuid()) @db.Uuid
-  code             String                       @unique
-  name             String
-  description      String?
-  parentCategoryId String?                      @map("parent_category_id") @db.Uuid
-  sortOrder        Int                          @default(0) @map("sort_order")
-  status           RecordStatus                 @default(ACTIVE)
-  confidenceScore  Decimal?                     @map("confidence_score") @db.Decimal(5, 4)
-  sourceType       SourceType?                  @map("source_type")
-  sourceUrl        String?                      @map("source_url")
-  createdAt        DateTime                     @default(now()) @map("created_at")
-  updatedAt        DateTime                     @updatedAt @map("updated_at")
-  deletedAt        DateTime?                    @map("deleted_at")
-  products         ProductTherapeuticCategory[]
+  id                 String                       @id @default(uuid()) @db.Uuid
+  code               String                       @unique
+  name               String
+  description        String?
+  parentCategoryId   String?                      @map("parent_category_id") @db.Uuid
+  sortOrder          Int                          @default(0) @map("sort_order")
+  status             RecordStatus                 @default(ACTIVE)
+  confidenceScore    Decimal?                     @map("confidence_score") @db.Decimal(5, 4)
+  sourceType         SourceType?                  @map("source_type")
+  sourceUrl          String?                      @map("source_url")
+  createdAt          DateTime                     @default(now()) @map("created_at")
+  updatedAt          DateTime                     @updatedAt @map("updated_at")
+  deletedAt          DateTime?                    @map("deleted_at")
+  products           ProductTherapeuticCategory[]
+  atcClassifications AtcClassification[]          @relation("AtcTherapeuticCategory")
 
   @@index([code])
   @@index([status])
@@ -1846,6 +1849,9 @@ model AtcClassification {
   name                  String
   level                 Int                        @default(1)
   parentId              String?                    @db.Uuid
+  parentCode            String?                    @map("parent_code")
+  sourceVersion         String?                    @map("source_version")
+  importBatchId         String?                    @map("import_batch_id") @db.Uuid
   therapeuticCategoryId String?                    @map("therapeutic_category_id") @db.Uuid
   status                RecordStatus               @default(ACTIVE)
   confidenceScore       Decimal?                   @map("confidence_score") @db.Decimal(5, 4)
@@ -1854,11 +1860,35 @@ model AtcClassification {
   createdAt             DateTime                   @default(now()) @map("created_at")
   updatedAt             DateTime                   @updatedAt @map("updated_at")
   deletedAt             DateTime?                  @map("deleted_at")
+  parentClassification  AtcClassification?         @relation("AtcHierarchy", fields: [parentId], references: [id])
+  childClassifications  AtcClassification[]        @relation("AtcHierarchy")
+  importBatch           ImportBatch?               @relation(fields: [importBatchId], references: [id])
+  therapeuticCategory   TherapeuticCategory?       @relation("AtcTherapeuticCategory", fields: [therapeuticCategoryId], references: [id])
   generics              GenericAtcClassification[]
 
   @@index([code])
   @@index([therapeuticCategoryId])
   @@map("atc_classifications")
+}
+
+model MoleculeAlias {
+  id                  String      @id @default(uuid()) @db.Uuid
+  genericId           String      @map("generic_id") @db.Uuid
+  aliasName           String      @map("alias_name")
+  normalizedAliasName String      @map("normalized_alias_name")
+  aliasType           String      @map("alias_type")
+  confidenceScore     Decimal?    @map("confidence_score") @db.Decimal(5, 4)
+  sourceType          SourceType? @map("source_type")
+  sourceUrl           String?     @map("source_url")
+  createdAt           DateTime    @default(now()) @map("created_at")
+  updatedAt           DateTime    @updatedAt @map("updated_at")
+  deletedAt           DateTime?   @map("deleted_at")
+  generic             Generic     @relation(fields: [genericId], references: [id])
+
+  @@unique([genericId, normalizedAliasName, aliasType])
+  @@index([normalizedAliasName])
+  @@index([aliasType])
+  @@map("molecule_aliases")
 }
 
 model CompositionGroup {
