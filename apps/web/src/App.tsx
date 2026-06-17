@@ -27,32 +27,28 @@ function AppShell() {
   const { isAuthenticated, logout, user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#f6fbf9] text-slate-950">
-      <header className="sticky top-0 z-20 border-b border-emerald-100 bg-white/90 shadow-sm shadow-emerald-950/5 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-          <NavLink to="/" className="flex items-center gap-2 text-xl font-bold text-emerald-800">
-            <span className="grid h-9 w-9 place-items-center rounded-lg bg-emerald-700 text-sm font-black text-white">DS</span>
+    <div className="min-h-screen bg-white text-slate-900">
+      <header className="sticky top-0 z-20 border-b border-emerald-100 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+          <NavLink to="/" className="flex items-center gap-2 text-xl font-bold text-slate-900">
+            <span className="grid h-9 w-9 place-items-center rounded-lg bg-emerald-600 text-sm font-bold text-white">DS</span>
             <span>DawaiSaver.pk</span>
           </NavLink>
-          <nav className="flex flex-wrap items-center gap-2 text-sm">
-            <NavItem to="/search">Search</NavItem>
-            <NavItem to="/prescription/text">Prescription</NavItem>
-            <NavItem to="/prescription/upload">Upload</NavItem>
-            <NavItem to="/help">Help</NavItem>
+          <nav className="hidden sm:flex items-center gap-6 text-sm font-medium">
+            <a href="#how-it-works" className="text-slate-600 hover:text-emerald-700">How It Works</a>
+            <a href="#savings" className="text-slate-600 hover:text-emerald-700">Savings</a>
+            <a href="#features" className="text-slate-600 hover:text-emerald-700">Features</a>
+            <a href="#faq" className="text-slate-600 hover:text-emerald-700">FAQ</a>
             {isAuthenticated ? (
               <>
-                <NavItem to="/dashboard">Dashboard</NavItem>
-                <NavItem to="/profile">{user?.name || "Profile"}</NavItem>
-                <button onClick={logout} className="rounded-md px-3 py-2 font-medium text-slate-700 hover:bg-emerald-50">
-                  Logout
-                </button>
+                <NavLink to="/dashboard" className="rounded-md px-3 py-2 font-medium text-slate-700 hover:bg-emerald-50">Dashboard</NavLink>
+                <NavLink to="/profile" className="rounded-md px-3 py-2 font-medium text-slate-700 hover:bg-emerald-50">{user?.name || "Profile"}</NavLink>
+                <button onClick={logout} className="rounded-md px-3 py-2 font-medium text-slate-700 hover:bg-emerald-50">Logout</button>
               </>
             ) : (
               <>
-                <NavItem to="/login">Login</NavItem>
-                <NavLink to="/register" className="rounded-md bg-emerald-700 px-4 py-2 font-semibold text-white shadow-sm shadow-emerald-900/20 hover:bg-emerald-800">
-                  Register
-                </NavLink>
+                <NavLink to="/login" className="rounded-md px-3 py-2 font-medium text-slate-700 hover:bg-emerald-50">Login</NavLink>
+                <NavLink to="/register" className="rounded-md bg-emerald-600 px-4 py-2 font-semibold text-white shadow-sm shadow-emerald-900/20 hover:bg-emerald-700">Register</NavLink>
               </>
             )}
           </nav>
@@ -75,25 +71,9 @@ function AppShell() {
           <Route path="/help" element={<HelpFaq />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
     </div>
-  );
-}
-
-function NavItem({ to, children }: { to: string; children: string }) {
-  return (
-    <NavLink
-      to={to}
-      className={({ isActive }) =>
-        `rounded-md px-3 py-2 ${
-          isActive ? "bg-emerald-50 font-semibold text-emerald-800" : "font-medium text-slate-700 hover:bg-emerald-50"
-        }`
-      }
-    >
-      {children}
-    </NavLink>
   );
 }
 

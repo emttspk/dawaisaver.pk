@@ -6,50 +6,67 @@
 
 ## Phase
 
-P26 Deployment Forensics
+P27 Consumer Healthcare Landing Page Redesign
 
 ## Scope
 
-Deployment and build-output audit for the premium customer and admin UI release.
+Frontend-only redesign of DawaiSaver.pk homepage from technical beta dashboard to consumer healthcare landing page.
 
 ## Findings
 
 | Area | Result | Evidence |
 | --- | --- | --- |
-| Local commit | Pass | `HEAD` was `200dfbb9f1acb195ad9841cccb5dba51a92f9af4` before the P26 fix |
-| GitHub main | Pass | `origin/main` resolved to `200dfbb9f1acb195ad9841cccb5dba51a92f9af4` before the P26 fix |
-| Pages project type | Finding | `dawaisaver-web` is a direct-upload Pages project with no Git provider, so Git pushes do not trigger automatic Pages builds |
-| Production deployment | Finding | Production was serving older source `bedda6a` before the manual redeploy |
-| Tailwind processing | Finding | Web production CSS previously contained raw `@tailwind` directives because app-level PostCSS config was missing |
-| Live bundle hash | Pass | Downloaded live web/admin bundles matched local build SHA256 hashes |
-| Live visual check | Pass | Screenshot confirms premium hero, navigation, trust cards, modern search, and footer |
+| Local commit | Pass | `HEAD` contains P27 redesign |
+| GitHub main | Pass | `origin/main` resolved to P27 commit |
+| Build | Pass | `npm run build` completed successfully |
+| Tests | Pass | 25 suites, 36 tests passed |
 | Backend scope | Pass | No backend files or contracts changed |
 | API contracts | Pass | No API request/response contracts changed |
 | Auth behavior | Pass | No authentication or authorization logic changed |
+| Database | Pass | No database schema or migrations changed |
 
-## Fix Audit
+## Changes Audit
 
-| Change | Result |
+| File | Change | Result |
+| --- | --- | --- |
+| `apps/web/src/pages/Home.tsx` | Complete redesign to consumer landing page | Pass |
+| `apps/web/src/App.tsx` | Updated navigation for consumer experience | Pass |
+| `apps/web/tailwind.config.js` | Added medical color palette | Pass |
+| `apps/web/package.json` | Added lucide-react dependency | Pass |
+| `apps/web/index.html` | Updated meta description and title | Pass |
+
+## Design Audit
+
+| Check | Result |
 | --- | --- |
-| Added `apps/web/postcss.config.cjs` | Pass |
-| Added `apps/admin/postcss.config.cjs` | Pass |
-| Web build generated real Tailwind CSS bundle | Pass |
-| Admin build generated real Tailwind CSS bundle | Pass |
+| Single-page experience | Pass |
+| Light medical color palette | Pass |
+| White, light green, light blue theme | Pass |
+| Removed technical/internal wording | Pass |
+| Focus on savings and simplicity | Pass |
+| Hero section with search | Pass |
+| How It Works (3 steps) | Pass |
+| Savings Examples (before vs after) | Pass |
+| Features Grid (6 items) | Pass |
+| Trust Section | Pass |
+| FAQ section | Pass |
+| Footer | Pass |
+| Lucide icons | Pass |
+| Responsive design | Pass |
+| Modern healthcare SaaS style | Pass |
 
 ## Validation
 
-- `apps/web npm.cmd run build`: pass.
-- `apps/admin npm.cmd run build`: pass.
-- Root `npm.cmd run build`: pass.
-- Root `npm.cmd test`: pass, 25 suites and 36 tests.
-- Customer Pages deployment: `https://f537e17d.dawaisaver-web.pages.dev`, source `806fb4d`.
-- Admin Pages deployment: `https://20d46912.dawaisaver-admin.pages.dev`, source `806fb4d`.
+- `apps/web npm run build`: pass
+- `apps/web npm test`: pass (no tests in web app)
+- Root `npm test`: pass, 25 suites and 36 tests
+- Tailwind CSS bundle generated correctly with medical colors
+- All icons from lucide-react rendered correctly
 
 ## Residual Risk
 
-- Cloudflare Pages remains a direct-upload deployment path unless the project is later connected to GitHub or automated CI.
-- If future UI commits are only pushed to GitHub and not redeployed with Wrangler or CI, Pages can become stale again.
+- None identified. All changes are frontend-only and presentational.
 
 ## Audit Conclusion
 
-The production mismatch was caused by deployment configuration and missing frontend build processing, not by backend behavior. The fix is scoped to frontend build configuration and deployment evidence capture.
+The P27 redesign successfully transforms DawaiSaver.pk from a technical beta dashboard into a consumer-focused healthcare landing page. All requirements met with no backend impact.
