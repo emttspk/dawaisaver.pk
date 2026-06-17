@@ -27,29 +27,30 @@ function AppShell() {
   const { isAuthenticated, logout, user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-950">
-      <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
+    <div className="min-h-screen bg-[#f6fbf9] text-slate-950">
+      <header className="sticky top-0 z-20 border-b border-emerald-100 bg-white/90 shadow-sm shadow-emerald-950/5 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-          <NavLink to="/" className="text-xl font-bold text-emerald-700">
-            DawaiSaver.pk
+          <NavLink to="/" className="flex items-center gap-2 text-xl font-bold text-emerald-800">
+            <span className="grid h-9 w-9 place-items-center rounded-lg bg-emerald-700 text-sm font-black text-white">DS</span>
+            <span>DawaiSaver.pk</span>
           </NavLink>
           <nav className="flex flex-wrap items-center gap-2 text-sm">
             <NavItem to="/search">Search</NavItem>
-            <NavItem to="/prescription/text">Text Rx</NavItem>
+            <NavItem to="/prescription/text">Prescription</NavItem>
             <NavItem to="/prescription/upload">Upload</NavItem>
             <NavItem to="/help">Help</NavItem>
             {isAuthenticated ? (
               <>
                 <NavItem to="/dashboard">Dashboard</NavItem>
                 <NavItem to="/profile">{user?.name || "Profile"}</NavItem>
-                <button onClick={logout} className="rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100">
+                <button onClick={logout} className="rounded-md px-3 py-2 font-medium text-slate-700 hover:bg-emerald-50">
                   Logout
                 </button>
               </>
             ) : (
               <>
                 <NavItem to="/login">Login</NavItem>
-                <NavLink to="/register" className="rounded-md bg-emerald-700 px-3 py-2 font-medium text-white">
+                <NavLink to="/register" className="rounded-md bg-emerald-700 px-4 py-2 font-semibold text-white shadow-sm shadow-emerald-900/20 hover:bg-emerald-800">
                   Register
                 </NavLink>
               </>
@@ -58,7 +59,7 @@ function AppShell() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-6">
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:py-8">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
@@ -87,7 +88,7 @@ function NavItem({ to, children }: { to: string; children: string }) {
       to={to}
       className={({ isActive }) =>
         `rounded-md px-3 py-2 ${
-          isActive ? "bg-emerald-50 font-medium text-emerald-800" : "text-slate-700 hover:bg-slate-100"
+          isActive ? "bg-emerald-50 font-semibold text-emerald-800" : "font-medium text-slate-700 hover:bg-emerald-50"
         }`
       }
     >

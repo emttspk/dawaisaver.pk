@@ -28,24 +28,26 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<ReviewTab>("overview");
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-950">
-      <header className="border-b border-slate-200 bg-white">
+    <div className="min-h-screen bg-[#f5faf8] text-slate-950">
+      <header className="border-b border-emerald-100 bg-white shadow-sm shadow-emerald-950/5">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="text-2xl font-bold">DawaiSaver.pk Admin</h1>
-            <p className="text-sm text-slate-600">{user?.email} · {user?.role}</p>
+            <p className="text-sm text-slate-600">{user?.email} - {user?.role}</p>
           </div>
-          <button onClick={logout} className="w-fit rounded-md border border-slate-300 px-4 py-2 text-sm font-medium">Logout</button>
+          <button onClick={logout} className="w-fit rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold shadow-sm">
+            Logout
+          </button>
         </div>
       </header>
-      <nav className="border-b border-slate-200 bg-white">
+      <nav className="border-b border-emerald-100 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4">
           {tabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`whitespace-nowrap border-b-2 px-3 py-3 text-sm font-medium ${
-                activeTab === tab.key ? "border-slate-900 text-slate-950" : "border-transparent text-slate-600"
+              className={`whitespace-nowrap border-b-2 px-3 py-3 text-sm font-semibold ${
+                activeTab === tab.key ? "border-emerald-700 text-emerald-800" : "border-transparent text-slate-600"
               }`}
             >
               {tab.label}
@@ -87,20 +89,71 @@ function DashboardContent({ tab }: { tab: ReviewTab }) {
 
 function AdminOverview() {
   return (
-    <div className="space-y-5">
-      <h2 className="text-xl font-bold">Admin Dashboard</h2>
+    <div className="space-y-6">
+      <section className="rounded-3xl border border-emerald-100 bg-white p-6 shadow-lg shadow-emerald-950/5">
+        <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">Operations overview</p>
+        <h2 className="mt-2 text-3xl font-bold">Admin Dashboard</h2>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+          Premium beta console for review queues, health checks, and audit-friendly decision support.
+        </p>
+      </section>
+      <div className="grid gap-4 md:grid-cols-4">
+        <Kpi value="9" label="Admin modules" tone="emerald" />
+        <Kpi value="Live" label="Railway API" tone="blue" />
+        <Kpi value="R2" label="Upload storage" tone="amber" />
+        <Kpi value="JWT" label="Role guarded" tone="slate" />
+      </div>
+      <div className="grid gap-4 lg:grid-cols-[1fr_0.8fr]">
+        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h3 className="font-bold">Review volume</h3>
+          <div className="mt-5 flex h-56 items-end gap-3 rounded-2xl bg-slate-50 p-4">
+            {[42, 68, 35, 75, 58, 88, 64].map((height, index) => (
+              <div key={index} className="flex flex-1 flex-col justify-end">
+                <div className="rounded-t-xl bg-emerald-600" style={{ height: `${height}%` }} />
+              </div>
+            ))}
+          </div>
+        </section>
+        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h3 className="font-bold">Health monitoring</h3>
+          <div className="mt-5 space-y-3">
+            {["API availability", "Database checks", "Source monitoring", "OCR queue"].map((item) => (
+              <div key={item} className="flex items-center justify-between rounded-2xl bg-slate-50 p-3 text-sm">
+                <span className="font-medium">{item}</span>
+                <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">Ready</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
       <div className="grid gap-4 md:grid-cols-3">
         {[
           ["Review queues", "OCR, prescriptions, medicine matching, discovery candidates, and price anomalies."],
           ["Evidence first", "Each review screen exposes confidence scores, source evidence, and audit-friendly action notes."],
           ["Beta operations", "Health, source status, and user activity views are available for public beta monitoring."],
         ].map(([title, body]) => (
-          <section key={title} className="rounded-lg border border-slate-200 bg-white p-5">
-            <h3 className="font-semibold">{title}</h3>
+          <section key={title} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h3 className="font-bold">{title}</h3>
             <p className="mt-2 text-sm leading-6 text-slate-600">{body}</p>
           </section>
         ))}
       </div>
+    </div>
+  );
+}
+
+function Kpi({ value, label, tone }: { value: string; label: string; tone: "emerald" | "blue" | "amber" | "slate" }) {
+  const toneClass = {
+    emerald: "bg-emerald-50 text-emerald-800",
+    blue: "bg-sky-50 text-sky-800",
+    amber: "bg-amber-50 text-amber-900",
+    slate: "bg-slate-100 text-slate-800",
+  }[tone];
+
+  return (
+    <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+      <p className={`inline-flex rounded-full px-3 py-1 text-sm font-bold ${toneClass}`}>{value}</p>
+      <p className="mt-4 text-sm font-semibold text-slate-600">{label}</p>
     </div>
   );
 }

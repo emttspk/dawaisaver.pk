@@ -6,42 +6,54 @@
 
 ## Phase
 
-P24 Full Customer UI and Admin UI Completion
+P25 Premium UI Transformation
 
-## Status
+## Scope
 
-Customer web and admin UI are implemented for public beta deployment. Backend contracts remain stable except for adding `id` to discovery candidate DTO responses so the existing review endpoint can be used from the UI.
+UI-only transformation for `apps/web` and `apps/admin`.
 
-## Findings
+## Constraints Verified
+
+| Constraint | Result |
+| --- | --- |
+| No backend logic changes | Pass |
+| No API contract changes | Pass |
+| No database changes | Pass |
+| No authentication changes | Pass |
+| No business logic changes | Pass |
+| Keep all routes functional | Pass |
+
+## Customer UI Findings
 
 | Area | Result | Evidence |
 | --- | --- | --- |
-| Registration | Pass | Customer register page calls `/auth/register` and stores JWT session |
-| Login/logout | Pass | Customer and admin apps use token-aware clients |
-| Route protection | Pass | Customer dashboard/profile require authentication |
-| Search | Pass | Search page calls `/search` and autocomplete calls `/search/autocomplete` |
-| Alternatives | Pass | Alternatives page calls `/search/alternatives/:id` and shows equivalence safety wording |
-| Prescription text | Pass | Text entry calls `/prescriptions/text` |
-| OCR upload/review | Pass | Upload calls `/ocr/upload`, OCR calls `/ocr/process`, review submits `/prescriptions/mock-upload` |
-| Cost estimate | Pass | Savings report renders returned cost estimate and high-risk warnings |
-| Search history | Pass | Beta client stores local search/report history for user visibility |
-| Admin role guard | Pass | Admin login rejects non-admin/non-reviewer users client-side and backend guards remain active |
-| Admin prescription review | Pass | UI calls `/prescriptions/:id/review` with audit notes |
-| Admin discovery review | Pass | UI calls `/discovery/review`; candidate list now exposes required `id` |
-| Admin OCR/price queues | Partial | Queues display data; approve/reject endpoints are not present for OCR or price anomaly items |
-| Admin health views | Pass | Source health calls `/sources/health`; system health reads root health endpoints |
-| Web build | Pass | `apps/web npm.cmd run build` completed |
-| Admin build | Pass | `apps/admin npm.cmd run build` completed |
-| Backend build | Pass | Root `npm.cmd run build` completed |
-| Tests | Pass | Root `npm.cmd test` completed with 25 suites and 36 tests |
+| Navigation | Pass | Premium sticky healthcare header in `apps/web/src/App.tsx` |
+| Hero | Pass | Search-first hero and prescription CTA in `apps/web/src/pages/Home.tsx` |
+| Trust/statistics | Pass | Trust metrics, statistics cards, safety wording, and footer added |
+| Search experience | Pass | Larger search controls, autocomplete chips, refined states, and modern medicine cards in `MedicineSearch.tsx` |
+| API behavior | Pass | Existing API client and route wiring unchanged |
+
+## Admin UI Findings
+
+| Area | Result | Evidence |
+| --- | --- | --- |
+| Login | Pass | Premium operations login page in `apps/admin/src/App.tsx` |
+| Dashboard | Pass | KPI cards, chart placeholder, health monitoring cards, and module cards in `Dashboard.tsx` |
+| Review queues | Pass | Shared queue layout upgraded in `OcrReviewDashboard.tsx`; prescription and discovery cards polished |
+| API behavior | Pass | Existing admin API client and auth context unchanged |
+
+## Validation
+
+- `apps/web npm.cmd run build`: pass.
+- `apps/admin npm.cmd run build`: pass.
+- Root `npm.cmd run build`: pass.
+- Root `npm.cmd test`: pass, 25 suites and 36 tests. Existing Jest worker forced-exit warning still appears after success.
 
 ## Risks
 
-- Backend prescription creation does not currently associate records with the authenticated user, so `/stats` may not reflect newly submitted beta prescriptions.
-- OCR job and price anomaly review endpoints are not exposed; their UI actions are audit placeholders until backend endpoints are added.
-- User activity dashboard has no dedicated backend endpoint yet.
-- Jest still reports a worker forced-exit warning after all tests pass.
+- Some admin queue actions remain dependent on backend endpoints that were already noted as missing in previous phases.
+- This pass improves visual quality and ergonomics but does not add new backend telemetry or analytics.
 
 ## Audit Conclusion
 
-The customer and admin frontends are ready for Cloudflare Pages deployment preparation with `VITE_API_URL` pointed at the Railway API `/api` base.
+The UI transformation is scoped to presentation and preserves the P24 functional surface while giving both customer and admin apps a more premium healthcare SaaS experience.

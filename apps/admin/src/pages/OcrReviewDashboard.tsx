@@ -55,13 +55,18 @@ export function QueueLayout({
   const hasChildren = Array.isArray(children) ? children.length > 0 : Boolean(children);
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <h2 className="text-xl font-bold">{title}</h2>
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search table..." className="rounded-md border border-slate-300 px-3 py-2" />
+      <div className="rounded-3xl border border-emerald-100 bg-white p-5 shadow-lg shadow-emerald-950/5">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">Review workspace</p>
+            <h2 className="mt-1 text-2xl font-bold">{title}</h2>
+          </div>
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search table..." className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:bg-white focus:ring-4 focus:ring-emerald-500/20" />
+        </div>
       </div>
-      {loading && <p className="rounded-lg border bg-white p-4 text-slate-600">Loading...</p>}
-      {error && <p className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">{error}</p>}
-      {!loading && !error && !hasChildren && <p className="rounded-lg border bg-white p-4 text-slate-600">{empty}</p>}
+      {loading && <p className="rounded-2xl border bg-white p-5 text-slate-600 shadow-sm">Loading...</p>}
+      {error && <p className="rounded-2xl border border-red-200 bg-red-50 p-5 text-red-700">{error}</p>}
+      {!loading && !error && !hasChildren && <p className="rounded-2xl border bg-white p-5 text-slate-600 shadow-sm">{empty}</p>}
       <div className="space-y-3">{children}</div>
     </div>
   );
@@ -70,9 +75,9 @@ export function QueueLayout({
 export function ReviewButtons({ onAction }: { onAction: (decision: string) => void }) {
   return (
     <div className="flex flex-wrap gap-2">
-      <button onClick={() => onAction("approve")} className="rounded-md bg-emerald-100 px-3 py-2 text-sm font-medium text-emerald-800">Approve</button>
-      <button onClick={() => onAction("reject")} className="rounded-md bg-red-100 px-3 py-2 text-sm font-medium text-red-800">Reject</button>
-      <button onClick={() => onAction("request_more_evidence")} className="rounded-md bg-amber-100 px-3 py-2 text-sm font-medium text-amber-900">More evidence</button>
+      <button onClick={() => onAction("approve")} className="rounded-xl bg-emerald-100 px-3 py-2 text-sm font-semibold text-emerald-800">Approve</button>
+      <button onClick={() => onAction("reject")} className="rounded-xl bg-red-100 px-3 py-2 text-sm font-semibold text-red-800">Reject</button>
+      <button onClick={() => onAction("request_more_evidence")} className="rounded-xl bg-amber-100 px-3 py-2 text-sm font-semibold text-amber-900">More evidence</button>
     </div>
   );
 }

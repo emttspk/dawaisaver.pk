@@ -28,7 +28,7 @@ export default function PrescriptionReviewDashboard() {
         const id = rowId(item);
         const rxItems = Array.isArray(item.items) ? item.items as Record<string, unknown>[] : [];
         return (
-          <article key={id} className="rounded-lg border border-slate-200 bg-white p-4">
+          <article key={id} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
               <div>
                 <h3 className="font-semibold">Prescription {shortId(id)}</h3>
@@ -36,15 +36,15 @@ export default function PrescriptionReviewDashboard() {
                 <p className="mt-1 text-sm">Items: {rxItems.length}</p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <button onClick={() => void review(id, "approve")} className="rounded-md bg-emerald-100 px-3 py-2 text-sm font-medium text-emerald-800">Approve</button>
-                <button onClick={() => void review(id, "reject")} className="rounded-md bg-red-100 px-3 py-2 text-sm font-medium text-red-800">Reject</button>
-                <button onClick={() => void review(id, "request_more_evidence")} className="rounded-md bg-amber-100 px-3 py-2 text-sm font-medium text-amber-900">More evidence</button>
+                <button onClick={() => void review(id, "approve")} className="rounded-xl bg-emerald-100 px-3 py-2 text-sm font-semibold text-emerald-800">Approve</button>
+                <button onClick={() => void review(id, "reject")} className="rounded-xl bg-red-100 px-3 py-2 text-sm font-semibold text-red-800">Reject</button>
+                <button onClick={() => void review(id, "request_more_evidence")} className="rounded-xl bg-amber-100 px-3 py-2 text-sm font-semibold text-amber-900">More evidence</button>
               </div>
             </div>
-            <textarea value={notes[id] || ""} onChange={(event) => setNotes({ ...notes, [id]: event.target.value })} placeholder="Audit notes" className="mt-3 w-full rounded-md border px-3 py-2 text-sm" />
+            <textarea value={notes[id] || ""} onChange={(event) => setNotes({ ...notes, [id]: event.target.value })} placeholder="Audit notes" className="mt-3 w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm" />
             <div className="mt-3 grid gap-2">
               {rxItems.map((rxItem) => (
-                <div key={rowId(rxItem)} className="rounded-md bg-slate-50 p-3 text-sm">
+                <div key={rowId(rxItem)} className="rounded-2xl bg-slate-50 p-3 text-sm">
                   <span className="font-medium">{text(rxItem.parsedName || rxItem.rawText)}</span>
                   <span className="ml-2 text-slate-600">Confidence: {percent(rxItem.confidenceScore)}</span>
                 </div>
