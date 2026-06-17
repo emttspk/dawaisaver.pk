@@ -63,6 +63,11 @@ Frontend-only redesign of DawaiSaver.pk homepage from technical beta dashboard t
 - Tailwind CSS bundle generated correctly with medical colors
 - All icons from lucide-react rendered correctly
 
+## Deployment
+
+- Cloudflare Pages deployment: `https://ef272d47.dawaisaver-web.pages.dev`
+- Source commit: `0384824`
+
 ## Residual Risk
 
 - None identified. All changes are frontend-only and presentational.

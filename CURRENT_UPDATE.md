@@ -47,7 +47,11 @@ Transformed DawaiSaver.pk from a technical beta dashboard into a consumer health
 - `apps/web`: `npm test` passed (no web tests, but root tests pass)
 - Root `npm test`: 25 suites, 36 tests passed
 
-## Notes
+## Deployment Evidence
+
+- Cloudflare Pages project `dawaisaver-web` deployed successfully
+- Deployment URL: `https://ef272d47.dawaisaver-web.pages.dev`
+- Source commit: `0384824`
 
 - No backend logic, API contracts, database schema, authentication flow, or business logic were changed
 - All existing functionality preserved
