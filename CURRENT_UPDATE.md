@@ -1,4 +1,4 @@
-# Current Update - P27 Consumer Healthcare Landing Page Redesign
+# Current Update - P28 Conversion-Focused Healthcare Landing Page
 
 ## Date
 
@@ -6,52 +6,50 @@
 
 ## Status
 
-Transformed DawaiSaver.pk from a technical beta dashboard into a consumer healthcare product landing page.
+Further refined DawaiSaver.pk landing page for conversion-focused healthcare experience.
 
 ## Changes
 
 ### Frontend Redesign (apps/web)
 
-- **Home.tsx**: Complete redesign as single-page consumer healthcare landing page
-  - Hero section: "Save Money on Medicines in Pakistan" with search functionality
-  - How It Works: 3-step visual process with icons
-  - Savings Examples: Before vs After comparison cards
-  - Features Grid: 6 features (Prescription Scan, Medicine Comparison, Generic Alternatives, Medicine Information, Price Tracking, Verified Sources)
-  - Trust Section: Statistics (50,000+ prescriptions reviewed, Rs. 2.5M+ savings, 200+ partner pharmacies)
+- **Home.tsx**: Updated for conversion-focused design
+  - Hero section: "Save Money on Medicines in Pakistan" with Upload Prescription and Search Medicine CTAs
+  - How It Works: 3-step process (Upload, Compare, Save) with Lucide icons
+  - Savings Examples: Before vs After pricing cards
+  - Features Grid: 6 icon cards (Prescription Scan, Medicine Comparison, Generic Alternatives, Medicine Information, Price Tracking, Verified by Doctors)
+  - Trust Section: Healthcare icons (Privacy Protected, Verified Data, Pakistan Focus)
   - FAQ section with collapsible answers
-  - Healthcare-themed footer with contact information
+  - Footer with contact information
 
-- **App.tsx**: Updated header navigation for consumer experience
-  - Removed technical NavItems (Search, Prescription, Upload, Help)
-  - Added consumer-friendly navigation (How It Works, Savings, Features, FAQ)
-  - Maintained authenticated routes (Dashboard, Profile) for existing users
+- **App.tsx**: Maintained consumer-friendly navigation
 
-- **tailwind.config.js**: Added medical color palette
-  - medical: teal/green shades for healthcare theme
-  - healthcare: lighter teal shades
+- **tailwind.config.js**: Medical color palette (emerald, teal, cyan)
 
-- **package.json**: Added lucide-react for icons
+- **package.json**: lucide-react for icons
 
-- **index.html**: Updated meta description and title for consumer audience
+- **index.html**: Updated meta description and title
 
 ## Design Details
 
-- Light medical color palette: white, emerald green, teal, cyan
-- Responsive design with mobile-friendly navigation
-- Modern healthcare SaaS styling
-- Focus on savings and simplicity (removed technical wording)
+- Light medical theme: white, emerald green, teal, cyan
+- Minimal dark colors
+- No dark prescription panel
+- No technical/internal wording
+- No API/source/evidence wording
+- Focus on savings and simplicity
 
 ## Validation
 
 - `apps/web`: `npm run build` passed
-- `apps/web`: `npm test` passed (no web tests, but root tests pass)
 - Root `npm test`: 25 suites, 36 tests passed
 
 ## Deployment Evidence
 
-- Cloudflare Pages project `dawaisaver-web` deployed successfully
-- Deployment URL: `https://ef272d47.dawaisaver-web.pages.dev`
-- Source commit: `0384824`
+- Cloudflare Pages deployment: `https://f454840a.dawaisaver-web.pages.dev`
+- Source commit: `d4d937b`
+- Live URL: `https://dawaisaver-web.pages.dev`
+
+## Notes
 
 - No backend logic, API contracts, database schema, authentication flow, or business logic were changed
 - All existing functionality preserved
