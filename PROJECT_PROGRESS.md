@@ -2,7 +2,7 @@
 
 ## Current Status
 
-P24 Full Customer UI and Admin UI Completion is complete for public beta readiness. Customer and admin frontend builds pass, backend build passes, and the next task is Cloudflare Pages Deployment and Public Beta Release.
+P26 Deployment Forensics is in progress. The customer Pages production mismatch was traced to a direct-upload Cloudflare Pages project that did not auto-build from GitHub, plus missing app-level PostCSS config that prevented Tailwind from compiling into production CSS.
 
 ## Completed Foundations
 
@@ -25,6 +25,7 @@ P24 Full Customer UI and Admin UI Completion is complete for public beta readine
 - Authentication module and role/internal guards.
 - Minimal closed-beta seed dataset in `prisma/seed.ts`.
 - Cloudflare R2 bucket `dawaisaver-pk` exists.
+- P26 deployment forensics and Tailwind build fix.
 
 ## Infrastructure Completion Cycle - 2026-06-16
 
@@ -67,6 +68,7 @@ P24 Full Customer UI and Admin UI Completion is complete for public beta readine
 - Phase 9: PWA Frontend Foundation complete
 - Phase 10/Infrastructure: In progress
 - Closed Beta User Testing: Ready to start for database-backed flows; confirm the remaining R2 runtime values before live upload UAT
+- P26 Deployment Forensics: In progress
 
 ## P17 Production Database Completion
 
@@ -137,3 +139,14 @@ P24 Full Customer UI and Admin UI Completion is complete for public beta readine
 - Backend build passes.
 - Root tests pass with 25 suites and 36 tests.
 - Next task: Cloudflare Pages Deployment and Public Beta Release.
+
+## P26 Deployment Forensics
+
+- Verified local `HEAD` and GitHub `main` contained `200dfbb9f1acb195ad9841cccb5dba51a92f9af4` before the P26 fix.
+- Verified Cloudflare Pages project `dawaisaver-web` is direct-upload/no Git provider.
+- Found production Pages deployment was stale before manual redeploy.
+- Found Tailwind CSS was not compiled because app-level PostCSS config was missing.
+- Added PostCSS configs for `apps/web` and `apps/admin`.
+- Web build passes.
+- Admin build passes.
+- Backend root build passes.

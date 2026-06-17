@@ -6,54 +6,45 @@
 
 ## Phase
 
-P25 Premium UI Transformation
+P26 Deployment Forensics
 
 ## Scope
 
-UI-only transformation for `apps/web` and `apps/admin`.
+Deployment and build-output audit for the premium customer and admin UI release.
 
-## Constraints Verified
+## Findings
 
-| Constraint | Result |
+| Area | Result | Evidence |
+| --- | --- | --- |
+| Local commit | Pass | `HEAD` was `200dfbb9f1acb195ad9841cccb5dba51a92f9af4` before the P26 fix |
+| GitHub main | Pass | `origin/main` resolved to `200dfbb9f1acb195ad9841cccb5dba51a92f9af4` before the P26 fix |
+| Pages project type | Finding | `dawaisaver-web` is a direct-upload Pages project with no Git provider, so Git pushes do not trigger automatic Pages builds |
+| Production deployment | Finding | Production was serving older source `bedda6a` before the manual redeploy |
+| Tailwind processing | Finding | Web production CSS previously contained raw `@tailwind` directives because app-level PostCSS config was missing |
+| Backend scope | Pass | No backend files or contracts changed |
+| API contracts | Pass | No API request/response contracts changed |
+| Auth behavior | Pass | No authentication or authorization logic changed |
+
+## Fix Audit
+
+| Change | Result |
 | --- | --- |
-| No backend logic changes | Pass |
-| No API contract changes | Pass |
-| No database changes | Pass |
-| No authentication changes | Pass |
-| No business logic changes | Pass |
-| Keep all routes functional | Pass |
-
-## Customer UI Findings
-
-| Area | Result | Evidence |
-| --- | --- | --- |
-| Navigation | Pass | Premium sticky healthcare header in `apps/web/src/App.tsx` |
-| Hero | Pass | Search-first hero and prescription CTA in `apps/web/src/pages/Home.tsx` |
-| Trust/statistics | Pass | Trust metrics, statistics cards, safety wording, and footer added |
-| Search experience | Pass | Larger search controls, autocomplete chips, refined states, and modern medicine cards in `MedicineSearch.tsx` |
-| API behavior | Pass | Existing API client and route wiring unchanged |
-
-## Admin UI Findings
-
-| Area | Result | Evidence |
-| --- | --- | --- |
-| Login | Pass | Premium operations login page in `apps/admin/src/App.tsx` |
-| Dashboard | Pass | KPI cards, chart placeholder, health monitoring cards, and module cards in `Dashboard.tsx` |
-| Review queues | Pass | Shared queue layout upgraded in `OcrReviewDashboard.tsx`; prescription and discovery cards polished |
-| API behavior | Pass | Existing admin API client and auth context unchanged |
+| Added `apps/web/postcss.config.cjs` | Pass |
+| Added `apps/admin/postcss.config.cjs` | Pass |
+| Web build generated real Tailwind CSS bundle | Pass |
+| Admin build generated real Tailwind CSS bundle | Pass |
 
 ## Validation
 
 - `apps/web npm.cmd run build`: pass.
 - `apps/admin npm.cmd run build`: pass.
 - Root `npm.cmd run build`: pass.
-- Root `npm.cmd test`: pass, 25 suites and 36 tests. Existing Jest worker forced-exit warning still appears after success.
 
-## Risks
+## Residual Risk
 
-- Some admin queue actions remain dependent on backend endpoints that were already noted as missing in previous phases.
-- This pass improves visual quality and ergonomics but does not add new backend telemetry or analytics.
+- Cloudflare Pages remains a direct-upload deployment path unless the project is later connected to GitHub or automated CI.
+- If future UI commits are only pushed to GitHub and not redeployed with Wrangler or CI, Pages can become stale again.
 
 ## Audit Conclusion
 
-The UI transformation is scoped to presentation and preserves the P24 functional surface while giving both customer and admin apps a more premium healthcare SaaS experience.
+The production mismatch was caused by deployment configuration and missing frontend build processing, not by backend behavior. The fix is scoped to frontend build configuration and deployment evidence capture.

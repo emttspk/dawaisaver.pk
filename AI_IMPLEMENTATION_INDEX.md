@@ -6,11 +6,11 @@ DawaiSaver.pk
 
 ## Current Phase
 
-Cloudflare Pages Deployment and Public Beta Release
+P26 Deployment Forensics
 
 ## Current Status
 
-The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, customer web UI, and admin UI are implemented. Production Postgres is attached, `DATABASE_URL` is present, Prisma migrations and seed are complete, `databaseConfigured=true` is confirmed, health checks pass, and R2 bucket verification is complete. The backend is deployed on Railway. Customer and admin frontend builds pass and are ready for Cloudflare Pages deployment configuration.
+The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, customer web UI, and admin UI are implemented. Production Postgres is attached, `DATABASE_URL` is present, Prisma migrations and seed are complete, `databaseConfigured=true` is confirmed, health checks pass, and R2 bucket verification is complete. The backend is deployed on Railway. P26 deployment forensics found Cloudflare Pages was stale because the customer Pages project is direct-upload/no Git provider, and also found Tailwind was not processed because app-level PostCSS config was missing.
 
 ## Mandatory Read Order For Future AI Agents
 
@@ -276,7 +276,7 @@ The governance phase, database foundation, data collection engines, search/disco
 
 ## Next Recommended Task
 
-Proceed to Cloudflare Pages Deployment and Public Beta Release.
+Proceed to User Acquisition and Production Monitoring after final P26 Pages redeploy evidence is captured.
 
 ## R2 Storage Compliance
 
@@ -360,3 +360,11 @@ Cloudflare R2 is the single source of truth for all persistent storage.
 - Discovery candidate responses now include `id` so the existing discovery review endpoint can act on selected UI rows.
 - `apps/web npm.cmd run build`, `apps/admin npm.cmd run build`, and root `npm.cmd run build` pass.
 - Next task: Cloudflare Pages Deployment and Public Beta Release.
+
+# P26 Deployment Forensics - 2026-06-17
+
+- Local `HEAD` and GitHub `main` both contained `200dfbb9f1acb195ad9841cccb5dba51a92f9af4` before the P26 fix.
+- Cloudflare Pages production for `dawaisaver-web` was stale because the project is direct-upload/no Git provider.
+- Premium UI markup had deployed during manual recovery, but Tailwind CSS was still unprocessed because app-level PostCSS config was missing.
+- `apps/web/postcss.config.cjs` and `apps/admin/postcss.config.cjs` added.
+- `apps/web npm.cmd run build`, `apps/admin npm.cmd run build`, and root `npm.cmd run build` pass.

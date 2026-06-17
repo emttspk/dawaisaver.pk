@@ -2,7 +2,7 @@
 
 ## Current Task
 
-Cloudflare Pages Deployment and Public Beta Release.
+User Acquisition and Production Monitoring.
 
 ## Completed
 
@@ -13,11 +13,12 @@ Cloudflare Pages Deployment and Public Beta Release.
 - Web build passes.
 - Admin build passes.
 - Backend build passes.
+- P26 deployment forensics identified direct-upload Pages staleness and missing Tailwind PostCSS processing.
+- Customer and admin app builds now emit compiled Tailwind CSS bundles.
 
 ## Next
 
-- Configure Cloudflare Pages project for `apps/web`.
-- Set `VITE_API_URL=<Railway API URL including /api>`.
-- Deploy customer frontend.
-- Deploy `apps/admin` as a separate Pages project if the beta admin console should be public-web accessible.
-- Run public beta smoke tests against deployed URLs.
+- Complete final Wrangler Pages redeploy verification and screenshot evidence capture.
+- Confirm deployed customer URL shows premium hero, navigation, trust cards, modern search section, and footer.
+- Start public beta production monitoring checklist.
+- Prepare user acquisition channels and operator response workflow.
