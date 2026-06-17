@@ -2,14 +2,17 @@
 
 ## Current Task
 
-P21 Public Beta Launch Preparation.
+P22 Public Beta Launch.
 
 ## Completed
 
 - OCR upload endpoint wired to R2
-- Public beta checklist created
-- Public beta readiness report created
+- Public beta checklist verified
+- Public beta readiness confirmed
+- Rate limiting verified (120 req/min)
+- Build passes
+- Tests pass (36/36)
 
 ## Next
 
-Public Beta Launch
+Public Beta Live - User Acquisition and Feedback Collection

@@ -110,5 +110,13 @@ P20 Closed Beta UAT is complete. The beta flows passed, the OCR upload endpoint 
 - OCR upload endpoint invokes `UploadService` for R2 upload.
 - Public beta checklist created.
 - Public beta readiness report created.
-- Rate limiting pending (deferred from beta).
+- Rate limiting verified (120 req/min globally).
 - **APPROVED for Public Beta Launch**
+
+## P22 Public Beta Launch
+
+- All beta checks pass.
+- Build passes.
+- Tests pass (36/36).
+- Rate limiting active.
+- **LAUNCHED for public beta**

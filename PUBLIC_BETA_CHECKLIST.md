@@ -32,7 +32,7 @@
 | JWT Authentication | ✅ Implemented |
 | Admin Guard | ✅ Implemented |
 | Input Validation | ✅ Implemented |
-| Rate Limiting | ⚠️ Pending |
+| Rate Limiting | ✅ 120 req/min globally |
 
 ## Beta Ready
 
@@ -43,4 +43,4 @@
 - [x] Admin review workflow
 - [x] Database health check
 - [x] R2 configuration
-- [ ] Rate limiting
+- [x] Rate limiting (120 req/min globally)

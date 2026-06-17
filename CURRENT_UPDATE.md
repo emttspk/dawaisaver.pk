@@ -1,4 +1,4 @@
-# Current Update - P21 Public Beta Launch Preparation
+# Current Update - P22 Public Beta Launch
 
 ## Date
 
@@ -6,16 +6,22 @@
 
 ## Status
 
-OCR upload endpoint wired to R2. Public beta checklist and readiness report created. Build and tests pass.
+Public Beta Launch preparation complete. Rate limiting already configured. All beta checks pass.
 
 ## Verified
 
-- OCR upload endpoint invokes `UploadService` for R2 persistence
-- User flows: registration, login, dashboard, search, OCR, admin review
+- OCR upload: wired to R2 via `UploadService`
+- Registration: pass
+- Login: pass
+- Dashboard: pass
+- Search: pass
+- OCR: pass
+- Admin review: pass
 - Database: `databaseConfigured=true`
-- R2: signed requests configured
+- R2: signed requests
 - Build: pass
 - Tests: 36/36 pass
+- Rate limiting: 120 req/min globally
 
 ## Public Beta Readiness
 
@@ -24,7 +30,7 @@ OCR upload endpoint wired to R2. Public beta checklist and readiness report crea
 | Core flows | ✅ Ready |
 | Database | ✅ Ready |
 | R2 | ✅ Ready |
-| Rate limiting | ⚠️ Pending |
+| Rate limiting | ✅ 120 req/min |
 
 ## Next Task
 
