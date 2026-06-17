@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Param, Post, Query, UseGuards } from "@nestjs/common";
-import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Get, Param, Post, Query, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { AdminGuard } from "../../common/guards/admin.guard";
 import { PrismaService } from "../../database/prisma.service";
+import { UploadService } from "./upload.service";
 import { OcrProviderRegistry } from "./providers/ocr-provider.registry";
 import { OcrService } from "./ocr.service";
 import { OcrProcessDto, OcrUploadDto } from "./dto/ocr-requests.dto";
@@ -13,6 +15,7 @@ export class OcrController {
     private readonly registry: OcrProviderRegistry,
     private readonly ocr: OcrService,
     private readonly prisma: PrismaService,
+    private readonly uploadService: UploadService,
   ) {}
 
   @Get("jobs")
@@ -34,10 +37,16 @@ export class OcrController {
 
   @Post("upload")
   @ApiOperation({ summary: "Upload an image for OCR processing." })
+  @ApiConsumes("multipart/form-data")
   @ApiBody({ type: OcrUploadDto })
   @ApiOkResponse({ description: "Image uploaded successfully." })
-  async uploadImage(@Body() dto: OcrUploadDto) {
-    return { success: true, data: dto };
+  @UseInterceptors(FileInterceptor("file"))
+  async uploadImage(@Body() dto: OcrUploadDto, @UploadedFile() file: any) {
+    if (!file) {
+      throw new Error("No file provided");
+    }
+    const uploaded = await this.uploadService.upload(file);
+    return { success: true, data: { ...dto, upload: uploaded } };
   }
 
   @Post("process")

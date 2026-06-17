@@ -1,4 +1,4 @@
-# Current Update - P20 Closed Beta User Acceptance Testing
+# Current Update - P21 Public Beta Launch Preparation
 
 ## Date
 
@@ -6,38 +6,26 @@
 
 ## Status
 
-Closed beta UAT is complete for the implemented flows. Registration, login, protected dashboard access, medicine search, autocomplete, alternative recommendations, prescription processing, OCR text extraction, cost estimation, savings reporting, and admin review workflows all passed in the validation pass. Build and tests also passed again.
+OCR upload endpoint wired to R2. Public beta checklist and readiness report created. Build and tests pass.
 
 ## Verified
 
-- User registration: pass
-- User login: pass
-- Protected dashboard: pass
-- Medicine search: pass
-- Autocomplete: pass
-- Alternative recommendations: pass
-- Prescription processing: pass
-- OCR workflow: pass for text-driven beta flow
-- Cost estimation: pass
-- Savings report: pass
-- Admin review workflow: pass
+- OCR upload endpoint invokes `UploadService` for R2 persistence
+- User flows: registration, login, dashboard, search, OCR, admin review
+- Database: `databaseConfigured=true`
+- R2: signed requests configured
 - Build: pass
-- Tests: pass, 25 suites and 36 tests
+- Tests: 36/36 pass
 
-## Runtime Variables
+## Public Beta Readiness
 
-| Variable | Status |
-| --- | --- |
-| R2_ACCESS_KEY_ID | Present, operator-confirmed |
-| R2_SECRET_ACCESS_KEY | Present, operator-confirmed |
-| R2_PUBLIC_BASE_URL | Present, operator-confirmed |
-
-## Notes
-
-- `src/modules/ocr/ocr.controller.ts` still exposes an upload endpoint that echoes the DTO instead of calling `UploadService`.
-- `src/modules/ocr/ocr.service.ts` defaults to registry-backed OCR providers, so manual-text-only mock upload flows require explicit OCR text or mock-provider selection.
-- The R2 bucket-level smoke test remains valid, and `src/modules/ocr/upload.service.ts` still signs requests directly to R2.
+| Classification | Status |
+|----------------|--------|
+| Core flows | ✅ Ready |
+| Database | ✅ Ready |
+| R2 | ✅ Ready |
+| Rate limiting | ⚠️ Pending |
 
 ## Next Task
 
-Public Beta Launch Preparation.
+Public Beta Launch

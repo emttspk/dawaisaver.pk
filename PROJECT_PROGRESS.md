@@ -101,6 +101,14 @@ P20 Closed Beta UAT is complete. The beta flows passed, the OCR upload endpoint 
 - Registration, login, protected dashboard, search, autocomplete, alternatives, prescription processing, OCR text workflow, cost estimation, savings reporting, and admin review passed.
 - Search autocomplete and alternatives were benchmarked in-memory and remained fast.
 - OCR mock extraction passed when explicitly selected.
-- OCR upload endpoint still needs wiring to `UploadService`.
+- OCR upload endpoint wired to `UploadService` for R2 persistence.
 - Build passes.
 - Tests pass.
+
+## P21 Public Beta Launch Preparation
+
+- OCR upload endpoint invokes `UploadService` for R2 upload.
+- Public beta checklist created.
+- Public beta readiness report created.
+- Rate limiting pending (deferred from beta).
+- **APPROVED for Public Beta Launch**

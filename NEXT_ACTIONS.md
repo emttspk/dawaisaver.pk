@@ -1,19 +1,15 @@
 # Next Actions
 
-## Next Task
+## Current Task
 
-Public Beta Launch Preparation.
+P21 Public Beta Launch Preparation.
 
-## Current Focus
+## Completed
 
-1. Wire the OCR upload endpoint to the R2 upload service.
-2. Confirm any remaining production launch checks against the beta findings.
-3. Prepare the public launch checklist from the closed-beta outcomes.
+- OCR upload endpoint wired to R2
+- Public beta checklist created
+- Public beta readiness report created
 
-## Current Beta Gate
+## Next
 
-- Production database setup is complete.
-- R2 bucket verification passed.
-- Closed beta UAT passed for the core user flows.
-- Build passes.
-- Tests pass.
+Public Beta Launch

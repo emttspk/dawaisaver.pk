@@ -6,7 +6,7 @@ DawaiSaver.pk
 
 ## Current Phase
 
-Infrastructure Completion & Closed Beta Readiness
+Public Beta Launch Preparation
 
 ## Current Status
 
