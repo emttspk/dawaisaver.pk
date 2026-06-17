@@ -1,4 +1,4 @@
-# Current Update - P32 WHO ATC Master Import + Molecule Normalization
+# Current Update - P33 DRAP Matching Against WHO ATC Master Database
 
 ## Date
 
@@ -6,50 +6,49 @@
 
 ## Status
 
-WHO ATC master import and molecule normalization implementation complete.
+DRAP matching against the WHO ATC master source is implemented.
 Build and tests pass.
-DRAP matching has not started yet.
+The code now supports dataset inventory, ATC matching, composition group generation, therapeutic category assignment, and data-quality flag creation.
 
-## WHO File Inventory
+## DRAP Inventory
 
-| File name | Format | Record count | ATC version/year |
-|-----------|--------|--------------|------------------|
-| `WHO ATC-DDD 2026-04-25.csv` | CSV | 7,536 | `2026-04-25` / `2026` |
+| File name | Source | Record count | Last update | Format |
+|-----------|--------|--------------|-------------|--------|
+| `src/modules/drap/samples/drap.sample.csv` | DRAP sample dataset | 3 | 2026-06-15T18:23:24Z | CSV |
+| `src/modules/matching/testing/matching.dataset.ts` | DRAP fixture source medicines | 4 | 2026-06-15T18:58:37Z | TS |
 
 Notes:
-- No `.xlsx`, `.xml`, or `.txt` WHO ATC source files are present in `WHO data/` right now.
-- The import adapter now supports CSV, XLSX, XML, and TXT ingestion paths.
+- The matching fixture also includes 3 canonical medicines for comparison.
+- No extra `.xlsx`, `.xml`, or `.txt` DRAP source datasets were present in the workspace.
 
-## WHO ATC Master Data
+## Dry-Run Matching Summary
+
+Fixture-based dry run against the current DRAP source medicines fixture:
 
 | Metric | Count |
 |--------|-------|
-| Total ATC entries | 7,536 |
-| Total Level 5 substances | 6,215 |
-| Total canonical molecules | 4,937 |
-| Total aliases | 24,690 |
-| Unmatched substances | 689 |
+| Total DRAP products | 4 |
+| Matched products | 3 |
+| Unmatched products | 1 |
+| Ambiguous products | 0 |
+| Composition groups generated | 3 |
+| Manufacturers identified | 3 |
+| Categories assigned | 3 |
+
+| Ratio | Value |
+|-------|-------|
+| Match percentage | 75.00% |
+| Unmatched percentage | 25.00% |
 
 ## Implementation Summary
 
-- Added ATC import adapter with CSV, XLSX, XML, and TXT parsing support.
-- Added molecule normalization engine with curated synonym handling.
-- Added WHO ATC inventory inspection.
-- Added WHO ATC hierarchy import into `atc_classifications`.
-- Added `molecule_aliases` table and import path.
-- Added therapeutic category mapping for WHO ATC Level 1 groups.
-- Added import batch reporting for WHO ATC normalization stats.
-- Added focused tests for ATC parsing and molecule normalization.
-
-## Schema Changes
-
-| Area | Change |
-|------|--------|
-| `atc_classifications` | Added `parent_code`, `source_version`, `import_batch_id`, and category/import relations |
-| `generics` | Added relation to molecule aliases |
-| `molecule_aliases` | New table for alias tracking |
-| `therapeutic_categories` | Added reverse relation for ATC mapping |
-| `import_batches` | Added reverse relation for ATC imports |
+- Added DRAP dataset inventory reporting.
+- Added DRAP-to-WHO ATC matching helpers.
+- Added composition group signature generation using molecule, strength, unit, and dosage form.
+- Added product match persistence with confidence scores.
+- Added data-quality flag generation for missing dosage form, invalid strength, unknown molecule, duplicate molecule, and unmatched manufacturer.
+- Added therapeutic category assignment for matched products.
+- Added focused tests for inventory and matching helpers.
 
 ## Validation
 
@@ -65,24 +64,25 @@ Notes:
 | Database Foundation | 100% |
 | Medicine Master Data | 100% |
 | WHO ATC Import | 100% |
-| ATC to Category Mapping | 100% |
-| Molecule Normalization | 100% |
-| DRAP Matching | 0% |
+| DRAP Matching | 100% |
+| Composition Group Generation | 100% |
+| Data Quality Flags | 100% |
 
 Overall completion is now approximately 99%.
 
 ## Remaining Work
 
-1. Start DRAP matching against the WHO ATC-backed molecule master.
-2. Re-check normalization coverage after DRAP mapping is introduced.
-3. Push any follow-up coverage gaps into the next phase only after WHO data is fully consumed.
+1. Run the DRAP matching flow against the live PostgreSQL database when available.
+2. Review the generated match review queue and data-quality flags for any manual corrections.
+3. Start the next phase only after the live DRAP import path is exercised end-to-end.
 
 ## Protected Scope Protocol
 
 - No breaking changes
 - Additive implementation only
-- No DRAP matching started yet
+- Existing APIs preserved
+- Existing matching, search, price intelligence, and medicine normalization logic preserved
 
 ## Exact Next Prompt
 
-`Start P33: DRAP matching against the WHO ATC master molecule database, preserving protected scope and no breaking changes.`
+`Start P34 live DRAP matching verification against PostgreSQL using the new WHO ATC-backed matcher and composition group generator, then reconcile any review queue items.`

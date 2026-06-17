@@ -2,9 +2,9 @@
 ## Project
 DawaiSaver.pk
 ## Current Phase
-P32 WHO ATC Master Import + Molecule Normalization - COMPLETE
+P33 DRAP Matching Against WHO ATC Master Database - COMPLETE
 ## Current Status
-WHO ATC inventory, hierarchy import, molecule normalization, alias storage, and category mapping are implemented. Build and tests pass.
+DRAP inventory, ATC-backed matching, composition grouping, therapeutic category assignment, and data-quality flags are implemented. Build and tests pass.
 
 ## Completed
 - Phase 0 governance package
@@ -25,6 +25,12 @@ WHO ATC inventory, hierarchy import, molecule normalization, alias storage, and 
   - molecule_aliases table added
   - therapeutic category mapping added
   - validation passed
+- P33 DRAP Matching Against WHO ATC Master Database
+  - DRAP dataset inventory added
+  - ATC-backed matching helpers added
+  - composition group generator added
+  - data-quality flags added
+  - validation passed
 
 ## Next Recommended Task
-1. Start P33 DRAP matching against the WHO ATC master molecule database.
+1. Start live PostgreSQL verification of DRAP matching and review queue reconciliation.

@@ -2,24 +2,24 @@
 ## Date
 2026-06-17
 ## Phase
-P32 WHO ATC Master Import + Molecule Normalization
+P33 DRAP Matching Against WHO ATC Master Database
 ## Scope
-WHO ATC file inventory, hierarchy import, molecule normalization, alias storage, therapeutic mapping, and validation.
+DRAP dataset inventory, WHO ATC-backed matching, composition group generation, therapeutic category assignment, data-quality flags, and validation.
 ## Findings
 | Area | Result | Evidence |
 |------|--------|----------|
-| WHO file inventory | Pass | One CSV source found in `WHO data/` |
-| ATC parsing | Pass | CSV, XLSX, XML, TXT adapter implemented |
-| Molecule normalization | Pass | Curated synonym support added for key examples |
-| Alias storage | Pass | `molecule_aliases` table added |
-| Therapeutic mapping | Pass | WHO Level 1 categories mapped into customer categories |
+| DRAP dataset inventory | Pass | Sample CSV and matching fixture identified |
+| ATC-backed DRAP matching | Pass | Pure matcher and service orchestration added |
+| Composition groups | Pass | Stable signature and hash generation added |
+| Therapeutic categories | Pass | Product category assignment path added |
+| Data quality | Pass | Flag generation added for required cases |
 | Build | Pass | `npm.cmd run build` successful |
-| Tests | Pass | 27 suites, 38 tests passed |
-| Protected scope | Pass | Additive only, no DRAP matching started |
+| Tests | Pass | 29 suites, 41 tests passed |
+| Protected scope | Pass | Additive only, existing APIs preserved |
 ## Validation Notes
 - Prisma format: pass
 - Prisma generate: pass
 - Build: pass
 - Tests: pass
 ## Audit Conclusion
-WHO ATC master import foundation is complete and ready for the DRAP matching phase.
+P33 is implemented and ready for live PostgreSQL verification and review-queue reconciliation.

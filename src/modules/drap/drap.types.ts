@@ -1,5 +1,7 @@
 export type DrapAdapterType = "csv" | "excel" | "html-table" | "api";
 
+export type DrapDatasetFormat = "csv" | "xlsx" | "xml" | "txt" | "ts";
+
 export type DrapImportStatus =
   | "PENDING"
   | "RUNNING"
@@ -121,6 +123,95 @@ export interface DrapImportReport {
   summary: DrapImportSummaryDto;
   startedAt: string;
   finishedAt: string;
+}
+
+export interface DrapDatasetInventoryItem {
+  fileName: string;
+  source: string;
+  recordCount: number;
+  lastUpdate: string;
+  format: DrapDatasetFormat;
+  notes?: string;
+}
+
+export type DrapAtcMatchMode =
+  | "exact_canonical"
+  | "alias_match"
+  | "normalized_match"
+  | "manual_review";
+
+export type DrapAtcMatchStatus = "matched" | "ambiguous" | "unmatched";
+
+export type DrapDataQualityFlagType =
+  | "unknown_molecule"
+  | "duplicate_molecule"
+  | "duplicate_brand"
+  | "invalid_strength"
+  | "missing_dosage_form"
+  | "unmatched_manufacturer";
+
+export interface DrapAtcMatchCandidate {
+  productId: string;
+  brandName: string;
+  genericName: string;
+  strength?: string;
+  dosageForm?: string;
+  manufacturerName?: string;
+  normalizedBrandName: string;
+  normalizedGenericName: string;
+  normalizedStrength?: string;
+  normalizedDosageForm?: string;
+  normalizedManufacturerName?: string;
+}
+
+export interface DrapAtcMatchResult {
+  productId: string;
+  brandName: string;
+  genericName: string;
+  canonicalGenericId?: string;
+  canonicalGenericName?: string;
+  canonicalGenericNormalizedName?: string;
+  atcCodes: string[];
+  therapeuticCategoryCodes: string[];
+  matchMode: DrapAtcMatchMode;
+  matchStatus: DrapAtcMatchStatus;
+  confidenceScore: number;
+  reviewReason?: string;
+}
+
+export interface DrapAtcMatchStatistics {
+  totalDrapProducts: number;
+  matchedProducts: number;
+  unmatchedProducts: number;
+  ambiguousProducts: number;
+  compositionGroupsGenerated: number;
+  manufacturersIdentified: number;
+  categoriesAssigned: number;
+}
+
+export interface DrapCompositionGroupResult {
+  signature: string;
+  moleculesHash: string;
+  dosageForm: string;
+  normalizedDosageForm: string;
+  productIds: string[];
+  canonicalGenericIds: string[];
+}
+
+export interface DrapAtcMatchReport extends DrapAtcMatchStatistics {
+  batchId?: string;
+  inventory: DrapDatasetInventoryItem[];
+  matchedProductResults: DrapAtcMatchResult[];
+  unmatchedProductResults: DrapAtcMatchResult[];
+  ambiguousMatchResults: DrapAtcMatchResult[];
+  dataQualityFlags: Array<{
+    entityType: string;
+    entityId: string;
+    flagType: DrapDataQualityFlagType;
+    severity: string;
+    description: string;
+  }>;
+  compositionGroups: DrapCompositionGroupResult[];
 }
 
 export interface DrapPrismaTransactionClient {
