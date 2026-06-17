@@ -35,6 +35,12 @@ Production deployment forensics found why the DawaiSaver customer URL still appe
 
 - Cloudflare Pages project `dawaisaver-web` exists as a direct-upload project.
 - Production deployment was stale before redeploy and did not track GitHub automatically.
+- Final customer deployment: `https://f537e17d.dawaisaver-web.pages.dev`, source `806fb4d`.
+- Final admin deployment: `https://20d46912.dawaisaver-admin.pages.dev`, source `806fb4d`.
+- Live customer URL: `https://dawaisaver-web.pages.dev`.
+- Live admin URL: `https://dawaisaver-admin.pages.dev`.
+- Live HTML references the same web assets generated locally: `index-7b392a13.css` and `index-cc477728.js`.
+- Downloaded live asset hashes matched the local build hashes for web and admin bundles.
 - Screenshot evidence path: `docs/screenshots/p26-dawaisaver-web-live.png`.
 
 ## Notes

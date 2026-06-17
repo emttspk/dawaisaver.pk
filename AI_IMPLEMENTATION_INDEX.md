@@ -368,3 +368,6 @@ Cloudflare R2 is the single source of truth for all persistent storage.
 - Premium UI markup had deployed during manual recovery, but Tailwind CSS was still unprocessed because app-level PostCSS config was missing.
 - `apps/web/postcss.config.cjs` and `apps/admin/postcss.config.cjs` added.
 - `apps/web npm.cmd run build`, `apps/admin npm.cmd run build`, and root `npm.cmd run build` pass.
+- Wrangler redeployed customer and admin Pages from source `806fb4d`.
+- Live bundle hashes matched the local build hashes.
+- Screenshot evidence captured at `docs/screenshots/p26-dawaisaver-web-live.png`.

@@ -21,6 +21,8 @@ Deployment and build-output audit for the premium customer and admin UI release.
 | Pages project type | Finding | `dawaisaver-web` is a direct-upload Pages project with no Git provider, so Git pushes do not trigger automatic Pages builds |
 | Production deployment | Finding | Production was serving older source `bedda6a` before the manual redeploy |
 | Tailwind processing | Finding | Web production CSS previously contained raw `@tailwind` directives because app-level PostCSS config was missing |
+| Live bundle hash | Pass | Downloaded live web/admin bundles matched local build SHA256 hashes |
+| Live visual check | Pass | Screenshot confirms premium hero, navigation, trust cards, modern search, and footer |
 | Backend scope | Pass | No backend files or contracts changed |
 | API contracts | Pass | No API request/response contracts changed |
 | Auth behavior | Pass | No authentication or authorization logic changed |
@@ -39,6 +41,9 @@ Deployment and build-output audit for the premium customer and admin UI release.
 - `apps/web npm.cmd run build`: pass.
 - `apps/admin npm.cmd run build`: pass.
 - Root `npm.cmd run build`: pass.
+- Root `npm.cmd test`: pass, 25 suites and 36 tests.
+- Customer Pages deployment: `https://f537e17d.dawaisaver-web.pages.dev`, source `806fb4d`.
+- Admin Pages deployment: `https://20d46912.dawaisaver-admin.pages.dev`, source `806fb4d`.
 
 ## Residual Risk
 

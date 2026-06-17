@@ -18,7 +18,7 @@ Determine why the Cloudflare Pages production URL still showed prototype-quality
 | Pages project build model checked | Pass, direct upload/no Git provider |
 | Build output directory checked | Pass, `apps/web/dist` and `apps/admin/dist` |
 | Production deployment source checked | Finding, production was stale before redeploy |
-| Deployed bundle compared with local build | Pending final post-commit redeploy verification |
+| Deployed bundle compared with local build | Pass, downloaded live bundle hashes matched local hashes |
 
 ## Root Cause
 
@@ -31,7 +31,7 @@ A second build issue made the first manual redeploy appear prototype-like: app-l
 - Added PostCSS config to `apps/web`.
 - Added PostCSS config to `apps/admin`.
 - Rebuilt web, admin, and backend.
-- Prepared the customer and admin bundles for Wrangler Pages deployment.
+- Redeployed the customer and admin bundles with Wrangler Pages.
 
 ## Build Evidence
 
@@ -44,7 +44,20 @@ A second build issue made the first manual redeploy appear prototype-like: app-l
 
 ## Visual Evidence
 
+- Live customer URL: `https://dawaisaver-web.pages.dev`.
+- Live admin URL: `https://dawaisaver-admin.pages.dev`.
+- Customer deployment evidence URL: `https://f537e17d.dawaisaver-web.pages.dev`.
+- Admin deployment evidence URL: `https://20d46912.dawaisaver-admin.pages.dev`.
+- Visual check confirms premium hero, premium navigation, trust cards, modern search section, and footer.
 - Screenshot path: `docs/screenshots/p26-dawaisaver-web-live.png`
+
+## Final Verification
+
+- GitHub `main`: `806fb4d2de3e4366f98db74881f06b2ff0f5c6b0`.
+- Customer Pages production source: `806fb4d`.
+- Admin Pages production source: `806fb4d`.
+- Root `npm.cmd run build`: pass.
+- Root `npm.cmd test`: pass, 25 suites and 36 tests.
 
 ## Constraints
 

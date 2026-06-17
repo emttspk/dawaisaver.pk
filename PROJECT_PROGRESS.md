@@ -150,3 +150,7 @@ P26 Deployment Forensics is in progress. The customer Pages production mismatch 
 - Web build passes.
 - Admin build passes.
 - Backend root build passes.
+- Root tests pass.
+- Customer and admin Pages deployments now use source `806fb4d`.
+- Live bundle hashes match the local build hashes.
+- Customer screenshot confirms premium hero, navigation, trust cards, modern search section, and footer.
