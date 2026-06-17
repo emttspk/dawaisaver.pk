@@ -6,32 +6,37 @@
 
 ## Phase
 
-P19 R2 Runtime Verification and Closed Beta Start
+P20 Closed Beta User Acceptance Testing
 
 ## Status
 
-R2 runtime verification is partially complete and the production database remains healthy. The R2 bucket exists, the bucket-level smoke test passed, and the application upload service is already using signed R2 requests. The remaining gaps are the manual Cloudflare-sourced secret pair and public base URL.
+Closed beta validation passed with documented OCR upload limitations. No critical defects were found in the executed beta scenarios.
 
 ## Findings
 
 | Area | Result | Evidence |
 | --- | --- | --- |
-| Wrangler auth | Pass | `wrangler whoami` returned the authenticated Cloudflare account |
-| R2 bucket | Pass | `wrangler r2 bucket list` includes `dawaisaver-pk` |
-| R2 bucket info | Pass | `wrangler r2 bucket info dawaisaver-pk` shows the bucket exists |
-| Railway R2 vars | Partial | `R2_ACCOUNT_ID` and `R2_BUCKET_NAME` are present; secret pair and public base URL are missing |
-| R2 smoke test | Pass | Remote `r2 object put`, `get`, and `delete` succeeded for `dawaisaver-pk/p19-uat/smoke-test.txt` |
-| Upload service path | Pass | `src/modules/ocr/upload.service.ts` signs requests to R2 and does not write to local disk |
-| Upload URL construction | Pass | Public URL is derived from `R2_PUBLIC_BASE_URL` in the service |
+| Registration | Pass | Auth service register flow returned tokens in the UAT pass |
+| Login | Pass | Auth service login flow returned tokens in the UAT pass |
+| Protected dashboard | Pass | Stats controller returned the expected authenticated summary |
+| Search | Pass | Search autocomplete and alternatives returned the expected seeded results |
+| Prescription processing | Pass | Prescription processing returned items, cost estimate, and savings output |
+| Admin review | Pass | Prescription and discovery review workflows returned approved outcomes |
+| OCR text workflow | Pass | Mock OCR path returned expected text when explicitly selected |
+| OCR upload endpoint | High | `src/modules/ocr/ocr.controller.ts:35-40` returns the DTO instead of invoking `UploadService` |
+| OCR provider selection | Medium | `src/modules/ocr/ocr.service.ts:26-43` defaults to registry providers and can return an invalid-request response when text-only mock upload flows do not supply compatible OCR input |
+| Test teardown | Low | Jest emitted a worker shutdown warning during the validation pass, suggesting a suite teardown leak |
+| R2 upload service | Pass | `src/modules/ocr/upload.service.ts` signs directly to R2 and avoids local filesystem persistence |
 | Build | Pass | `npm.cmd run build` completed |
 | Tests | Pass | `npm.cmd test` completed, 25 suites and 36 tests passed |
 
-## Audit Notes
+## Performance Notes
 
-- The R2 smoke test verified object creation and readback through the expected signed/object path.
-- The current upload service returns the object key and public URL, but it does not add custom object metadata headers during upload.
-- `r2.dev` public access is disabled for `dawaisaver-pk`, so the beta package should treat public URL provisioning as a manual Cloudflare dashboard step.
+- Search autocomplete: about 323.33 ms for 2,000 in-memory calls in the validation pass.
+- Search alternatives: about 371.50 ms for 2,000 in-memory calls in the validation pass.
+- OCR mock extraction: about 0.74 ms for a single call in the validation pass.
+- Controller-side query path: about 5.59 ms for 1,000 in-memory dashboard calls in the validation pass.
 
 ## Audit Conclusion
 
-The production database is healthy and the R2 storage path is working at the bucket level. Closed beta can proceed for non-upload flows now, while production upload UAT should wait for the missing Cloudflare dashboard values to be attached in Railway.
+Closed beta is ready for the next launch-prep step, but the OCR upload endpoint should be wired to the R2 upload service before anybody treats it as the canonical production file-upload path.

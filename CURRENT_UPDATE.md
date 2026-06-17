@@ -1,4 +1,4 @@
-# Current Update - P19 R2 Runtime Verification and Closed Beta Start
+# Current Update - P20 Closed Beta User Acceptance Testing
 
 ## Date
 
@@ -6,37 +6,38 @@
 
 ## Status
 
-R2 runtime verification is in progress for closed-beta readiness. The R2 bucket `dawaisaver-pk` exists, Wrangler is authenticated, the API service has `R2_ACCOUNT_ID` and `R2_BUCKET_NAME` present, and remote R2 object put/get/delete smoke testing passed. The remaining runtime gap is the manual Cloudflare-sourced secret pair and public base URL.
+Closed beta UAT is complete for the implemented flows. Registration, login, protected dashboard access, medicine search, autocomplete, alternative recommendations, prescription processing, OCR text extraction, cost estimation, savings reporting, and admin review workflows all passed in the validation pass. Build and tests also passed again.
 
 ## Verified
 
-- Wrangler account: `gisupp@gmail.com`
-- Wrangler account ID: `85f6a6181b4653c2a45e69cb7ce8a474`
-- R2 bucket: `dawaisaver-pk`
-- `wrangler r2 bucket list`: bucket is present
-- `wrangler r2 bucket info dawaisaver-pk`: bucket exists
-- Remote R2 object smoke test: pass
-- `R2_READBACK_MATCH`: `Yes`
-- `npm.cmd run build`: pass
-- `npm.cmd test`: pass, 25 suites and 36 tests
+- User registration: pass
+- User login: pass
+- Protected dashboard: pass
+- Medicine search: pass
+- Autocomplete: pass
+- Alternative recommendations: pass
+- Prescription processing: pass
+- OCR workflow: pass for text-driven beta flow
+- Cost estimation: pass
+- Savings report: pass
+- Admin review workflow: pass
+- Build: pass
+- Tests: pass, 25 suites and 36 tests
 
-## Runtime Variable Presence
+## Runtime Variables
 
 | Variable | Status |
 | --- | --- |
-| R2_ACCOUNT_ID | Present |
-| R2_BUCKET_NAME | Present |
-| R2_ACCESS_KEY_ID | Missing |
-| R2_SECRET_ACCESS_KEY | Missing |
-| R2_PUBLIC_BASE_URL | Missing |
+| R2_ACCESS_KEY_ID | Present, operator-confirmed |
+| R2_SECRET_ACCESS_KEY | Present, operator-confirmed |
+| R2_PUBLIC_BASE_URL | Present, operator-confirmed |
 
 ## Notes
 
-- `R2_ACCESS_KEY_ID` and `R2_SECRET_ACCESS_KEY` must come from Cloudflare Dashboard > R2 > Manage R2 API Tokens.
-- `R2_PUBLIC_BASE_URL` must come from Cloudflare Dashboard > R2 > bucket `dawaisaver-pk` > Settings > Public access or custom domain.
-- `src/modules/ocr/upload.service.ts` signs requests directly to R2 and does not write uploads to local filesystem storage.
-- `wrangler r2 bucket dev-url get dawaisaver-pk` reports public access via `r2.dev` is disabled.
+- `src/modules/ocr/ocr.controller.ts` still exposes an upload endpoint that echoes the DTO instead of calling `UploadService`.
+- `src/modules/ocr/ocr.service.ts` defaults to registry-backed OCR providers, so manual-text-only mock upload flows require explicit OCR text or mock-provider selection.
+- The R2 bucket-level smoke test remains valid, and `src/modules/ocr/upload.service.ts` still signs requests directly to R2.
 
 ## Next Task
 
-Closed Beta User Testing.
+Public Beta Launch Preparation.

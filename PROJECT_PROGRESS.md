@@ -1,5 +1,9 @@
 # Project Progress
 
+## Current Status
+
+P20 Closed Beta UAT is complete. The beta flows passed, the OCR upload endpoint limitation is documented, and the next task is Public Beta Launch Preparation.
+
 ## Completed Foundations
 
 - Phase 0 governance package.
@@ -79,7 +83,7 @@
 - `databaseConfigured=true` confirmed.
 - `/health`, `/health/application`, and `/health/database` pass against Railway Postgres.
 - `npm.cmd run build` and `npm.cmd test` pass.
-- Next task: Closed Beta User Testing.
+- Next task: Public Beta Launch Preparation.
 
 ## P19 R2 Runtime Verification and Closed Beta Start
 
@@ -89,5 +93,14 @@
 - `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, and `R2_PUBLIC_BASE_URL` are still pending manual Cloudflare provisioning.
 - Remote R2 object put/get/delete smoke testing passed.
 - `src/modules/ocr/upload.service.ts` uses signed R2 requests and avoids local filesystem writes.
+- Build passes.
+- Tests pass.
+
+## P20 Closed Beta User Acceptance Testing
+
+- Registration, login, protected dashboard, search, autocomplete, alternatives, prescription processing, OCR text workflow, cost estimation, savings reporting, and admin review passed.
+- Search autocomplete and alternatives were benchmarked in-memory and remained fast.
+- OCR mock extraction passed when explicitly selected.
+- OCR upload endpoint still needs wiring to `UploadService`.
 - Build passes.
 - Tests pass.

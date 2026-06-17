@@ -2,6 +2,13 @@
 
 ## 2026-06-17
 
+- Completed closed beta UAT for registration, login, protected dashboard, search, autocomplete, alternatives, prescription processing, OCR text workflow, cost estimation, savings reporting, and admin review.
+- Captured UAT findings for the OCR upload endpoint and OCR provider selection behavior.
+- Added `UAT_FINDINGS_REPORT.md` and `P20_CLOSED_BETA_REPORT.md`.
+- Updated the current update, audit report, implementation index, progress tracker, next actions, and beta summary for the P20 phase.
+
+## 2026-06-17
+
 - Verified Wrangler authentication and confirmed the `dawaisaver-pk` R2 bucket exists.
 - Confirmed `R2_ACCOUNT_ID` and `R2_BUCKET_NAME` are present in the Railway API service.
 - Verified remote R2 object put/get/delete smoke testing against `dawaisaver-pk`.

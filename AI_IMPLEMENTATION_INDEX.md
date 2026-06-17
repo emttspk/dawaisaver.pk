@@ -10,7 +10,7 @@ Infrastructure Completion & Closed Beta Readiness
 
 ## Current Status
 
-The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, admin review panel foundation, and PWA frontend foundation are implemented. Production Postgres is attached, `DATABASE_URL` is present, Prisma migrations and seed are complete, `databaseConfigured=true` is confirmed, health checks pass, and build/tests pass. R2 bucket verification is complete, the bucket-level smoke test passed, and the remaining beta-runtime gap is the manual Cloudflare-sourced secret pair and public base URL. The next task is Closed Beta User Testing.
+The governance phase, database foundation, data collection engines, search/discovery layer, backend runtime foundation, REST API controller layer, prescription processing pipeline, OCR integration layer, admin review panel foundation, and PWA frontend foundation are implemented. Production Postgres is attached, `DATABASE_URL` is present, Prisma migrations and seed are complete, `databaseConfigured=true` is confirmed, health checks pass, and build/tests pass. R2 bucket verification is complete, the bucket-level smoke test passed, and closed beta UAT has now been executed with documented OCR upload limitations. The next task is Public Beta Launch Preparation.
 
 ## Mandatory Read Order For Future AI Agents
 
@@ -53,6 +53,8 @@ The governance phase, database foundation, data collection engines, search/disco
 - `P16_DATABASE_R2_REPORT.md`: current P16 database and R2 completion summary
 - `P18_DATABASE_FINALIZATION_REPORT.md`: production database finalization report
 - `P19_R2_RUNTIME_VERIFICATION_REPORT.md`: current P19 R2 runtime verification summary
+- `P20_CLOSED_BETA_REPORT.md`: closed beta UAT summary
+- `UAT_FINDINGS_REPORT.md`: closed beta findings report
 - `INFRASTRUCTURE_COMPLETION_REPORT.md`: current infrastructure completion status
 - `BETA_READINESS_REPORT.md`: closed beta readiness gate
 - `CLOSED_BETA_UAT_REPORT.md`: closed beta UAT report
@@ -273,7 +275,7 @@ The governance phase, database foundation, data collection engines, search/disco
 
 ## Next Recommended Task
 
-Proceed to Closed Beta User Testing.
+Proceed to Public Beta Launch Preparation.
 
 ## R2 Storage Compliance
 
@@ -325,7 +327,7 @@ Cloudflare R2 is the single source of truth for all persistent storage.
 - `databaseConfigured=true` confirmed.
 - `/health`, `/health/application`, and `/health/database` pass.
 - `npm.cmd run build` and `npm.cmd test` pass.
-- Next task: Closed Beta User Testing.
+- Next task: Public Beta Launch Preparation.
 
 # P19 R2 Runtime Verification and Closed Beta Start - 2026-06-17
 
@@ -337,3 +339,13 @@ Cloudflare R2 is the single source of truth for all persistent storage.
 - `src/modules/ocr/upload.service.ts` signs requests to R2 and avoids local filesystem persistence.
 - `npm.cmd run build` and `npm.cmd test` pass.
 - Closed beta package created for UAT execution.
+
+# P20 Closed Beta User Acceptance Testing - 2026-06-17
+
+- Registration, login, protected dashboard, search, autocomplete, alternatives, prescription processing, OCR text workflow, cost estimation, savings report, and admin review flows passed.
+- Search autocomplete and alternatives were timed in-memory and returned sub-millisecond per-call averages in the validation pass.
+- OCR mock extraction passed when explicitly selected.
+- `src/modules/ocr/ocr.controller.ts` upload endpoint remains a DTO echo instead of invoking `UploadService`.
+- `src/modules/ocr/ocr.service.ts` defaults to registry providers and can reject text-only mock-upload flows without compatible OCR input.
+- Build and tests pass.
+- Next task: Public Beta Launch Preparation.
