@@ -35,9 +35,14 @@ export default function Dashboard() {
             <h1 className="text-2xl font-bold">DawaiSaver.pk Admin</h1>
             <p className="text-sm text-slate-600">{user?.email} - {user?.role}</p>
           </div>
-          <button onClick={logout} className="w-fit rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold shadow-sm">
-            Logout
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <a href="/admin/mirror-status" className="w-fit rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-800 shadow-sm">
+              Mirror status
+            </a>
+            <button onClick={logout} className="w-fit rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold shadow-sm">
+              Logout
+            </button>
+          </div>
         </div>
       </header>
       <nav className="border-b border-emerald-100 bg-white/90 backdrop-blur">

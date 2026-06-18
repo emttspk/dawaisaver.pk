@@ -192,6 +192,9 @@ export interface DrapAcquisitionPlan {
   batchId?: string;
   sourceUrl?: string;
   resumeFrom?: DrapAcquisitionCheckpoint;
+  mirrorRunId?: string;
+  workerId?: number;
+  workerCount?: number;
   maxRetries?: number;
   checkpointEvery?: number;
   archiveBatchSize?: number;
@@ -291,6 +294,43 @@ export interface DrapMirrorImportSummary {
   items: DrapMirrorImportItem[];
   archive?: DrapArchiveManifest;
   metrics?: DrapAcquisitionMetrics;
+}
+
+export interface DrapMirrorStatusResponse {
+  status: DrapImportStatus;
+  started_at?: string;
+  processed_count: number;
+  success_count: number;
+  failed_count: number;
+  retries: number;
+  throughput: number;
+  worker_count: number;
+  last_registration?: string;
+  eta_seconds?: number;
+  eta_at?: string;
+  archive_uploads: number;
+  run_id?: string;
+  total_rows: number;
+  success_rate: number;
+  checkpoint_integrity: "healthy" | "degraded" | "unknown";
+  archive_integrity: "healthy" | "degraded" | "unknown";
+  r2_integrity: "healthy" | "degraded" | "unknown";
+  batches: Array<{
+    batch_id: string;
+    status: DrapImportStatus;
+    started_at?: string;
+    processed_count: number;
+    success_count: number;
+    failed_count: number;
+    retries: number;
+    worker_id?: number;
+    mirror_run_id?: string;
+    last_registration?: string;
+    archive_uploads: number;
+    throughput: number;
+    eta_seconds?: number;
+    updated_at?: string;
+  }>;
 }
 
 export type DrapAtcMatchMode =

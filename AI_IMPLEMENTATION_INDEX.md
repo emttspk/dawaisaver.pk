@@ -6,11 +6,11 @@ DawaiSaver.pk
 
 ## Current Phase
 
-P41 DRAP Mirror Canary + Reliability Validation
+P43A Mirror Job Monitoring
 
 ## Current Status
 
-The batched DRAP mirror path was validated under a forced interruption and resume, with four worker slices covering 10,000 real registrations.
+The DRAP mirror monitoring endpoint and admin page are implemented locally, with worker metadata and mirror run IDs persisted for aggregation.
 
 ## Completed
 
@@ -80,7 +80,13 @@ The batched DRAP mirror path was validated under a forced interruption and resum
   - archive manifest replay validated
   - duplicate prevention and idempotent resume confirmed
   - validation passed
+- P43A Mirror Job Monitoring
+  - `GET /api/admin/mirror-status` added
+  - `/admin/mirror-status` page added
+  - 10-second auto-refresh added
+  - admin account created for monitoring access
+  - validation passed
 
 ## Next Recommended Task
 
-1. Run a longer 50,000-registration production-style mirror pass with the same batched archive path to confirm the 4.18-hour projection holds under sustained load.
+1. Deploy the monitoring changes to Railway and confirm the new admin mirror-status endpoint returns the current live run state correctly.

@@ -12,6 +12,45 @@ export interface AdminUser {
   role: AdminRole;
 }
 
+export interface MirrorStatusBatch {
+  batch_id: string;
+  status: string;
+  started_at?: string;
+  processed_count: number;
+  success_count: number;
+  failed_count: number;
+  retries: number;
+  worker_id?: number;
+  mirror_run_id?: string;
+  last_registration?: string;
+  archive_uploads: number;
+  throughput: number;
+  eta_seconds?: number;
+  updated_at?: string;
+}
+
+export interface MirrorStatusResponse {
+  status: string;
+  started_at?: string;
+  processed_count: number;
+  success_count: number;
+  failed_count: number;
+  retries: number;
+  throughput: number;
+  worker_count: number;
+  last_registration?: string;
+  eta_seconds?: number;
+  eta_at?: string;
+  archive_uploads: number;
+  run_id?: string;
+  total_rows: number;
+  success_rate: number;
+  checkpoint_integrity: string;
+  archive_integrity: string;
+  r2_integrity: string;
+  batches: MirrorStatusBatch[];
+}
+
 interface ApiEnvelope<T> {
   success: boolean;
   data: T;
@@ -106,6 +145,10 @@ class AdminApiClient {
 
   getSystemHealth() {
     return Promise.allSettled([this.raw("/health"), this.raw("/health/database"), this.raw("/health/application")]);
+  }
+
+  getMirrorStatus() {
+    return this.request<MirrorStatusResponse>("/admin/mirror-status");
   }
 }
 

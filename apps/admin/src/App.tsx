@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { AdminAuthProvider, useAuth } from "./contexts/AdminAuthContext";
 import Dashboard from "./pages/Dashboard";
+import MirrorStatusDashboard from "./pages/MirrorStatusDashboard";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function AdminRoot() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const pathname = window.location.pathname;
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
@@ -30,7 +32,9 @@ function AdminRoot() {
     }
   };
 
-  if (isAuthenticated) return <Dashboard />;
+  if (isAuthenticated) {
+    return pathname === "/admin/mirror-status" ? <MirrorStatusDashboard /> : <Dashboard />;
+  }
 
   return (
     <main className="grid min-h-screen bg-[#eef7f4] px-4 py-8 lg:grid-cols-[1fr_440px] lg:p-0">
@@ -83,6 +87,9 @@ function AdminRoot() {
           <button disabled={loading} className="w-full rounded-2xl bg-slate-950 px-4 py-3 font-semibold text-white shadow-lg shadow-slate-950/20 disabled:opacity-60">
             {loading ? "Signing in..." : "Login"}
           </button>
+          <a href="/admin/mirror-status" className="block text-center text-sm font-semibold text-emerald-800 underline underline-offset-4">
+            Open mirror monitoring
+          </a>
         </form>
       </section>
     </main>

@@ -1,4 +1,4 @@
-# Current Update - P41 DRAP Mirror Canary + Reliability Validation
+# Current Update - P43A Mirror Job Monitoring
 
 ## Date
 
@@ -6,66 +6,45 @@
 
 ## Status
 
-P41 is complete. The existing batched gzip archive architecture was validated with four worker slices over 10,000 real DRAP registrations, including a forced interruption and successful resume from checkpoint plus archive manifest replay.
+P43A is complete locally. The backend now exposes a live DRAP mirror status endpoint and the admin SPA has a dedicated monitoring page with 10-second auto-refresh.
 
-## R2 Verification
+## Admin Account
 
-| Variable | Status |
-|----------|--------|
-| R2_ACCOUNT_ID | Present |
-| R2_ACCESS_KEY_ID | Present |
-| R2_SECRET_ACCESS_KEY | Present |
-| R2_BUCKET_NAME | Present |
-| R2_PUBLIC_BASE_URL | Present |
+- Created admin account: `nazimsaeed@gmail.com`
+- Role: `ADMIN`
+- Password was set through the existing registration flow and is not repeated here
 
-## Canary Results
+## Endpoint
 
-| Metric | Value |
-|--------|-------|
-| Workers | 4 |
-| Total registrations | 10,000 |
-| Fetched | 10,000 |
-| Parsed | 9,399 |
-| Failed | 601 |
-| Duplicates | 0 |
-| Retries | 0 |
-| Total runtime | 1,003,432.06 ms |
-| Actual throughput | 9.97 registrations/sec |
-| Archive uploads | 12 |
-| Success rate | 93.99% |
-| Recovery success rate | 100% |
-| Estimated 150,000 runtime | 4.18 hours |
+- `GET /api/admin/mirror-status`
 
-## Interruption Test
+## Admin Page
 
-- Forced interruption occurred during worker 3 after the checkpoint had already been persisted
-- Resume started from the stored `nextIndex`
-- Archive manifest replay restored pending archive state
-- Resume finished without manual intervention
-- No duplicate records were introduced
+- `/admin/mirror-status`
 
-## Reliability Validation
+## Monitoring Coverage
 
-- Checkpoint recovery passed
-- `nextIndex` recovery passed
-- Archive manifest replay passed
-- Duplicate prevention passed
-- Idempotent resume passed
+The new endpoint reads the active DRAP mirror run from existing `importBatch` JSON metadata and report fields, aggregating:
 
-## P41 Comparison
-
-| Metric | P40 1,000-row live test | P41 10,000-row canary |
-|--------|-------------------------|-----------------------|
-| Throughput | 12.57 registrations/sec | 9.97 registrations/sec |
-| Estimated 150,000 runtime | 3.31 hours | 4.18 hours |
-| Recovery | Not exercised | Successful forced-stop resume |
+- status
+- started_at
+- processed_count
+- success_count
+- failed_count
+- retries
+- throughput
+- worker_count
+- last_registration
+- ETA
+- archive uploads
 
 ## Validation
 
 - Prisma format passed
 - Prisma generate passed
-- Build passed
-- Tests passed
+- Backend build passed
+- Backend tests passed
+- Admin app build passed
 
 ## Protected Scope Protocol
 

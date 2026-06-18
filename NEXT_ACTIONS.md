@@ -2,32 +2,32 @@
 
 ## Current Task
 
-P41 DRAP Mirror Canary + Reliability Validation (Complete)
+P43A Mirror Job Monitoring (Complete locally)
 
 ## Completed
 
-- Four-worker canary executed over 10,000 real DRAP registrations
-- Forced interruption and checkpoint resume validated
-- `nextIndex` recovery validated
-- Archive manifest replay validated
-- Duplicate prevention validated
-- Idempotent resume validated
+- `GET /api/admin/mirror-status` implemented
+- `/admin/mirror-status` admin page implemented
+- 10-second auto-refresh implemented
+- Worker metadata and mirror run IDs persisted for aggregation
+- Admin account created for monitoring access
 - Prisma format passed
 - Prisma generate passed
-- Build passed
-- Tests passed
+- Backend build passed
+- Backend tests passed
+- Admin app build passed
 
 ## Next
 
-1. Run a 50,000-registration sustained mirror pass using the same batched archive architecture
-2. Verify the 4.18-hour projection holds under longer real-world load
-3. Confirm whether the 8 vCPU VPS recommendation is worth keeping as a conservative fallback
+1. Deploy the monitoring changes to Railway
+2. Confirm the live `GET /api/admin/mirror-status` response against the active DRAP mirror run
+3. Verify the `/admin/mirror-status` page loads with live data after deployment
 
 ## Exact Next Prompt
 
 Project: DawaiSaver.pk
 
-Task: P42 DRAP Sustained Mirror Projection Validation
+Task: P43B Railway Mirror Monitoring Deployment Verification
 
 Mode: AGENT
 
@@ -42,12 +42,13 @@ Preserve composition generation.
 
 Goal:
 
-Run a 50,000-registration sustained DRAP mirror pass using the same batched archive architecture and confirm whether the 4.18-hour projection from the P41 canary remains accurate.
+Deploy the new mirror monitoring endpoint and admin page to Railway, then verify the live response against the active DRAP mirror run.
 
 Required Work:
 
-1. Keep the current batched archive flow unchanged
-2. Use the same checkpoint/resume and manifest replay behavior
-3. Record runtime, throughput, failure rate, archive uploads, and resume safety
-4. Compare against the P41 10,000-registration canary
-5. Update CURRENT_UPDATE.md, AI_CODE_AUDIT_REPORT.md, AI_IMPLEMENTATION_INDEX.md, NEXT_ACTIONS.md
+1. Deploy the latest main branch to Railway
+2. Verify `GET /api/admin/mirror-status` with the new admin account
+3. Verify `/admin/mirror-status` loads and auto-refreshes
+4. Capture a live response example
+5. Update `CURRENT_UPDATE.md`, `AI_CODE_AUDIT_REPORT.md`, `AI_IMPLEMENTATION_INDEX.md`, `NEXT_ACTIONS.md`
+6. Commit and push if validation passes

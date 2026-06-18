@@ -118,6 +118,9 @@ export async function runRailwayDrapMirrorJob(logger = new Logger("RailwayDrapMi
 
         const plan: DrapAcquisitionPlan = {
           batchId: workerConfig.batchId,
+          mirrorRunId: runId,
+          workerId: workerConfig.workerId,
+          workerCount: workerConfig.workerCount,
           sourceUrl,
           registrations: workerConfig.registrations,
           maxRetries: Number(process.env.DRAP_MIRROR_MAX_RETRIES || 3),

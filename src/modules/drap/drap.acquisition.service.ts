@@ -511,6 +511,9 @@ export class DrapAcquisitionService {
         startedAt: new Date(),
         metadata: {
           acquisition: {
+            mirrorRunId: plan.mirrorRunId,
+            workerId: plan.workerId,
+            workerCount: plan.workerCount,
             mode: "drap-mirror",
             checkpoint,
             r2Status,
@@ -533,7 +536,10 @@ export class DrapAcquisitionService {
     archive?: DrapArchiveManifest,
     metrics?: DrapAcquisitionMetrics,
   ): Promise<void> {
-    const existingMetadata = isPlainObject(batch.metadata) ? batch.metadata : {};
+    const existingMetadata = isPlainObject(batch.metadata) ? (batch.metadata as Record<string, unknown>) : {};
+    const existingAcquisition = isPlainObject(existingMetadata.acquisition)
+      ? (existingMetadata.acquisition as Record<string, unknown>)
+      : {};
 
     await this.prisma.importBatch.update({
       where: { id: batch.id },
@@ -541,6 +547,10 @@ export class DrapAcquisitionService {
         metadata: {
           ...existingMetadata,
           acquisition: {
+            ...existingAcquisition,
+            mirrorRunId: planRunId(existingAcquisition, checkpoint.batchId),
+            workerId: planWorkerId(existingAcquisition, checkpoint.batchId),
+            workerCount: planWorkerCount(existingAcquisition, checkpoint.batchId),
             checkpoint,
             r2Status,
             ...(archive ? { archive } : {}),
@@ -744,6 +754,41 @@ export class DrapAcquisitionService {
       pendingArchiveSegments: input.archiveState?.pendingSegments || 0,
     };
   }
+}
+
+function planRunId(acquisition: Record<string, unknown>, fallback?: string): string | undefined {
+  const value = acquisition.mirrorRunId;
+  return typeof value === "string" && value.trim() ? value : fallback;
+}
+
+function planWorkerId(acquisition: Record<string, unknown>, fallback?: string): number | undefined {
+  const value = acquisition.workerId;
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === "string") {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) {
+      return parsed;
+    }
+  }
+  const fallbackNumber = Number.parseInt(String(fallback || ""), 10);
+  return Number.isFinite(fallbackNumber) ? fallbackNumber : undefined;
+}
+
+function planWorkerCount(acquisition: Record<string, unknown>, fallback?: string): number | undefined {
+  const value = acquisition.workerCount;
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === "string") {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) {
+      return parsed;
+    }
+  }
+  const fallbackNumber = Number.parseInt(String(fallback || ""), 10);
+  return Number.isFinite(fallbackNumber) ? fallbackNumber : undefined;
 }
 
 function dedupeRegistrations(

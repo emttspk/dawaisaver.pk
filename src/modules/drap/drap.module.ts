@@ -2,13 +2,16 @@ import { Module } from "@nestjs/common";
 import { DatabaseModule } from "../../database/database.module";
 import { PrismaService } from "../../database/prisma.service";
 import { DrapImportController } from "./controllers/drap-import.controller";
+import { AdminMirrorStatusController } from "./controllers/admin-mirror-status.controller";
 import { DrapAcquisitionService } from "./drap.acquisition.service";
 import { DrapImporter } from "./drap.importer";
+import { DrapMirrorStatusService } from "./mirror-status.service";
 import { DrapService } from "./drap.service";
 
 @Module({
   imports: [DatabaseModule],
-  controllers: [DrapImportController],
+  controllers: [DrapImportController, AdminMirrorStatusController],
+  providers: [DrapMirrorStatusService],
 })
 export class DrapModule {
   static register(prisma: PrismaService): DrapService {
