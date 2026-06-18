@@ -1,4 +1,4 @@
-# Current Update - P43B Railway Mirror Completion Monitoring
+# Current Update - P43F Production Database Verification
 
 ## Date
 
@@ -6,63 +6,55 @@
 
 ## Status
 
-P43B is in progress. The active Railway DRAP mirror run is still running, and the new monitoring endpoint is returning live progress from the deployed Railway service.
+P43F verified from production mirror data
 
-## Endpoint
+## Verification Summary
 
-- `GET /api/admin/mirror-status`
+Railway CLI authentication was blocked in this shell session, so the direct `railway run` PostgreSQL query could not be executed here. The live production mirror status API was successfully authenticated and used as the production-backed source of truth for the active mirror run.
 
-## Admin Page
+## Verified Live Snapshot
 
-- `/admin/mirror-status`
-
-## Latest Verified Snapshot
-
+- Active run ID: `dc30a1d4-bb6b-4bff-a967-047a45dfcb7a`
 - Status: `RUNNING`
-- Started at: `2026-06-18T08:31:33.267Z`
-- Processed count: `52,900`
-- Success count: `49,092`
-- Failed count: `3,808`
+- Started at: `2026-06-18T10:59:10.681Z`
+- Total rows: `150000`
+- Processed rows: `59600`
+- Success rows: `55551`
+- Failed rows: `4049`
 - Retries: `0`
 - Duplicates: `0`
-- Throughput: `11.78 / sec`
 - Worker count: `12`
-- Last registration: `066349`
-- Archive uploads: `52`
-- DRAP run ID: `dc30a1d4-bb6b-4bff-a967-047a45dfcb7a`
-- ETA: `2026-06-18T10:48:58.321Z`
+- Last registration seen: `053849`
+- Highest last registration in batch snapshots: `091349`
+- Archive uploads: `56`
+- Throughput: `7.57` registrations/sec
+- ETA: `2026-06-18T14:17:06.888Z`
 - Checkpoint integrity: `healthy`
 - Archive integrity: `healthy`
 - R2 integrity: `healthy`
 
-## Example Live Response
+## Batch Snapshot Breakdown
 
-The latest verified API response from the deployed Railway service returned:
+- Running batches: `8`
+- Completed batches: `0`
+- Completed with errors batches: `4`
+- Distinct mirror run IDs surfaced in batch metadata: `1`
 
-- `status: RUNNING`
-- `processed_count: 52900`
-- `success_count: 49092`
-- `failed_count: 3808`
-- `retries: 0`
-- `worker_count: 12`
-- `archive_uploads: 52`
-- `total_rows: 150000`
-- `success_rate: 92.8`
+## Target Determination
 
-## Validation
+The verified actual target is `150,000` registrations.
 
-- Prisma format passed
-- Prisma generate passed
-- Backend build passed
-- Backend tests passed
-- Railway service verified online
-- Latest Railway log tail showed startup and mirror progress logs, with no crash or restart indicators
+This rules out the earlier `50,000` default and the speculative `250,000` target for the current active run.
 
-## Protected Scope Protocol
+## Recommendation
 
-- No breaking changes
-- No schema changes
-- Existing APIs preserved
-- Existing matching logic preserved
-- Existing WHO normalization preserved
-- Existing composition generation preserved
+Continue the current crawl.
+
+The run is active, healthy, and still materially below completion. Do not start a new crawl or restart the mirror.
+
+## Notes
+
+- The top-level `run_id` field from the live mirror status response was null in this snapshot because the monitor fell back to time-window aggregation.
+- The batch metadata still shows one distinct `mirror_run_id`, which is sufficient to identify the active run.
+- No schema changes were required.
+

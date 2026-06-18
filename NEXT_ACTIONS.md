@@ -2,7 +2,7 @@
 
 ## Current Task
 
-P43B Railway Mirror Completion Monitoring (In progress)
+P43F Production Database Verification completed
 
 ## Completed
 
@@ -12,23 +12,27 @@ P43B Railway Mirror Completion Monitoring (In progress)
 - Worker metadata and mirror run IDs persisted for aggregation
 - Admin account created for monitoring access
 - Live Railway endpoint verified
-- Latest live Railway running snapshot captured
+- Latest live production mirror snapshot captured
+- Token refresh implemented in API client
 - Prisma format passed
 - Prisma generate passed
 - Backend build passed
 - Backend tests passed
+- Current production target confirmed at `150,000`
+- Active mirror run ID confirmed as `dc30a1d4-bb6b-4bff-a967-047a45dfcb7a`
 
 ## Next
 
-1. Continue monitoring the active Railway DRAP run to completion
-2. Capture the final worker summaries, totals, completed_at, and archive counts from `/api/admin/mirror-status`
-3. Produce the final verified completion audit for the full mirror pass
+1. Continue monitoring the active DRAP mirror run until completion
+2. Do not start a new crawl
+3. Re-audit the mirror status once `completed_at` is available
+4. Keep the admin mirror dashboard aligned with production
 
 ## Exact Next Prompt
 
 Project: DawaiSaver.pk
 
-Task: P43B Railway Mirror Completion Monitoring
+Task: P43G DRAP Mirror Completion Audit
 
 Mode: AGENT
 
@@ -43,13 +47,16 @@ Preserve composition generation.
 
 Goal:
 
-Watch the active Railway DRAP mirror run to completion using the new monitoring endpoint and produce the final verified mirror audit.
+Wait for the active production DRAP mirror run to complete, then produce a final verified audit from the live monitor.
 
 Required Work:
 
-1. Poll `GET /api/admin/mirror-status` until the active run completes
-2. Capture the final worker summaries and totals
-3. Verify final checkpoint integrity and archive integrity
-4. Record the live response example and final mirror audit
-5. Update `CURRENT_UPDATE.md`, `AI_CODE_AUDIT_REPORT.md`, `AI_IMPLEMENTATION_INDEX.md`, `NEXT_ACTIONS.md`
-6. Commit and push if validation passes
+1. Poll the live admin mirror status until `completed_at` is present
+2. Capture final `processed_count`, `success_count`, `failed_count`, `retries`, `duplicates`, `archive_uploads`, and `throughput`
+3. Verify final checkpoint integrity, archive integrity, and R2 integrity
+4. Confirm the final DRAP coverage estimate
+5. Compare the final run against the current P43F verified snapshot
+6. Update `CURRENT_UPDATE.md`, `AI_CODE_AUDIT_REPORT.md`, `AI_IMPLEMENTATION_INDEX.md`, `NEXT_ACTIONS.md`
+7. Run build/tests
+8. Commit and push if documentation changes are made
+

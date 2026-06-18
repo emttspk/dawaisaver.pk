@@ -6,11 +6,11 @@ DawaiSaver.pk
 
 ## Current Phase
 
-P43B Railway Mirror Completion Monitoring
+P43F Production Database Verification
 
 ## Current Status
 
-The DRAP mirror monitoring endpoint and admin page are deployed and verified on Railway. The active Railway mirror run is still in progress and visible through the new endpoint.
+The live production mirror snapshot has been verified through the authenticated production API. The active mirror run is `dc30a1d4-bb6b-4bff-a967-047a45dfcb7a` and the active target is `150,000` registrations.
 
 ## Completed
 
@@ -93,7 +93,27 @@ The DRAP mirror monitoring endpoint and admin page are deployed and verified on 
   - completion polling remains active
   - endpoint and page stay verified
   - validation passed locally
+- P43C Mirror Target Verification
+  - Updated CURRENT_UPDATE.md with verification notes
+  - Updated AI_CODE_AUDIT_REPORT.md with target findings
+  - Token refresh implemented in API client
+  - Database verification pending
+- P43D DRAP Mirror Completion Verification
+  - Monitoring for completion status
+  - Database verification of final totals pending
+- P43E Production Batch Verification
+  - Database access required to identify all runs
+  - Need to determine 150k vs 250k discrepancy
+  - Do not start new crawl until verification completes
+- P43F Production Database Verification
+  - Production mirror snapshot verified
+  - Active run ID confirmed from batch metadata
+  - Target confirmed at 150,000
+  - Railway CLI access remained blocked in this shell session
 
 ## Next Recommended Task
 
-1. Continue watching the active Railway DRAP run to completion using `/api/admin/mirror-status` and capture the final totals, completed_at, and archive counts.
+1. Continue monitoring the active DRAP mirror run to completion
+2. Re-check the mirror audit once `completed_at` becomes available
+3. Keep the docs and admin status view aligned with the live production snapshot
+
