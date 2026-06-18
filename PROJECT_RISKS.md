@@ -28,13 +28,13 @@
 ## Current Residual Risk
 
 The live production database is attached and healthy, and the R2 bucket-level smoke test passed. The remaining runtime risk is the manual Cloudflare-sourced R2 secret pair and public base URL, which must be attached in Railway before live production upload UAT can be repeated.
-# P10 Railway Link Risk - 2026-06-16
+# P45 Railway Link Risk - 2026-06-18
 
-Risk: Railway CLI status resolves to the wrong project, `AI Photo Studio WhatsApp` (`ad62f340-fcfd-4989-b5bb-18753b28d8c8`), instead of `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`).
+Risk: Railway account-level commands still require account/workspace authentication, while this workstation intentionally uses a project token for browserless DawaiSaver access.
 
-Impact: Any variable, migration, or deployment command could target the wrong Railway project until link validation succeeds.
+Impact: `railway whoami` and `railway link` are not authoritative for this token type.
 
-Mitigation: Keep deployment work stopped. Repair auth, relink with the explicit DawaiSaver project id, and require all validation commands to report the expected project id before continuing.
+Mitigation: Use `railway status --json` as the authoritative validation command and require project ID `e38bb3da-7ab5-4654-b504-101e74c92d5b` before any Railway mutation.
 
 # P10 Production Deployment Setup Risks - 2026-06-16
 

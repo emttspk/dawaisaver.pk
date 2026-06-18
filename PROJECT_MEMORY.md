@@ -194,16 +194,17 @@ The platform should help users upload prescriptions, compare equivalent medicine
 
 ## Production Deployment Setup Memory
 
-- Railway CLI currently resolves to the wrong project: `AI Photo Studio WhatsApp` (`ad62f340-fcfd-4989-b5bb-18753b28d8c8`).
+- Railway browserless authentication is finalized through Windows User `RAILWAY_TOKEN`.
 - Expected Railway project is `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`) with service `dawaisaver.pk`.
-- Relink to the expected Railway project failed with `Unauthorized`.
+- Local non-secret Railway metadata lives in `.railway/project.json`.
+- Use `railway status --json` as the authoritative Railway validation command for the project token.
 - Do not run Railway variable, migration, or deployment commands until `railway status --json` returns the expected project id.
 - Wrangler is available through `npx wrangler` but is unauthenticated; R2 upload/public URL and Cloudflare Pages deployment are blocked.
 - Minimal closed-beta seed dataset lives in `prisma/seed.ts`.
 
 ## Next Task Recommendation
 
-Repair Railway and Cloudflare authentication, then rerun production deployment setup.
+Continue production verification with browserless Railway project-token authentication, then complete remaining Cloudflare/R2 checks.
 
 ## Infrastructure Completion Memory - 2026-06-16
 

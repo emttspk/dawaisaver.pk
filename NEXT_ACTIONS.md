@@ -2,61 +2,47 @@
 
 ## Current Task
 
-P43F Production Database Verification completed
+P45 Browserless Railway Authentication Finalization.
 
 ## Completed
 
-- `GET /api/admin/mirror-status` implemented
-- `/admin/mirror-status` admin page implemented
-- 10-second auto-refresh implemented
-- Worker metadata and mirror run IDs persisted for aggregation
-- Admin account created for monitoring access
-- Live Railway endpoint verified
-- Latest live production mirror snapshot captured
-- Token refresh implemented in API client
-- Prisma format passed
-- Prisma generate passed
-- Backend build passed
-- Backend tests passed
-- Current production target confirmed at `150,000`
-- Active mirror run ID confirmed as `dc30a1d4-bb6b-4bff-a967-047a45dfcb7a`
+- Installed the new DawaiSaver Railway project token as Windows User `RAILWAY_TOKEN`.
+- Removed Windows User `RAILWAY_API_TOKEN`.
+- Confirmed Railway browser token fields are empty.
+- Confirmed Railway session marker files are absent.
+- Confirmed Windows Credential Manager has no Railway entries.
+- Verified `railway status` resolves to project `dawaisaver.pk`.
+- Verified `railway status --json` reports project ID `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
+- Added `.railway/project.json` with non-secret project metadata.
+- Created `RAILWAY_BROWSERLESS_VALIDATION.md`.
+- Updated `CURRENT_UPDATE.md`.
+- Added historical `CURRENT_UPDATE_*.md` patterns to `.gitignore`.
 
 ## Next
 
-1. Continue monitoring the active DRAP mirror run until completion
-2. Do not start a new crawl
-3. Re-audit the mirror status once `completed_at` is available
-4. Keep the admin mirror dashboard aligned with production
+1. Run build validation.
+2. Run final `git status --short`.
+3. Commit only if validation passes.
+4. Push to `main` only if project policy allows and the commit contains no secrets.
 
 ## Exact Next Prompt
 
 Project: DawaiSaver.pk
 
-Task: P43G DRAP Mirror Completion Audit
+Task: P46 Continue Production Verification
 
 Mode: AGENT
 
 Protected Scope Protocol active.
 
-No breaking changes.
-No schema changes.
-Preserve existing APIs.
-Preserve existing matching logic.
-Preserve WHO normalization.
-Preserve composition generation.
-
 Goal:
 
-Wait for the active production DRAP mirror run to complete, then produce a final verified audit from the live monitor.
+Continue production verification using browserless Railway project-token authentication.
 
 Required Work:
 
-1. Poll the live admin mirror status until `completed_at` is present
-2. Capture final `processed_count`, `success_count`, `failed_count`, `retries`, `duplicates`, `archive_uploads`, and `throughput`
-3. Verify final checkpoint integrity, archive integrity, and R2 integrity
-4. Confirm the final DRAP coverage estimate
-5. Compare the final run against the current P43F verified snapshot
-6. Update `CURRENT_UPDATE.md`, `AI_CODE_AUDIT_REPORT.md`, `AI_IMPLEMENTATION_INDEX.md`, `NEXT_ACTIONS.md`
-7. Run build/tests
-8. Commit and push if documentation changes are made
-
+1. Confirm `railway status` reports project `dawaisaver.pk`.
+2. Confirm project ID `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
+3. Use `railway status --json` for service-aware validation.
+4. Do not introduce `RAILWAY_API_TOKEN` unless account/workspace commands are explicitly required.
+5. Do not rely on browser login.
