@@ -36,7 +36,7 @@ export default function Dashboard() {
             <p className="text-sm text-slate-600">{user?.email} - {user?.role}</p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <a href="/admin/mirror-status" className="w-fit rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-800 shadow-sm">
+            <a href="/#/admin/mirror-status" className="w-fit rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-800 shadow-sm">
               Mirror status
             </a>
             <button onClick={logout} className="w-fit rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold shadow-sm">

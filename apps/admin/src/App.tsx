@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { AdminAuthProvider, useAuth } from "./contexts/AdminAuthContext";
 import Dashboard from "./pages/Dashboard";
 import MirrorStatusDashboard from "./pages/MirrorStatusDashboard";
@@ -17,7 +17,17 @@ function AdminRoot() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const pathname = window.location.pathname;
+  const [route, setRoute] = useState(() => resolveAdminRoute());
+
+  useEffect(() => {
+    const syncRoute = () => setRoute(resolveAdminRoute());
+    window.addEventListener("hashchange", syncRoute);
+    window.addEventListener("popstate", syncRoute);
+    return () => {
+      window.removeEventListener("hashchange", syncRoute);
+      window.removeEventListener("popstate", syncRoute);
+    };
+  }, []);
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
@@ -33,7 +43,7 @@ function AdminRoot() {
   };
 
   if (isAuthenticated) {
-    return pathname === "/admin/mirror-status" ? <MirrorStatusDashboard /> : <Dashboard />;
+    return route === "mirror-status" ? <MirrorStatusDashboard /> : <Dashboard />;
   }
 
   return (
@@ -87,7 +97,7 @@ function AdminRoot() {
           <button disabled={loading} className="w-full rounded-2xl bg-slate-950 px-4 py-3 font-semibold text-white shadow-lg shadow-slate-950/20 disabled:opacity-60">
             {loading ? "Signing in..." : "Login"}
           </button>
-          <a href="/admin/mirror-status" className="block text-center text-sm font-semibold text-emerald-800 underline underline-offset-4">
+          <a href="/#/admin/mirror-status" className="block text-center text-sm font-semibold text-emerald-800 underline underline-offset-4">
             Open mirror monitoring
           </a>
         </form>
@@ -97,3 +107,15 @@ function AdminRoot() {
 }
 
 export default App;
+
+function resolveAdminRoute() {
+  const hashPath = window.location.hash.replace(/^#\/?/, "/");
+  if (hashPath === "/admin/mirror-status") return "mirror-status";
+  if (hashPath === "/admin") return "admin";
+
+  const pathname = window.location.pathname;
+  if (pathname === "/admin/mirror-status") return "mirror-status";
+  if (pathname.startsWith("/admin")) return "admin";
+
+  return "admin";
+}

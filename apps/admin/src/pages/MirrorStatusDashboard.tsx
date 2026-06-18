@@ -81,13 +81,13 @@ export default function MirrorStatusDashboard() {
               </div>
               <div className="flex flex-wrap gap-3">
                 <a
-                  href="/admin"
+                  href="/#/admin"
                   className="inline-flex items-center justify-center rounded-2xl border border-emerald-200 bg-emerald-600 px-4 py-3 text-sm font-bold text-white shadow-sm shadow-emerald-950/10 transition hover:bg-emerald-700"
                 >
                   Back to admin home
                 </a>
                 <a
-                  href="/admin/mirror-status"
+                  href="/#/admin/mirror-status"
                   className="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50"
                 >
                   Refresh mirror page
@@ -178,7 +178,7 @@ export default function MirrorStatusDashboard() {
                         Use this quick link to return to the main admin console for reviews, health, and operations.
                       </p>
                       <a
-                        href="/admin"
+                        href="/#/admin"
                         className="inline-flex rounded-2xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-950/15"
                       >
                         Open admin home

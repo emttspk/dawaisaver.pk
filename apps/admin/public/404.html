@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DawaiSaver.pk Admin</title>
+    <script>
+      (function () {
+        var path = window.location.pathname || "/";
+        var target = "/#";
+        if (path.indexOf("/admin/mirror-status") === 0) {
+          target += "/admin/mirror-status";
+        } else if (path.indexOf("/admin") === 0) {
+          target += "/admin";
+        } else {
+          target += "/admin";
+        }
+        if (window.location.search) target += window.location.search;
+        if (window.location.hash) target += window.location.hash;
+        window.location.replace(target);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to the admin console...</p>
+  </body>
+</html>
