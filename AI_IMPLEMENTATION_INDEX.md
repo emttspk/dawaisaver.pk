@@ -6,11 +6,11 @@ DawaiSaver.pk
 
 ## Current Phase
 
-P40 DRAP Mirror Speed Optimization Implementation + 1,000 Live Test
+P41 DRAP Mirror Canary + Reliability Validation
 
 ## Current Status
 
-The DRAP mirror now uses batched gzip archival with async R2 upload, and the new flow was validated with a 1,000-registration live run against the real DRAP endpoint.
+The batched DRAP mirror path was validated under a forced interruption and resume, with four worker slices covering 10,000 real registrations.
 
 ## Completed
 
@@ -72,10 +72,15 @@ The DRAP mirror now uses batched gzip archival with async R2 upload, and the new
   - batched gzip archive manager added
   - per-product R2 hot path removed
   - archive manifest and checkpoint state persisted in JSON metadata
-  - checkpoint/resume replay validated
   - 1,000 live registrations processed against the real DRAP endpoint
+  - validation passed
+- P41 DRAP Mirror Canary + Reliability Validation
+  - four-worker canary executed
+  - forced interruption and resume validated
+  - archive manifest replay validated
+  - duplicate prevention and idempotent resume confirmed
   - validation passed
 
 ## Next Recommended Task
 
-1. Run a 10,000-registration checkpointed mirror canary with 4 workers, force one resume event, and confirm manifest replay plus archive upload recovery under real DRAP load.
+1. Run a longer 50,000-registration production-style mirror pass with the same batched archive path to confirm the 4.18-hour projection holds under sustained load.

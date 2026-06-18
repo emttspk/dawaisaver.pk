@@ -6,56 +6,58 @@
 
 ## Phase
 
-P40 DRAP Mirror Speed Optimization Implementation + 1,000 Live Test
+P41 DRAP Mirror Canary + Reliability Validation
 
 ## Scope
 
-Audit of the batched gzip archive implementation, checkpoint/resume replay behavior, live DRAP crawl metrics, R2 batching, persistence path, projection comparison, and validation sweep.
+Audit of the four-worker canary, forced interruption, checkpoint recovery, `nextIndex` resume, archive manifest replay, duplicate prevention, idempotent resume, and validation sweep.
 
 ## Findings
 
 | Area | Result | Evidence |
 |------|--------|----------|
-| R2 configuration verification | Pass | All required R2 variables were present in the live run environment |
-| Batched archive path | Pass | Raw HTML moved out of the per-product hot path and written into gzip archive segments |
-| Manifest persistence | Pass | Archive manifest and checkpoint state were stored in existing JSON metadata fields |
-| Resume/replay behavior | Pass | The flow now uses `nextIndex` plus manifest replay for idempotent checkpoint/resume |
-| Structured persistence | Pass | Parsed rows and crawl metadata were written to PostgreSQL without schema changes |
-| Live crawl execution | Pass | The crawl reached the real DRAP endpoint and processed 1,000 registrations |
+| Batched archive architecture | Pass | The canary used the same batched gzip archive path from P40 |
+| Four-worker canary | Pass | Four worker slices processed 10,000 registrations |
+| Forced interruption | Pass | Worker 3 was deliberately interrupted during the run |
+| Checkpoint recovery | Pass | Resume used the persisted checkpoint state |
+| `nextIndex` recovery | Pass | Resume continued from the stored `nextIndex` |
+| Archive manifest replay | Pass | Pending archive state was replayed on resume |
+| Duplicate prevention | Pass | No duplicate records were created |
+| Idempotent resume | Pass | Resumed rows completed without manual intervention |
 | Validation | Pass | Prisma format, Prisma generate, build, and tests all passed |
 
-## Live Test Metrics
+## Canary Metrics
 
 | Metric | Value |
 |--------|-------|
-| Fetched | 1,000 |
-| Parsed | 976 |
-| Failed | 24 |
-| Duplicates | 0 |
+| Workers | 4 |
+| Total registrations | 10,000 |
+| Fetched | 10,000 |
+| Parsed | 9,399 |
+| Failed | 601 |
 | Retries | 0 |
-| Total runtime | 79,532.89 ms |
-| Actual throughput | 12.57 registrations/sec |
-| Avg fetch time | 65.50 ms |
-| Avg parse time | 0.24 ms |
-| Avg archive write time | 403.94 ms |
-| Avg R2 batch upload time | 3,274.03 ms |
-| Avg DB write time | 8.81 ms |
-| Avg HTML size | 19,443.98 bytes |
+| Duplicates | 0 |
+| Total runtime | 1,003,432.06 ms |
+| Actual throughput | 9.97 registrations/sec |
+| Archive uploads | 12 |
+| Success rate | 93.99% |
+| Recovery success rate | 100% |
+| Estimated 150,000 runtime | 4.18 hours |
 
-## Comparison
+## Interruption / Recovery Notes
 
-| Full Mirror Size | P38 Projection | P40 Projection |
-|-----------------|----------------|----------------|
-| 120,000 records | 43.53 hours | 2.65 hours |
-| 150,000 records | 54.41 hours | 3.31 hours |
+- The interruption was forced during worker 3 after a resumable checkpoint had been persisted
+- The resume path loaded the saved checkpoint and replayed archive manifest state
+- The resumed batch completed without manual repair steps
+- No data loss was observed in the resumed slice
 
 ## Recommendation Summary
 
-- Railway only: sufficient for the full mirror at the observed pace and cheapest to operate
-- 8 vCPU VPS: reasonable if you want more worker headroom and conservative operational margin
-- 16 vCPU VPS: only needed if you plan to push aggressive parallelism beyond the current single-worker baseline
-- Recommended worker count: 1 for the current Railway baseline, 4 for a VPS canary, 8 for an aggressive VPS rollout
+- Railway only: acceptable for the full mirror at the observed batched pace
+- 8 vCPU VPS: optional if you want a larger reliability buffer
+- 16 vCPU VPS: not required for the validated canary pace
+- Recommended worker count: 4 for the canary profile, 1 for the simplest Railway mirror rollout
 
 ## Audit Conclusion
 
-P40 is complete. The new batched archive architecture removed the R2 per-product bottleneck, validated checkpoint/resume idempotency, and reduced the projected 150,000-record mirror runtime from 54.41 hours to 3.31 hours at the observed live pace. No schema changes were required.
+P41 is complete. The mirror now has live evidence that the batched archive flow can survive an interruption and resume idempotently from saved checkpoint state, with no duplicate records and no manual recovery steps.

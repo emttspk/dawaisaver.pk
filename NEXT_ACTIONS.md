@@ -2,15 +2,16 @@
 
 ## Current Task
 
-P40 DRAP Mirror Speed Optimization Implementation + 1,000 Live Test (Complete)
+P41 DRAP Mirror Canary + Reliability Validation (Complete)
 
 ## Completed
 
-- Batched gzip archive manager implemented
-- Per-product R2 upload removed from the DRAP hot path
-- Archive manifest and upload state persisted in JSON metadata
-- Checkpoint/resume replay validated
-- 1,000 real DRAP registrations processed
+- Four-worker canary executed over 10,000 real DRAP registrations
+- Forced interruption and checkpoint resume validated
+- `nextIndex` recovery validated
+- Archive manifest replay validated
+- Duplicate prevention validated
+- Idempotent resume validated
 - Prisma format passed
 - Prisma generate passed
 - Build passed
@@ -18,15 +19,15 @@ P40 DRAP Mirror Speed Optimization Implementation + 1,000 Live Test (Complete)
 
 ## Next
 
-1. Run a 10,000-registration checkpointed DRAP mirror canary with 4 workers
-2. Force one interruption and verify resume from `nextIndex` plus manifest replay
-3. Confirm archive upload recovery and runtime on the target deployment class
+1. Run a 50,000-registration sustained mirror pass using the same batched archive architecture
+2. Verify the 4.18-hour projection holds under longer real-world load
+3. Confirm whether the 8 vCPU VPS recommendation is worth keeping as a conservative fallback
 
 ## Exact Next Prompt
 
 Project: DawaiSaver.pk
 
-Task: P41 DRAP Mirror Canary With Resume Validation
+Task: P42 DRAP Sustained Mirror Projection Validation
 
 Mode: AGENT
 
@@ -41,12 +42,12 @@ Preserve composition generation.
 
 Goal:
 
-Run a 10,000-registration checkpointed DRAP mirror canary with 4 workers, force one interruption, and verify resume idempotency through `nextIndex` plus archive manifest replay.
+Run a 50,000-registration sustained DRAP mirror pass using the same batched archive architecture and confirm whether the 4.18-hour projection from the P41 canary remains accurate.
 
 Required Work:
 
 1. Keep the current batched archive flow unchanged
-2. Use the existing JSON metadata fields for checkpoint and manifest state
-3. Validate recovery after interruption
-4. Compare runtime against the P40 1,000-row live test
+2. Use the same checkpoint/resume and manifest replay behavior
+3. Record runtime, throughput, failure rate, archive uploads, and resume safety
+4. Compare against the P41 10,000-registration canary
 5. Update CURRENT_UPDATE.md, AI_CODE_AUDIT_REPORT.md, AI_IMPLEMENTATION_INDEX.md, NEXT_ACTIONS.md
