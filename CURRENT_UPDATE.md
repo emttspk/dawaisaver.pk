@@ -1,4 +1,4 @@
-# Current Update - Railway Auth Recovery Audit
+# Current Update - Railway Auth Reset Audit
 
 ## Date
 
@@ -6,80 +6,72 @@
 
 ## Status
 
-Railway authentication sources were inspected and a likely user-level token source was found, but Railway still rejects it. Production backup prerequisites remain blocked, and no production data was modified.
+Local Railway auth sources were reset in the repo machine, but the already-running host session still injects stale Railway variables into new child shells. Fresh browser login remains blocked by the non-interactive environment.
 
-## Auth Findings
+## Auth Reset Results
 
-- Current process environment contains stale Railway tokens.
-- Windows user environment contains a different Railway token value.
-- System environment does not expose Railway tokens.
-- PowerShell profile auto-loads the Windows user token into new sessions and clears `RAILWAY_API_TOKEN`.
-- Railway CLI returns `Unauthorized` or `Invalid RAILWAY_TOKEN` with both the inherited process token and the user token.
-- Local Railway config cache is empty.
-- Windows Credential Manager has no Railway entries.
-- Git Bash profile does not define Railway auth.
+- Process Railway variables were cleared in the reset shell.
+- User and machine Railway registry values were targeted for removal.
+- `~/.railway` config and session files were cleared.
+- PowerShell profile Railway auto-load lines were removed.
+- Git Bash profiles did not contain Railway auth lines.
+- The live shell still shows inherited `RAILWAY_TOKEN` and `RAILWAY_API_TOKEN` values until the parent process is restarted.
 
-## Token Findings
+## Login Results
 
-- Current process token: invalid or stale.
-- Windows user token: invalid or wrong-account from this shell’s perspective.
-- No valid workspace token is available in the current environment.
-- No project transfer or auth refresh could be confirmed from this shell.
+- `railway login`: blocked because this environment is non-interactive.
+- `railway login --browserless`: blocked because this environment is non-interactive.
+- `railway whoami`, `railway status`, and `railway status --json` do not reach authenticated production access from this shell.
 
-## Production Access
+## Project Access
 
-- Local project metadata remains present at `.railway/project.json`.
-- Recorded IDs:
+- Local project metadata remains present:
   - Project: `e38bb3da-7ab5-4654-b504-101e74c92d5b`
   - Environment: `8c0cc558-e375-4d41-8286-21706161c538`
   - Service: `d9fc0b7d-535b-4db4-b2eb-93dfc39d31c9`
-- Live access to Railway variables, PostgreSQL, and service metadata is blocked until Railway auth is restored.
+- Live access to the project, production environment, and PostgreSQL service is blocked until valid Railway auth is restored in a truly clean session.
 
-## Backup Prerequisite Status
+## Backup Readiness
 
-- `backup-prerequisites-check.md` was created in the latest backup folder.
+- `backups/migration-20260618-215605/verification/backup-prerequisites-check.md` was created.
+- `backups/migration-20260618-215605/verification/railway-backup-readiness.md` was created.
+- `railway-variable-names.txt` is already populated from repository-validated variable names.
 - `DATABASE_URL`: blocked
-- R2 credentials: blocked
-- Required production variables: blocked
-- Safest retrieval method: fresh valid Railway auth in an interactive terminal, then `railway variable list` for the linked service.
+- R2 credentials: available only as code-level requirements, not live Railway values
+- `psql`, `pg_dump`, `pg_restore`: missing
 
-## Deletion Report
+## Transfer Feasibility
 
-- `deletion-report.md` was created.
-- No markdown files were deleted.
-- The unused markdown review did not produce any safely deletable files.
+- Railway CLI exposes project list/link/delete, environment link, and service management, but no direct project transfer command.
+- Direct transfer remains unverified from this shell.
+- Lowest-risk path remains backup/restore, with new Railway workspace first and Hetzner later if needed.
 
-## Migration Readiness
+## Deleted Markdown Files
 
-- Dockerfile compatibility with Coolify: good.
-- Prisma migrations: present and deploy-ready in structure.
-- Startup command: `node dist/main.js`.
-- Build command: `npm.cmd run build` passes.
-- Health endpoints: `/health/application` and `/health/database` are present.
-- Cloudflare Pages apps still depend on `VITE_API_URL` for non-default environments.
-- DRAP autorun remains disabled by policy for migration work.
+- None.
 
-## Command Results
+## Markdown Cleanup
 
-- `railway whoami`: unauthorized
-- `railway status`: unauthorized / invalid token
-- `railway status --json`: unauthorized / invalid token
-- `railway login --browserless`: not usable in non-interactive mode
-- `cmdkey /list`: no Railway stored credentials
+- A conservative markdown classification was created.
+- No audit, migration, or history docs were deleted.
+
+## Build
+
 - `npm.cmd run build`: pass
 
 ## Completion
 
+- Auth reset: `70%`
 - Backup readiness: `55%`
 - Migration readiness: `70%`
-- Auth recovery: `40%`
 
 ## Blockers
 
-- Railway auth cannot be recovered from this shell without a fresh valid token or interactive login.
-- `DATABASE_URL` and R2 secrets cannot be read until Railway auth is restored.
-- `psql` is not installed in this shell, so even with `DATABASE_URL` the backup dry run would still need a local client install.
+- Interactive Railway login is not possible from this shell.
+- The parent session still injects stale Railway variables.
+- PostgreSQL client tools are missing.
+- Live `DATABASE_URL` and R2 credential retrieval are still blocked.
 
-## Next Action
+## Next Step
 
-Open an interactive terminal, refresh Railway auth with a valid token or browser login, then rerun `railway status`, `railway variable list`, and the backup prerequisite audit before attempting `pg_dump` or R2 verification.
+Restart the parent terminal host or open a genuinely fresh interactive terminal, then run Railway login there and recheck `railway whoami`, `railway status`, and `railway variable list` before any backup execution.
