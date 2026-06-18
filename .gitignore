@@ -26,3 +26,5 @@ reports/
 # Historical status snapshots
 CURRENT_UPDATE_*.md
 docs/archive/CURRENT_UPDATE_*.md
+CURRENT_UPDATE.md
+backups/
