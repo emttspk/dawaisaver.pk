@@ -3,11 +3,14 @@ import { Prisma } from "@prisma/client";
 import { createHash } from "node:crypto";
 import { PrismaService } from "../../database/prisma.service";
 import { UploadService } from "../ocr/upload.service";
-import { buildRawHtmlObjectKey, canonicalizeRegistrationNumber, parseDrapMirrorPage } from "./drap.detail-parser";
+import { canonicalizeRegistrationNumber, parseDrapMirrorPage } from "./drap.detail-parser";
+import { DrapArchiveManager } from "./drap.archive";
 import {
+  DrapAcquisitionMetrics,
   DrapAcquisitionCheckpoint,
   DrapAcquisitionPlan,
   DrapAcquisitionR2Status,
+  DrapArchiveManifest,
   DrapMirrorImportItem,
   DrapMirrorImportSummary,
   DrapRegistrationEnumerationOptions,
@@ -27,6 +30,12 @@ export interface DrapRegistrationProbe {
 }
 
 export interface DrapMirrorRunOptions extends DrapAcquisitionPlan {}
+
+interface DrapBatchContext {
+  id: string;
+  metadata: Prisma.InputJsonValue | null;
+  importReport: Prisma.InputJsonValue | null;
+}
 
 @Injectable()
 export class DrapAcquisitionService {
@@ -86,6 +95,27 @@ export class DrapAcquisitionService {
     const registrations = this.normalizePlan(plan);
     const checkpoint = this.resolveCheckpoint(plan, registrations.length);
     const batch = await this.ensureBatch(plan, registrations.length, r2Status, checkpoint);
+    const archiveStrategy = plan.archiveStrategy || "batched";
+    const archiveBatchSize = Math.max(
+      1,
+      plan.archiveBatchSize || (checkpoint.nextIndex > 0 ? plan.archiveFallbackBatchSize || 500 : 1000),
+    );
+    const archiveFallbackBatchSize = Math.max(1, plan.archiveFallbackBatchSize || 500);
+    const archiveUploadConcurrency = Math.max(1, plan.archiveUploadConcurrency || 2);
+    const archiveManifest = archiveStrategy === "batched" ? this.extractArchiveManifest(batch) : undefined;
+    const archiveManager =
+      archiveStrategy === "batched"
+        ? await DrapArchiveManager.fromExisting({
+            batchId: batch.id,
+            uploadService: this.uploadService,
+            batchSize: archiveBatchSize,
+            fallbackBatchSize: archiveFallbackBatchSize,
+            uploadConcurrency: archiveUploadConcurrency,
+            spoolDir: plan.archiveSpoolDir,
+            sourceUrl: plan.sourceUrl || "https://eapp.dra.gov.pk/product_view_web.php",
+            existingManifest: archiveManifest,
+          })
+        : undefined;
     const seen = new Set<string>();
     const items: DrapMirrorImportItem[] = [];
 
@@ -95,6 +125,13 @@ export class DrapAcquisitionService {
     let duplicateRows = checkpoint.duplicate;
     let retryCount = checkpoint.retries;
     const checkpointEvery = Math.max(1, plan.checkpointEvery || 25);
+    let fetchTimeTotal = 0;
+    let parseTimeTotal = 0;
+    let dbWriteTimeTotal = 0;
+    let archiveWriteTimeTotal = archiveManager ? archiveManager.getArchiveWriteTotal() : 0;
+    let archiveWriteCount = archiveManager ? archiveManager.getArchiveWriteCount() : 0;
+    let htmlSizeTotal = 0;
+    const crawlStartedAt = performance.now();
 
     for (let index = checkpoint.nextIndex; index < registrations.length; index += 1) {
       const probe = registrations[index];
@@ -131,23 +168,21 @@ export class DrapAcquisitionService {
 
       const fetchResult = await this.fetchDetailWithRetry(probe, plan.maxRetries || 3);
       retryCount += fetchResult.attempts - 1;
-
+      fetchTimeTotal += fetchResult.fetchTimeMs;
       const htmlHash = createHash("sha256").update(fetchResult.html, "utf8").digest("hex");
-      const r2Key = buildRawHtmlObjectKey(canonical, fetchResult.html);
-      const r2Object = await this.uploadService.uploadBuffer(Buffer.from(fetchResult.html, "utf8"), {
-        originalName: `${canonical}.html`,
-        mimeType: "text/html",
-        folder: "drap/raw",
-        objectKey: r2Key,
-      });
+      const htmlSizeBytes = Buffer.byteLength(fetchResult.html, "utf8");
+      htmlSizeTotal += htmlSizeBytes;
 
       fetchedRows += 1;
+      const parseStartedAt = performance.now();
 
       try {
         const parsed = parseDrapMirrorPage(fetchResult.html, fetchResult.finalUrl || fetchResult.requestUrl);
-        parsed.rawHtmlUrl = r2Object.url;
+        const parseTimeMs = performance.now() - parseStartedAt;
+        parseTimeTotal += parseTimeMs;
         parsedRows += 1;
 
+        const dbStartedAt = performance.now();
         const item = await this.recordItem(batch.id, index + 1, {
           registrationNumber: parsed.registrationNumber,
           status: "PARSED",
@@ -158,8 +193,7 @@ export class DrapAcquisitionService {
             finalUrl: fetchResult.finalUrl,
             httpStatus: fetchResult.httpStatus,
             htmlHash,
-            r2Key: r2Object.filename,
-            r2Url: r2Object.url,
+            archiveStrategy,
           } as Prisma.InputJsonValue,
           normalizedData: parsed as unknown as Prisma.InputJsonValue,
           validationData: {
@@ -172,16 +206,44 @@ export class DrapAcquisitionService {
             acquisition: {
               stage: "parsed",
               retryCount: fetchResult.attempts - 1,
-              r2Key: r2Object.filename,
-              r2Url: r2Object.url,
+              archiveStrategy,
             },
           } as unknown as Prisma.InputJsonValue,
         });
+        const dbWriteTimeMs = performance.now() - dbStartedAt;
+        dbWriteTimeTotal += dbWriteTimeMs;
         items.push(item);
+
+        if (archiveManager) {
+          const flushResult = await archiveManager.append({
+            rowNumber: index + 1,
+            registrationNumber: parsed.registrationNumber,
+            requestUrl: fetchResult.requestUrl,
+            finalUrl: fetchResult.finalUrl,
+            httpStatus: fetchResult.httpStatus,
+            rawHtml: fetchResult.html,
+            htmlHash,
+            status: "PARSED",
+            retryCount: fetchResult.attempts - 1,
+            fetchTimeMs: round(fetchResult.fetchTimeMs),
+            parseTimeMs: round(parseTimeMs),
+            dbWriteTimeMs: round(dbWriteTimeMs),
+            htmlSizeBytes,
+            parsed,
+            sourceUrl: plan.sourceUrl || fetchResult.finalUrl || fetchResult.requestUrl,
+          });
+          archiveWriteTimeTotal += flushResult.archiveWriteTimeMs;
+          if (flushResult.archiveWriteTimeMs > 0) {
+            archiveWriteCount += 1;
+          }
+        }
       } catch (error) {
+        const parseTimeMs = performance.now() - parseStartedAt;
+        parseTimeTotal += parseTimeMs;
         failedRows += 1;
         const message = error instanceof Error ? error.message : "Failed to parse DRAP detail page.";
 
+        const dbStartedAt = performance.now();
         const failedItem = await this.recordItem(batch.id, index + 1, {
           registrationNumber: probe.registrationNumber,
           status: "FAILED",
@@ -192,8 +254,7 @@ export class DrapAcquisitionService {
             finalUrl: fetchResult.finalUrl,
             httpStatus: fetchResult.httpStatus,
             htmlHash,
-            r2Key: r2Object.filename,
-            r2Url: r2Object.url,
+            archiveStrategy,
           } as Prisma.InputJsonValue,
           validationData: {
             stage: "failed",
@@ -206,12 +267,13 @@ export class DrapAcquisitionService {
             acquisition: {
               stage: "failed",
               retryCount: fetchResult.attempts - 1,
-              r2Key: r2Object.filename,
-              r2Url: r2Object.url,
+              archiveStrategy,
             },
           } as unknown as Prisma.InputJsonValue,
           errorMessage: message,
         });
+        const dbWriteTimeMs = performance.now() - dbStartedAt;
+        dbWriteTimeTotal += dbWriteTimeMs;
         items.push(failedItem);
         await this.prisma.importError.create({
           data: {
@@ -222,7 +284,8 @@ export class DrapAcquisitionService {
             rawData: {
               registrationNumber: probe.registrationNumber,
               requestUrl: fetchResult.requestUrl,
-              r2Key: r2Object.filename,
+              archiveStrategy,
+              htmlHash,
             } as Prisma.InputJsonValue,
             status: "ACTIVE",
             sourceType: "DRAP",
@@ -233,6 +296,30 @@ export class DrapAcquisitionService {
             },
           },
         });
+
+        if (archiveManager) {
+          const flushResult = await archiveManager.append({
+            rowNumber: index + 1,
+            registrationNumber: probe.registrationNumber,
+            requestUrl: fetchResult.requestUrl,
+            finalUrl: fetchResult.finalUrl,
+            httpStatus: fetchResult.httpStatus,
+            rawHtml: fetchResult.html,
+            htmlHash,
+            status: "FAILED",
+            retryCount: fetchResult.attempts - 1,
+            fetchTimeMs: round(fetchResult.fetchTimeMs),
+            parseTimeMs: round(parseTimeMs),
+            dbWriteTimeMs: round(dbWriteTimeMs),
+            htmlSizeBytes,
+            errorMessage: message,
+            sourceUrl: plan.sourceUrl || fetchResult.finalUrl || fetchResult.requestUrl,
+          });
+          archiveWriteTimeTotal += flushResult.archiveWriteTimeMs;
+          if (flushResult.archiveWriteTimeMs > 0) {
+            archiveWriteCount += 1;
+          }
+        }
       }
 
       const checkpointState = this.buildCheckpoint({
@@ -248,8 +335,14 @@ export class DrapAcquisitionService {
       });
 
       if ((index + 1) % checkpointEvery === 0 || index === registrations.length - 1) {
-        await this.updateBatchCheckpoint(batch.id, checkpointState, r2Status);
+        await this.persistBatchState(batch, checkpointState, r2Status, archiveManager?.getManifest());
       }
+    }
+
+    if (archiveManager) {
+      await archiveManager.finalize();
+      archiveWriteTimeTotal = archiveManager.getArchiveWriteTotal();
+      archiveWriteCount = archiveManager.getArchiveWriteCount();
     }
 
     const status = failedRows > 0 ? "COMPLETED_WITH_ERRORS" : "COMPLETED";
@@ -264,7 +357,27 @@ export class DrapAcquisitionService {
       duplicate: duplicateRows,
       retries: retryCount,
     });
+    const archiveState = archiveManager?.getManifest();
+    const metrics = this.buildMetrics({
+      fetched: fetchedRows,
+      parsed: parsedRows,
+      failed: failedRows,
+      duplicates: duplicateRows,
+      retries: retryCount,
+      totalRuntimeMs: performance.now() - crawlStartedAt,
+      fetchTimeTotal,
+      parseTimeTotal,
+      dbWriteTimeTotal,
+      archiveWriteTotal: archiveWriteTimeTotal,
+      archiveWriteCount,
+      r2UploadTotal: archiveManager ? archiveManager.getUploadLatencyTotal() : 0,
+      r2UploadCount: archiveManager ? archiveManager.getUploadCount() : 0,
+      htmlSizeTotal,
+      htmlCount: fetchedRows,
+      archiveState,
+    });
 
+    await this.persistBatchState(batch, checkpointState, r2Status, archiveState, metrics);
     await this.prisma.importBatch.update({
       where: { id: batch.id },
       data: {
@@ -286,6 +399,8 @@ export class DrapAcquisitionService {
           retryCount,
           checkpoint: checkpointState,
           r2Status,
+          archive: archiveState,
+          metrics,
           items,
         } as unknown as Prisma.InputJsonValue,
         metadata: {
@@ -293,6 +408,7 @@ export class DrapAcquisitionService {
             batchId: batch.id,
             checkpoint: checkpointState,
             r2Status,
+            archive: archiveState,
           },
         } as unknown as Prisma.InputJsonValue,
       },
@@ -309,6 +425,8 @@ export class DrapAcquisitionService {
       retryCount,
       checkpoint: checkpointState,
       r2Status,
+      archive: archiveState,
+      metrics,
       items,
     };
   }
@@ -353,18 +471,32 @@ export class DrapAcquisitionService {
     totalRows: number,
     r2Status: DrapAcquisitionR2Status,
     checkpoint: DrapAcquisitionCheckpoint,
-  ): Promise<{ id: string }> {
+  ): Promise<DrapBatchContext> {
     if (plan.batchId) {
       const existing = await this.prisma.importBatch.findUnique({
         where: { id: plan.batchId },
+        select: {
+          id: true,
+          metadata: true,
+          importReport: true,
+        },
       });
 
       if (existing) {
-        return { id: existing.id };
+        return {
+          id: existing.id,
+          metadata: (existing.metadata as Prisma.InputJsonValue | null) ?? null,
+          importReport: (existing.importReport as Prisma.InputJsonValue | null) ?? null,
+        };
       }
     }
 
-    return this.prisma.importBatch.create({
+    const created = await this.prisma.importBatch.create({
+      select: {
+        id: true,
+        metadata: true,
+        importReport: true,
+      },
       data: {
         sourceType: "DRAP",
         sourceUrl: plan.sourceUrl || "https://eapp.dra.gov.pk/product_view_web.php",
@@ -386,20 +518,33 @@ export class DrapAcquisitionService {
         } as unknown as Prisma.InputJsonValue,
       },
     });
+
+    return {
+      id: created.id,
+      metadata: (created.metadata as Prisma.InputJsonValue | null) ?? null,
+      importReport: (created.importReport as Prisma.InputJsonValue | null) ?? null,
+    };
   }
 
-  private async updateBatchCheckpoint(
-    batchId: string,
+  private async persistBatchState(
+    batch: DrapBatchContext,
     checkpoint: DrapAcquisitionCheckpoint,
     r2Status: DrapAcquisitionR2Status,
+    archive?: DrapArchiveManifest,
+    metrics?: DrapAcquisitionMetrics,
   ): Promise<void> {
+    const existingMetadata = isPlainObject(batch.metadata) ? batch.metadata : {};
+
     await this.prisma.importBatch.update({
-      where: { id: batchId },
+      where: { id: batch.id },
       data: {
         metadata: {
+          ...existingMetadata,
           acquisition: {
             checkpoint,
             r2Status,
+            ...(archive ? { archive } : {}),
+            ...(metrics ? { metrics } : {}),
           },
         } as unknown as Prisma.InputJsonValue,
       },
@@ -409,13 +554,14 @@ export class DrapAcquisitionService {
   private async fetchDetailWithRetry(
     probe: DrapRegistrationProbe,
     maxRetries: number,
-  ): Promise<DrapDetailFetchResult & { attempts: number }> {
+  ): Promise<DrapDetailFetchResult & { attempts: number; fetchTimeMs: number }> {
     const registrationNumber = canonicalizeRegistrationNumber(probe.registrationNumber);
     const requestUrl = `https://eapp.dra.gov.pk/product_view_web.php?reg_no=${encodeURIComponent(registrationNumber)}`;
     let lastError: Error | undefined;
 
     for (let attempt = 1; attempt <= Math.max(1, maxRetries); attempt += 1) {
       try {
+        const fetchStartedAt = performance.now();
         const response = await fetch(requestUrl, {
           headers: {
             "user-agent": process.env.CRAWLER_USER_AGENT || "DawaiSaverBot/0.1",
@@ -424,6 +570,7 @@ export class DrapAcquisitionService {
         });
 
         const html = await response.text();
+        const fetchTimeMs = performance.now() - fetchStartedAt;
         if (!response.ok) {
           throw new Error(`DRAP detail fetch failed: ${response.status} ${response.statusText}`);
         }
@@ -435,6 +582,7 @@ export class DrapAcquisitionService {
           html,
           finalUrl: response.url || requestUrl,
           attempts: attempt,
+          fetchTimeMs,
         };
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
@@ -526,10 +674,74 @@ export class DrapAcquisitionService {
       registrationNumber: item.registrationNumber,
       status: item.status,
       retryCount: item.retryCount,
-      rawHtmlUrl: typeof rawData.r2Url === "string" ? rawData.r2Url : undefined,
+      rawHtmlUrl:
+        typeof rawData.archiveUrl === "string"
+          ? rawData.archiveUrl
+          : typeof rawData.r2Url === "string"
+            ? rawData.r2Url
+            : undefined,
       parsed: item.normalizedData as unknown as DrapMirrorImportItem["parsed"],
       errorMessage: item.errorMessage,
       r2Key: typeof rawData.r2Key === "string" ? rawData.r2Key : undefined,
+      archiveKey: typeof rawData.archiveKey === "string" ? rawData.archiveKey : undefined,
+      archiveUrl: typeof rawData.archiveUrl === "string" ? rawData.archiveUrl : undefined,
+      archiveSegmentId: typeof rawData.archiveSegmentId === "string" ? rawData.archiveSegmentId : undefined,
+    };
+  }
+
+  private extractArchiveManifest(batch: DrapBatchContext): DrapArchiveManifest | undefined {
+    const importReport = toRecord(batch.importReport as Prisma.InputJsonValue | undefined);
+    const reportArchive = isPlainObject(importReport.archive) ? importReport.archive : undefined;
+    if (reportArchive && isPlainObject(reportArchive) && reportArchive.strategy === "batched_gzip") {
+      return reportArchive as unknown as DrapArchiveManifest;
+    }
+
+    const metadata = toRecord(batch.metadata as Prisma.InputJsonValue | undefined);
+    const acquisition = isPlainObject(metadata.acquisition) ? metadata.acquisition : undefined;
+    const metadataArchive = acquisition && isPlainObject(acquisition.archive) ? acquisition.archive : undefined;
+    if (metadataArchive && isPlainObject(metadataArchive) && metadataArchive.strategy === "batched_gzip") {
+      return metadataArchive as unknown as DrapArchiveManifest;
+    }
+
+    return undefined;
+  }
+
+  private buildMetrics(input: {
+    fetched: number;
+    parsed: number;
+    failed: number;
+    duplicates: number;
+    retries: number;
+    totalRuntimeMs: number;
+    fetchTimeTotal: number;
+    parseTimeTotal: number;
+    dbWriteTimeTotal: number;
+    archiveWriteTotal: number;
+    archiveWriteCount: number;
+    r2UploadTotal: number;
+    r2UploadCount: number;
+    htmlSizeTotal: number;
+    htmlCount: number;
+    archiveState?: DrapArchiveManifest;
+  }): DrapAcquisitionMetrics {
+    const safeDivide = (total: number, count: number): number => (count > 0 ? total / count : 0);
+    return {
+      fetched: input.fetched,
+      parsed: input.parsed,
+      failed: input.failed,
+      duplicates: input.duplicates,
+      retries: input.retries,
+      totalRuntimeMs: round(input.totalRuntimeMs),
+      avgFetchTimeMs: round(safeDivide(input.fetchTimeTotal, input.fetched)),
+      avgParseTimeMs: round(safeDivide(input.parseTimeTotal, input.fetched)),
+      avgDbWriteTimeMs: round(safeDivide(input.dbWriteTimeTotal, input.parsed + input.failed + input.duplicates)),
+      avgArchiveWriteTimeMs: round(safeDivide(input.archiveWriteTotal, input.archiveWriteCount)),
+      avgR2BatchUploadTimeMs: round(safeDivide(input.r2UploadTotal, input.r2UploadCount)),
+      avgHtmlSizeBytes: round(safeDivide(input.htmlSizeTotal, input.htmlCount)),
+      totalArchiveSegments: input.archiveState?.totalSegments || 0,
+      uploadedArchiveSegments: input.archiveState?.uploadedSegments || 0,
+      failedArchiveSegments: input.archiveState?.failedSegments || 0,
+      pendingArchiveSegments: input.archiveState?.pendingSegments || 0,
     };
   }
 }
@@ -593,6 +805,10 @@ function parseRegistrationNumber(value: string): { numeric: number; width: numbe
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function round(value: number): number {
+  return Math.round(value * 100) / 100;
 }
 
 function toRecord(value: Prisma.InputJsonValue | undefined): Record<string, unknown> {

@@ -6,11 +6,11 @@ DawaiSaver.pk
 
 ## Current Phase
 
-P38 Live DRAP Verification Crawl
+P40 DRAP Mirror Speed Optimization Implementation + 1,000 Live Test
 
 ## Current Status
 
-The live DRAP verification crawl is complete. The system parsed 100 real registrations, archived raw HTML in R2, and persisted structured crawl rows in the verification database.
+The DRAP mirror now uses batched gzip archival with async R2 upload, and the new flow was validated with a 1,000-registration live run against the real DRAP endpoint.
 
 ## Completed
 
@@ -65,11 +65,17 @@ The live DRAP verification crawl is complete. The system parsed 100 real registr
 - P38 Live DRAP Verification Crawl
   - real DRAP crawl completed
   - 100 parsed registrations stored
-  - 9 failed pages recorded
   - raw HTML uploaded to R2
   - live runtime compared against P37 projections
+  - validation passed
+- P40 DRAP Mirror Speed Optimization Implementation + 1,000 Live Test
+  - batched gzip archive manager added
+  - per-product R2 hot path removed
+  - archive manifest and checkpoint state persisted in JSON metadata
+  - checkpoint/resume replay validated
+  - 1,000 live registrations processed against the real DRAP endpoint
   - validation passed
 
 ## Next Recommended Task
 
-1. Run a checkpointed DRAP mirror scale-up on the highest-capacity option from the live benchmark, using 4 workers and an explicit stop/resume plan.
+1. Run a 10,000-registration checkpointed mirror canary with 4 workers, force one resume event, and confirm manifest replay plus archive upload recovery under real DRAP load.

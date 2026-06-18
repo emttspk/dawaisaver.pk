@@ -194,6 +194,11 @@ export interface DrapAcquisitionPlan {
   resumeFrom?: DrapAcquisitionCheckpoint;
   maxRetries?: number;
   checkpointEvery?: number;
+  archiveBatchSize?: number;
+  archiveFallbackBatchSize?: number;
+  archiveUploadConcurrency?: number;
+  archiveStrategy?: "batched" | "per_record";
+  archiveSpoolDir?: string;
 }
 
 export interface DrapAcquisitionR2Status {
@@ -206,10 +211,70 @@ export interface DrapMirrorImportItem {
   registrationNumber: string;
   r2Key?: string;
   rawHtmlUrl?: string;
+  archiveKey?: string;
+  archiveUrl?: string;
+  archiveSegmentId?: string;
   parsed?: DrapMirrorParsedRecord;
   status: "FETCHED" | "PARSED" | "FAILED" | "DUPLICATE";
   retryCount: number;
   errorMessage?: string;
+}
+
+export interface DrapArchiveSegmentManifest {
+  segmentId: string;
+  sequence: number;
+  rowCount: number;
+  fileName: string;
+  objectKey: string;
+  localPath: string;
+  contentHash: string;
+  compressedHash: string;
+  rawBytes: number;
+  compressedBytes: number;
+  firstRegistrationNumber: string;
+  lastRegistrationNumber: string;
+  status: "PENDING" | "UPLOADING" | "UPLOADED" | "FAILED";
+  createdAt: string;
+  updatedAt: string;
+  uploadedAt?: string;
+  failedAt?: string;
+  errorMessage?: string;
+  uploadUrl?: string;
+}
+
+export interface DrapArchiveManifest {
+  strategy: "batched_gzip";
+  batchSize: number;
+  fallbackBatchSize: number;
+  spoolDir: string;
+  nextSequence: number;
+  totalRecords: number;
+  totalSegments: number;
+  uploadedSegments: number;
+  failedSegments: number;
+  pendingSegments: number;
+  totalRawBytes: number;
+  totalCompressedBytes: number;
+  segments: DrapArchiveSegmentManifest[];
+}
+
+export interface DrapAcquisitionMetrics {
+  fetched: number;
+  parsed: number;
+  failed: number;
+  duplicates: number;
+  retries: number;
+  totalRuntimeMs: number;
+  avgFetchTimeMs: number;
+  avgParseTimeMs: number;
+  avgDbWriteTimeMs: number;
+  avgArchiveWriteTimeMs: number;
+  avgR2BatchUploadTimeMs: number;
+  avgHtmlSizeBytes: number;
+  totalArchiveSegments: number;
+  uploadedArchiveSegments: number;
+  failedArchiveSegments: number;
+  pendingArchiveSegments: number;
 }
 
 export interface DrapMirrorImportSummary {
@@ -224,6 +289,8 @@ export interface DrapMirrorImportSummary {
   checkpoint: DrapAcquisitionCheckpoint;
   r2Status: DrapAcquisitionR2Status;
   items: DrapMirrorImportItem[];
+  archive?: DrapArchiveManifest;
+  metrics?: DrapAcquisitionMetrics;
 }
 
 export type DrapAtcMatchMode =

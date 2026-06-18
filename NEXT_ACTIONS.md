@@ -2,16 +2,15 @@
 
 ## Current Task
 
-P38 Live DRAP Verification Crawl (Complete)
+P40 DRAP Mirror Speed Optimization Implementation + 1,000 Live Test (Complete)
 
 ## Completed
 
-- Real DRAP endpoint crawl executed
-- 100 real registrations parsed and stored
-- Raw HTML archived to R2
-- Structured crawl rows persisted to PostgreSQL
-- Live throughput measured
-- P37 benchmark projections compared against live results
+- Batched gzip archive manager implemented
+- Per-product R2 upload removed from the DRAP hot path
+- Archive manifest and upload state persisted in JSON metadata
+- Checkpoint/resume replay validated
+- 1,000 real DRAP registrations processed
 - Prisma format passed
 - Prisma generate passed
 - Build passed
@@ -19,14 +18,15 @@ P38 Live DRAP Verification Crawl (Complete)
 
 ## Next
 
-1. Prepare a checkpointed DRAP mirror scale-up plan for the highest-capacity option from the live run, using 4 workers and a stop/resume checkpoint strategy
-2. Run a larger live batch only after confirming the target infrastructure and operational window
+1. Run a 10,000-registration checkpointed DRAP mirror canary with 4 workers
+2. Force one interruption and verify resume from `nextIndex` plus manifest replay
+3. Confirm archive upload recovery and runtime on the target deployment class
 
 ## Exact Next Prompt
 
 Project: DawaiSaver.pk
 
-Task: P39 Checkpointed DRAP Mirror Scale-Up
+Task: P41 DRAP Mirror Canary With Resume Validation
 
 Mode: AGENT
 
@@ -41,12 +41,12 @@ Preserve composition generation.
 
 Goal:
 
-Run a checkpointed DRAP mirror scale-up on the highest-capacity option from the live P38 run using 4 workers and explicit stop/resume support.
+Run a 10,000-registration checkpointed DRAP mirror canary with 4 workers, force one interruption, and verify resume idempotency through `nextIndex` plus archive manifest replay.
 
 Required Work:
 
-1. Keep the existing acquisition logic unchanged
-2. Reuse the R2 archival path and structured persistence path
-3. Run a larger checkpointed batch
-4. Compare actual runtime against the live P38 benchmark
-5. Update the recovery docs with the scale-up outcome
+1. Keep the current batched archive flow unchanged
+2. Use the existing JSON metadata fields for checkpoint and manifest state
+3. Validate recovery after interruption
+4. Compare runtime against the P40 1,000-row live test
+5. Update CURRENT_UPDATE.md, AI_CODE_AUDIT_REPORT.md, AI_IMPLEMENTATION_INDEX.md, NEXT_ACTIONS.md
