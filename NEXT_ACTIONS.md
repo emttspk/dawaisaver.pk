@@ -2,7 +2,7 @@
 
 ## Current Task
 
-P43A Mirror Job Monitoring (Complete locally)
+P43A Mirror Job Monitoring (Complete and deployed)
 
 ## Completed
 
@@ -11,6 +11,7 @@ P43A Mirror Job Monitoring (Complete locally)
 - 10-second auto-refresh implemented
 - Worker metadata and mirror run IDs persisted for aggregation
 - Admin account created for monitoring access
+- Live Railway endpoint verified
 - Prisma format passed
 - Prisma generate passed
 - Backend build passed
@@ -19,15 +20,15 @@ P43A Mirror Job Monitoring (Complete locally)
 
 ## Next
 
-1. Deploy the monitoring changes to Railway
-2. Confirm the live `GET /api/admin/mirror-status` response against the active DRAP mirror run
-3. Verify the `/admin/mirror-status` page loads with live data after deployment
+1. Continue monitoring the active Railway DRAP run to completion
+2. Capture the final worker summaries, totals, and archive counts from `/api/admin/mirror-status`
+3. Produce the final completion audit for the full mirror pass
 
 ## Exact Next Prompt
 
 Project: DawaiSaver.pk
 
-Task: P43B Railway Mirror Monitoring Deployment Verification
+Task: P43B Railway Mirror Completion Monitoring
 
 Mode: AGENT
 
@@ -42,13 +43,13 @@ Preserve composition generation.
 
 Goal:
 
-Deploy the new mirror monitoring endpoint and admin page to Railway, then verify the live response against the active DRAP mirror run.
+Watch the active Railway DRAP mirror run to completion using the new monitoring endpoint and produce the final verified mirror audit.
 
 Required Work:
 
-1. Deploy the latest main branch to Railway
-2. Verify `GET /api/admin/mirror-status` with the new admin account
-3. Verify `/admin/mirror-status` loads and auto-refreshes
-4. Capture a live response example
+1. Poll `GET /api/admin/mirror-status` until the active run completes
+2. Capture the final worker summaries and totals
+3. Verify final checkpoint integrity and archive integrity
+4. Record the live response example and final mirror audit
 5. Update `CURRENT_UPDATE.md`, `AI_CODE_AUDIT_REPORT.md`, `AI_IMPLEMENTATION_INDEX.md`, `NEXT_ACTIONS.md`
 6. Commit and push if validation passes

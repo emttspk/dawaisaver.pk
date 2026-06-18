@@ -10,7 +10,7 @@ P43A Mirror Job Monitoring
 
 ## Current Status
 
-The DRAP mirror monitoring endpoint and admin page are implemented locally, with worker metadata and mirror run IDs persisted for aggregation.
+The DRAP mirror monitoring endpoint and admin page are deployed and verified on Railway, with worker metadata and mirror run IDs persisted for aggregation.
 
 ## Completed
 
@@ -85,8 +85,9 @@ The DRAP mirror monitoring endpoint and admin page are implemented locally, with
   - `/admin/mirror-status` page added
   - 10-second auto-refresh added
   - admin account created for monitoring access
+  - live Railway endpoint verified
   - validation passed
 
 ## Next Recommended Task
 
-1. Deploy the monitoring changes to Railway and confirm the new admin mirror-status endpoint returns the current live run state correctly.
+1. Continue watching the active Railway DRAP run to completion using `/api/admin/mirror-status` and capture the final totals, ETA, and archive counts.
