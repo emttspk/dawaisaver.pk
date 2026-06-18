@@ -16,10 +16,12 @@ export interface MirrorStatusBatch {
   batch_id: string;
   status: string;
   started_at?: string;
+  completed_at?: string;
   processed_count: number;
   success_count: number;
   failed_count: number;
   retries: number;
+  duplicates: number;
   worker_id?: number;
   mirror_run_id?: string;
   last_registration?: string;
@@ -32,10 +34,12 @@ export interface MirrorStatusBatch {
 export interface MirrorStatusResponse {
   status: string;
   started_at?: string;
+  completed_at?: string;
   processed_count: number;
   success_count: number;
   failed_count: number;
   retries: number;
+  duplicates: number;
   throughput: number;
   worker_count: number;
   last_registration?: string;

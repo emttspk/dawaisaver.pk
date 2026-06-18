@@ -299,10 +299,12 @@ export interface DrapMirrorImportSummary {
 export interface DrapMirrorStatusResponse {
   status: DrapImportStatus;
   started_at?: string;
+  completed_at?: string;
   processed_count: number;
   success_count: number;
   failed_count: number;
   retries: number;
+  duplicates: number;
   throughput: number;
   worker_count: number;
   last_registration?: string;
@@ -319,10 +321,12 @@ export interface DrapMirrorStatusResponse {
     batch_id: string;
     status: DrapImportStatus;
     started_at?: string;
+    completed_at?: string;
     processed_count: number;
     success_count: number;
     failed_count: number;
     retries: number;
+    duplicates: number;
     worker_id?: number;
     mirror_run_id?: string;
     last_registration?: string;

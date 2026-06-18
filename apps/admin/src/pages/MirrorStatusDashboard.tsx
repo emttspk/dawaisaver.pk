@@ -42,10 +42,16 @@ export default function MirrorStatusDashboard() {
       { label: "Processed", value: formatNumber(data.processed_count), tone: "slate" as const },
       { label: "Success", value: formatNumber(data.success_count), tone: "emerald" as const },
       { label: "Failed", value: formatNumber(data.failed_count), tone: data.failed_count > 0 ? "amber" as const : "emerald" as const },
+      { label: "Duplicates", value: formatNumber(data.duplicates), tone: data.duplicates > 0 ? "amber" as const : "emerald" as const },
       { label: "Throughput", value: `${data.throughput.toFixed(2)} / sec`, tone: "blue" as const },
       { label: "Workers", value: formatNumber(data.worker_count), tone: "slate" as const },
       { label: "Archive uploads", value: formatNumber(data.archive_uploads), tone: "amber" as const },
       { label: "ETA", value: data.eta_at ? new Date(data.eta_at).toLocaleString() : "Calculating", tone: "blue" as const },
+      {
+        label: "Completed",
+        value: data.completed_at ? new Date(data.completed_at).toLocaleString() : "In progress",
+        tone: data.completed_at ? "emerald" as const : "slate" as const,
+      },
     ];
   }, [data]);
 
@@ -163,6 +169,7 @@ function IntegrityList({ data }: { data: MirrorStatusResponse }) {
     ["Archive", data.archive_integrity],
     ["R2", data.r2_integrity],
     ["Coverage", `${data.success_rate.toFixed(2)}% success`],
+    ["Duplicates", formatNumber(data.duplicates)],
     ["ETA", data.eta_at ? new Date(data.eta_at).toLocaleString() : "Pending"],
   ];
 

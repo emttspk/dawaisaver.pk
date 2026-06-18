@@ -62,6 +62,7 @@ export class DrapMirrorStatusService {
     const processedCount = snapshots.reduce((sum, snapshot) => sum + snapshot.checkpoint.processed, 0);
     const successCount = snapshots.reduce((sum, snapshot) => sum + snapshot.checkpoint.parsed, 0);
     const failedCount = snapshots.reduce((sum, snapshot) => sum + snapshot.checkpoint.failed, 0);
+    const duplicateCount = snapshots.reduce((sum, snapshot) => sum + snapshot.checkpoint.duplicate, 0);
     const retries = snapshots.reduce((sum, snapshot) => sum + snapshot.checkpoint.retries, 0);
     const archiveUploads = snapshots.reduce((sum, snapshot) => sum + snapshot.archive.uploadedSegments, 0);
     const workerCount = Math.max(
@@ -93,10 +94,19 @@ export class DrapMirrorStatusService {
     return {
       status: status as DrapMirrorStatusResponse["status"],
       started_at: startedAt?.toISOString(),
+      completed_at:
+        snapshots.every((snapshot) => snapshot.status === "COMPLETED" || snapshot.status === "COMPLETED_WITH_ERRORS")
+          ? snapshots
+              .map((snapshot) => snapshot.completedAt)
+              .filter((value): value is Date => Boolean(value))
+              .sort((left, right) => right.getTime() - left.getTime())[0]
+              ?.toISOString()
+          : undefined,
       processed_count: processedCount,
       success_count: successCount,
       failed_count: failedCount,
       retries,
+      duplicates: duplicateCount,
       throughput: round(throughput),
       worker_count: workerCount,
       last_registration: referenceSnapshot?.checkpoint.lastRegistrationNumber,
@@ -117,6 +127,7 @@ export class DrapMirrorStatusService {
         success_count: snapshot.checkpoint.parsed,
         failed_count: snapshot.checkpoint.failed,
         retries: snapshot.checkpoint.retries,
+        duplicates: snapshot.checkpoint.duplicate,
         worker_id: snapshot.workerId,
         mirror_run_id: snapshot.mirrorRunId,
         last_registration: snapshot.checkpoint.lastRegistrationNumber,
@@ -152,6 +163,7 @@ export class DrapMirrorStatusService {
       throughput,
       etaSeconds,
       updatedAt: batch.updatedAt,
+      completedAt: batch.finishedAt ?? undefined,
       totalRows: batch.totalRows,
     };
   }
@@ -267,6 +279,7 @@ export class DrapMirrorStatusService {
       success_count: 0,
       failed_count: 0,
       retries: 0,
+      duplicates: 0,
       throughput: 0,
       worker_count: 0,
       archive_uploads: 0,

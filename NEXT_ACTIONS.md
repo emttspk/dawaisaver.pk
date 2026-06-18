@@ -2,7 +2,7 @@
 
 ## Current Task
 
-P43A Mirror Job Monitoring (Complete and deployed)
+P43B Railway Mirror Completion Monitoring (In progress)
 
 ## Completed
 
@@ -12,17 +12,17 @@ P43A Mirror Job Monitoring (Complete and deployed)
 - Worker metadata and mirror run IDs persisted for aggregation
 - Admin account created for monitoring access
 - Live Railway endpoint verified
+- Latest live Railway running snapshot captured
 - Prisma format passed
 - Prisma generate passed
 - Backend build passed
 - Backend tests passed
-- Admin app build passed
 
 ## Next
 
 1. Continue monitoring the active Railway DRAP run to completion
-2. Capture the final worker summaries, totals, and archive counts from `/api/admin/mirror-status`
-3. Produce the final completion audit for the full mirror pass
+2. Capture the final worker summaries, totals, completed_at, and archive counts from `/api/admin/mirror-status`
+3. Produce the final verified completion audit for the full mirror pass
 
 ## Exact Next Prompt
 

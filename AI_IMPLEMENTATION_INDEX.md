@@ -6,11 +6,11 @@ DawaiSaver.pk
 
 ## Current Phase
 
-P43A Mirror Job Monitoring
+P43B Railway Mirror Completion Monitoring
 
 ## Current Status
 
-The DRAP mirror monitoring endpoint and admin page are deployed and verified on Railway, with worker metadata and mirror run IDs persisted for aggregation.
+The DRAP mirror monitoring endpoint and admin page are deployed and verified on Railway. The active Railway mirror run is still in progress and visible through the new endpoint.
 
 ## Completed
 
@@ -86,8 +86,14 @@ The DRAP mirror monitoring endpoint and admin page are deployed and verified on 
   - 10-second auto-refresh added
   - admin account created for monitoring access
   - live Railway endpoint verified
+  - live running snapshot captured
   - validation passed
+- P43B Railway Mirror Completion Monitoring
+  - latest live Railway snapshot captured
+  - completion polling remains active
+  - endpoint and page stay verified
+  - validation passed locally
 
 ## Next Recommended Task
 
-1. Continue watching the active Railway DRAP run to completion using `/api/admin/mirror-status` and capture the final totals, ETA, and archive counts.
+1. Continue watching the active Railway DRAP run to completion using `/api/admin/mirror-status` and capture the final totals, completed_at, and archive counts.
