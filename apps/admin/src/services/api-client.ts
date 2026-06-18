@@ -1,4 +1,4 @@
-export const API_BASE = (import.meta.env.VITE_API_URL || "http://localhost:3000/api").replace(/\/$/, "");
+export const API_BASE = normalizeApiBase(import.meta.env.VITE_API_URL);
 const TOKEN_KEY = "dawaisaver.admin.accessToken";
 const USER_KEY = "dawaisaver.admin.user";
 const REFRESH_KEY = "dawaisaver.admin.refreshToken";
@@ -69,7 +69,7 @@ class AdminApiClient {
     if (!headers.has("Content-Type")) headers.set("Content-Type", "application/json");
     if (token) headers.set("Authorization", `Bearer ${token}`);
 
-    const response = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
+    const response = await fetch(resolveApiUrl(endpoint), { ...options, headers });
     const payload = (await response.json().catch(() => ({}))) as Partial<ApiEnvelope<T>> | T;
     if (!response.ok || (isEnvelope(payload) && payload.success === false)) {
       throw new Error(isEnvelope(payload) ? payload.error || payload.code || "Request failed." : "Request failed.");
@@ -78,8 +78,7 @@ class AdminApiClient {
   }
 
   async raw(path: string) {
-    const apiUrl = new URL(API_BASE);
-    const response = await fetch(`${apiUrl.origin}${path}`);
+    const response = await fetch(resolveApiUrl(path));
     if (!response.ok) throw new Error(`${path} returned ${response.status}`);
     return response.json() as Promise<unknown>;
   }
@@ -157,6 +156,24 @@ class AdminApiClient {
 }
 
 export const apiClient = new AdminApiClient();
+
+function normalizeApiBase(value: string | undefined) {
+  const fallback = "/api";
+  const raw = (value || fallback).trim();
+  if (!raw) return fallback;
+  return raw.replace(/\/$/, "");
+}
+
+function resolveApiUrl(path: string) {
+  if (/^https?:\/\//i.test(path)) return path;
+  const base = API_BASE || "/api";
+  const suffix = path.startsWith("/") ? path : `/${path}`;
+  if (/^https?:\/\//i.test(base)) {
+    return `${base}${suffix}`;
+  }
+  const normalizedBase = base.startsWith("/") ? base : `/${base}`;
+  return `${normalizedBase}${suffix}`;
+}
 
 function isEnvelope<T>(payload: Partial<ApiEnvelope<T>> | T): payload is Partial<ApiEnvelope<T>> {
   return Boolean(payload && typeof payload === "object" && "success" in payload);
