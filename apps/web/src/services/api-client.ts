@@ -1,4 +1,8 @@
-export const API_BASE = (import.meta.env.VITE_API_URL || "http://localhost:3000/api").replace(/\/$/, "");
+const DEFAULT_API_BASE = import.meta.env.DEV
+  ? "http://localhost:3000/api"
+  : "https://dawaisaverpk-production.up.railway.app/api";
+
+export const API_BASE = (import.meta.env.VITE_API_URL || DEFAULT_API_BASE).replace(/\/$/, "");
 
 export const TOKEN_KEY = "dawaisaver.accessToken";
 const REFRESH_TOKEN_KEY = "dawaisaver.refreshToken";
