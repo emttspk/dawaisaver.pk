@@ -6,11 +6,11 @@ DawaiSaver.pk
 
 ## Current Phase
 
-P45 Browserless Railway Authentication Finalization
+P46 DRAP Mirror Failure Analysis and Catalog Completeness Verification
 
 ## Current Status
 
-Browserless Railway project-token authentication is installed and validated for DawaiSaver.pk. The single active Railway credential source is Windows User `RAILWAY_TOKEN`; `RAILWAY_API_TOKEN` is absent, browser-session token fields are empty, and `railway status --json` verifies project `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`).
+Browserless Railway project-token authentication is installed and validated for DawaiSaver.pk. The single active Railway credential source is Windows User `RAILWAY_TOKEN`; `RAILWAY_API_TOKEN` is absent, browser-session token fields are empty, and `railway status --json` verifies project `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`). The live DRAP mirror acquisition run completed with 46,430 parsed rows and 3,570 failures, while the public product search surface still returns no results for known medicines.
 
 ## Completed
 
@@ -127,9 +127,15 @@ Browserless Railway project-token authentication is installed and validated for 
   - Verified `railway status --json` reports project ID `e38bb3da-7ab5-4654-b504-101e74c92d5b`
   - Added `.railway/project.json` with non-secret project metadata
   - Created `RAILWAY_BROWSERLESS_VALIDATION.md`
+- P46 DRAP Mirror Failure Analysis and Catalog Completeness Verification
+  - Verified live mirror run ID `dc30a1d4-bb6b-4bff-a967-047a45dfcb7a`
+  - Verified `COMPLETED_WITH_ERRORS` status with 50,000 target rows
+  - Confirmed no fetch retry exhaustion in the live logs
+  - Confirmed public product and generic search endpoints remain empty
+  - Confirmed the mirror job does not itself materialize the catalog tables
 
 ## Next Recommended Task
 
 1. Run build validation
-2. Commit P45 documentation and metadata if validation passes
-3. Continue production verification using `railway status --json`
+2. If needed, add a read-only production SQL path for exact catalog table counts
+3. Commit the verification docs if validation passes

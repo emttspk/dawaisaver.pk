@@ -2,7 +2,7 @@
 
 ## Current Task
 
-P45 Browserless Railway Authentication Finalization.
+P46 DRAP Mirror Failure Analysis and Catalog Completeness Verification.
 
 ## Completed
 
@@ -17,19 +17,22 @@ P45 Browserless Railway Authentication Finalization.
 - Created `RAILWAY_BROWSERLESS_VALIDATION.md`.
 - Updated `CURRENT_UPDATE.md`.
 - Added historical `CURRENT_UPDATE_*.md` patterns to `.gitignore`.
+- Verified live mirror run `dc30a1d4-bb6b-4bff-a967-047a45dfcb7a` completed with errors at 50,000 rows.
+- Confirmed public product and generic search endpoints currently return no results for known medicines.
 
 ## Next
 
 1. Run build validation.
-2. Run final `git status --short`.
-3. Commit only if validation passes.
-4. Push to `main` only if project policy allows and the commit contains no secrets.
+2. Resolve or document the missing read-only production SQL path for exact live catalog counts.
+3. Run final `git status --short`.
+4. Commit only if validation passes.
+5. Push to `main` only if project policy allows and the commit contains no secrets.
 
 ## Exact Next Prompt
 
 Project: DawaiSaver.pk
 
-Task: P46 Continue Production Verification
+Task: P46 DRAP Mirror Failure Analysis and Catalog Completeness Verification
 
 Mode: AGENT
 
