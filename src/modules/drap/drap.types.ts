@@ -134,6 +134,98 @@ export interface DrapDatasetInventoryItem {
   notes?: string;
 }
 
+export interface DrapMirrorCompositionRow {
+  genericName: string;
+  operator?: string;
+  strength?: string;
+  unit?: string;
+}
+
+export interface DrapMirrorParsedRecord {
+  registrationNumber: string;
+  brandName?: string;
+  registrationDate?: string;
+  meetingNumber?: string;
+  dosageForm?: string;
+  compositionRows: DrapMirrorCompositionRow[];
+  packSize?: string;
+  approvedPrice?: string;
+  pricingType?: string;
+  manufacturer?: string;
+  country?: string;
+  manufacturingType?: string;
+  category?: string;
+  sourceStatus?: string;
+  sourceVerificationStatus?: string;
+  routeOfAdmin?: string;
+  labelClaim?: string;
+  remarks?: string[];
+  rawHtmlUrl?: string;
+}
+
+export interface DrapAcquisitionCheckpoint {
+  batchId?: string;
+  nextIndex: number;
+  lastRegistrationNumber?: string;
+  processed: number;
+  fetched: number;
+  parsed: number;
+  failed: number;
+  duplicate: number;
+  retries: number;
+}
+
+export interface DrapAcquisitionRegistrationInput {
+  registrationNumber: string;
+  sourceUrl?: string;
+}
+
+export interface DrapRegistrationEnumerationOptions {
+  startRegistration?: string;
+  endRegistration?: string;
+  registrations?: string[];
+  includeLegacyVariants?: boolean;
+}
+
+export interface DrapAcquisitionPlan {
+  registrations: DrapAcquisitionRegistrationInput[];
+  batchId?: string;
+  sourceUrl?: string;
+  resumeFrom?: DrapAcquisitionCheckpoint;
+  maxRetries?: number;
+  checkpointEvery?: number;
+}
+
+export interface DrapAcquisitionR2Status {
+  required: string[];
+  missing: string[];
+  present: string[];
+}
+
+export interface DrapMirrorImportItem {
+  registrationNumber: string;
+  r2Key?: string;
+  rawHtmlUrl?: string;
+  parsed?: DrapMirrorParsedRecord;
+  status: "FETCHED" | "PARSED" | "FAILED" | "DUPLICATE";
+  retryCount: number;
+  errorMessage?: string;
+}
+
+export interface DrapMirrorImportSummary {
+  batchId: string;
+  status: DrapImportStatus;
+  totalRows: number;
+  fetchedRows: number;
+  parsedRows: number;
+  failedRows: number;
+  duplicateRows: number;
+  retryCount: number;
+  checkpoint: DrapAcquisitionCheckpoint;
+  r2Status: DrapAcquisitionR2Status;
+  items: DrapMirrorImportItem[];
+}
+
 export type DrapAtcMatchMode =
   | "exact_canonical"
   | "alias_match"

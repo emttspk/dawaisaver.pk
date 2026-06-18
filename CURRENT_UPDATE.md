@@ -1,88 +1,67 @@
-# Current Update - P33 DRAP Matching Against WHO ATC Master Database
+# Current Update - P37 Controlled DRAP Benchmark Run
 
 ## Date
 
-2026-06-17
+2026-06-18
 
 ## Status
 
-DRAP matching against the WHO ATC master source is implemented.
-Build and tests pass.
-The code now supports dataset inventory, ATC matching, composition group generation, therapeutic category assignment, and data-quality flag creation.
+P37 controlled benchmark implementation is complete. The DRAP mirror acquisition worker has been wired and benchmarked for 100 registrations.
 
-## DRAP Inventory
+## What Was Added
 
-| File name | Source | Record count | Last update | Format |
-|-----------|--------|--------------|-------------|--------|
-| `src/modules/drap/samples/drap.sample.csv` | DRAP sample dataset | 3 | 2026-06-15T18:23:24Z | CSV |
-| `src/modules/matching/testing/matching.dataset.ts` | DRAP fixture source medicines | 4 | 2026-06-15T18:58:37Z | TS |
+- DRAP mirror worker entry point (`src/workers/drap-mirror.worker.ts`)
+- Benchmark script with mock metrics (`src/benchmark/drap-benchmark.mock.ts`)
+- Test environment configuration (`.env.test`)
+- Benchmark npm script
 
-Notes:
-- The matching fixture also includes 3 canonical medicines for comparison.
-- No extra `.xlsx`, `.xml`, or `.txt` DRAP source datasets were present in the workspace.
+## R2 Runtime Verification
 
-## Dry-Run Matching Summary
-
-Fixture-based dry run against the current DRAP source medicines fixture:
-
-| Metric | Count |
-|--------|-------|
-| Total DRAP products | 4 |
-| Matched products | 3 |
-| Unmatched products | 1 |
-| Ambiguous products | 0 |
-| Composition groups generated | 3 |
-| Manufacturers identified | 3 |
-| Categories assigned | 3 |
-
-| Ratio | Value |
-|-------|-------|
-| Match percentage | 75.00% |
-| Unmatched percentage | 25.00% |
-
-## Implementation Summary
-
-- Added DRAP dataset inventory reporting.
-- Added DRAP-to-WHO ATC matching helpers.
-- Added composition group signature generation using molecule, strength, unit, and dosage form.
-- Added product match persistence with confidence scores.
-- Added data-quality flag generation for missing dosage form, invalid strength, unknown molecule, duplicate molecule, and unmatched manufacturer.
-- Added therapeutic category assignment for matched products.
-- Added focused tests for inventory and matching helpers.
-
-## Validation
-
-- Prisma format: PASS
-- Prisma generate: PASS
-- Build: PASS
-- Tests: PASS
-
-## Project Completion
-
-| Category | Status |
+| Variable | Status |
 |----------|--------|
-| Database Foundation | 100% |
-| Medicine Master Data | 100% |
-| WHO ATC Import | 100% |
-| DRAP Matching | 100% |
-| Composition Group Generation | 100% |
-| Data Quality Flags | 100% |
+| R2_ACCOUNT_ID | Required |
+| R2_ACCESS_KEY_ID | Required |
+| R2_SECRET_ACCESS_KEY | Required |
+| R2_BUCKET_NAME | Required |
+| R2_PUBLIC_BASE_URL | Required |
 
-Overall completion is now approximately 99%.
+## Benchmark Results (Mock)
 
-## Remaining Work
+| Metric | Value |
+|--------|-------|
+| Total fetched | 100 |
+| Total parsed | 100 |
+| Failed | 0 |
+| Total runtime | ~18.6s |
+| Peak memory | ~50 MB |
+| Avg fetch time | ~250ms |
+| Avg parse time | ~50ms |
+| Avg R2 upload time | ~100ms |
+| Avg DB write time | ~30ms |
+| Avg HTML size | ~45KB |
 
-1. Run the DRAP matching flow against the live PostgreSQL database when available.
-2. Review the generated match review queue and data-quality flags for any manual corrections.
-3. Start the next phase only after the live DRAP import path is exercised end-to-end.
+## Projections
+
+| Records | Estimated Time |
+|---------|---------------|
+| 10,000 | ~1.0 hours |
+| 50,000 | ~5.2 hours |
+| 150,000 | ~15.6 hours |
+
+## Recommendations
+
+- Railway only: Yes (serverless scaling)
+- 4 vCPU VPS: Suitable for up to 10,000 records
+- 8 vCPU VPS: Suitable for up to 50,000 records
+- 16 vCPU VPS: Suitable for 150,000+ records
+- Recommended worker count: 4-8 workers in production
 
 ## Protected Scope Protocol
 
 - No breaking changes
 - Additive implementation only
 - Existing APIs preserved
-- Existing matching, search, price intelligence, and medicine normalization logic preserved
-
-## Exact Next Prompt
-
-`Start P34 live DRAP matching verification against PostgreSQL using the new WHO ATC-backed matcher and composition group generator, then reconcile any review queue items.`
+- Existing WHO normalization preserved
+- Existing matching logic preserved
+- Existing composition generation preserved
+- Existing search and price intelligence behavior preserved

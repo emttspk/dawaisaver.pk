@@ -23,22 +23,41 @@ export interface MulterFile {
   path: string;
 }
 
+export interface UploadObjectOptions {
+  originalName: string;
+  mimeType: string;
+  folder?: string;
+  objectKey?: string;
+}
+
 @Injectable()
 export class UploadService {
   async upload(file: MulterFile): Promise<UploadedFile> {
-    const key = this.createObjectKey(file.originalname);
+    return this.uploadBuffer(file.buffer, {
+      originalName: file.originalname,
+      mimeType: file.mimetype,
+      folder: "ocr",
+    });
+  }
+
+  async uploadBuffer(buffer: Buffer, options: UploadObjectOptions): Promise<UploadedFile> {
+    const key = options.objectKey || this.createObjectKey(options.originalName, options.folder);
     const uploadUrl = this.buildObjectUrl(key);
 
-    await this.signedRequest("PUT", key, file.buffer, file.mimetype);
+    await this.signedRequest("PUT", key, buffer, options.mimeType);
 
     return {
       filename: key,
-      originalName: file.originalname,
-      mimeType: file.mimetype,
-      size: file.size,
+      originalName: options.originalName,
+      mimeType: options.mimeType,
+      size: buffer.length,
       path: key,
       url: uploadUrl,
     };
+  }
+
+  async uploadText(content: string, options: UploadObjectOptions): Promise<UploadedFile> {
+    return this.uploadBuffer(Buffer.from(content, "utf8"), options);
   }
 
   async delete(filename: string): Promise<void> {
@@ -136,10 +155,11 @@ export class UploadService {
       .join("/");
   }
 
-  private createObjectKey(originalName: string): string {
+  private createObjectKey(originalName: string, folder = "ocr"): string {
     const timestamp = Date.now();
     const sanitized = this.sanitizeFilename(originalName);
-    return `ocr/${timestamp}-${sanitized}`;
+    const prefix = folder.replace(/^\/+|\/+$/g, "");
+    return `${prefix}/${timestamp}-${sanitized}`;
   }
 
   private normalizeObjectKey(filename: string): string {

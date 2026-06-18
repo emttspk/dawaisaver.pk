@@ -14,7 +14,8 @@
     "test:unit": "jest --config jest.config.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
-    "db:bootstrap": "npm run prisma:generate && npm run prisma:migrate"
+    "db:bootstrap": "npm run prisma:generate && npm run prisma:migrate",
+    "benchmark:drap": "npx ts-node -r dotenv/config src/benchmark/drap-benchmark.mock.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",

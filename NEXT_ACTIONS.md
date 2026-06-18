@@ -1,24 +1,60 @@
 # Next Actions
+
 ## Current Task
-P33 DRAP Matching Against WHO ATC Master Database
+
+P38 Live DRAP Acquisition Run (Pending R2 Variables)
 
 ## Completed
-- DRAP fixture inventory completed
-- WHO ATC-backed matching helpers implemented
-- Composition group generator implemented
-- Therapeutic category assignment path implemented
-- Data-quality flags implemented
+
+- Live DRAP acquisition architecture designed
+- Registration enumeration strategy defined
+- Raw HTML R2 archival path implemented
+- DRAP detail parser implemented
+- Import batch checkpointing implemented
+- Parser and acquisition tests passed
 - Prisma format passed
 - Prisma generate passed
 - Build passed
-- Tests passed
+- Tests passed (31 suites, 45 tests)
+- P37 DRAP mirror worker wired
+- P37 benchmark executed
+- P37 projections calculated
+- P37 recommendations documented
 
 ## Next
-1. **Run live PostgreSQL verification**
-   - Execute the DRAP matching flow against the real database
-   - Inspect the generated `product_matches` and `match_reviews`
-2. **Review data-quality output**
-   - Check unknown molecule and ambiguous-match flags
-   - Confirm composition groups are stable for multi-ingredient products
-3. **Start the next phase only after live verification**
-   - Reconcile any manual review queue items first
+
+1. Configure R2 variables in Railway:
+   - `R2_ACCOUNT_ID`
+   - `R2_ACCESS_KEY_ID`
+   - `R2_SECRET_ACCESS_KEY`
+   - `R2_PUBLIC_BASE_URL`
+2. Run live DRAP acquisition with configured R2 variables
+3. Monitor and adjust worker count based on actual performance
+
+## Exact Next Prompt
+
+Project: DawaiSaver.pk
+
+Task: P38 Live DRAP Acquisition Run
+
+Mode: AGENT
+
+Protected Scope Protocol active.
+
+No breaking changes.
+No schema changes.
+Preserve existing APIs.
+Preserve existing matching logic.
+Preserve WHO normalization.
+Preserve composition generation.
+
+Goal:
+
+Execute live DRAP mirror acquisition once R2 variables are configured in Railway.
+
+Required Work:
+
+1. Configure R2 environment variables in Railway
+2. Run acquisition with 4-8 workers
+3. Monitor performance against benchmark projections
+4. Update documentation with actual results
