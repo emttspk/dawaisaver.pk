@@ -1,4 +1,4 @@
-# Current Update - Railway Auth And Backup Readiness Audit
+# Current Update - Railway Auth Recovery Audit
 
 ## Date
 
@@ -6,90 +6,80 @@
 
 ## Status
 
-Railway authentication could not be restored from this shell, so production database and R2 backups remain blocked. The repository build passes, the backup folder and templates exist, and no production changes were made.
+Railway authentication sources were inspected and a likely user-level token source was found, but Railway still rejects it. Production backup prerequisites remain blocked, and no production data was modified.
 
-## Railway Auth Findings
+## Auth Findings
 
-- `RAILWAY_TOKEN` and `RAILWAY_API_TOKEN` are both present in the current shell.
-- After clearing both env vars, `railway whoami` and `railway status` return `Unauthorized. Please login with \`railway login\``.
-- `railway login --browserless` is not usable here because it requires an interactive terminal.
+- Current process environment contains stale Railway tokens.
+- Windows user environment contains a different Railway token value.
+- System environment does not expose Railway tokens.
+- PowerShell profile auto-loads the Windows user token into new sessions and clears `RAILWAY_API_TOKEN`.
+- Railway CLI returns `Unauthorized` or `Invalid RAILWAY_TOKEN` with both the inherited process token and the user token.
 - Local Railway config cache is empty.
-- Result: this shell does not currently have usable Railway production access.
+- Windows Credential Manager has no Railway entries.
+- Git Bash profile does not define Railway auth.
+
+## Token Findings
+
+- Current process token: invalid or stale.
+- Windows user token: invalid or wrong-account from this shell’s perspective.
+- No valid workspace token is available in the current environment.
+- No project transfer or auth refresh could be confirmed from this shell.
 
 ## Production Access
 
-- Local project metadata exists at `.railway/project.json`.
-- Recorded IDs from local metadata:
+- Local project metadata remains present at `.railway/project.json`.
+- Recorded IDs:
   - Project: `e38bb3da-7ab5-4654-b504-101e74c92d5b`
   - Environment: `8c0cc558-e375-4d41-8286-21706161c538`
   - Service: `d9fc0b7d-535b-4db4-b2eb-93dfc39d31c9`
-- Live verification of project, environment, service, and PostgreSQL access is blocked until Railway auth is restored.
+- Live access to Railway variables, PostgreSQL, and service metadata is blocked until Railway auth is restored.
 
-## Backup Results
+## Backup Prerequisite Status
 
-- Latest backup folder: `D:\DawaiSaver.pk\backups\migration-20260618-215605`
-- Git bundle exists and verifies cleanly.
-- Backup templates exist for Postgres, R2, restore, and smoke checks.
-- Backup sizes recorded:
-  - `git/dawaisaver-full.bundle` - `692,309` bytes
-  - `db/backup-postgres-template.ps1` - `1,265` bytes
-  - `db/restore-to-new-railway-template.ps1` - `857` bytes
-  - `db/restore-to-coolify-template.ps1` - `853` bytes
-  - `r2/backup-r2-template.ps1` - `1,424` bytes
-  - `env/railway-variable-names.txt` - `803` bytes
-  - `env/required-env-checklist.md` - `1,010` bytes
-  - `verification/post-restore-smoke-checklist.md` - `781` bytes
-  - `verification/unused-md-classification.md` - `2,233` bytes
-- Actual `pg_dump`, `pg_restore`, `psql`, and R2 sync were not run because credentials are still unavailable locally.
+- `backup-prerequisites-check.md` was created in the latest backup folder.
+- `DATABASE_URL`: blocked
+- R2 credentials: blocked
+- Required production variables: blocked
+- Safest retrieval method: fresh valid Railway auth in an interactive terminal, then `railway variable list` for the linked service.
 
-## Missing Prerequisites
+## Deletion Report
 
-- `DATABASE_URL` is not available locally.
-- `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, and `R2_BUCKET_NAME` are not available locally.
-- Railway CLI access is not authenticated in this shell.
+- `deletion-report.md` was created.
+- No markdown files were deleted.
+- The unused markdown review did not produce any safely deletable files.
 
 ## Migration Readiness
 
 - Dockerfile compatibility with Coolify: good.
-- Prisma migrations: present under `prisma/migrations`.
+- Prisma migrations: present and deploy-ready in structure.
 - Startup command: `node dist/main.js`.
 - Build command: `npm.cmd run build` passes.
-- Health endpoints: `/health/application` and `/health/database` exist.
-- Database migration runner on boot is disabled by config, which is the right default for migration work.
-- DRAP mirror and seed/import jobs were not run.
+- Health endpoints: `/health/application` and `/health/database` are present.
+- Cloudflare Pages apps still depend on `VITE_API_URL` for non-default environments.
+- DRAP autorun remains disabled by policy for migration work.
 
-## Transfer Feasibility
+## Command Results
 
-- Railway project transfer is documented through the Public API as a transfer to a workspace.
-- Railway database direct transfer is not documented as a live move; the safe path is still backup and restore.
-- Lowest downtime path remains write freeze, `pg_dump`, restore into the new target, verification, then cutover.
-
-## Markdown Cleanup
-
-- No markdown files were deleted.
-- A conservative keep/archive/candidate classification was generated, and nothing was removed automatically.
-
-## Commands Run
-
-- `railway whoami`
-- `railway status`
-- `railway status --json`
-- `railway login --browserless`
-- `npm.cmd run build`
-- `git bundle verify D:\DawaiSaver.pk\backups\migration-20260618-215605\git\dawaisaver-full.bundle`
+- `railway whoami`: unauthorized
+- `railway status`: unauthorized / invalid token
+- `railway status --json`: unauthorized / invalid token
+- `railway login --browserless`: not usable in non-interactive mode
+- `cmdkey /list`: no Railway stored credentials
+- `npm.cmd run build`: pass
 
 ## Completion
 
-- Backup completion: `50%`
+- Backup readiness: `55%`
 - Migration readiness: `70%`
-- Transfer feasibility: `80%`
+- Auth recovery: `40%`
 
 ## Blockers
 
-- Railway auth is not currently usable from this shell.
-- `DATABASE_URL` must be obtained from an authenticated Railway session or the Railway dashboard before `pg_dump` can run.
-- R2 credentials must be obtained before inventory validation can run.
+- Railway auth cannot be recovered from this shell without a fresh valid token or interactive login.
+- `DATABASE_URL` and R2 secrets cannot be read until Railway auth is restored.
+- `psql` is not installed in this shell, so even with `DATABASE_URL` the backup dry run would still need a local client install.
 
 ## Next Action
 
-Restore Railway authentication in an interactive terminal or via a fresh valid token, then run the prepared Postgres and R2 backup scripts from `D:\DawaiSaver.pk\backups\migration-20260618-215605`.
+Open an interactive terminal, refresh Railway auth with a valid token or browser login, then rerun `railway status`, `railway variable list`, and the backup prerequisite audit before attempting `pg_dump` or R2 verification.
