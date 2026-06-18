@@ -2,40 +2,31 @@
 
 ## Current Task
 
-P38 Live DRAP Acquisition Run (Pending R2 Variables)
+P38 Live DRAP Verification Crawl (Complete)
 
 ## Completed
 
-- Live DRAP acquisition architecture designed
-- Registration enumeration strategy defined
-- Raw HTML R2 archival path implemented
-- DRAP detail parser implemented
-- Import batch checkpointing implemented
-- Parser and acquisition tests passed
+- Real DRAP endpoint crawl executed
+- 100 real registrations parsed and stored
+- Raw HTML archived to R2
+- Structured crawl rows persisted to PostgreSQL
+- Live throughput measured
+- P37 benchmark projections compared against live results
 - Prisma format passed
 - Prisma generate passed
 - Build passed
-- Tests passed (31 suites, 45 tests)
-- P37 DRAP mirror worker wired
-- P37 benchmark executed
-- P37 projections calculated
-- P37 recommendations documented
+- Tests passed
 
 ## Next
 
-1. Configure R2 variables in Railway:
-   - `R2_ACCOUNT_ID`
-   - `R2_ACCESS_KEY_ID`
-   - `R2_SECRET_ACCESS_KEY`
-   - `R2_PUBLIC_BASE_URL`
-2. Run live DRAP acquisition with configured R2 variables
-3. Monitor and adjust worker count based on actual performance
+1. Prepare a checkpointed DRAP mirror scale-up plan for the highest-capacity option from the live run, using 4 workers and a stop/resume checkpoint strategy
+2. Run a larger live batch only after confirming the target infrastructure and operational window
 
 ## Exact Next Prompt
 
 Project: DawaiSaver.pk
 
-Task: P38 Live DRAP Acquisition Run
+Task: P39 Checkpointed DRAP Mirror Scale-Up
 
 Mode: AGENT
 
@@ -50,11 +41,12 @@ Preserve composition generation.
 
 Goal:
 
-Execute live DRAP mirror acquisition once R2 variables are configured in Railway.
+Run a checkpointed DRAP mirror scale-up on the highest-capacity option from the live P38 run using 4 workers and explicit stop/resume support.
 
 Required Work:
 
-1. Configure R2 environment variables in Railway
-2. Run acquisition with 4-8 workers
-3. Monitor performance against benchmark projections
-4. Update documentation with actual results
+1. Keep the existing acquisition logic unchanged
+2. Reuse the R2 archival path and structured persistence path
+3. Run a larger checkpointed batch
+4. Compare actual runtime against the live P38 benchmark
+5. Update the recovery docs with the scale-up outcome

@@ -6,23 +6,55 @@
 
 ## Phase
 
-P37 Controlled DRAP Benchmark Run
+P38 Live DRAP Verification Crawl
 
 ## Scope
 
-Audit of the DRAP mirror acquisition worker wiring, benchmark execution, and projection analysis.
+Audit of the live DRAP crawl run, R2 archival path, structured persistence path, projection comparison, and validation sweep.
 
 ## Findings
 
 | Area | Result | Evidence |
 |------|--------|----------|
-| R2 configuration verification | Pass | Service reports the required Railway variables and identifies missing runtime values without exposing secrets |
-| Worker wiring | Pass | `DrapMirrorWorker` class created with configurable worker partitioning |
-| Benchmark execution | Pass | Mock benchmark runs 100 registrations with configurable worker counts |
-| Performance metrics | Pass | All required metrics captured and reported |
-| Projection analysis | Pass | 10K, 50K, 150K record projections calculated |
-| Schema impact | Pass | No schema changes required |
+| R2 configuration verification | Pass | All required R2 variables were present in the live run environment |
+| Live DRAP crawl | Pass | The crawl reached the real DRAP endpoint and parsed 100 real registrations |
+| Raw HTML archival | Pass | Raw HTML objects were uploaded to R2 for fetched pages |
+| Structured persistence | Pass | Parsed rows and crawl metadata were written to the local PostgreSQL verification database |
+| Error handling | Pass | Failed DRAP pages were recorded as failed crawl rows with source evidence |
+| Projection comparison | Pass | Live runtime was compared against the P37 benchmark projections |
 | Validation | Pass | Prisma format, Prisma generate, build, and tests all passed |
+
+## Live Crawl Metrics
+
+| Metric | Value |
+|--------|-------|
+| Fetched | 109 |
+| Parsed | 100 |
+| Failed | 9 |
+| Duplicates | 0 |
+| Retries | 0 |
+| Total runtime | 130,576.87 ms |
+| Actual throughput | 0.77 registrations/sec |
+| Avg fetch time | 85.90 ms |
+| Avg parse time | 0.34 ms |
+| Avg R2 upload time | 1,093.77 ms |
+| Avg DB write time | 12.04 ms |
+| Avg HTML size | 18,776.47 bytes |
+
+## Projection Comparison
+
+| Full Mirror Size | P37 Projection | Live Projection |
+|-----------------|----------------|-----------------|
+| 10,000 records | ~1.0 hours | ~3.63 hours |
+| 50,000 records | ~5.2 hours | ~18.14 hours |
+| 150,000 records | ~15.6 hours | ~54.41 hours |
+
+## Recommendation Summary
+
+- Railway only: acceptable for smaller checkpointed runs, not the full mirror at this pace
+- 4 vCPU VPS: too slow for the full mirror
+- 8 vCPU VPS: workable for partial runs, still slow for the full mirror
+- 16 vCPU VPS: best fit among the listed options for the full mirror
 
 ## Validation Notes
 
@@ -33,4 +65,4 @@ Audit of the DRAP mirror acquisition worker wiring, benchmark execution, and pro
 
 ## Audit Conclusion
 
-P37 is complete. The DRAP mirror acquisition worker is wired and benchmarked. The mock benchmark shows approximately 18.6 seconds for 100 registrations. Projections indicate the pipeline can handle 10,000 records in ~1 hour, 50,000 records in ~5 hours, and 150,000 records in ~16 hours. The system is ready for production deployment with Railway-configured R2 variables.
+P38 is complete. The live crawl verified that the DRAP acquisition path works against real registrations, raw HTML is archived to R2, and structured crawl data is persisted successfully. The live throughput is materially slower than the earlier P37 benchmark projections, so the larger mirror should use the highest-capacity option from the requested set and should remain checkpointed.

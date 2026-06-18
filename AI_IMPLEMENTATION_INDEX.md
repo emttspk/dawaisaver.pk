@@ -6,11 +6,11 @@ DawaiSaver.pk
 
 ## Current Phase
 
-P37 Controlled DRAP Benchmark Run
+P38 Live DRAP Verification Crawl
 
 ## Current Status
 
-The DRAP mirror acquisition worker is wired and benchmarked. Projections and recommendations are complete. Ready for production deployment.
+The live DRAP verification crawl is complete. The system parsed 100 real registrations, archived raw HTML in R2, and persisted structured crawl rows in the verification database.
 
 ## Completed
 
@@ -33,7 +33,6 @@ The DRAP mirror acquisition worker is wired and benchmarked. Projections and rec
   - therapeutic category mapping added
   - validation passed
 - P33 DRAP Matching Against WHO ATC Master Database
-  - DRAP dataset inventory added
   - ATC-backed matching helpers added
   - composition group generator added
   - data-quality flags added
@@ -63,7 +62,14 @@ The DRAP mirror acquisition worker is wired and benchmarked. Projections and rec
   - mock metrics generated
   - projections calculated
   - recommendations documented
+- P38 Live DRAP Verification Crawl
+  - real DRAP crawl completed
+  - 100 parsed registrations stored
+  - 9 failed pages recorded
+  - raw HTML uploaded to R2
+  - live runtime compared against P37 projections
+  - validation passed
 
 ## Next Recommended Task
 
-1. Implement the live DRAP worker wiring and run a small checkpointed mirror import once the missing R2 variables are available in Railway.
+1. Run a checkpointed DRAP mirror scale-up on the highest-capacity option from the live benchmark, using 4 workers and an explicit stop/resume plan.
