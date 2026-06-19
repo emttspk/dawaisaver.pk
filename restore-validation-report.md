@@ -29,7 +29,7 @@ Source backup: `D:\DawaiSaver.pk\backups\migration-20260618-215605`
 
 ## Restore Result
 
-Restore did not complete successfully.
+Restore did not complete successfully on Railway.
 
 What succeeded:
 
@@ -43,6 +43,7 @@ What failed:
 - `pg_restore` failed while loading `public.import_batch_items`.
 - Railway Postgres logs show `No space left on device` while writing WAL recovery files.
 - The target Postgres service then closed connections during recovery.
+- The Railway API surface checked in this run does not provide a direct size update input for the volume, so the 500 MB limit could not be increased in place from the available CLI/API.
 
 ## Table Count Verification
 
@@ -91,10 +92,9 @@ Pending smoke tests:
 
 ## Remaining Work
 
-- Increase target Postgres storage or create a clean larger target Postgres service.
-- Reset the failed target database volume before retrying.
-- Re-run `pg_restore`.
-- Verify table counts from the restored target database.
+- Continue on Railway only if a larger database volume can be provisioned through a supported path.
+- Otherwise move to the Hetzner/Coolify restore plan in `migration-hetzner-coolify-plan.md`.
+- Verify table counts from the restored target database after a successful restore.
 - Copy application variables without printing values.
 - Deploy API only.
 - Run health checks and smoke tests.

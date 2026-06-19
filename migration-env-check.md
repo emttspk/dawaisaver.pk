@@ -58,9 +58,17 @@ PostgreSQL service variables exist, but application variables were not copied be
 - Workspace ID is unavailable from the successful CLI/API calls.
 - `railway whoami` is unauthorized for the project token.
 - Target Postgres restore is blocked by a 500 MB volume running out of disk space during WAL recovery.
+- Railway volume size is not exposed in the checked create/update GraphQL inputs, so an in-place resize path is not available from this surface.
 - API service variables are not copied.
 - API service is not deployed.
 - Wrangler CLI is not installed globally.
+
+## Hetzner/Coolify Path
+
+- Use this path if Railway cannot provide a larger database volume.
+- Recommended minimum: 2 vCPU, 4 GB RAM, 40 GB SSD.
+- Preferred: 4 vCPU, 8 GB RAM, 80 GB NVMe.
+- Restore PostgreSQL first, then the API, and keep the source Railway untouched until validation is complete.
 
 ## Notes
 
