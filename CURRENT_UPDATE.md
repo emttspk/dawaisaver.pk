@@ -4,26 +4,145 @@ Date: 2026-06-19
 Project: DawaiSaver.pk
 Mode: AGENT
 
-## Status
+## Summary
 
-Coolify deployment readiness has been documented for both the API and admin services. DRAP mirror execution is frozen by default, Hetzner/Coolify remains the production baseline, and PostgreSQL 18 compatibility has been verified at the repository level.
+The repository contains the full catalog promotion pipeline and the restored Hetzner database is ready for a controlled catalog promotion run. DRAP execution remains frozen. WHO/ATC schema and import paths are preserved, but WHO/ATC loading is separate from `catalog:build`.
 
-## What Changed
+## Latest Finding
 
-- Removed the remaining active legacy deployment references from runtime paths and deployment defaults.
-- Kept mirror execution behind `MIRROR_ENABLED=false` and `MIRROR_MIGRATION_MODE=true`.
-- Added freeze guards to startup, worker, acquisition, and admin-triggered DRAP import paths.
-- Confirmed the catalog recovery pipeline remains implemented but intentionally paused.
-- Added `COOLIFY_APP_DEPLOYMENT.md`, `COOLIFY_ENV_TEMPLATE.md`, and refreshed the Hetzner migration checklist.
-- Removed superseded deployment note files.
-- Tightened generated report ignore rules in `.gitignore`.
+- The dry-run failed because `DATABASE_URL` was not set in the shell environment.
+- The fix is to use a temporary shell-only `DATABASE_URL` pointing at the restored Coolify PostgreSQL database before running `catalog:build`.
+- The password in the connection string must be URL-encoded if it contains reserved characters like `@` or `!`.
 
-## Verification
+## DRAP Preservation
 
-- `npm run prisma:generate` passed.
-- `npm run build` passed.
-- `npm test -- --runInBand` passed.
+- Source path for imported DRAP records:
+  `src/modules/drap/drap.importer.ts -> importBatch.create() -> importBatchItem.create()`
+- Preserved fields in `import_batch_items` include:
+  `raw_data`, `normalized_data`, `validation_data`, `status`, `product_id`, `manufacturer_id`, `confidence_score`, `source_type`, `source_url`, `metadata`
+- Expected imported DRAP record total:
+  about `394,068` rows in `import_batch_items`
+- `import_batches.status = RUNNING` does not block catalog promotion because catalog build reads `import_batch_items` directly.
 
-## Next Step On Hetzner
+## WHO/ATC Preservation
 
-Configure the Coolify API and admin services with the documented commands and environment variables, then verify the live deployment keeps the DRAP mirror paused.
+- WHO/ATC-related Prisma models found:
+  `AtcClassification`, `MoleculeAlias`, `CompositionGroup`, `CompositionGroupComposition`, `GenericAtcClassification`
+- `src/modules/atc/atc.service.ts::importWhoAtcMaster()` persists WHO data into:
+  `import_batches`, `import_batch_items`, `atc_classifications`, `therapeutic_categories`, `generics`, `molecule_aliases`
+- `src/modules/drap/drap.service.ts::loadWhoMolecules()` reads WHO/ATC state from:
+  `generics`, `molecule_aliases`, `atc_classifications`, `therapeutic_categories`
+- `src/modules/drap/drap.service.ts::persistCompositionGroups()` writes:
+  `composition_groups`, `composition_group_compositions`
+- WHO/ATC data is preserved in schema and runtime code; if those tables are empty in the restored database, they require a separate WHO/ATC import path, not `catalog:build`.
+
+## Catalog Readiness
+
+- `npm run catalog:build` -> `ts-node -r dotenv/config src/cli/catalog.ts build`
+- `npm run catalog:verify` -> `ts-node -r dotenv/config src/cli/catalog.ts verify`
+- `npm run catalog:resume` -> `ts-node -r dotenv/config src/cli/catalog.ts resume`
+- `src/cli/catalog.ts` calls `CatalogService.buildCatalog()`, `CatalogService.resumeCatalog()`, and `CatalogService.verifyCatalog()`
+- Promotion order is:
+  `import_batch_items -> manufacturers -> generics -> products -> product_compositions -> canonical_products -> canonical_product_aliases`
+- Pipeline is resumable and idempotent because it uses `catalog_build_jobs.resume_token`, `currentImportBatchId`, `currentImportRowNumber`, and `currentProductId/currentProductCreatedAt`.
+- No queue worker or cron processor is required for catalog promotion
+
+## Safe Hetzner Sequence
+
+1. Set the restored Coolify PostgreSQL `DATABASE_URL`
+2. Confirm mirror freeze flags:
+   `MIRROR_ENABLED=false`
+   `MIRROR_MIGRATION_MODE=true`
+3. Verify API container startup, health, and Prisma connectivity in Coolify.
+4. Dry-run subset:
+   `npm run catalog:build -- --dry-run --limit=1000 --batch-size=100 --no-report`
+5. 1,000-row live validation:
+   `npm run catalog:build -- --limit=1000 --batch-size=100 --no-report`
+6. Full promotion:
+   `npm run catalog:build -- --batch-size=500`
+7. Verification:
+   `npm run catalog:verify`
+8. If interrupted, resume with:
+   `npm run catalog:resume -- --job-id=<catalog_build_job_id>`
+
+## Risks
+
+- Running against the wrong `DATABASE_URL` would promote into the wrong database.
+- WHO/ATC tables may need a separate import if they were not restored with the backup.
+- A partial build can pause on the resume token, so the final job should be resumed rather than restarted if it is interrupted.
+- WHO/ATC mappings are separate from catalog promotion, so they should not be expected to populate from `catalog:build`.
+
+## Prisma DATABASE_URL Startup Failure Analysis
+
+### Error
+```
+PrismaClientInitializationError:
+Error validating datasource `db`:
+the URL must start with the protocol `postgresql://` or `postgres://`
+```
+
+### Root Cause
+The `PrismaService` extends `PrismaClient` and the parent constructor reads `process.env.DATABASE_URL` directly. This happens BEFORE `onModuleInit()` runs, meaning:
+1. ConfigModule may not have loaded environment variables yet
+2. The environment variable approach is fragile for Prisma initialization
+
+### Code Fix Applied
+Modified `src/database/prisma.service.ts` to:
+1. Inject `ConfigService` as a dependency
+2. Pass `datasourceUrl` directly to `PrismaClient` constructor from ConfigService
+3. Use ConfigService throughout for consistent URL access
+
+**Before:**
+```typescript
+@Injectable()
+export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+  async onModuleInit() {
+    if (!process.env.DATABASE_URL) { ... }
+    await this.$connect();
+  }
+}
+```
+
+**After:**
+```typescript
+@Injectable()
+export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+  constructor(private readonly configService: ConfigService) {
+    const databaseUrl = configService.get<string>("database.url");
+    super({ datasourceUrl: databaseUrl });
+  }
+  // ...
+}
+```
+
+### Required Actions
+1. **Verify Coolify environment variables**: Ensure `DATABASE_URL` is set in Coolify's environment settings
+2. **Check password encoding**: Special characters (`@`, `!`, `#`, etc.) must be URL-encoded
+3. **Re-deploy**: Deploy the updated container
+4. **Monitor startup logs**: Check for Prisma connection success
+
+## Coolify ARG Parsing Issue
+
+### Problem
+Coolify build log shows:
+```
+ARG DATABASE_URL=Value: postgresql://postgres:...
+```
+
+### Root Cause
+The `Value:` prefix indicates Coolify is misinterpreting the environment variable format. This happens when:
+- Coolify receives `ARG DATABASE_URL=...` syntax instead of plain `DATABASE_URL=...`
+- The environment variable value is being parsed as a Docker ARG default
+
+### Fix
+In Coolify's environment variables configuration, ensure the format is:
+```
+DATABASE_URL=postgresql://postgres:password@host:5432/dawaisaver?schema=public
+```
+
+NOT:
+```
+ARG DATABASE_URL=postgresql://postgres:password@host:5432/dawaisaver?schema=public
+```
+
+If using a `.env` file approach, ensure the file is copied into the container or environment variables are passed correctly at runtime.
