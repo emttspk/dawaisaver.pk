@@ -6,31 +6,28 @@ DawaiSaver.pk
 
 ## Current Phase
 
-DawaiSaver Infrastructure Consolidation and Catalog Recovery
+DawaiSaver Hetzner Migration Verification
 
 ## Current Status
 
-Hetzner VPS, Coolify, PostgreSQL 18, Cloudflare R2, and Cloudflare DNS are now the production baseline. Railway deployment files and standalone Railway validation reports have been removed. The DRAP mirror is frozen with `MIRROR_ENABLED=false` and `MIRROR_MIGRATION_MODE=true`. The catalog recovery pipeline remains implemented but is deferred until migration verification is approved.
+Hetzner VPS, Coolify, PostgreSQL 18, Cloudflare R2, and Cloudflare DNS are now the production baseline. Legacy runtime dependencies have been retired from active paths, and the DRAP mirror remains frozen with `MIRROR_ENABLED=false` and `MIRROR_MIGRATION_MODE=true`.
 
 ## Completed
 
-- Removed Railway deployment config and browserless Railway validation artifacts.
-- Updated both frontends to stop defaulting to the old Railway API host.
-- Updated deployment docs for Hetzner/Coolify production.
-- Renamed the DRAP mirror bootstrap job to a platform-neutral name.
-- Added mirror freeze guards and status reporting for migration mode.
-- Kept the catalog CLI, resumable job state, dry-run mode, and validation reporting.
-- Verified `npm run build`.
-- Verified `npm test -- --runInBand`.
+- Removed active legacy deployment and startup references from the live runtime path.
+- Added freeze guards for startup, worker, job, acquisition, and admin-triggered DRAP execution.
+- Updated docs for Hetzner/Coolify production verification.
+- Added `COOLIFY_DEPLOYMENT.md` and `HETZNER_MIGRATION_CHECKLIST.md`.
+- Kept the catalog CLI, resumable job state, dry-run mode, and validation reporting in place.
 
 ## Remaining Production Work
 
-- Keep the mirror paused.
-- Verify no startup autorun, worker path, or admin-triggered run can start mirror acquisition.
-- Approve migration exit criteria on Hetzner before re-enabling catalog recovery.
+- Validate Coolify deployment settings and startup commands.
+- Confirm PostgreSQL 18, Prisma, migration, and seed compatibility.
+- Keep the mirror paused until the migration checkpoint is approved.
 
 ## Next Recommended Task
 
-1. Verify the mirror status remains paused.
-2. Confirm no acquisition jobs auto-start on deploy or boot.
+1. Run Prisma generation and build verification.
+2. Confirm the DRAP mirror stays paused in startup, worker, and admin paths.
 3. Approve the Hetzner migration checkpoint before any catalog recovery.

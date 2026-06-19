@@ -46,10 +46,9 @@ Controlled import path for verified datasets and manual corrections.
 
 - All uploaded files must be stored in Cloudflare R2
 - PostgreSQL stores metadata references only
-- Railway/Docker local storage is ephemeral
+- Local storage is ephemeral and must not be treated as durable source-of-truth storage
 - Files must have checksums for integrity verification
 
 ## Historical Policy
 
 Source observations must be preserved. Canonical records can be corrected, but source evidence must not be overwritten.
-

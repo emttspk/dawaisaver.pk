@@ -6,26 +6,25 @@
 
 ## Phase
 
-DawaiSaver Infrastructure Consolidation and Catalog Recovery
+DawaiSaver Hetzner Migration Verification
 
 ## Scope
 
-Audit of DRAP mirror freeze enforcement, Railway retirement, Hetzner/Coolify production alignment, stale environment references, and the catalog recovery pipeline.
+Audit of legacy deployment retirement, DRAP mirror freeze enforcement, Coolify deployment readiness, PostgreSQL 18 compatibility, Prisma compatibility, seed compatibility, and remaining deployment references.
 
 ## Findings
 
 | Area | Result | Evidence |
 |------|--------|----------|
-| Railway deployment files | Removed | `railway.json`, `.railway/project.json`, and `RAILWAY_SETUP.md` were deleted |
-| Railway-only validation reports | Removed | `RAILWAY_AUTH_FORENSIC_REPORT.md` and `RAILWAY_BROWSERLESS_VALIDATION.md` were deleted |
-| Frontend API defaults | Fixed | Both frontends now default to `/api` instead of the old Railway host |
-| Deployment docs | Updated | Hetzner/Coolify now documented as the primary production platform |
-| Runtime bootstrap labels | Fixed | DRAP mirror bootstrap logging is now platform-neutral |
-| Mirror freeze | Pass | `MIRROR_ENABLED=false`, `MIRROR_MIGRATION_MODE=true`, and guards were added to startup and execution paths |
-| Catalog pipeline | Pass | The catalog recovery pipeline and CLI remain implemented |
-| Local build/test validation | Pass | `npm run build` and `npm test -- --runInBand` passed |
-| Live DB verification | Blocked locally | `DATABASE_URL` is not set in this workspace |
+| Legacy runtime paths | Removed | `src/main.ts`, the DRAP worker, and the DRAP job path no longer auto-launch mirror execution |
+| Mirror freeze | Pass | `MIRROR_ENABLED=false` and `MIRROR_MIGRATION_MODE=true` are wired into config and status reporting |
+| Admin-triggered mirror launch | Blocked | `DrapService.importFromSource()` and the DRAP import controller now guard execution |
+| Worker-triggered mirror launch | Blocked | `src/workers/drap-mirror.worker.ts` and `src/jobs/drap-mirror.job.ts` enforce the freeze guard |
+| Deployment baseline | Updated | Docker, Compose, and docs now align to Hetzner/Coolify and PostgreSQL 18 |
+| Prisma schema and migrations | Compatible | Migrations use standard PostgreSQL features already supported by PostgreSQL 18 |
+| Seed path | Compatible | `prisma/seed.ts` uses Prisma Client only and does not depend on platform-specific services |
+| Catalog recovery | Deferred | The build pipeline remains present but is intentionally not being executed yet |
 
 ## Conclusion
 
-Railway-specific production references have been removed from live config and user-facing defaults. DRAP mirror acquisition is now frozen in code and status reporting. Catalog recovery remains deferred until migration verification is explicitly approved on Hetzner.
+The repository no longer has an active legacy mirror execution path in the codebase. The production deployment posture is Hetzner plus Coolify with PostgreSQL 18, and the DRAP mirror remains paused until migration verification is approved.

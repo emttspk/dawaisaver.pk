@@ -10,7 +10,7 @@
 ## Upload Path
 
 - The current upload service is R2-backed and avoids local filesystem persistence.
-- The live app-level upload flow still needs the manual Cloudflare values attached in Railway before end-to-end production upload verification can be repeated there.
+- The live app-level upload flow still needs the manual Cloudflare values attached in Coolify before end-to-end production upload verification can be repeated there.
 
 ## UAT Scope
 
