@@ -1,8 +1,8 @@
 /PRODUCTION_DEPLOYMENT_REPORT.md
 .env.example
-docs/archive/CURRENT_UPDATE_*.md
 docs/archive/*.md
 docs/reports/*.md
+CURRENT_UPDATE_*.md
 .wrangler/
 node_modules/
 dist/
