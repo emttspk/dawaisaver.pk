@@ -54,6 +54,24 @@ enum ImportItemStatus {
   @@map("import_item_status")
 }
 
+enum CatalogBuildStatus {
+  PENDING
+  RUNNING
+  PAUSED
+  COMPLETED
+  COMPLETED_WITH_ERRORS
+  FAILED
+
+  @@map("catalog_build_status")
+}
+
+enum CatalogBuildPhase {
+  IMPORT_ITEMS
+  CANONICAL_PRODUCTS
+
+  @@map("catalog_build_phase")
+}
+
 enum SourceProviderKind {
   DAWAAI
   SEHAT
@@ -887,6 +905,49 @@ model ImportError {
   @@index([errorCode])
   @@index([sourceType])
   @@map("import_errors")
+}
+
+model CatalogBuildJob {
+  id                         String              @id @default(uuid()) @db.Uuid
+  status                     CatalogBuildStatus  @default(PENDING)
+  phase                      CatalogBuildPhase    @default(IMPORT_ITEMS)
+  dryRun                     Boolean             @default(false) @map("dry_run")
+  batchSize                  Int                 @default(500) @map("batch_size")
+  limitRows                  Int?                @map("limit_rows")
+  currentImportBatchId       String?             @map("current_import_batch_id") @db.Uuid
+  currentImportBatchCreatedAt DateTime?          @map("current_import_batch_created_at")
+  currentImportRowNumber     Int?                @map("current_import_row_number")
+  currentProductId           String?             @map("current_product_id") @db.Uuid
+  currentProductCreatedAt    DateTime?           @map("current_product_created_at")
+  totalImportItems           Int                 @default(0) @map("total_import_items")
+  processedImportItems       Int                 @default(0) @map("processed_import_items")
+  processedProducts          Int                 @default(0) @map("processed_products")
+  manufacturersCreated       Int                 @default(0) @map("manufacturers_created")
+  manufacturersReused        Int                 @default(0) @map("manufacturers_reused")
+  genericsCreated            Int                 @default(0) @map("generics_created")
+  genericsReused             Int                 @default(0) @map("generics_reused")
+  productsCreated            Int                 @default(0) @map("products_created")
+  productsUpdated            Int                 @default(0) @map("products_updated")
+  productCompositionsCreated Int                 @default(0) @map("product_compositions_created")
+  productCompositionsUpdated Int                 @default(0) @map("product_compositions_updated")
+  canonicalProductsCreated   Int                 @default(0) @map("canonical_products_created")
+  canonicalProductsUpdated   Int                 @default(0) @map("canonical_products_updated")
+  canonicalAliasesCreated    Int                 @default(0) @map("canonical_aliases_created")
+  matchesCreated             Int                 @default(0) @map("matches_created")
+  matchReviewsCreated        Int                 @default(0) @map("match_reviews_created")
+  skippedItems               Int                 @default(0) @map("skipped_items")
+  validationReport           Json?               @map("validation_report")
+  progressReport             Json?               @map("progress_report")
+  resumeToken                Json?               @map("resume_token")
+  errorMessage               String?             @map("error_message")
+  startedAt                  DateTime?           @map("started_at")
+  finishedAt                 DateTime?           @map("finished_at")
+  createdAt                  DateTime            @default(now()) @map("created_at")
+  updatedAt                  DateTime            @updatedAt @map("updated_at")
+
+  @@index([status, phase])
+  @@index([createdAt])
+  @@map("catalog_build_jobs")
 }
 
 model SourceProvider {

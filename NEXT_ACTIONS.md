@@ -2,50 +2,34 @@
 
 ## Current Task
 
-P46 DRAP Mirror Failure Analysis and Catalog Completeness Verification.
+DawaiSaver Catalog Pipeline Recovery.
 
 ## Completed
 
-- Installed the new DawaiSaver Railway project token as Windows User `RAILWAY_TOKEN`.
-- Removed Windows User `RAILWAY_API_TOKEN`.
-- Confirmed Railway browser token fields are empty.
-- Confirmed Railway session marker files are absent.
-- Confirmed Windows Credential Manager has no Railway entries.
-- Verified `railway status` resolves to project `dawaisaver.pk`.
-- Verified `railway status --json` reports project ID `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
-- Added `.railway/project.json` with non-secret project metadata.
-- Created `RAILWAY_BROWSERLESS_VALIDATION.md`.
-- Updated `CURRENT_UPDATE.md`.
-- Added historical `CURRENT_UPDATE_*.md` patterns to `.gitignore`.
-- Verified live mirror run `dc30a1d4-bb6b-4bff-a967-047a45dfcb7a` completed with errors at 50,000 rows.
-- Confirmed public product and generic search endpoints currently return no results for known medicines.
+- Implemented the resumable catalog promotion pipeline.
+- Implemented the canonical product promotion pipeline.
+- Added `catalog:build`, `catalog:resume`, and `catalog:verify`.
+- Added catalog job persistence, progress tracking, and dry-run support.
+- Added validation reporting and generated-report output.
+- Passed `npm run build`.
+- Passed `npm test -- --runInBand`.
 
 ## Next
 
-1. Run build validation.
-2. Resolve or document the missing read-only production SQL path for exact live catalog counts.
-3. Run final `git status --short`.
-4. Commit only if validation passes.
-5. Push to `main` only if project policy allows and the commit contains no secrets.
+1. Run the catalog CLI on Hetzner where `DATABASE_URL` is configured.
+2. Start with a small dry-run subset:
+   - `npm run catalog:build -- --dry-run --limit=25 --batch-size=25 --no-report`
+3. Inspect the generated summary and validation output.
+4. Resume the job to process the remaining backlog:
+   - `npm run catalog:resume -- --job-id=<id>`
+5. Verify row counts:
+   - `manufacturers`
+   - `generics`
+   - `products`
+   - `product_compositions`
+   - `canonical_products`
+   - `canonical_product_aliases`
 
 ## Exact Next Prompt
 
-Project: DawaiSaver.pk
-
-Task: P46 DRAP Mirror Failure Analysis and Catalog Completeness Verification
-
-Mode: AGENT
-
-Protected Scope Protocol active.
-
-Goal:
-
-Continue production verification using browserless Railway project-token authentication.
-
-Required Work:
-
-1. Confirm `railway status` reports project `dawaisaver.pk`.
-2. Confirm project ID `e38bb3da-7ab5-4654-b504-101e74c92d5b`.
-3. Use `railway status --json` for service-aware validation.
-4. Do not introduce `RAILWAY_API_TOKEN` unless account/workspace commands are explicitly required.
-5. Do not rely on browser login.
+Run the new catalog recovery commands on the Hetzner host, starting with a dry-run subset and then resuming the same job until the backlog is complete. Confirm the final table counts and save the generated reports.
