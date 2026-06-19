@@ -88,27 +88,16 @@ The `PrismaService` extends `PrismaClient` and the parent constructor reads `pro
 
 ### Code Fix Applied
 Modified `src/database/prisma.service.ts` to:
-1. Inject `ConfigService` as a dependency
-2. Pass `datasourceUrl` directly to `PrismaClient` constructor from ConfigService
-3. Use ConfigService throughout for consistent URL access
+1. Make `ConfigService` optional in constructor
+2. Pass `datasourceUrl` directly to `PrismaClient` constructor from ConfigService or `process.env.DATABASE_URL`
+3. Supports both NestJS DI and standalone CLI execution
 
-**Before:**
+**Final code:**
 ```typescript
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
-  async onModuleInit() {
-    if (!process.env.DATABASE_URL) { ... }
-    await this.$connect();
-  }
-}
-```
-
-**After:**
-```typescript
-@Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
-  constructor(private readonly configService: ConfigService) {
-    const databaseUrl = configService.get<string>("database.url");
+  constructor(private readonly configService?: ConfigService) {
+    const databaseUrl = configService?.get<string>("database.url") ?? process.env.DATABASE_URL;
     super({ datasourceUrl: databaseUrl });
   }
   // ...
