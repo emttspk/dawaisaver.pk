@@ -3,7 +3,6 @@
 ## Environments
 
 - local development
-- staging
 - production
 
 ## Components
@@ -11,26 +10,22 @@
 - web PWA
 - API service
 - worker service
-- PostgreSQL
-- Redis
-- Cloudflare R2 (Primary Storage)
+- PostgreSQL 18
+- Cloudflare R2
+- Cloudflare DNS
 - observability and logs
 
 ## Storage Architecture
 
-**Cloudflare R2 is the single source of truth for all persistent storage.**
+**Cloudflare R2 is the single source of truth for all persistent file storage.**
 
 | Storage Type | Purpose | Persistence |
 |--------------|---------|-------------|
-| Cloudflare R2 | All uploaded files, OCR artifacts, images | Permanent |
-| PostgreSQL | Metadata, records, relationships | Permanent |
-| Railway filesystem | Temporary build artifacts | Ephemeral |
-| Docker filesystem | Temporary build artifacts | Ephemeral |
-| Worker local storage | Temporary processing files | Ephemeral |
+| Cloudflare R2 | Uploaded files, OCR artifacts, images, generated exports | Permanent |
+| PostgreSQL 18 | Metadata, records, relationships | Permanent |
+| Local disk | Temporary build artifacts and cache | Ephemeral |
 
-**R2 Bucket**: `dawaisaver-pk` ✅ Created 2026-06-16
-
-All file uploads must be routed through the UploadService to Cloudflare R2. PostgreSQL stores only metadata references (URLs, paths, checksums).
+All file uploads must be routed through the UploadService to Cloudflare R2. PostgreSQL stores only metadata references such as URLs, paths, and checksums.
 
 ### Required Environment Variables
 
@@ -39,6 +34,7 @@ R2_ACCOUNT_ID=
 R2_ACCESS_KEY_ID=
 R2_SECRET_ACCESS_KEY=
 R2_BUCKET_NAME=dawaisaver-pk
+R2_PUBLIC_BASE_URL=
 JWT_SECRET=
 JWT_REFRESH_SECRET=
 DATABASE_URL=
@@ -53,7 +49,6 @@ Runtime files:
 - `package.json`
 - `Dockerfile`
 - `docker-compose.yml`
-- `railway.json`
 - `.env.example`
 
 Health endpoints:
@@ -68,9 +63,9 @@ Health endpoints:
 flowchart LR
   Dev[Developer] --> CI[CI Checks]
   CI --> Build[Build Artifacts]
-  Build --> Staging[Staging Deploy]
-  Staging --> Smoke[Smoke Tests]
-  Smoke --> Prod[Production Deploy]
+  Build --> Coolify[Coolify Deploy]
+  Coolify --> Smoke[Smoke Tests]
+  Smoke --> Prod[Production]
 ```
 
 ## Release Requirements
@@ -82,14 +77,25 @@ flowchart LR
 - audit log continuity preserved
 - queue workers drained or made migration-safe before schema changes
 
-## Railway Environment
+## Production Environment
 
 Required variables:
 
 - `DATABASE_URL`
-- `NODE_ENV`
+- `NODE_ENV=production`
 - `APP_PORT`
-- `APP_HOST`
+- `APP_HOST=0.0.0.0`
 - `CORS_ORIGINS`
+- `R2_ACCOUNT_ID`
+- `R2_ACCESS_KEY_ID`
+- `R2_SECRET_ACCESS_KEY`
+- `R2_BUCKET_NAME`
+- `R2_PUBLIC_BASE_URL`
 
-Railway healthcheck path is `/health`.
+Primary deployment platform:
+
+- Hetzner VPS
+- Coolify
+- PostgreSQL 18
+- Cloudflare R2
+- Cloudflare DNS

@@ -6,28 +6,25 @@ Mode: AGENT
 
 ## Status
 
-Catalog recovery pipeline code has been implemented and verified locally.
+Production infrastructure is now treated as Hetzner VPS + Coolify + PostgreSQL 18 + Cloudflare R2 + Cloudflare DNS.
 
 ## What Changed
 
-- Added `npm run catalog:build`, `npm run catalog:resume`, and `npm run catalog:verify`.
-- Added a resumable catalog job table and migration.
-- Added the catalog promotion service for:
-  - `import_batch_items -> manufacturers -> generics -> products -> product_compositions`
-  - `products -> product_matches -> match_reviews -> canonical_products -> canonical_product_aliases`
-- Added dry-run support, progress tracking, validation reporting, and resumable cursors.
-- Added unit coverage for the catalog mapper and verification summary path.
+- Removed Railway deployment files and browserless validation artifacts.
+- Replaced Railway-specific API defaults with platform-neutral defaults.
+- Updated deployment docs to Hetzner/Coolify.
+- Renamed the DRAP mirror bootstrap job to a platform-neutral name.
+- Kept the catalog recovery pipeline and CLI in place.
 
 ## Verification
 
 - `npm run prisma:generate` passed.
 - `npm run build` passed.
 - `npm test -- --runInBand` passed.
-- `npm run catalog:verify -- --no-report` could not run here because `DATABASE_URL` is not set in this local workspace.
 
 ## Next Step On Hetzner
 
-Run the catalog commands on the Hetzner host where Postgres is available:
+Run the catalog commands on the Hetzner host where `DATABASE_URL` is configured:
 
 ```bash
 npm run catalog:verify

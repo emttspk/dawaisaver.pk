@@ -6,34 +6,25 @@
 
 ## Phase
 
-DawaiSaver Catalog Pipeline Recovery
+DawaiSaver Infrastructure Consolidation and Catalog Recovery
 
 ## Scope
 
-Audit of the missing catalog promotion path, canonical product generation, resumable recovery support, and local verification of the new CLI and build gates.
+Audit of Railway retirement, Hetzner/Coolify production alignment, stale environment references, and the catalog recovery pipeline.
 
 ## Findings
 
 | Area | Result | Evidence |
 |------|--------|----------|
-| Import pipeline | Pass | DRAP mirror acquisition still writes only `import_batches` / `import_batch_items` |
-| Catalog promotion | Fixed in code | New `catalog:build` pipeline promotes `import_batch_items` into manufacturers, generics, products, and product compositions |
-| Canonical promotion | Fixed in code | New canonical stage promotes products into canonical products, aliases, and product matches |
-| Resumability | Fixed in code | `catalog_build_jobs` stores cursors, phase state, and progress snapshots |
-| Dry run / verify | Fixed in code | Added `catalog:resume`, `catalog:verify`, and dry-run support |
-| Build validation | Pass | `npm run build` succeeded |
-| Test validation | Pass | `npm test -- --runInBand` succeeded |
-| Live DB verification | Blocked locally | `DATABASE_URL` is not set in this workspace, so the CLI cannot connect here |
-
-## Root Cause
-
-The imported data existed because the acquisition path was working, but the catalog materialization path was missing. Before this patch:
-
-- imported rows stopped at `import_batch_items`
-- no working batch processor promoted those rows into catalog tables
-- no functional canonical writer existed
-- no resumable job state existed for the 394k-row backlog
+| Railway deployment files | Removed | `railway.json`, `.railway/project.json`, and `RAILWAY_SETUP.md` were deleted |
+| Railway-only validation reports | Removed | `RAILWAY_AUTH_FORENSIC_REPORT.md` and `RAILWAY_BROWSERLESS_VALIDATION.md` were deleted |
+| Frontend API defaults | Fixed | Both frontends now default to `/api` instead of the old Railway host |
+| Deployment docs | Updated | Hetzner/Coolify now documented as the primary production platform |
+| Runtime bootstrap labels | Fixed | DRAP mirror bootstrap logging is now platform-neutral |
+| Catalog pipeline | Pass | The catalog recovery pipeline and CLI remain implemented |
+| Local build/test validation | Pass | `npm run build` and `npm test -- --runInBand` passed |
+| Live DB verification | Blocked locally | `DATABASE_URL` is not set in this workspace |
 
 ## Conclusion
 
-The catalog pipeline gap has been addressed in code, but the live Hetzner database still needs the new CLI commands run against the real Postgres connection to confirm the final row counts and production behavior.
+Railway-specific production references have been removed from live config and user-facing defaults. The remaining production work is to run the catalog recovery commands on the Hetzner host and verify the populated table counts.

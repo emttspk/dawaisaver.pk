@@ -1,11 +1,13 @@
 const DEFAULT_API_BASE = import.meta.env.DEV
   ? "http://localhost:3000/api"
-  : "https://dawaisaverpk-production.up.railway.app/api";
+  : "/api";
 
 export const API_BASE = normalizeApiBase(import.meta.env.VITE_API_URL || DEFAULT_API_BASE);
 const TOKEN_KEY = "dawaisaver.admin.accessToken";
 const USER_KEY = "dawaisaver.admin.user";
 const REFRESH_KEY = "dawaisaver.admin.refreshToken";
+
+let refreshPromise: Promise<{ accessToken: string; refreshToken: string } | null> | null = null;
 
 export type AdminRole = "USER" | "ADMIN" | "REVIEWER";
 
@@ -74,11 +76,62 @@ class AdminApiClient {
     if (token) headers.set("Authorization", `Bearer ${token}`);
 
     const response = await fetch(resolveApiUrl(endpoint), { ...options, headers });
+    
+    if (response.status === 401 && token) {
+      const refreshed = await this.refresh();
+      if (refreshed) {
+        return this.request<T>(endpoint, options);
+      }
+    }
+    
     const payload = (await response.json().catch(() => ({}))) as Partial<ApiEnvelope<T>> | T;
     if (!response.ok || (isEnvelope(payload) && payload.success === false)) {
       throw new Error(isEnvelope(payload) ? payload.error || payload.code || "Request failed." : "Request failed.");
     }
     return unwrap<T>(payload);
+  }
+
+  private async refresh(): Promise<boolean> {
+    const refreshToken = localStorage.getItem(REFRESH_KEY);
+    if (!refreshToken) return false;
+
+    if (refreshPromise) {
+      const result = await refreshPromise;
+      if (result) {
+        localStorage.setItem(TOKEN_KEY, result.accessToken);
+        localStorage.setItem(REFRESH_KEY, result.refreshToken);
+        return true;
+      }
+      return false;
+    }
+
+    refreshPromise = fetch(resolveApiUrl("/auth/refresh"), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ refreshToken: refreshToken }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.success && data?.data?.accessToken) {
+          return data.data;
+        }
+        return null;
+      })
+      .catch(() => null)
+      .finally(() => {
+        refreshPromise = null;
+      });
+
+    const result = await refreshPromise;
+    if (result) {
+      localStorage.setItem(TOKEN_KEY, result.accessToken);
+      localStorage.setItem(REFRESH_KEY, result.refreshToken);
+      return true;
+    }
+    this.logout();
+    return false;
   }
 
   async raw(path: string) {

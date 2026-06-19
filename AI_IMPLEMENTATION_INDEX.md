@@ -6,39 +6,38 @@ DawaiSaver.pk
 
 ## Current Phase
 
-DawaiSaver Catalog Pipeline Recovery
+DawaiSaver Infrastructure Consolidation and Catalog Recovery
 
 ## Current Status
 
-The repository now contains a resumable catalog promotion pipeline and a canonical promotion pipeline. Local validation passed with `npm run build` and `npm test -- --runInBand`. The catalog CLI entrypoints are present, but this workstation cannot run them against Postgres because `DATABASE_URL` is not set here.
+Hetzner VPS, Coolify, PostgreSQL 18, Cloudflare R2, and Cloudflare DNS are now the production baseline. Railway deployment files and standalone Railway validation reports have been removed. The catalog recovery pipeline remains implemented and ready to run against the restored production database.
 
 ## Completed
 
-- Added `catalog:build`, `catalog:resume`, and `catalog:verify` npm scripts.
-- Added `catalog_build_jobs` to Prisma schema and migration SQL.
-- Added the catalog mapper for DRAP normalized and mirror-parsed import rows.
-- Added the catalog service for:
-  - manufacturer, generic, product, and composition promotion
-  - canonical product and alias promotion
-  - match and review materialization
-  - resumable progress tracking
-  - dry-run support
-  - validation reporting
-- Added a CLI wrapper for catalog build / resume / verify commands.
-- Added unit tests for mapper and verification summary coverage.
-- Verified local build and test gates.
+- Removed Railway deployment config and browserless Railway validation artifacts.
+- Updated both frontends to stop defaulting to the old Railway API host.
+- Updated deployment docs for Hetzner/Coolify production.
+- Renamed the DRAP mirror bootstrap job to a platform-neutral name.
+- Kept the catalog CLI, resumable job state, dry-run mode, and validation reporting.
+- Verified `npm run build`.
+- Verified `npm test -- --runInBand`.
 
 ## Remaining Production Work
 
-- Run the catalog CLI on the Hetzner host where `DATABASE_URL` is configured.
-- Process a small dry-run subset first.
-- Confirm the catalog tables populate.
-- Resume the backlog to completion.
-- Capture final row counts and validation output.
+- Run the catalog CLI on Hetzner with a valid `DATABASE_URL`.
+- Start with a small dry-run subset.
+- Resume the job until the backlog is complete.
+- Confirm final row counts for:
+  - manufacturers
+  - generics
+  - products
+  - product_compositions
+  - canonical_products
+  - canonical_product_aliases
 
 ## Next Recommended Task
 
 1. Run `npm run catalog:verify` on Hetzner.
 2. Run `npm run catalog:build -- --dry-run --limit=25 --batch-size=25 --no-report`.
 3. Run `npm run catalog:resume -- --job-id=<id>`.
-4. Capture final row counts and archive the generated reports.
+4. Capture final row counts and generated reports.

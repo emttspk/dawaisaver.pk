@@ -2,15 +2,15 @@
 
 ## Current Task
 
-DawaiSaver Catalog Pipeline Recovery.
+DawaiSaver Infrastructure Consolidation and Catalog Recovery.
 
 ## Completed
 
-- Implemented the resumable catalog promotion pipeline.
-- Implemented the canonical product promotion pipeline.
-- Added `catalog:build`, `catalog:resume`, and `catalog:verify`.
-- Added catalog job persistence, progress tracking, and dry-run support.
-- Added validation reporting and generated-report output.
+- Removed Railway deployment config and superseded Railway reports.
+- Updated the deployment docs to Hetzner/Coolify.
+- Replaced old Railway API defaults in the frontends.
+- Renamed the DRAP mirror bootstrap job to a platform-neutral name.
+- Kept the catalog recovery pipeline and CLI in place.
 - Passed `npm run build`.
 - Passed `npm test -- --runInBand`.
 
@@ -21,7 +21,7 @@ DawaiSaver Catalog Pipeline Recovery.
    - `npm run catalog:build -- --dry-run --limit=25 --batch-size=25 --no-report`
 3. Inspect the generated summary and validation output.
 4. Resume the job to process the remaining backlog:
-   - `npm run catalog:resume -- --job-id=<id>`
+   - `npm run catalog:resume -- --job-id=<job-id>`
 5. Verify row counts:
    - `manufacturers`
    - `generics`
@@ -32,4 +32,4 @@ DawaiSaver Catalog Pipeline Recovery.
 
 ## Exact Next Prompt
 
-Run the new catalog recovery commands on the Hetzner host, starting with a dry-run subset and then resuming the same job until the backlog is complete. Confirm the final table counts and save the generated reports.
+Run the new catalog recovery commands on the Hetzner host, starting with a dry-run subset and then resuming the same job until the backlog is complete. Confirm the final table counts and keep the generated reports.

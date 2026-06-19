@@ -134,7 +134,7 @@ export async function runControlledBenchmark() {
   console.log(`150,000 records: ~${projections[150000].toFixed(1)} hours`);
 
   console.log("\n=== RECOMMENDATIONS ===");
-  console.log("Railway only: Yes (serverless workers scale automatically)");
+  console.log("VPS suitable: Yes (worker pool scales with CPU and memory)");
   console.log("4 vCPU VPS: Suitable for up to 10,000 records");
   console.log("8 vCPU VPS: Suitable for up to 50,000 records");
   console.log("16 vCPU VPS: Suitable for 150,000+ records");

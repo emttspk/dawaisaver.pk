@@ -8,7 +8,7 @@
 | Backend Tests | ✅ Pass | 34 tests passing |
 | Frontend Build | ⏳ Pending | Awaiting API integration |
 | Database Migrations | ⏳ Pending | Requires PostgreSQL instance |
-| Railway Deployment | ⏳ Pending | Environment variables needed |
+| Hetzner/Coolify Deployment | ⏳ Pending | Environment variables and release validation needed |
 | Cloudflare Pages | ⏳ Pending | Wrangler configuration needed |
 
 ## Security Status
@@ -71,7 +71,7 @@
 
 1. Configure environment variables
 2. Run database migrations
-3. Deploy backend to Railway
+3. Deploy backend to Coolify on Hetzner
 4. Deploy frontend to Cloudflare Pages
 5. Implement JWT authentication
 6. Connect frontend to real APIs

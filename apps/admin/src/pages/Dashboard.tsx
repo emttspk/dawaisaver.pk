@@ -104,7 +104,7 @@ function AdminOverview() {
       </section>
       <div className="grid gap-4 md:grid-cols-4">
         <Kpi value="9" label="Admin modules" tone="emerald" />
-        <Kpi value="Live" label="Railway API" tone="blue" />
+        <Kpi value="Live" label="Production API" tone="blue" />
         <Kpi value="R2" label="Upload storage" tone="amber" />
         <Kpi value="JWT" label="Role guarded" tone="slate" />
       </div>

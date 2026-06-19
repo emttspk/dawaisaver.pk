@@ -14,7 +14,6 @@ The Backend Runtime Foundation creates an executable NestJS application shell fo
 - `.env.example`
 - `docker-compose.yml`
 - `Dockerfile`
-- `railway.json`
 
 ## Application Structure
 
@@ -76,35 +75,42 @@ npm run prisma:migrate
 npm run db:bootstrap
 ```
 
-## Railway Deployment
+## Production Deployment
 
-Railway uses `railway.json` and the Dockerfile.
+Primary platform:
 
-Required Railway variables:
+- Hetzner VPS
+- Coolify
+- PostgreSQL 18
+- Cloudflare R2
+- Cloudflare DNS
+
+Production runtime variables:
 
 - `DATABASE_URL`
 - `NODE_ENV=production`
 - `APP_PORT`
 - `APP_HOST=0.0.0.0`
 - `CORS_ORIGINS`
-
-Healthcheck path:
-
-```text
-/health
-```
+- `R2_ACCOUNT_ID`
+- `R2_ACCESS_KEY_ID`
+- `R2_SECRET_ACCESS_KEY`
+- `R2_BUCKET_NAME`
+- `R2_PUBLIC_BASE_URL`
+- `JWT_SECRET`
+- `JWT_REFRESH_SECRET`
 
 ## Docker Development
 
 Start local dependencies:
 
-```text
+```bash
 docker compose up -d postgres redis
 ```
 
 Then run:
 
-```text
+```bash
 npm install
 npm run prisma:generate
 npm run build
@@ -123,5 +129,4 @@ npm run start:dev
 
 ## Next Task
 
-API Controller Layer.
-
+Catalog recovery and production verification.

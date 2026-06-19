@@ -6,7 +6,7 @@ import { UploadService } from "../modules/ocr/upload.service";
 import { DrapAcquisitionService } from "../modules/drap/drap.acquisition.service";
 import { DrapAcquisitionCheckpoint, DrapAcquisitionPlan } from "../modules/drap/drap.types";
 
-interface RailwayMirrorWorkerConfig {
+interface DrapMirrorWorkerConfig {
   workerId: number;
   workerCount: number;
   batchId: string;
@@ -14,7 +14,7 @@ interface RailwayMirrorWorkerConfig {
   completed?: boolean;
 }
 
-interface RailwayMirrorWorkerResult {
+interface DrapMirrorWorkerResult {
   workerId: number;
   batchId: string;
   skipped: boolean;
@@ -29,7 +29,7 @@ interface RailwayMirrorWorkerResult {
   checkpoint?: DrapAcquisitionCheckpoint;
 }
 
-export async function runRailwayDrapMirrorJob(logger = new Logger("RailwayDrapMirrorJob")): Promise<void> {
+export async function runDrapMirrorJob(logger = new Logger("DrapMirrorJob")): Promise<void> {
   const totalRows = Number(process.env.DRAP_MIRROR_TOTAL_REGISTRATIONS || 50000);
   const startRegistration = process.env.DRAP_MIRROR_START_REGISTRATION || "041350";
   const endRegistration = process.env.DRAP_MIRROR_END_REGISTRATION || buildEndRegistration(startRegistration, totalRows);
@@ -46,7 +46,7 @@ export async function runRailwayDrapMirrorJob(logger = new Logger("RailwayDrapMi
   try {
     const r2Status = acquisitionService.verifyR2Configuration();
     logger.log(
-      `Railway mirror job starting: workers=${workerCount}, totalRows=${totalRows}, range=${startRegistration}-${endRegistration}`,
+      `DRAP mirror job starting: workers=${workerCount}, totalRows=${totalRows}, range=${startRegistration}-${endRegistration}`,
     );
     logger.log(
       `R2 env status: present=${r2Status.present.join(",") || "none"} missing=${r2Status.missing.join(",") || "none"}`,
@@ -86,7 +86,7 @@ export async function runRailwayDrapMirrorJob(logger = new Logger("RailwayDrapMi
           resumeFrom: completed ? checkpoint : checkpoint,
           completed,
           registrations: chunk,
-        } as RailwayMirrorWorkerConfig & { registrations: Array<{ registrationNumber: string }> };
+        } as DrapMirrorWorkerConfig & { registrations: Array<{ registrationNumber: string }> };
       }),
     );
 
@@ -113,7 +113,7 @@ export async function runRailwayDrapMirrorJob(logger = new Logger("RailwayDrapMi
             runtimeMs: 0,
             archiveUploads: 0,
             checkpoint: workerConfig.resumeFrom,
-          } satisfies RailwayMirrorWorkerResult;
+          } satisfies DrapMirrorWorkerResult;
         }
 
         const plan: DrapAcquisitionPlan = {
@@ -157,7 +157,7 @@ export async function runRailwayDrapMirrorJob(logger = new Logger("RailwayDrapMi
           runtimeMs,
           archiveUploads: result.metrics?.totalArchiveSegments || 0,
           checkpoint: result.checkpoint,
-        } satisfies RailwayMirrorWorkerResult;
+        } satisfies DrapMirrorWorkerResult;
       }),
     );
 
