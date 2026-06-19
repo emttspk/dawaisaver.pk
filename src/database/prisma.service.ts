@@ -1,12 +1,20 @@
 import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { PrismaClient } from "@prisma/client";
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(PrismaService.name);
 
+  constructor(private readonly configService: ConfigService) {
+    const databaseUrl = configService.get<string>("database.url");
+    super({ datasourceUrl: databaseUrl });
+  }
+
   async onModuleInit(): Promise<void> {
-    if (!process.env.DATABASE_URL) {
+    const databaseUrl = this.configService.get<string>("database.url");
+
+    if (!databaseUrl) {
       this.logger.warn("DATABASE_URL is not configured. Database features are disabled.");
       return;
     }
@@ -16,7 +24,8 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async onModuleDestroy(): Promise<void> {
-    if (!process.env.DATABASE_URL) {
+    const databaseUrl = this.configService.get<string>("database.url");
+    if (!databaseUrl) {
       return;
     }
 
@@ -25,7 +34,8 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async isHealthy(): Promise<boolean> {
-    if (!process.env.DATABASE_URL) {
+    const databaseUrl = this.configService.get<string>("database.url");
+    if (!databaseUrl) {
       this.logger.warn("Database health check skipped because DATABASE_URL is not configured.");
       return false;
     }
