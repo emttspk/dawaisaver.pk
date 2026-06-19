@@ -1,15 +1,18 @@
 # Migration Environment Check
 
 Date: 2026-06-19
-Target: new Railway project `DawaiSaver`
+Target Railway project: `dawaisaver-pk`
+Project ID: `42823e2c-e9db-4669-9dd9-d7a22d0f0bcb`
+Environment ID: `e1c3d223-85b1-4382-b04d-e45bebef0382`
 
 ## Summary
 
-No environment variables were copied to the new Railway target because Railway authentication failed before project creation. Secret values are intentionally omitted.
+PostgreSQL service variables exist, but application variables were not copied because the database restore failed and API deployment was not safe to proceed. Secret values are intentionally omitted.
 
 ## Copied
 
-None.
+- PostgreSQL service variables were created by Railway for `Postgres-_c2X`.
+- `DATABASE_PUBLIC_URL`, `DATABASE_URL`, `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, and `PGDATABASE` were confirmed present without printing values.
 
 ## Pending Copy
 
@@ -20,7 +23,6 @@ None.
 - `CORS_ORIGINS`
 - `CRAWLER_CONCURRENCY`
 - `CRAWLER_USER_AGENT`
-- `DATABASE_URL` from the new target PostgreSQL service only
 - `DRAP_MIRROR_ARCHIVE_BATCH_SIZE`
 - `DRAP_MIRROR_ARCHIVE_FALLBACK_BATCH_SIZE`
 - `DRAP_MIRROR_ARCHIVE_SPOOL_DIR`
@@ -53,17 +55,15 @@ None.
 
 ## Missing / Blocked
 
-- Valid Railway API token for the target account.
-- Workspace ID.
-- Project ID.
-- Environment ID.
-- PostgreSQL service ID.
-- New target `DATABASE_URL`.
-- Local `pg_restore` and `psql` binaries in this shell.
+- Workspace ID is unavailable from the successful CLI/API calls.
+- `railway whoami` is unauthorized for the project token.
+- Target Postgres restore is blocked by a 500 MB volume running out of disk space during WAL recovery.
+- API service variables are not copied.
+- API service is not deployed.
 - Wrangler CLI is not installed globally.
 
 ## Notes
 
-- The backup inventory confirms these variable names existed in the migration package.
-- Values were not written to this report.
-- The source production database was not queried or modified.
+- No secret values were written to this report.
+- Source production database was not queried or modified.
+- Backup files were not deleted or modified.

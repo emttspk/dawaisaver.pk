@@ -3,23 +3,52 @@
 Date: 2026-06-19
 Source backup: `D:\DawaiSaver.pk\backups\migration-20260618-215605`
 
-## Result
+## Target
 
-Target restore was not performed. Railway authentication failed before the target project and PostgreSQL service could be created.
+- Workspace name: `Muhammad Nazim Saeed's Projects`
+- Workspace ID: unavailable from CLI/API surface used in this run.
+- Project name: `dawaisaver-pk`
+- Project ID: `42823e2c-e9db-4669-9dd9-d7a22d0f0bcb`
+- Environment: `production`
+- Environment ID: `e1c3d223-85b1-4382-b04d-e45bebef0382`
+- Database service name: `Postgres-_c2X`
+- Database service ID: `2fe3d19a-b46f-414b-98fa-1f5bbe6e9eea`
+- Database service instance ID: `b4807db5-814e-4697-8a92-9bad7944c546`
+- Volume ID: `96fc480f-4438-4ca6-b4c7-5d51011c7fc4`
+- Volume size: 500 MB
 
-## Verified Locally
+## Backup Verification
 
 - `production.dump` exists.
 - `schema.sql` exists.
 - `data.sql` exists.
-- SHA256 verification passed for `production.dump`.
-- Prior `pg_restore --list` verification artifact exists at `verification/pg-restore-list.txt`.
+- SHA256 verification passed.
+- Prior `pg_restore --list` verification artifact exists.
 - R2 inventory exists with 510 objects and estimated size 183.0 MiB.
 - API build passed with `npm.cmd run build`.
 
-## Data Export Row Evidence
+## Restore Result
 
-Read-only row counts from `data.sql`:
+Restore did not complete successfully.
+
+What succeeded:
+
+- Connected to target Railway PostgreSQL through `DATABASE_PUBLIC_URL`.
+- Began `pg_restore` with PostgreSQL 18 client tools.
+- Dropped/created schema objects.
+- Began loading table data.
+
+What failed:
+
+- `pg_restore` failed while loading `public.import_batch_items`.
+- Railway Postgres logs show `No space left on device` while writing WAL recovery files.
+- The target Postgres service then closed connections during recovery.
+
+## Table Count Verification
+
+Target row count checks could not be run because the target database is not accepting connections after the disk-space failure.
+
+Read-only evidence from `data.sql`:
 
 | Table | Rows in export |
 | --- | ---: |
@@ -34,49 +63,45 @@ Read-only row counts from `data.sql`:
 
 Notes:
 
-- The schema contains `product_compositions`; no standalone `compositions` table was found.
-- No literal `mirror` table name was found in the dump manifest. The closest migration evidence is import and DRAP/archive-related data.
+- The schema uses `product_compositions`; no standalone `compositions` table was found.
+- No literal `mirror` table name was found in the dump manifest.
 
-## Target Verification Queries
+## Health Checks
 
-Not run because the target database was not provisioned.
-
-Required once Railway access works:
-
-```sql
-select count(*) from users;
-select count(*) from products;
-select count(*) from generics;
-select count(*) from product_compositions;
-select count(*) from import_batches;
-select count(*) from import_batch_items;
-```
+- API startup: not deployed.
+- `/health/application`: not run.
+- Database health: failed by implication because Postgres is not accepting connections.
 
 ## Smoke Tests
 
-Not run because the API was not deployed to a new target.
+Not run because API deployment was not performed after the restore failure.
 
-Required smoke test list:
+Pending smoke tests:
 
-- Search products.
-- Search generics.
+- Product search.
+- Generic search.
 - Medicine details.
 - Admin login.
-- R2 access.
 - Uploads.
-- Public API endpoints.
-- `/health/application`.
-- Database health endpoint.
+- R2 access.
 
-## Readiness Review
+## Build Validation
 
-- Estimated final cutover downtime after a validated target restore: 15-30 minutes.
-- Rollback: keep source Railway services untouched, keep DNS pointed at current production until target validation passes, and revert DNS to source if target checks fail.
-- DNS steps: lower TTL before cutover, switch only API/Web records after approval, monitor health and smoke tests, keep old target available through the rollback window.
-- Remaining risks: invalid Railway access, missing target IDs, unavailable PostgreSQL client tools, unvalidated target environment variables, no live R2 credential check in this run.
+- `npm.cmd run build`: passed.
+
+## Remaining Work
+
+- Increase target Postgres storage or create a clean larger target Postgres service.
+- Reset the failed target database volume before retrying.
+- Re-run `pg_restore`.
+- Verify table counts from the restored target database.
+- Copy application variables without printing values.
+- Deploy API only.
+- Run health checks and smoke tests.
+- Do not switch DNS until explicit cutover approval.
 
 ## Percentages
 
-- Restore success: 0% against the new target.
-- Smoke test success: 0% against the new target.
-- Cutover readiness: 20%.
+- Restore success: 35% attempt progress, 0% usable target restore.
+- Smoke test success: 0%.
+- Cutover readiness: 25%.
