@@ -153,3 +153,38 @@ Added `RUN apk add --no-cache curl` to the Dockerfile runner stage.
 ### Image Impact
 - Adds ~1-2MB to image size
 - Required for Coolify healthcheck endpoint accessibility
+
+---
+
+## DRAP Mirror Forensic Audit (2026-06-19)
+
+### Summary
+Completed forensic audit of DRAP mirror system. Key findings:
+
+| Metric | Observed | Verified |
+|--------|----------|----------|
+| Admin Status | PAUSED | PAUSED (env-controlled) |
+| Processed Count | 43,000 | Per-batch checkpoint sum |
+| Remaining Target | 157,000 | Derived from total_rows - processed_count |
+| Database Records | ~394,000 | import_batch_items count |
+
+### Key Findings
+
+1. **Status is PAUSED due to environment variables**, not database state:
+   - `MIRROR_ENABLED=false`
+   - `MIRROR_MIGRATION_MODE=true`
+
+2. **The 394k records are raw mirror rows** in `import_batch_items`, NOT the 43k processed count. These are different entities.
+
+3. **Resume is safe** - checkpoint system prevents duplicates.
+
+4. **Admin controls are missing** - no start/pause/resume/stop endpoints exist. Control requires environment variable changes.
+
+5. **Estimated 6-12 hours** to complete remaining 157,000 registrations.
+
+### Required Before Production
+- Add admin API endpoints for mirror control (start/pause/resume/stop)
+- Add runtime control via Redis or database flag (not container env vars)
+- Add graceful shutdown on pause signal
+
+See `DRAP_MIRROR_FORENSIC_REPORT.md` for full details.
