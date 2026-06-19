@@ -2,17 +2,34 @@ import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from "@nestjs/commo
 import { ConfigService } from "@nestjs/config";
 import { PrismaClient } from "@prisma/client";
 
+function normalizeDatabaseUrl(url: string | undefined): string | undefined {
+  if (!url) return undefined;
+  if (url.startsWith("Value: ")) {
+    return url.slice(7);
+  }
+  return url;
+}
+
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(PrismaService.name);
 
   constructor(private readonly configService?: ConfigService) {
-    const databaseUrl = configService?.get<string>("database.url") ?? process.env.DATABASE_URL;
+    const configUrl = configService?.get<string>("database.url");
+    const envUrl = process.env.DATABASE_URL;
+    const databaseUrl = normalizeDatabaseUrl(configUrl) ?? normalizeDatabaseUrl(envUrl);
     super({ datasourceUrl: databaseUrl });
   }
 
   async onModuleInit(): Promise<void> {
-    const databaseUrl = this.configService?.get<string>("database.url") ?? process.env.DATABASE_URL;
+    const configUrl = this.configService?.get<string>("database.url");
+    const envUrl = process.env.DATABASE_URL;
+    const databaseUrl = normalizeDatabaseUrl(configUrl) ?? normalizeDatabaseUrl(envUrl);
+
+    this.logger.log(`[STARTUP] DATABASE_URL exists: ${!!databaseUrl}`);
+    if (databaseUrl) {
+      this.logger.log(`[STARTUP] DATABASE_URL prefix: ${databaseUrl.substring(0, 30)}...`);
+    }
 
     if (!databaseUrl) {
       this.logger.warn("DATABASE_URL is not configured. Database features are disabled.");
@@ -24,7 +41,9 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async onModuleDestroy(): Promise<void> {
-    const databaseUrl = this.configService?.get<string>("database.url") ?? process.env.DATABASE_URL;
+    const configUrl = this.configService?.get<string>("database.url");
+    const envUrl = process.env.DATABASE_URL;
+    const databaseUrl = normalizeDatabaseUrl(configUrl) ?? normalizeDatabaseUrl(envUrl);
     if (!databaseUrl) {
       return;
     }
@@ -34,7 +53,9 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async isHealthy(): Promise<boolean> {
-    const databaseUrl = this.configService?.get<string>("database.url") ?? process.env.DATABASE_URL;
+    const configUrl = this.configService?.get<string>("database.url");
+    const envUrl = process.env.DATABASE_URL;
+    const databaseUrl = normalizeDatabaseUrl(configUrl) ?? normalizeDatabaseUrl(envUrl);
     if (!databaseUrl) {
       this.logger.warn("Database health check skipped because DATABASE_URL is not configured.");
       return false;

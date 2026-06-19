@@ -119,19 +119,22 @@ ARG DATABASE_URL=Value: postgresql://postgres:...
 ```
 
 ### Root Cause
-The `Value:` prefix indicates Coolify is misinterpreting the environment variable format. This happens when:
-- Coolify receives `ARG DATABASE_URL=...` syntax instead of plain `DATABASE_URL=...`
-- The environment variable value is being parsed as a Docker ARG default
+Coolify prepends `Value: ` to environment variable values when setting them in the Docker build environment. This is a Coolify-specific behavior for how it handles environment variable exports.
 
-### Fix
-In Coolify's environment variables configuration, ensure the format is:
-```
-DATABASE_URL=postgresql://postgres:password@host:5432/dawaisaver?schema=public
+### Code Fix Applied
+Added `normalizeDatabaseUrl()` function in `src/database/prisma.service.ts` that strips the `Value: ` prefix:
+```typescript
+function normalizeDatabaseUrl(url: string | undefined): string | undefined {
+  if (!url) return undefined;
+  if (url.startsWith("Value: ")) {
+    return url.slice(7);
+  }
+  return url;
+}
 ```
 
-NOT:
-```
-ARG DATABASE_URL=postgresql://postgres:password@host:5432/dawaisaver?schema=public
-```
-
-If using a `.env` file approach, ensure the file is copied into the container or environment variables are passed correctly at runtime.
+### Required Actions
+1. **Re-deploy**: Deploy the updated container
+2. **Monitor startup logs**: Check for:
+   - `[STARTUP] DATABASE_URL exists: true`
+   - `[STARTUP] DATABASE_URL prefix: postgresql://postgres...`
