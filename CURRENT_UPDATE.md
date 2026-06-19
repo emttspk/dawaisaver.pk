@@ -135,3 +135,21 @@ function normalizeDatabaseUrl(url: string | undefined): string | undefined {
 
 ### Required Actions
 1. **Re-deploy**: Deploy the updated container
+
+## Coolify Healthcheck Fix
+
+### Problem
+Coolify healthcheck fails with:
+```
+/bin/sh: curl: not found
+```
+
+### Root Cause
+The Alpine-based Docker image doesn't include `curl`, which Coolify's healthcheck requires.
+
+### Fix Applied
+Added `RUN apk add --no-cache curl` to the Dockerfile runner stage.
+
+### Image Impact
+- Adds ~1-2MB to image size
+- Required for Coolify healthcheck endpoint accessibility
