@@ -17,17 +17,21 @@ Hetzner VPS, Coolify, PostgreSQL 18, Cloudflare R2, and Cloudflare DNS are now t
 - Removed active legacy deployment and startup references from the live runtime path.
 - Added freeze guards for startup, worker, job, acquisition, and admin-triggered DRAP execution.
 - Updated docs for Hetzner/Coolify production verification.
-- Added `COOLIFY_DEPLOYMENT.md` and `HETZNER_MIGRATION_CHECKLIST.md`.
+- Added `COOLIFY_APP_DEPLOYMENT.md`, `COOLIFY_ENV_TEMPLATE.md`, and `HETZNER_MIGRATION_CHECKLIST.md`.
 - Kept the catalog CLI, resumable job state, dry-run mode, and validation reporting in place.
+- Verified `npm run prisma:generate`.
+- Verified `npm run build`.
+- Verified `npm test -- --runInBand`.
 
 ## Remaining Production Work
 
 - Validate Coolify deployment settings and startup commands.
 - Confirm PostgreSQL 18, Prisma, migration, and seed compatibility.
 - Keep the mirror paused until the migration checkpoint is approved.
+- Execute the Coolify deployment using the documented API and admin profiles.
 
 ## Next Recommended Task
 
-1. Run Prisma generation and build verification.
-2. Confirm the DRAP mirror stays paused in startup, worker, and admin paths.
-3. Approve the Hetzner migration checkpoint before any catalog recovery.
+1. Configure the Coolify API service with the documented build/start/environment values.
+2. Configure the Coolify admin service with the documented static deployment values.
+3. Confirm the DRAP mirror stays paused in startup, worker, and admin paths.

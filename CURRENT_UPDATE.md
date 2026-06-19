@@ -6,7 +6,7 @@ Mode: AGENT
 
 ## Status
 
-Legacy deployment retirement has been verified in the live code path. DRAP mirror execution is frozen by default, Hetzner/Coolify is the production baseline, and the repo is being prepared for deployment verification on PostgreSQL 18.
+Coolify deployment readiness has been documented for both the API and admin services. DRAP mirror execution is frozen by default, Hetzner/Coolify remains the production baseline, and PostgreSQL 18 compatibility has been verified at the repository level.
 
 ## What Changed
 
@@ -14,15 +14,16 @@ Legacy deployment retirement has been verified in the live code path. DRAP mirro
 - Kept mirror execution behind `MIRROR_ENABLED=false` and `MIRROR_MIGRATION_MODE=true`.
 - Added freeze guards to startup, worker, acquisition, and admin-triggered DRAP import paths.
 - Confirmed the catalog recovery pipeline remains implemented but intentionally paused.
-- Updated deployment notes to reflect Hetzner, Coolify, PostgreSQL 18, Cloudflare R2, and Cloudflare DNS.
-- Added deployment verification docs for Coolify and the Hetzner migration checklist.
+- Added `COOLIFY_APP_DEPLOYMENT.md`, `COOLIFY_ENV_TEMPLATE.md`, and refreshed the Hetzner migration checklist.
+- Removed superseded deployment note files.
+- Tightened generated report ignore rules in `.gitignore`.
 
 ## Verification
 
-- `npm run prisma:generate` is expected to succeed once rerun in this workspace.
-- `npm run build` is expected to succeed once rerun in this workspace.
-- `npm test -- --runInBand` is expected to succeed once rerun in this workspace.
+- `npm run prisma:generate` passed.
+- `npm run build` passed.
+- `npm test -- --runInBand` passed.
 
 ## Next Step On Hetzner
 
-Validate Coolify deployment settings, confirm PostgreSQL 18 compatibility, and keep the DRAP mirror paused until migration verification is explicitly approved.
+Configure the Coolify API and admin services with the documented commands and environment variables, then verify the live deployment keeps the DRAP mirror paused.

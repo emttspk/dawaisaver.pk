@@ -23,6 +23,7 @@ logs/
 temp/
 reports/
 reports/generated/catalog/
+*_REPORT.md
 
 # Historical status snapshots
 CURRENT_UPDATE_*.md
