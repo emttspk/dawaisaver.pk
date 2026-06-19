@@ -91,7 +91,7 @@ export class DrapMirrorStatusService {
         : "unknown";
     const status = this.aggregateStatus(activeBatches.map((batch) => batch.status));
     const successRate = processedCount > 0 ? (successCount / processedCount) * 100 : 0;
-    const operationalState = getMirrorRuntimeState();
+    const operationalState = await getMirrorRuntimeState();
 
     return {
       status: operationalState === "PAUSED" ? "PAUSED" : (status as DrapMirrorStatusResponse["status"]),
@@ -274,9 +274,9 @@ export class DrapMirrorStatusService {
     });
   }
 
-  private emptyStatus(): DrapMirrorStatusResponse {
+  private async emptyStatus(): Promise<DrapMirrorStatusResponse> {
     return {
-      status: getMirrorRuntimeState() === "PAUSED" ? "PAUSED" : "PENDING",
+      status: (await getMirrorRuntimeState()) === "PAUSED" ? "PAUSED" : "PENDING",
       processed_count: 0,
       success_count: 0,
       failed_count: 0,

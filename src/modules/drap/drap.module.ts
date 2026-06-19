@@ -3,15 +3,17 @@ import { DatabaseModule } from "../../database/database.module";
 import { PrismaService } from "../../database/prisma.service";
 import { DrapImportController } from "./controllers/drap-import.controller";
 import { AdminMirrorStatusController } from "./controllers/admin-mirror-status.controller";
+import { DrapMirrorController } from "./controllers/drap-mirror.controller";
 import { DrapAcquisitionService } from "./drap.acquisition.service";
 import { DrapImporter } from "./drap.importer";
 import { DrapMirrorStatusService } from "./mirror-status.service";
+import { DrapMirrorControlService } from "./drap-mirror-control.service";
 import { DrapService } from "./drap.service";
 
 @Module({
   imports: [DatabaseModule],
-  controllers: [DrapImportController, AdminMirrorStatusController],
-  providers: [DrapMirrorStatusService],
+  controllers: [DrapImportController, AdminMirrorStatusController, DrapMirrorController],
+  providers: [DrapMirrorStatusService, DrapMirrorControlService],
 })
 export class DrapModule {
   static register(prisma: PrismaService): DrapService {

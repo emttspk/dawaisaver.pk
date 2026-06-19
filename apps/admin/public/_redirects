@@ -1,5 +1,5 @@
-/admin /#/admin 302
-/admin/ /#/admin 302
-/admin/mirror-status /#/admin/mirror-status 302
-/admin/* /#/admin 302
+/admin/mirror-status /index.html 200
+/admin /index.html 200
+/admin/ /index.html 200
+/admin/* /index.html 200
 /* /index.html 200
