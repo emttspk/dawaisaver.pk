@@ -99,6 +99,8 @@ Production runtime variables:
 - `R2_PUBLIC_BASE_URL`
 - `JWT_SECRET`
 - `JWT_REFRESH_SECRET`
+- `MIRROR_ENABLED=false`
+- `MIRROR_MIGRATION_MODE=true`
 
 ## Docker Development
 

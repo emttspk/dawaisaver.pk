@@ -31,6 +31,8 @@ R2_BUCKET_NAME=dawaisaver-pk
 R2_PUBLIC_BASE_URL=
 JWT_SECRET=
 JWT_REFRESH_SECRET=
+MIRROR_ENABLED=false
+MIRROR_MIGRATION_MODE=true
 ```
 
 ## Deployment Steps
@@ -46,3 +48,4 @@ JWT_REFRESH_SECRET=
 - Do not use retired deployment files or settings for production.
 - Keep generated reports out of source control.
 - Use the catalog CLI for recovery and verification runs.
+- Leave the mirror frozen until Hetzner migration verification is complete.

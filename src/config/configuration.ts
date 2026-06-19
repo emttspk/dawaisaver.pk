@@ -11,6 +11,10 @@ export const configuration = () => ({
     url: process.env.DATABASE_URL,
     runMigrationsOnBoot: process.env.RUN_MIGRATIONS_ON_BOOT === "true",
   },
+  mirror: {
+    enabled: process.env.MIRROR_ENABLED === "true",
+    migrationMode: process.env.MIRROR_MIGRATION_MODE !== "false",
+  },
   storage: {
     r2AccountId: process.env.R2_ACCOUNT_ID,
     r2AccessKeyId: process.env.R2_ACCESS_KEY_ID,

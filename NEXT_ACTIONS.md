@@ -2,7 +2,7 @@
 
 ## Current Task
 
-DawaiSaver Infrastructure Consolidation and Catalog Recovery.
+DawaiSaver Migration Freeze Phase.
 
 ## Completed
 
@@ -10,26 +10,18 @@ DawaiSaver Infrastructure Consolidation and Catalog Recovery.
 - Updated the deployment docs to Hetzner/Coolify.
 - Replaced old Railway API defaults in the frontends.
 - Renamed the DRAP mirror bootstrap job to a platform-neutral name.
-- Kept the catalog recovery pipeline and CLI in place.
+- Added mirror freeze guards and migration-mode defaults.
+- Kept the catalog recovery pipeline and CLI in place, but deferred execution.
 - Passed `npm run build`.
 - Passed `npm test -- --runInBand`.
 
 ## Next
 
-1. Run the catalog CLI on Hetzner where `DATABASE_URL` is configured.
-2. Start with a small dry-run subset:
-   - `npm run catalog:build -- --dry-run --limit=25 --batch-size=25 --no-report`
-3. Inspect the generated summary and validation output.
-4. Resume the job to process the remaining backlog:
-   - `npm run catalog:resume -- --job-id=<job-id>`
-5. Verify row counts:
-   - `manufacturers`
-   - `generics`
-   - `products`
-   - `product_compositions`
-   - `canonical_products`
-   - `canonical_product_aliases`
+1. Verify the mirror status stays paused.
+2. Confirm no startup autorun or worker path can start mirror acquisition.
+3. Confirm admin-triggered DRAP acquisition is blocked while migration mode is active.
+4. Keep catalog recovery deferred until migration verification is explicitly approved.
 
 ## Exact Next Prompt
 
-Run the new catalog recovery commands on the Hetzner host, starting with a dry-run subset and then resuming the same job until the backlog is complete. Confirm the final table counts and keep the generated reports.
+Verify the DRAP mirror freeze on Hetzner and confirm no acquisition path can start automatically while MIRROR_ENABLED=false and MIRROR_MIGRATION_MODE=true. Do not resume catalog recovery yet.

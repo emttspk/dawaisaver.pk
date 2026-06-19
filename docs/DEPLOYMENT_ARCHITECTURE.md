@@ -38,6 +38,8 @@ R2_PUBLIC_BASE_URL=
 JWT_SECRET=
 JWT_REFRESH_SECRET=
 DATABASE_URL=
+MIRROR_ENABLED=false
+MIRROR_MIGRATION_MODE=true
 ```
 
 ## Backend Runtime
@@ -91,6 +93,8 @@ Required variables:
 - `R2_SECRET_ACCESS_KEY`
 - `R2_BUCKET_NAME`
 - `R2_PUBLIC_BASE_URL`
+- `MIRROR_ENABLED=false`
+- `MIRROR_MIGRATION_MODE=true`
 
 Primary deployment platform:
 

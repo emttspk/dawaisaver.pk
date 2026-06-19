@@ -9,7 +9,6 @@ import { GlobalExceptionFilter } from "./common/filters/global-exception.filter"
 import { RequestLoggerInterceptor } from "./common/interceptors/request-logger.interceptor";
 import { ResponseEnvelopeInterceptor } from "./common/interceptors/response-envelope.interceptor";
 import { StartupDiagnosticsService } from "./common/observability/startup-diagnostics.service";
-import { runDrapMirrorJob } from "./jobs/drap-mirror.job";
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, {
@@ -61,15 +60,6 @@ async function bootstrap(): Promise<void> {
   await app.listen(port, host);
   logger.log(`DawaiSaver.pk API listening on http://${host}:${port}`);
 
-  if (process.env.DRAP_MIRROR_AUTORUN === "true") {
-    logger.log("DRAP mirror autorun enabled; launching mirror job in the background.");
-    void runDrapMirrorJob(logger).catch((error) => {
-      logger.error(
-        "DRAP mirror autorun failed.",
-        error instanceof Error ? error.stack : undefined,
-      );
-    });
-  }
 }
 
 void bootstrap();

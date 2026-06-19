@@ -7,6 +7,7 @@ import {
   DrapArchiveManifest,
   DrapMirrorStatusResponse,
 } from "./drap.types";
+import { getMirrorRuntimeState } from "./drap.freeze";
 
 interface MirrorBatchRow {
   id: string;
@@ -90,9 +91,10 @@ export class DrapMirrorStatusService {
         : "unknown";
     const status = this.aggregateStatus(activeBatches.map((batch) => batch.status));
     const successRate = processedCount > 0 ? (successCount / processedCount) * 100 : 0;
+    const operationalState = getMirrorRuntimeState();
 
     return {
-      status: status as DrapMirrorStatusResponse["status"],
+      status: operationalState === "PAUSED" ? "PAUSED" : (status as DrapMirrorStatusResponse["status"]),
       started_at: startedAt?.toISOString(),
       completed_at:
         snapshots.every((snapshot) => snapshot.status === "COMPLETED" || snapshot.status === "COMPLETED_WITH_ERRORS")
@@ -274,7 +276,7 @@ export class DrapMirrorStatusService {
 
   private emptyStatus(): DrapMirrorStatusResponse {
     return {
-      status: "PENDING",
+      status: getMirrorRuntimeState() === "PAUSED" ? "PAUSED" : "PENDING",
       processed_count: 0,
       success_count: 0,
       failed_count: 0,

@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { Prisma } from "@prisma/client";
 import { PrismaService } from "../../database/prisma.service";
 import { MatchingModule } from "../matching/matching.module";
+import { assertMirrorExecutionAllowed } from "./drap.freeze";
 import {
   buildCompositionGroupResult,
   matchDrapCandidate,
@@ -51,6 +52,7 @@ export class DrapService {
   }
 
   importFromSource(config: Parameters<DrapImporter["import"]>[0]): Promise<DrapImportSummaryDto> {
+    assertMirrorExecutionAllowed();
     return this.importer.import(config);
   }
 

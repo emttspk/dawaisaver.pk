@@ -5,6 +5,7 @@ import { PrismaService } from "../database/prisma.service";
 import { UploadService } from "../modules/ocr/upload.service";
 import { DrapAcquisitionService } from "../modules/drap/drap.acquisition.service";
 import { DrapAcquisitionCheckpoint, DrapAcquisitionPlan } from "../modules/drap/drap.types";
+import { assertMirrorExecutionAllowed } from "../modules/drap/drap.freeze";
 
 interface DrapMirrorWorkerConfig {
   workerId: number;
@@ -30,6 +31,7 @@ interface DrapMirrorWorkerResult {
 }
 
 export async function runDrapMirrorJob(logger = new Logger("DrapMirrorJob")): Promise<void> {
+  assertMirrorExecutionAllowed();
   const totalRows = Number(process.env.DRAP_MIRROR_TOTAL_REGISTRATIONS || 50000);
   const startRegistration = process.env.DRAP_MIRROR_START_REGISTRATION || "041350";
   const endRegistration = process.env.DRAP_MIRROR_END_REGISTRATION || buildEndRegistration(startRegistration, totalRows);

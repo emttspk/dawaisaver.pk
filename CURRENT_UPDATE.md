@@ -6,7 +6,7 @@ Mode: AGENT
 
 ## Status
 
-Production infrastructure is now treated as Hetzner VPS + Coolify + PostgreSQL 18 + Cloudflare R2 + Cloudflare DNS.
+DRAP mirror acquisition is frozen. Production infrastructure is now treated as Hetzner VPS + Coolify + PostgreSQL 18 + Cloudflare R2 + Cloudflare DNS.
 
 ## What Changed
 
@@ -14,7 +14,9 @@ Production infrastructure is now treated as Hetzner VPS + Coolify + PostgreSQL 1
 - Replaced Railway-specific API defaults with platform-neutral defaults.
 - Updated deployment docs to Hetzner/Coolify.
 - Renamed the DRAP mirror bootstrap job to a platform-neutral name.
-- Kept the catalog recovery pipeline and CLI in place.
+- Added `MIRROR_ENABLED=false` and `MIRROR_MIGRATION_MODE=true`.
+- Added freeze guards to startup, worker, acquisition, and admin import paths.
+- Kept the catalog recovery pipeline and CLI in place, but deferred execution.
 
 ## Verification
 
@@ -24,19 +26,4 @@ Production infrastructure is now treated as Hetzner VPS + Coolify + PostgreSQL 1
 
 ## Next Step On Hetzner
 
-Run the catalog commands on the Hetzner host where `DATABASE_URL` is configured:
-
-```bash
-npm run catalog:verify
-npm run catalog:build -- --dry-run --limit=25 --batch-size=25 --no-report
-npm run catalog:resume -- --job-id=<job-id-from-build>
-```
-
-Then confirm the final row counts for:
-
-- manufacturers
-- generics
-- products
-- product_compositions
-- canonical_products
-- canonical_product_aliases
+Verify the mirror stays paused and no new acquisition jobs start. Do not resume catalog recovery until migration verification is explicitly approved.
