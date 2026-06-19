@@ -135,6 +135,3 @@ function normalizeDatabaseUrl(url: string | undefined): string | undefined {
 
 ### Required Actions
 1. **Re-deploy**: Deploy the updated container
-2. **Monitor startup logs**: Check for:
-   - `[STARTUP] DATABASE_URL exists: true`
-   - `[STARTUP] DATABASE_URL prefix: postgresql://postgres...`

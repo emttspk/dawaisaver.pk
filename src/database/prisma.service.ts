@@ -26,11 +26,6 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     const envUrl = process.env.DATABASE_URL;
     const databaseUrl = normalizeDatabaseUrl(configUrl) ?? normalizeDatabaseUrl(envUrl);
 
-    this.logger.log(`[STARTUP] DATABASE_URL exists: ${!!databaseUrl}`);
-    if (databaseUrl) {
-      this.logger.log(`[STARTUP] DATABASE_URL prefix: ${databaseUrl.substring(0, 30)}...`);
-    }
-
     if (!databaseUrl) {
       this.logger.warn("DATABASE_URL is not configured. Database features are disabled.");
       return;
