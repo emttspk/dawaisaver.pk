@@ -6,26 +6,30 @@ Project: DawaiSaver.pk
 ## Production Verification
 
 - `dawaisaver-admin.pages.dev` returns HTTP 200 and serves the current admin SPA shell.
-- `dawaisaver-web.pages.dev` returns HTTP 404 at the root.
-- `f537e17d.dawaisaver-web.pages.dev` returns HTTP 200 and serves the customer SPA shell.
-- Cloudflare Pages project status shows both `dawaisaver-web` and `dawaisaver-admin` as Git-backed projects.
-- The latest verified `main` commit pushed from this workspace is `68024914c1affbad21ccc960d698e880bbc615d5`.
+- `dawaisaver-web.pages.dev` was returning HTTP 404 at the root during verification.
+- Cloudflare Pages reports the latest production `main` deployment for both `dawaisaver-admin` and `dawaisaver-web` as commit `a14dcbe34e9e3c3dc6f92fe8a5db997b24e28a6b`.
+- The backend Coolify service is healthy at `http://yh5wt7bbkhqsjycey5df0lbe.178.105.221.236.sslip.io`.
 
 ## Frontend API Status
 
-- The deployed admin and customer bundles still resolve API calls against `/api` by default when no absolute `VITE_API_URL` is embedded.
-- The ignored admin env override has been cleaned up to `/api` so the workspace no longer carries the retired Railway API host.
-- `https://dawaisaver-admin.pages.dev/api/*` returns 404 from the Pages origin.
-- `https://f537e17d.dawaisaver-web.pages.dev/api/*` falls back to the SPA shell instead of a live API response.
-- Probing `api.dawaisaver-web.pages.dev`, `backend.dawaisaver-web.pages.dev`, `api.dawaisaver-admin.pages.dev`, and `backend.dawaisaver-admin.pages.dev` returned 404.
-- Frontend routing is healthy in the app bundles, but the production web root still does not serve a working production deployment and the backend origin is still undiscovered from the available evidence.
+- The deployed web and admin bundles resolve API calls against `/api` by default when no absolute `VITE_API_URL` is embedded.
+- `apps/admin/.env` has been cleaned up locally to avoid the retired Railway API host and now uses `/api`.
+- The web frontend no longer carries the retired Railway target in source-controlled config.
 
 ## Backend and Mirror Status
 
-- The intended Coolify backend URL has not been discovered from the available terminal evidence.
-- The retired Railway backend target previously referenced by the frontend has been removed from the workspace env, but live backend health still could not be verified because no Coolify host or SSH target was discovered.
-- DRAP mirror runtime could not be verified live because there is still no reachable backend target to query.
-- Local DRAP telemetry artifacts show prior mirror progress, but they are not a substitute for live production verification.
+- `GET /health` on the Coolify backend returns `application.status=ok` and `database.status=ok`.
+- `GET /api/health` is not the backend route and returns 404.
+- Protected DRAP mirror endpoints exist, but they require bearer authentication, so live runtime counters remain unverified from the current unauthenticated terminal context.
+
+## Web Fix Attempt
+
+- Added missing Cloudflare Pages fallback files to `apps/web/public/`:
+  - `_redirects`
+  - `_headers`
+  - `404.html`
+- Rebuilt both frontend apps locally and confirmed both builds pass.
+- Triggered a fresh Cloudflare Pages production deployment retry for `dawaisaver-web`.
 
 ## Local Verification
 
@@ -37,11 +41,10 @@ Project: DawaiSaver.pk
 
 ## Documentation
 
-- Archived obsolete verification notes to `archive/DRAP_DATABASE_VERIFICATION.sql`.
+- Archived obsolete verification notes to `docs/archive/`.
 - `CURRENT_UPDATE*.md` is ignored in `.gitignore`, and there are no extra current-update snapshot files in the repo root.
-- The ignored admin env file still contains a Railway production API URL, which is now a live deployment blocker and should be retired when the backend is moved off Railway.
 
 ## Progress
 
-- Completion percentage: 75%
-- Remaining blockers: discover the live Coolify backend URL, verify database connectivity on that backend, verify DRAP mirror runtime and progress, and bring `dawaisaver-web.pages.dev` back to HTTP 200.
+- Completion percentage: 85%
+- Remaining blockers: verify whether the refreshed Pages deployment clears the `dawaisaver-web.pages.dev` 404, and obtain authenticated access to the DRAP mirror runtime if live counters are still required.
