@@ -1,4 +1,4 @@
-FROM node:22-alpine AS deps
+from node:22-alpine AS deps
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
@@ -19,4 +19,7 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
 RUN apk add --no-cache curl
 EXPOSE 3000
+
+RUN npx prisma migrate deploy
+
 CMD ["node", "dist/main.js"]
