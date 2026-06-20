@@ -13,6 +13,7 @@ Project: DawaiSaver.pk
 - Repository file is valid UTF-8, has no BOM, has no NUL bytes, and line 193 is `"primary" BOOLEAN DEFAULT false`.
 - Production byte signature `ff fe 2d 00 2d 00` and unquoted line 193 prove the running image predates both repair commits.
 - Docker copies `/app/prisma` from the current builder stage; the stale artifact therefore came from an old Coolify source revision/build context, not the current Docker COPY path.
+- GitHub commit status shows pushes still trigger Railway project `e38bb3da-7ab5-4654-b504-101e74c92d5b`; no Coolify deployment is registered. Coolify is therefore disconnected from the active Git push pipeline and retained its older image.
 
 ## Guardrails
 
@@ -22,7 +23,8 @@ Project: DawaiSaver.pk
 
 ## Deployment
 
-- GitHub `main` was verified at `a09acf11ca00a9726c8317f3d2614493cf535199` before this guardrail commit.
+- Guardrail commit `3d8cf0c645ace918c60029900e79d416f0049953` is pushed and verified on GitHub `main`.
+- GitHub reported a Railway deployment for that commit and no Coolify deployment; the Railway deployment failed.
 - Coolify deployment is blocked from this shell because no Coolify URL/token or SSH host is configured.
 - `api.dawaisaver.pk` and `dawaisaver.pk` currently return public DNS `NXDOMAIN`.
 - Production hash comparison, no-cache rebuild, in-container checks, Prisma deploy, route checks, and mirror resume remain pending until production access is available.
