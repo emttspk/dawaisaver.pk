@@ -1,10 +1,13 @@
 const DEFAULT_BACKEND_ORIGIN = "http://yh5wt7bbkhqsjycey5df0lbe.178.105.221.236.sslip.io";
 
-export const onRequest = async (context: any) => {
-  if (context.request.method === "OPTIONS") {
-    return handleOptions(context.request);
-  }
+export const onRequestGet = (context: any) => proxyRequest(context);
+export const onRequestPost = (context: any) => proxyRequest(context);
+export const onRequestPut = (context: any) => proxyRequest(context);
+export const onRequestPatch = (context: any) => proxyRequest(context);
+export const onRequestDelete = (context: any) => proxyRequest(context);
+export const onRequestOptions = (context: any) => handleOptions(context.request);
 
+async function proxyRequest(context: any) {
   const backendOrigin = (context.env?.BACKEND_ORIGIN || DEFAULT_BACKEND_ORIGIN).replace(/\/$/, "");
   const incomingUrl = new URL(context.request.url);
   const targetUrl = new URL(backendOrigin);
@@ -39,7 +42,7 @@ export const onRequest = async (context: any) => {
     status: response.status,
     headers: responseHeaders,
   });
-};
+}
 
 function handleOptions(request: Request) {
   const origin = new URL(request.url).origin;
