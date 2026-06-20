@@ -27,10 +27,13 @@ Project: DawaiSaver.pk
 - Guardrail commit `3d8cf0c645ace918c60029900e79d416f0049953` is pushed and verified on GitHub `main`.
 - Local `npm run build` succeeds after Prisma client regeneration.
 - `prisma migrate status` and `prisma migrate deploy` are blocked locally because no reachable `DATABASE_URL` endpoint is available in this workspace.
-- Coolify auto-deploy, container hash verification, route checks, and mirror resume still require live production access.
+- Mirror routes are present in source and guarded by `AdminGuard` plus bearer auth: `/admin/mirror-status`, `/admin/mirror/runtime`, `/admin/mirror/archive-status`, `/admin/mirror/start`, `/admin/mirror/pause`, `/admin/mirror/resume`, and `/admin/mirror/stop`.
+- The acquisition job resumes from the stored checkpoint in `import_batches.metadata.acquisition.checkpoint`; it does not reset progress unless a fresh batch is created.
+- `getMirrorRuntimeState()` keeps the mirror paused whenever `MIRROR_ENABLED=false`, `MIRROR_MIGRATION_MODE=true`, or the control record is `paused`/`stopped`.
+- Coolify auto-deploy, container hash verification, route checks, and live mirror resume still require production access through Coolify or SSH.
 - GitHub repository integration settings are not exposed in this workspace, so the retired Railway webhook/app connection cannot be removed from code alone.
 
 ## DRAP
 
-- Last recorded progress: 43,000 processed of 199,000 (21.6%), 41,175 successful, 1,825 failed.
-- Mirror remains paused pending a successful migration deployment and route verification.
+- Last recorded progress remains around 43,000 processed of 199,000, with the mirror paused awaiting live resume from the existing checkpoint.
+- Mirror remains paused pending a successful production resume and verification pass.
