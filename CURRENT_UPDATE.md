@@ -388,3 +388,46 @@ stopped -> start -> running
 - `assertMirrorExecutionAllowed()` check prevents duplicate starts
 - Checkpoint-based deduplication in `import_batch_items`
 - Resume is safe - picks up from last checkpoint
+
+---
+
+## Production Database Action Required
+
+### Current Status
+- Migration committed to GitHub main (`21c1507`)
+- Migration **NOT applied** to production database
+- `mirror_runtime_control` table **DOES NOT EXIST**
+
+### Immediate Actions Required
+
+1. **Apply migration via Coolify**:
+   - Go to Coolify PostgreSQL service
+   - Run: `npx prisma migrate deploy` in the project directory
+   - Or run the SQL manually in the database console
+
+2. **Verify table creation**:
+   ```sql
+   SELECT * FROM mirror_runtime_control;
+   SELECT pg_typeof(state) FROM mirror_runtime_control LIMIT 1;
+   ```
+
+3. **Test endpoints** (after migration applied):
+   ```bash
+   curl -X POST https://dawaisaver-admin.pages.dev/api/admin/mirror/start \
+     -H "Authorization: Bearer <admin_token>"
+   ```
+
+4. **Resume mirror**:
+   - Set env vars: `MIRROR_ENABLED=true`, `MIRROR_MIGRATION_MODE=false`
+   - Use admin UI to click "Resume Mirror"
+   - Monitor progress at `/admin/mirror-status`
+
+### DRAP Mirror Status (Pre-Migration)
+| Metric | Value |
+|--------|-------|
+| Status | PAUSED |
+| Processed | 43,000 |
+| Remaining | 157,000 |
+| Success Rate | 95.7% |
+| Completion | ~12.1% |
+| Estimated Time | 6-12 hours |
