@@ -431,3 +431,83 @@ stopped -> start -> running
 | Success Rate | 95.7% |
 | Completion | ~12.1% |
 | Estimated Time | 6-12 hours |
+
+---
+
+## Migration Execution Checklist
+
+### Step 1: Apply Migration
+```bash
+# Connect to production database
+export DATABASE_URL="postgresql://user:pass@host:5432/db"
+
+# Apply migration
+npx prisma migrate deploy
+
+# Or manually via psql:
+psql "$DATABASE_URL" -c "
+CREATE TABLE IF NOT EXISTS mirror_runtime_control (
+    key TEXT NOT NULL,
+    state TEXT NOT NULL DEFAULT 'stopped',
+    updated_at TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT mirror_runtime_control_pkey PRIMARY KEY (key)
+);
+"
+```
+
+### Step 2: Verify Table
+```sql
+-- Check table exists
+SELECT EXISTS (
+  SELECT FROM information_schema.tables 
+  WHERE table_name = 'mirror_runtime_control'
+) AS table_exists;
+
+-- Check columns
+\d mirror_runtime_control
+
+-- Check _prisma_migrations
+SELECT id, checksum, finished_at FROM _prisma_migrations 
+WHERE id = '20260620000000_add_mirror_runtime_control';
+```
+
+### Step 3: Test API Endpoints
+```bash
+# Get admin token first
+TOKEN=$(curl -s -X POST https://dawaisaver-api.up.railway.app/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@yourdomain.com","password":"yourpassword"}' | jq -r '.accessToken')
+
+# Test endpoints
+curl -X POST https://dawaisaver-api.up.railway.app/api/admin/mirror/start \
+  -H "Authorization: Bearer $TOKEN"
+curl -X POST https://dawaisaver-api.up.railway.app/api/admin/mirror/pause \
+  -H "Authorization: Bearer $TOKEN"
+curl -X POST https://dawaisaver-api.up.railway.app/api/admin/mirror/resume \
+  -H "Authorization: Bearer $TOKEN"
+curl -X POST https://dawaisaver-api.up.railway.app/api/admin/mirror/stop \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+### Step 4: Verify State Persistence
+```sql
+-- After each API call, verify state:
+SELECT key, state, updated_at FROM mirror_runtime_control;
+```
+
+### Step 5: Resume Mirror
+1. Set environment variables in Coolify:
+   - `MIRROR_ENABLED=true`
+   - `MIRROR_MIGRATION_MODE=false`
+2. Redeploy API container
+3. Click "Resume Mirror" in admin UI
+4. Monitor at: https://dawaisaver-admin.pages.dev/#/admin/mirror-status
+
+### Expected Results After Resume
+| Metric | Before | After Resume |
+|--------|--------|--------------|
+| Status | PAUSED | RUNNING |
+| Processed | 43,000 | 43,100+ |
+| Duplicates | 0 | 0 |
+| Throughput | ~0 | ~5-10/sec |
