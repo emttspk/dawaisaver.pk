@@ -7,8 +7,7 @@ Project: DawaiSaver.pk
 
 - `dawaisaver-admin.pages.dev` returns HTTP 200 and serves the current admin SPA shell.
 - `dawaisaver-web.pages.dev` now returns HTTP 200 and serves the current customer SPA shell.
-- Cloudflare Pages reports the latest production `main` deployment for `dawaisaver-web` as commit `f0b49bae93bbf0e2414214b50cf92db86d5a7c3a`.
-- Cloudflare Pages reports the latest production `main` deployment for `dawaisaver-admin` as commit `a14dcbe34e9e3c3dc6f92fe8a5db997b24e28a6b`.
+- Cloudflare Pages reports the latest production `main` deployment for both `dawaisaver-web` and `dawaisaver-admin` as commit `b4b95a6b86f83ff18c1c1c00d47d0dec0516e981`.
 - The backend Coolify service is healthy at `http://yh5wt7bbkhqsjycey5df0lbe.178.105.221.236.sslip.io`.
 
 ## Frontend API Status
