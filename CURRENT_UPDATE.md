@@ -6,8 +6,9 @@ Project: DawaiSaver.pk
 ## Production Verification
 
 - `dawaisaver-admin.pages.dev` returns HTTP 200 and serves the current admin SPA shell.
-- `dawaisaver-web.pages.dev` was returning HTTP 404 at the root during verification.
-- Cloudflare Pages reports the latest production `main` deployment for both `dawaisaver-admin` and `dawaisaver-web` as commit `a14dcbe34e9e3c3dc6f92fe8a5db997b24e28a6b`.
+- `dawaisaver-web.pages.dev` now returns HTTP 200 and serves the current customer SPA shell.
+- Cloudflare Pages reports the latest production `main` deployment for `dawaisaver-web` as commit `f0b49bae93bbf0e2414214b50cf92db86d5a7c3a`.
+- Cloudflare Pages reports the latest production `main` deployment for `dawaisaver-admin` as commit `a14dcbe34e9e3c3dc6f92fe8a5db997b24e28a6b`.
 - The backend Coolify service is healthy at `http://yh5wt7bbkhqsjycey5df0lbe.178.105.221.236.sslip.io`.
 
 ## Frontend API Status
@@ -29,7 +30,8 @@ Project: DawaiSaver.pk
   - `_headers`
   - `404.html`
 - Rebuilt both frontend apps locally and confirmed both builds pass.
-- Triggered a fresh Cloudflare Pages production deployment retry for `dawaisaver-web`.
+- Corrected the Cloudflare Pages web project configuration to build from `apps/web` with `npm run build` and `dist` output.
+- Triggered a fresh Cloudflare Pages production deployment for `dawaisaver-web`, and the root now serves HTTP 200.
 
 ## Local Verification
 
@@ -46,5 +48,5 @@ Project: DawaiSaver.pk
 
 ## Progress
 
-- Completion percentage: 85%
-- Remaining blockers: verify whether the refreshed Pages deployment clears the `dawaisaver-web.pages.dev` 404, and obtain authenticated access to the DRAP mirror runtime if live counters are still required.
+- Completion percentage: 95%
+- Remaining blockers: obtain authenticated access to the DRAP mirror runtime if live counters are still required.
