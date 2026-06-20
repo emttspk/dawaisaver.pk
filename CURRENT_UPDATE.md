@@ -7,8 +7,9 @@ Project: DawaiSaver.pk
 
 - `dawaisaver-admin.pages.dev` returns HTTP 200 and serves the current admin SPA shell.
 - `f537e17d.dawaisaver-web.pages.dev` returns HTTP 200 and serves the customer SPA shell.
+- `dawaisaver-web.pages.dev` currently returns HTTP 404 at the root, so the evidence deployment URL is the usable customer frontend reference in this workspace.
 - Cloudflare Pages project status shows both `dawaisaver-web` and `dawaisaver-admin` as Git-backed projects.
-- Cloudflare Pages deployment history shows the latest Production deployments on `main` are sourced from commit `fdaa5b6` for both projects.
+- Cloudflare Pages deployment history now shows the latest Production deployments on `main` are sourced from commit `8de5001` for both projects.
 - The latest `main` commit is therefore deployed to both Pages projects.
 
 ## Frontend API Status
@@ -16,11 +17,13 @@ Project: DawaiSaver.pk
 - The deployed admin and customer bundles still resolve API calls against `/api` by default when no absolute `VITE_API_URL` is embedded.
 - `https://dawaisaver-admin.pages.dev/api/*` returns 404 from the Pages origin.
 - `https://f537e17d.dawaisaver-web.pages.dev/api/*` falls back to the SPA shell instead of a live API response.
+- Probing `api.dawaisaver-web.pages.dev`, `backend.dawaisaver-web.pages.dev`, `api.dawaisaver-admin.pages.dev`, and `backend.dawaisaver-admin.pages.dev` returned 404.
 - Frontend routing is healthy, but the backend API origin is not exposed through the Pages edge in this workspace.
 
 ## Backend and Mirror Status
 
 - Coolify backend deployment status could not be verified from this workspace because no host, SSH target, or dashboard credential is available here.
+- The downloaded Pages project config did not reveal an absolute backend URL or runtime env override.
 - Backend database connectivity could not be verified from the live deployment path for the same reason.
 - DRAP mirror runtime status and progress could not be read from the backend deployment path in this session.
 
