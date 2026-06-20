@@ -4,6 +4,14 @@ Date: 2026-06-20
 Project: DawaiSaver.pk
 Mode: AGENT
 
+## 2026-06-20 Migration Forensic Follow-Up
+
+- Verified `prisma/migrations/20260617000000_add_medicine_master_data_structure/migration.sql` is UTF-8 with no BOM.
+- Verified the file contains no NUL bytes.
+- Verified line 193 uses `"primary" BOOLEAN DEFAULT false`.
+- Local repo checkout does not expose a live DawaiSaver production hostname, so production route probing is currently blocked from this session.
+- Docker Desktop is stopped in this environment, so local `prisma migrate deploy` verification could not be executed here.
+
 ## Migration Recovery
 
 - Root cause 1: `prisma/migrations/20260617000000_add_medicine_master_data_structure/migration.sql` was saved with embedded NUL bytes, so Prisma passed a string with nulls to PostgreSQL and failed before executing the migration.
