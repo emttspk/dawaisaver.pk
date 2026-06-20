@@ -4,6 +4,13 @@ import { apiClient, type MirrorStatusResponse } from "../services/api-client";
 
 export default function MirrorStatusDashboard() {
   const [data, setData] = useState<MirrorStatusResponse | null>(null);
+  const [runtimeState, setRuntimeState] = useState<{
+    state: string;
+    envState: string;
+    effectiveState: string;
+    mirrorEnabled: boolean;
+    migrationMode: boolean;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [lastUpdated, setLastUpdated] = useState<string>("");
@@ -16,9 +23,13 @@ export default function MirrorStatusDashboard() {
 
     const load = async () => {
       try {
-        const response = await apiClient.getMirrorStatus();
+        const [response, runtime] = await Promise.all([
+          apiClient.getMirrorStatus(),
+          apiClient.getMirrorRuntime(),
+        ]);
         if (!mounted) return;
         setData(response);
+        setRuntimeState(runtime);
         setError("");
         setLastUpdated(new Date().toISOString());
       } catch (caught) {
@@ -103,9 +114,9 @@ export default function MirrorStatusDashboard() {
     }
   };
 
-  const canStart = data?.status === "PAUSED" || data?.status === "STOPPED" || !data?.status;
+  const canStart = data?.status === "PAUSED" || data?.status === "STOPPED" || !data?.status || (runtimeState && runtimeState.effectiveState === "PAUSED");
   const canPause = data?.status === "RUNNING" || data?.status === "PAUSED";
-  const canResume = data?.status === "PAUSED" || data?.status === "STOPPED";
+  const canResume = data?.status === "PAUSED" || data?.status === "STOPPED" || (runtimeState && runtimeState.effectiveState === "PAUSED");
   const canStop = data?.status === "RUNNING" || data?.status === "PAUSED";
 
   return (
@@ -150,6 +161,31 @@ export default function MirrorStatusDashboard() {
             <p className="font-semibold">
               {actionState === "loading" ? "Processing..." : actionState === "success" ? "Success" : "Error"}: {actionMessage}
             </p>
+          </div>
+        )}
+
+        {runtimeState && (
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm font-semibold text-slate-700">Runtime State</p>
+                <p className="text-xs text-slate-500">Environment controlled</p>
+              </div>
+              <div className="flex items-center gap-4 text-xs">
+                <div>
+                  <span className="text-slate-500">DB State:</span>
+                  <span className={`ml-1 font-semibold ${runtimeState.state === "running" ? "text-emerald-700" : "text-slate-600"}`}>{runtimeState.state}</span>
+                </div>
+                <div>
+                  <span className="text-slate-500">ENV:</span>
+                  <span className={`ml-1 font-semibold ${runtimeState.mirrorEnabled ? "text-emerald-700" : "text-slate-600"}`}>{runtimeState.mirrorEnabled ? "enabled" : "disabled"}</span>
+                </div>
+                <div>
+                  <span className="text-slate-500">Migration:</span>
+                  <span className={`ml-1 font-semibold ${runtimeState.migrationMode ? "text-amber-700" : "text-emerald-700"}`}>{runtimeState.migrationMode ? "on" : "off"}</span>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
@@ -297,7 +333,32 @@ export default function MirrorStatusDashboard() {
                     </div>
                   }
                 />
-                <Panel title="Integrity" body={<IntegrityList data={data} />} />
+                <Panel
+                  title="Integrity"
+                  body={<IntegrityList data={data} />}
+                />
+                <Panel
+                  title="Archive Status"
+                  body={
+                    <div className="space-y-2 text-sm">
+                      <p className="text-slate-600">Archive uploads: {data?.archive_uploads || 0}</p>
+                      <p className="text-slate-600">R2 integrity: {data?.r2_integrity || "unknown"}</p>
+                      <button
+                        onClick={async () => {
+                          try {
+                            const archiveStatus = await apiClient.getMirrorArchiveStatus();
+                            console.log("Archive status:", archiveStatus);
+                          } catch (e) {
+                            console.error("Failed to fetch archive status:", e);
+                          }
+                        }}
+                        className="text-xs text-sky-700 hover:text-sky-900"
+                      >
+                        Refresh archive status
+                      </button>
+                    </div>
+                  }
+                />
                 <Panel
                   title="Example live response"
                   body={

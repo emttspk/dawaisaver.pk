@@ -211,6 +211,33 @@ class AdminApiClient {
     return this.request<MirrorStatusResponse>("/admin/mirror-status");
   }
 
+  getMirrorRuntime() {
+    return this.request<{
+      state: string;
+      envState: string;
+      effectiveState: string;
+      mirrorEnabled: boolean;
+      migrationMode: boolean;
+    }>("/admin/mirror/runtime");
+  }
+
+  getMirrorArchiveStatus() {
+    return this.request<{
+      batches: Array<{
+        batchId: string;
+        status: string;
+        createdAt: string;
+        archive: {
+          strategy: string;
+          totalSegments: number;
+          uploadedSegments: number;
+          failedSegments: number;
+          pendingSegments: number;
+        };
+      }>;
+    }>("/admin/mirror/archive-status");
+  }
+
   startMirror() {
     return this.request<{ success: boolean; message: string }>("/admin/mirror/start", { method: "POST" });
   }
