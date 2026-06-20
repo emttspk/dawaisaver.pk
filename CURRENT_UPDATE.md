@@ -22,6 +22,7 @@ Project: DawaiSaver.pk
 - `GET /api/health` is not the backend route and returns 404.
 - The backend health surface does not expose a commit SHA or deploy fingerprint, so the exact backend commit cannot be independently extracted from the current public endpoint set.
 - Protected DRAP mirror endpoints exist, but they require bearer authentication, so live runtime counters, resume/restart controls, and worker status remain unverified from the current unauthenticated terminal context.
+- No seeded or documented production admin credentials were found in the workspace, and no Coolify API token was available in the terminal environment.
 
 ## Web Fix Attempt
 
