@@ -32,6 +32,7 @@ Project: DawaiSaver.pk
 - `getMirrorRuntimeState()` keeps the mirror paused whenever `MIRROR_ENABLED=false`, `MIRROR_MIGRATION_MODE=true`, or the control record is `paused`/`stopped`.
 - Coolify auto-deploy, container hash verification, route checks, and live mirror resume still require production access through Coolify or SSH.
 - GitHub repository integration settings are not exposed in this workspace, so the retired Railway webhook/app connection cannot be removed from code alone.
+- Archive docs have been refreshed to reflect the DRAP mirror resume phase.
 
 ## DRAP
 
