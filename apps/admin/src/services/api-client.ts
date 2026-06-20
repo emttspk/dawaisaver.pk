@@ -210,6 +210,22 @@ class AdminApiClient {
   getMirrorStatus() {
     return this.request<MirrorStatusResponse>("/admin/mirror-status");
   }
+
+  startMirror() {
+    return this.request<{ success: boolean; message: string }>("/admin/mirror/start", { method: "POST" });
+  }
+
+  pauseMirror() {
+    return this.request<{ success: boolean; message: string }>("/admin/mirror/pause", { method: "POST" });
+  }
+
+  resumeMirror() {
+    return this.request<{ success: boolean; message: string }>("/admin/mirror/resume", { method: "POST" });
+  }
+
+  stopMirror() {
+    return this.request<{ success: boolean; message: string }>("/admin/mirror/stop", { method: "POST" });
+  }
 }
 
 export const apiClient = new AdminApiClient();

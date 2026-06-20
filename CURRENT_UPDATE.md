@@ -257,3 +257,47 @@ See `docs/DRAP_DATABASE_VERIFICATION.sql` for:
 - Archive coverage
 
 See `docs/DRAP_MIRROR_FORENSIC_REPORT.md` for full details.
+
+---
+
+## Frontend Mirror Controls (2026-06-20)
+
+### Implementation
+Added visible control buttons to `apps/admin/src/pages/MirrorStatusDashboard.tsx`:
+
+- **Start Mirror** - Enables mirror acquisition
+- **Pause Mirror** - Pauses ongoing acquisition
+- **Resume Mirror** - Resumes paused acquisition
+- **Stop Mirror** - Stops acquisition (with confirmation)
+
+### API Integration
+```typescript
+// api-client.ts
+startMirror()    // POST /admin/mirror/start
+pauseMirror()    // POST /admin/mirror/pause
+resumeMirror()   // POST /admin/mirror/resume
+stopMirror()     // POST /admin/mirror/stop
+```
+
+### Features
+- Buttons enabled/disabled based on current state
+- Success/error toast notifications
+- Confirmation dialog for Stop action
+- Auto-refresh status after actions
+- State persisted in database (no deployment required)
+
+### Build Results
+- Backend: ✅ `npm run build` passes
+- Frontend: ✅ `npm run build` passes (182.40 kB)
+- Prisma: ✅ Client regenerated with new model
+
+### Git Commits
+1. `2464318` - docs: Add DRAP mirror forensic audit report
+2. `21e2c75` - feat: Add admin API endpoints for DRAP mirror control
+3. `7e5ded7` - fix: Correct duplicate onModuleInit and async assertMirrorExecutionAllowed
+
+### Current Status
+- All mirror control endpoints implemented
+- Frontend buttons connected to APIs
+- Database state persistence working
+- Ready for production deployment

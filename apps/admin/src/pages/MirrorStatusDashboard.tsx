@@ -7,6 +7,9 @@ export default function MirrorStatusDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [lastUpdated, setLastUpdated] = useState<string>("");
+  const [actionState, setActionState] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [actionMessage, setActionMessage] = useState("");
+  const [showStopConfirm, setShowStopConfirm] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -60,6 +63,51 @@ export default function MirrorStatusDashboard() {
     ];
   }, [data]);
 
+  const handleAction = async (action: "start" | "pause" | "resume" | "stop") => {
+    if (action === "stop") {
+      setShowStopConfirm(true);
+      return;
+    }
+    await executeAction(action);
+  };
+
+  const executeAction = async (action: "start" | "pause" | "resume" | "stop") => {
+    setActionState("loading");
+    setActionMessage("");
+    try {
+      let result;
+      switch (action) {
+        case "start":
+          result = await apiClient.startMirror();
+          break;
+        case "pause":
+          result = await apiClient.pauseMirror();
+          break;
+        case "resume":
+          result = await apiClient.resumeMirror();
+          break;
+        case "stop":
+          result = await apiClient.stopMirror();
+          break;
+      }
+      setActionState("success");
+      setActionMessage(result.message);
+      setShowStopConfirm(false);
+      setTimeout(() => {
+        setActionState("idle");
+        setActionMessage("");
+      }, 3000);
+    } catch (err) {
+      setActionState("error");
+      setActionMessage(err instanceof Error ? err.message : "Action failed");
+    }
+  };
+
+  const canStart = data?.status === "PAUSED" || data?.status === "STOPPED" || !data?.status;
+  const canPause = data?.status === "RUNNING" || data?.status === "PAUSED";
+  const canResume = data?.status === "PAUSED" || data?.status === "STOPPED";
+  const canStop = data?.status === "RUNNING" || data?.status === "PAUSED";
+
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#f0fff7,_#f7fafc_40%,_#eef6ff_100%)] px-4 py-6 text-slate-950 md:px-8">
       <section className="mx-auto max-w-7xl space-y-6">
@@ -97,6 +145,14 @@ export default function MirrorStatusDashboard() {
           </div>
         </div>
 
+        {actionState !== "idle" && (
+          <div className={`rounded-2xl border p-4 ${actionState === "success" ? "border-emerald-200 bg-emerald-50 text-emerald-800" : actionState === "error" ? "border-red-200 bg-red-50 text-red-800" : "border-blue-200 bg-blue-50 text-blue-800"}`}>
+            <p className="font-semibold">
+              {actionState === "loading" ? "Processing..." : actionState === "success" ? "Success" : "Error"}: {actionMessage}
+            </p>
+          </div>
+        )}
+
         {loading && <StatusBanner tone="slate" title="Loading mirror status" body="Waiting for the first live response." />}
         {error && <StatusBanner tone="red" title="Status load failed" body={error} />}
 
@@ -106,6 +162,61 @@ export default function MirrorStatusDashboard() {
               {metrics.map((metric) => (
                 <MetricCard key={metric.label} label={metric.label} value={metric.value} tone={metric.tone} />
               ))}
+            </div>
+
+            <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
+              <h2 className="text-xl font-bold mb-4">Mirror Controls</h2>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={() => handleAction("start")}
+                  disabled={!canStart || actionState === "loading"}
+                  className={`rounded-2xl px-4 py-2 text-sm font-bold text-white transition ${canStart && actionState !== "loading" ? "bg-emerald-600 hover:bg-emerald-700" : "bg-slate-300 cursor-not-allowed"}`}
+                >
+                  Start Mirror
+                </button>
+                <button
+                  onClick={() => handleAction("pause")}
+                  disabled={!canPause || actionState === "loading"}
+                  className={`rounded-2xl px-4 py-2 text-sm font-bold text-white transition ${canPause && actionState !== "loading" ? "bg-amber-600 hover:bg-amber-700" : "bg-slate-300 cursor-not-allowed"}`}
+                >
+                  Pause Mirror
+                </button>
+                <button
+                  onClick={() => handleAction("resume")}
+                  disabled={!canResume || actionState === "loading"}
+                  className={`rounded-2xl px-4 py-2 text-sm font-bold text-white transition ${canResume && actionState !== "loading" ? "bg-sky-600 hover:bg-sky-700" : "bg-slate-300 cursor-not-allowed"}`}
+                >
+                  Resume Mirror
+                </button>
+                <button
+                  onClick={() => handleAction("stop")}
+                  disabled={!canStop || actionState === "loading"}
+                  className={`rounded-2xl px-4 py-2 text-sm font-bold text-white transition ${canStop && actionState !== "loading" ? "bg-red-600 hover:bg-red-700" : "bg-slate-300 cursor-not-allowed"}`}
+                >
+                  Stop Mirror
+                </button>
+              </div>
+              {showStopConfirm && (
+                <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4">
+                  <p className="font-semibold text-red-800">Confirm Stop</p>
+                  <p className="mt-2 text-sm text-red-700">Are you sure you want to stop the mirror? This will pause all ongoing work.</p>
+                  <div className="mt-3 flex gap-2">
+                    <button
+                      onClick={() => executeAction("stop")}
+                      disabled={actionState === "loading"}
+                      className="rounded-lg bg-red-600 px-3 py-1 text-sm font-bold text-white hover:bg-red-700 disabled:opacity-50"
+                    >
+                      Yes, Stop
+                    </button>
+                    <button
+                      onClick={() => setShowStopConfirm(false)}
+                      className="rounded-lg bg-slate-300 px-3 py-1 text-sm font-bold text-slate-700 hover:bg-slate-400"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
