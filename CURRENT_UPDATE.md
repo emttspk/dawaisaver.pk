@@ -8,7 +8,7 @@ Project: DawaiSaver.pk
 - `dawaisaver-admin.pages.dev` returns HTTP 200 and serves the current admin SPA shell.
 - `f537e17d.dawaisaver-web.pages.dev` returns HTTP 200 and serves the customer SPA shell.
 - Cloudflare Pages project status shows both `dawaisaver-web` and `dawaisaver-admin` as Git-backed projects.
-- Cloudflare Pages deployment history shows Production on `main` sourced from commit `74d967b` for both projects.
+- Cloudflare Pages deployment history shows the latest Production deployments on `main` are sourced from commit `fdaa5b6` for both projects.
 - The latest `main` commit is therefore deployed to both Pages projects.
 
 ## Frontend API Status
