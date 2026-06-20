@@ -511,3 +511,34 @@ SELECT key, state, updated_at FROM mirror_runtime_control;
 | Processed | 43,000 | 43,100+ |
 | Duplicates | 0 | 0 |
 | Throughput | ~0 | ~5-10/sec |
+
+---
+
+## Fix Applied: Automatic Migration on Startup (2026-06-20)
+
+### Problem
+Production database missing `mirror_runtime_control` table. Manual migration was required.
+
+### Solution
+Added `npx prisma migrate deploy` to Dockerfile runner stage.
+
+### Dockerfile Change
+```dockerfile
+# Before container starts, run migrations
+RUN npx prisma migrate deploy
+
+CMD ["node", "dist/main.js"]
+```
+
+### Benefits
+- Migrations run automatically on every container startup
+- No manual intervention required
+- Prevents runtime errors from missing tables
+- Idempotent - safe to run multiple times
+
+### Next Steps
+1. Redeploy API container in Coolify
+2. Migration will run automatically
+3. Verify table exists
+4. Test mirror control endpoints
+5. Resume DRAP mirror
