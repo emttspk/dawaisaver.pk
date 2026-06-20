@@ -16,6 +16,21 @@ describe("HealthService", () => {
 
     expect(service.applicationHealth().status).toBe("ok");
     expect(service.applicationHealth().name).toBe("DawaiSaver.pk API");
+    expect(service.applicationHealth().deployment).toEqual({
+      commitSha: "unknown",
+      source: "unavailable",
+    });
+  });
+
+  it("returns deployment fingerprint", () => {
+    const prisma = { isHealthy: jest.fn() } as never;
+    const config = { get: jest.fn() } as never;
+    const service = new HealthService(prisma, config);
+
+    expect(service.deploymentHealth()).toEqual({
+      commitSha: "unknown",
+      source: "unavailable",
+    });
   });
 
   it("returns database health", async () => {
@@ -29,4 +44,3 @@ describe("HealthService", () => {
     });
   });
 });
-

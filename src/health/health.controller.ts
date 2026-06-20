@@ -19,5 +19,9 @@ export class HealthController {
   application() {
     return this.health.applicationHealth();
   }
-}
 
+  @Get("deployment")
+  deployment() {
+    return this.health.deploymentHealth();
+  }
+}
