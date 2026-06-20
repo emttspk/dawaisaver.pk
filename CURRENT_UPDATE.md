@@ -6,16 +6,18 @@ Mode: AGENT
 
 ## Migration Recovery
 
-- Root cause: `prisma/migrations/20260617000000_add_medicine_master_data_structure/migration.sql` was saved with embedded NUL bytes, so Prisma passed a string with nulls to PostgreSQL and failed before executing the migration.
-- Safe fix applied: re-encoded the migration SQL file as UTF-8 without changing the SQL text.
-- Recovery path chosen: keep the migration chain intact and rerun Prisma deploy after the file encoding fix.
+- Root cause 1: `prisma/migrations/20260617000000_add_medicine_master_data_structure/migration.sql` was saved with embedded NUL bytes, so Prisma passed a string with nulls to PostgreSQL and failed before executing the migration.
+- Root cause 2: after re-encoding, the same migration still failed on the unquoted `primary` column in `product_therapeutic_categories`.
+- Safe fix applied: re-encoded the migration SQL file as UTF-8 and quoted the reserved column as `"primary"` without changing the schema shape.
+- Local validation result: the full migration chain replays successfully against a disposable PostgreSQL 18 container with raw `psql`.
 
 ## Live Verification Status
 
-- `DATABASE_URL` is not exposed in this shell, so live database checks, Prisma deploy, and mirror endpoint tests still require the production/Coolify terminal or runtime secret injection path.
-- The mirror runtime control table is defined in the later migration, but the failing earlier migration must be repaired first so the chain can continue cleanly.
+- `DATABASE_URL` is available in production, but this shell still cannot reach the Coolify/production terminal directly.
+- Prisma CLI migration-history commands in this shell still return a generic `Schema engine error`, so production `migrate deploy` and `migrate status` remain unverified here.
+- `mirror_runtime_control` is created successfully by the fixed migration chain in the disposable database.
 
 ## Notes
 
 - `CURRENT_UPDATE.md` is a transient status file and should stay out of future commits once this recovery is complete.
-- No production data was modified during the encoding repair.
+- No production data was modified during the migration repairs.
