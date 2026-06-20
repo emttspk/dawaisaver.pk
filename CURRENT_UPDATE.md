@@ -20,7 +20,8 @@ Project: DawaiSaver.pk
 
 - `GET /health` on the Coolify backend returns `application.status=ok` and `database.status=ok`.
 - `GET /api/health` is not the backend route and returns 404.
-- Protected DRAP mirror endpoints exist, but they require bearer authentication, so live runtime counters remain unverified from the current unauthenticated terminal context.
+- The backend health surface does not expose a commit SHA or deploy fingerprint, so the exact backend commit cannot be independently extracted from the current public endpoint set.
+- Protected DRAP mirror endpoints exist, but they require bearer authentication, so live runtime counters, resume/restart controls, and worker status remain unverified from the current unauthenticated terminal context.
 
 ## Web Fix Attempt
 
@@ -47,5 +48,5 @@ Project: DawaiSaver.pk
 
 ## Progress
 
-- Completion percentage: 95%
-- Remaining blockers: obtain authenticated access to the DRAP mirror runtime if live counters are still required.
+- Completion percentage: 90%
+- Remaining blockers: obtain authenticated access to the DRAP mirror runtime if live counters and worker controls are still required, and surface a backend deploy fingerprint if exact backend commit verification is needed.
