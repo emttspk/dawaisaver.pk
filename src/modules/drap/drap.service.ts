@@ -534,7 +534,7 @@ export class DrapService {
             data: {
               productId: assignment.productId,
               categoryId,
-              primary: false,
+              isPrimary: false,
               confidenceScore: assignment.confidenceScore,
               sourceType: "ADMIN_IMPORT",
             },

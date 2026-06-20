@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS generic_atc_classifications (
 CREATE TABLE IF NOT EXISTS product_therapeutic_categories (
   product_id UUID NOT NULL REFERENCES products(id),
   category_id UUID NOT NULL REFERENCES therapeutic_categories(id),
-  "primary" BOOLEAN DEFAULT false,
+  is_primary BOOLEAN DEFAULT false,
   status VARCHAR DEFAULT 'ACTIVE' NOT NULL,
   confidence_score DECIMAL(5,4),
   source_type VARCHAR,

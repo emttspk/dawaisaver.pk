@@ -2133,7 +2133,7 @@ model GenericAtcClassification {
 model ProductTherapeuticCategory {
   productId       String              @map("product_id") @db.Uuid
   categoryId      String              @map("category_id") @db.Uuid
-  primary         Boolean             @default(false)
+  isPrimary       Boolean             @default(false) @map("is_primary")
   status          RecordStatus        @default(ACTIVE)
   confidenceScore Decimal?            @map("confidence_score") @db.Decimal(5, 4)
   sourceType      SourceType?         @map("source_type")
