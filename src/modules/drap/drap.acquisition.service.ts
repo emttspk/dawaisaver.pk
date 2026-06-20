@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import { createHash } from "node:crypto";
 import { PrismaService } from "../../database/prisma.service";
 import { UploadService } from "../ocr/upload.service";
-import { getMirrorRuntimeState } from "./drap.freeze";
+import { assertMirrorExecutionAllowed } from "./drap.freeze";
 import { canonicalizeRegistrationNumber, parseDrapMirrorPage } from "./drap.detail-parser";
 import { DrapArchiveManager } from "./drap.archive";
 import {
@@ -92,12 +92,7 @@ export class DrapAcquisitionService {
   }
 
   async runMirrorAcquisition(plan: DrapMirrorRunOptions): Promise<DrapMirrorImportSummary> {
-    const state = await getMirrorRuntimeState();
-    if (state === "PAUSED") {
-      throw new Error(
-        "DRAP mirror execution is paused. Use admin control panel to start the mirror.",
-      );
-    }
+    await assertMirrorExecutionAllowed();
     const r2Status = this.verifyR2Configuration();
     const registrations = this.normalizePlan(plan);
     const checkpoint = this.resolveCheckpoint(plan, registrations.length);

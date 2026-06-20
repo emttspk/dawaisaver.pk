@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PrismaService } from "../../database/prisma.service";
 
@@ -33,7 +33,11 @@ export async function getMirrorRuntimeState(): Promise<DrapMirrorRuntimeState> {
       if (controlRecord?.state === "paused") {
         return "PAUSED";
       }
-    } catch {
+      if (controlRecord?.state === "stopped") {
+        return "PAUSED";
+      }
+    } catch (error) {
+      logger.error("Failed to read mirror control state", error);
       return "PAUSED";
     }
   }
@@ -41,14 +45,13 @@ export async function getMirrorRuntimeState(): Promise<DrapMirrorRuntimeState> {
   return "RUNNING";
 }
 
-export function assertMirrorExecutionAllowed(): void {
-  getMirrorRuntimeState().then((state) => {
-    if (state === "PAUSED") {
-      throw new Error(
-        "DRAP mirror execution is paused. Set MIRROR_ENABLED=true and MIRROR_MIGRATION_MODE=false to re-enable it on Hetzner/Coolify, or use admin control panel.",
-      );
-    }
-  });
+export async function assertMirrorExecutionAllowed(): Promise<void> {
+  const state = await getMirrorRuntimeState();
+  if (state === "PAUSED") {
+    throw new Error(
+      "DRAP mirror execution is paused. Use admin control panel to start the mirror.",
+    );
+  }
 }
 
 function parseBoolean(value: string | undefined, defaultValue: boolean): boolean {
