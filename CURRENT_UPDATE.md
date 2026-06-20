@@ -28,6 +28,7 @@ Project: DawaiSaver.pk
 - Coolify is not auto-deploying from this workspace because no live Coolify URL/token/SSH host is configured here.
 - `api.dawaisaver.pk` and `dawaisaver.pk` currently return public DNS `NXDOMAIN`.
 - Production hash comparison, no-cache rebuild, in-container checks, Prisma deploy, route checks, and mirror resume remain pending until production access is available.
+- GitHub repository integration settings are not exposed in this workspace, so the active Railway webhook/app connection cannot be removed from code alone.
 
 ## DRAP
 
