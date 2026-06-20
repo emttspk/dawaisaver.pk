@@ -12,8 +12,9 @@ Project: DawaiSaver.pk
 - Repository blob: `1edb4e4039f9963b0303c2fa08c0525847d24d0a`.
 - Repository file is valid UTF-8, has no BOM, has no NUL bytes, and line 193 is `"primary" BOOLEAN DEFAULT false`.
 - Production byte signature `ff fe 2d 00 2d 00` and unquoted line 193 prove the running image predates both repair commits.
-- Docker copies `/app/prisma` from the current builder stage; the stale artifact therefore came from an old Coolify source revision/build context, not the current Docker COPY path.
-- GitHub commit status shows pushes still trigger Railway project `e38bb3da-7ab5-4654-b504-101e74c92d5b`; no Coolify deployment is registered. Coolify is therefore disconnected from the active Git push pipeline and retained its older image.
+- The repo has no `.github/workflows` directory and `railway.json` plus `.railway/project.json` were removed in `52f7e2e`, so the codebase now expects Coolify rather than Railway.
+- The active deployment owner is still the external GitHub-to-Railway integration: pushes continue to create Railway deployments for `e38bb3da-7ab5-4654-b504-101e74c92d5b`, while Coolify receives no auto-deploy event.
+- Docker copies `/app/prisma` from the current builder stage; the stale artifact therefore came from an external deployment trigger / old platform linkage, not the current Docker COPY path.
 
 ## Guardrails
 
@@ -24,8 +25,7 @@ Project: DawaiSaver.pk
 ## Deployment
 
 - Guardrail commit `3d8cf0c645ace918c60029900e79d416f0049953` is pushed and verified on GitHub `main`.
-- GitHub reported a Railway deployment for that commit and no Coolify deployment; the Railway deployment failed.
-- Coolify deployment is blocked from this shell because no Coolify URL/token or SSH host is configured.
+- Coolify is not auto-deploying from this workspace because no live Coolify URL/token/SSH host is configured here.
 - `api.dawaisaver.pk` and `dawaisaver.pk` currently return public DNS `NXDOMAIN`.
 - Production hash comparison, no-cache rebuild, in-container checks, Prisma deploy, route checks, and mirror resume remain pending until production access is available.
 
