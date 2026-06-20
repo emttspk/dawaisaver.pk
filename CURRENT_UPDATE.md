@@ -23,8 +23,8 @@ Project: DawaiSaver.pk
 ## Backend and Mirror Status
 
 - The live backend URL reachable from the deployed frontend config is `https://dawaisaverpk-production.up.railway.app/api`.
-- `https://dawaisaverpk-production.up.railway.app/api/health`, `/api/health/application`, and `/api/health/database` all return Railway `502` responses with `Application failed to respond`.
-- That means the backend deployment is reachable at the edge, but the application is not healthy enough to complete startup or answer health checks.
+- `https://dawaisaverpk-production.up.railway.app/api/health`, `/api/health/application`, and `/api/health/database` all return Railway `404` responses with `Application not found`.
+- That means the production API target is missing or detached at the Railway edge, so the backend cannot answer health checks.
 - Coolify backend deployment ownership could not be verified because the active production API target is still Railway-based and no SSH/Coolify host was discoverable in this workspace.
 - DRAP mirror runtime could not be verified live because the backend health checks fail before the mirror endpoints can be queried.
 - Local DRAP telemetry artifacts show prior mirror progress, but they are not a substitute for live production verification.
