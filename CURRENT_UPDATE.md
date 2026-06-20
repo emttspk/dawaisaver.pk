@@ -17,6 +17,11 @@ Mode: AGENT
 - Prisma CLI migration-history commands in this shell still return a generic `Schema engine error`, so production `migrate deploy` and `migrate status` remain unverified here.
 - `mirror_runtime_control` is created successfully by the fixed migration chain in the disposable database.
 
+## Cleanup Status
+
+- Railway references have been removed from the active docs and archived reports that still carried the retired platform name.
+- `CURRENT_UPDATE.md` remains ignored by git, and the prior archived snapshot has already been deleted.
+
 ## Notes
 
 - `CURRENT_UPDATE.md` is a transient status file and should stay out of future commits once this recovery is complete.

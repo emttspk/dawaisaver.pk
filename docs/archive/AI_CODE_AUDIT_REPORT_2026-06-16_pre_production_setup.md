@@ -2,7 +2,7 @@
 
 Archived on 2026-06-16 before the production deployment setup audit.
 
-This report is retained for continuity only. Its Railway/R2 status claims were superseded by the fresh `AI_CODE_AUDIT_REPORT.md` and `PRODUCTION_DEPLOYMENT_REPORT.md` created during the production deployment preparation task.
+This report is retained for continuity only. Its legacy deployment/R2 status claims were superseded by the fresh `AI_CODE_AUDIT_REPORT.md` and `PRODUCTION_DEPLOYMENT_REPORT.md` created during the production deployment preparation task.
 
 ## Original Content
 
@@ -26,12 +26,12 @@ Phase 10 - Production Readiness & Beta Launch
 - R2 bucket `dawaisaver-pk` created
 - SSH verified and operational
 - Git push verified
-- Railway token configured
-- Railway project linked
+- Production deployment token configured
+- Production project linked
 
 ## Pending
 
-- Deploy backend to Railway
+- Deploy backend to the production platform
 - Deploy frontend to Cloudflare Pages
 - Run database migrations
 - Implement JWT authentication
@@ -45,7 +45,7 @@ Phase 10 - Production Readiness & Beta Launch
 | Backend Build | Pass |
 | Backend Tests | Pass (34 tests) |
 | Frontend Build | Pass |
-| Railway Deployment | Pending |
+| Production Deployment | Pending |
 | Cloudflare Pages | Pending |
 
 ## Security Status
@@ -63,7 +63,7 @@ Phase 10 - Production Readiness & Beta Launch
 | Requirement | Status |
 |-------------|--------|
 | R2 as Single Source of Truth | Documented |
-| Railway filesystem: temporary | Documented |
+| Legacy deployment filesystem: temporary | Documented |
 | Docker filesystem: temporary | Documented |
 | PostgreSQL: metadata only | Documented |
 | R2 Bucket: dawaisaver-pk | Created |
@@ -86,4 +86,4 @@ Phase 10 - Production Readiness & Beta Launch
 
 ## Later Appended Notes
 
-The old report later noted that authentication/authorization had been implemented and that Railway was linked to the wrong project. The fresh audit report is now the source of truth.
+The old report later noted that authentication/authorization had been implemented and that the legacy deployment platform was linked to the wrong project. The fresh audit report is now the source of truth.

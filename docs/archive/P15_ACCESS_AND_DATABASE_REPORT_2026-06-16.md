@@ -13,22 +13,22 @@ Restore access and the production database path for DawaiSaver.pk without adding
 - `C:\Users\Nazim\.ssh\id_ed25519_emttspk.pub` exists.
 - `ssh -i C:\Users\Nazim\.ssh\id_ed25519_emttspk -o IdentitiesOnly=yes -o BatchMode=yes -T git@github.com` still returns `Permission denied (publickey)`.
 - GitHub had not yet accepted the `emttspk` SSH key at the time of this report.
-- Clearing stale Railway env vars left `railway whoami` unauthorized.
-- Clearing stale Railway env vars left `railway status` unauthorized.
+- Clearing stale deployment env vars left the deployment CLI unauthorized.
+- Clearing stale deployment env vars left the deployment status command unauthorized.
 
 ## Remaining Blockers
 
 1. Add the SSH public key to the `emttspk` GitHub account.
-2. Obtain a fresh Railway token with access to `dawaisaver.pk`.
-3. Verify Railway project status.
+2. Obtain fresh deployment credentials with access to `dawaisaver.pk`.
+3. Verify production project status.
 4. Check for Postgres and attach `DATABASE_URL`.
 5. Verify R2 runtime variables.
 
 ## Success Condition
 
 - GitHub authenticated.
-- Railway authenticated.
-- Railway project accessible.
+- Production deployment authenticated.
+- Production project accessible.
 - Postgres attached.
 - `DATABASE_URL` configured.
 - R2 variables configured.

@@ -12,14 +12,14 @@
 
 - **Bucket**: dawaisaver-pk ✅ Created
 
-## Railway Status
+## Production Status
 
 - **Project**: dawaisaver.pk ✅
 - **Project ID**: e38bb3da-7ab5-4654-b504-101e74c92d5b ✅
 - **Service**: dawaisaver.pk ✅
 - **Repository**: emttspk/dawaisaver.pk ✅
 
-## Railway Services
+## Production Services
 
 | Service | Status |
 |---------|--------|

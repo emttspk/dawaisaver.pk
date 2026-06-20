@@ -21,7 +21,7 @@
 ## 2026-06-17
 
 - Verified Wrangler authentication and confirmed the `dawaisaver-pk` R2 bucket exists.
-- Confirmed `R2_ACCOUNT_ID` and `R2_BUCKET_NAME` are present in the Railway API service.
+- Confirmed `R2_ACCOUNT_ID` and `R2_BUCKET_NAME` are present in the production API service.
 - Verified remote R2 object put/get/delete smoke testing against `dawaisaver-pk`.
 - Confirmed the upload service uses signed R2 requests and no local filesystem persistence.
 - Added closed-beta UAT documentation and a P19 runtime verification report.
@@ -92,14 +92,14 @@
 - Created `docs/PRODUCT_DISCOVERY_ENGINE.md`.
 - Updated `docs/DATA_INTELLIGENCE_ENGINE.md` and `docs/SYSTEM_ARCHITECTURE.md` with discovery architecture.
 - Built Backend Runtime Foundation as an executable NestJS application.
-- Added package, TypeScript, Nest CLI, ESLint, Prettier, Jest, environment, Docker, Docker Compose, and Railway configuration.
+- Added package, TypeScript, Nest CLI, ESLint, Prettier, Jest, environment, Docker, Docker Compose, and production deployment configuration.
 - Added runtime bootstrap, root module, feature module registration, configuration validation, Prisma module/service, database bootstrap, and health endpoints.
 - Added global exception handling, response formatting, request logging, error logging, request tracing, startup diagnostics, Helmet, CORS, throttling, and request validation.
 - Created `docs/BACKEND_RUNTIME_FOUNDATION.md`.
 - Updated deployment and system architecture documentation for the backend runtime.
 - Installed dependencies, generated Prisma client, built the project, and ran the Jest suite successfully.
 - Initialized git for the workspace and configured the `origin` remote.
-- Added `src/modules/health/`, `RAILWAY_SETUP.md`, `.editorconfig`, and missing common runtime scaffolding directories.
+- Added `src/modules/health/`, deployment setup docs, `.editorconfig`, and missing common runtime scaffolding directories.
 - Added the API controller layer under `src/modules/*/controllers/`.
 - Added DTO validation, standard response/error envelopes, placeholder guards, and Swagger/OpenAPI at `/api/docs`.
 - Updated the API prefix to `/api` and added controller layer tests.
@@ -137,12 +137,12 @@
 - Archived obsolete audit report content under `docs/archive/`.
 - Created fresh `AI_CODE_AUDIT_REPORT.md`.
 - Created `PRODUCTION_DEPLOYMENT_REPORT.md`.
-- Confirmed Railway CLI previously resolved to a non-DawaiSaver project instead of `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`).
-- Confirmed Railway relink to DawaiSaver.pk fails with `Unauthorized`.
-- Blocked Railway variable audit, migrations, and `railway up` until identity is verified.
+- Confirmed the retired deployment CLI previously resolved to a non-DawaiSaver project instead of `dawaisaver.pk` (`e38bb3da-7ab5-4654-b504-101e74c92d5b`).
+- Confirmed relink to DawaiSaver.pk fails with `Unauthorized`.
+- Blocked environment audit, migrations, and deployment automation until identity is verified.
 - Added minimal closed-beta seed dataset to `prisma/seed.ts`.
 - Verified `npx prisma generate`, backend build, backend tests, web build, and admin build.
 - Confirmed Wrangler is available through `npx wrangler` but unauthenticated, blocking R2 and Cloudflare Pages verification.
 - Confirmed `C:\Users\Nazim\.ssh\id_ed25519_emttspk.pub` exists, but GitHub still rejects the key until it is added to the `emttspk` account.
-- Confirmed `railway whoami` and `railway status` return `Unauthorized` once stale Railway env vars are cleared, so a fresh token is still required.
+- Confirmed old deployment CLI identity checks return `Unauthorized` once stale env vars are cleared, so a fresh token is still required.
 - Began P14 infrastructure completion tracking and refreshed the access-recovery docs.
