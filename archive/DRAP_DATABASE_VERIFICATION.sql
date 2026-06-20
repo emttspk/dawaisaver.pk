@@ -1,3 +1,4 @@
+-- Archived on 2026-06-20
 -- DRAP Mirror Database Verification Queries
 -- Run these against the DawaiSaver.pk PostgreSQL database
 
