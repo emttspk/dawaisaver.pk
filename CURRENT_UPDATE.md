@@ -316,3 +316,75 @@ stopMirror()     // POST /admin/mirror/stop
 - Pause Mirror
 - Resume Mirror
 - Stop Mirror (with confirmation dialog)
+
+---
+
+## Database Migration Required (2026-06-20)
+
+### Problem
+Runtime error: `table public.mirror_runtime_control does not exist`
+
+### Root Cause
+The `MirrorRuntimeControl` model was added to `prisma/schema.prisma` but the migration was never applied to the production database.
+
+### Migration Created
+- **Migration name**: `20260620000000_add_mirror_runtime_control`
+- **Files**:
+  - `prisma/migrations/20260620000000_add_mirror_runtime_control/migration.sql`
+  - `prisma/migrations/20260620000000_add_mirror_runtime_control/migration.prisma`
+
+### Migration SQL
+```sql
+CREATE TABLE IF NOT EXISTS "mirror_runtime_control" (
+    "key" TEXT NOT NULL,
+    "state" TEXT NOT NULL DEFAULT 'stopped',
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "mirror_runtime_control_pkey" PRIMARY KEY ("key")
+);
+```
+
+### Apply Migration
+```bash
+# Option 1: Via Prisma Migrate (requires DATABASE_URL)
+npx prisma migrate deploy
+
+# Option 2: Manual SQL (if DATABASE_URL not available)
+psql -d YOUR_DATABASE -c "
+CREATE TABLE IF NOT EXISTS mirror_runtime_control (
+    key TEXT NOT NULL,
+    state TEXT NOT NULL DEFAULT 'stopped',
+    updated_at TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT mirror_runtime_control_pkey PRIMARY KEY (key)
+);"
+```
+
+### Verify Table Exists
+```sql
+SELECT * FROM mirror_runtime_control;
+-- Should return empty table (no rows initially)
+```
+
+### API Endpoints Ready
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/admin/mirror/start` | POST | Start mirror acquisition |
+| `/admin/mirror/pause` | POST | Pause mirror acquisition |
+| `/admin/mirror/resume` | POST | Resume mirror acquisition |
+| `/admin/mirror/stop` | POST | Stop mirror acquisition |
+
+### State Machine
+```
+stopped -> start -> running
+running -> pause -> paused  
+paused -> resume -> running
+running -> stop -> stopped
+paused -> stop -> stopped
+stopped -> start -> running
+```
+
+### Duplicate Prevention
+- `assertMirrorExecutionAllowed()` check prevents duplicate starts
+- Checkpoint-based deduplication in `import_batch_items`
+- Resume is safe - picks up from last checkpoint

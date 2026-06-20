@@ -1,0 +1,26 @@
+model Migration {
+  checksum     String   @id
+  migration_id String?  @unique
+  applied_at   DateTime? @map("applied_at")
+  rolled_back_at DateTime? @map("rolled_back_at")
+  version      String?
+}
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model MirrorRuntimeControl {
+  key       String   @id @default(cuid())
+  state     String   @default("stopped")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("mirror_runtime_control")
+}
