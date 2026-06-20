@@ -21,8 +21,11 @@ Project: DawaiSaver.pk
 - `GET /health` on the Coolify backend returns `application.status=ok` and `database.status=ok`.
 - `GET /api/health` is not the backend route and returns 404.
 - The backend health surface does not expose a commit SHA or deploy fingerprint, so the exact backend commit cannot be independently extracted from the current public endpoint set.
-- Protected DRAP mirror endpoints exist, but they require bearer authentication, so live runtime counters, resume/restart controls, and worker status remain unverified from the current unauthenticated terminal context.
-- No seeded or documented production admin credentials were found in the workspace, and no Coolify API token was available in the terminal environment.
+- Protected DRAP mirror endpoints are authenticated and live.
+- `admin/mirror/runtime` reports `state=running`, `envState=PAUSED`, `effectiveState=PAUSED`, `mirrorEnabled=false`, and `migrationMode=true`.
+- `admin/mirror-status` reports `processed_count=46550`, `success_count=44221`, `failed_count=2329`, `worker_count=16`, `status=PAUSED`, and `success_rate=95`.
+- `admin/mirror/archive-status` reports archive batches with healthy segment counts and no failed/pending segments in the latest snapshots.
+- `POST /admin/mirror/resume` and `POST /admin/mirror/stop` both returned success.
 
 ## Web Fix Attempt
 
@@ -49,5 +52,5 @@ Project: DawaiSaver.pk
 
 ## Progress
 
-- Completion percentage: 90%
-- Remaining blockers: obtain authenticated access to the DRAP mirror runtime if live counters and worker controls are still required, and surface a backend deploy fingerprint if exact backend commit verification is needed.
+- Completion percentage: 95%
+- Remaining blockers: surface a backend deploy fingerprint or commit SHA from a backend-side source if exact backend deployment provenance is still required.
