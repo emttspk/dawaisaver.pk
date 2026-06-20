@@ -300,4 +300,19 @@ stopMirror()     // POST /admin/mirror/stop
 - All mirror control endpoints implemented
 - Frontend buttons connected to APIs
 - Database state persistence working
-- Ready for production deployment
+
+### Deployment (2026-06-20)
+- **GitHub HEAD SHA**: `0f30ee9`
+- **Cloudflare Deployed SHA**: `d9ebb48e`
+- **Production URL**: https://d9ebb48e.dawaisaver-admin.pages.dev
+- **Deployment command**: `npx wrangler pages deploy dist --project-name dawaisaver-admin`
+
+### Root Cause of Missing Buttons
+- Cloudflare Pages deployment was stale (not updated after commit `0f30ee9`)
+- Deployment fixed by running `wrangler pages deploy dist` which uploaded the new build with mirror control buttons
+
+### Buttons Visible in Production
+- Start Mirror
+- Pause Mirror
+- Resume Mirror
+- Stop Mirror (with confirmation dialog)
