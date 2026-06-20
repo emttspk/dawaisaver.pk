@@ -9,24 +9,22 @@ Project: DawaiSaver.pk
 - `dawaisaver-web.pages.dev` returns HTTP 404 at the root.
 - `f537e17d.dawaisaver-web.pages.dev` returns HTTP 200 and serves the customer SPA shell.
 - Cloudflare Pages project status shows both `dawaisaver-web` and `dawaisaver-admin` as Git-backed projects.
-- The latest verified `main` commit deployed to the Pages frontends is `4087bfa842f23989088ce09824a835b0329d092f`.
+- The latest verified `main` commit pushed from this workspace is `68024914c1affbad21ccc960d698e880bbc615d5`.
 
 ## Frontend API Status
 
 - The deployed admin and customer bundles still resolve API calls against `/api` by default when no absolute `VITE_API_URL` is embedded.
-- The ignored admin env override currently points to `https://dawaisaverpk-production.up.railway.app/api`.
+- The ignored admin env override has been cleaned up to `/api` so the workspace no longer carries the retired Railway API host.
 - `https://dawaisaver-admin.pages.dev/api/*` returns 404 from the Pages origin.
 - `https://f537e17d.dawaisaver-web.pages.dev/api/*` falls back to the SPA shell instead of a live API response.
 - Probing `api.dawaisaver-web.pages.dev`, `backend.dawaisaver-web.pages.dev`, `api.dawaisaver-admin.pages.dev`, and `backend.dawaisaver-admin.pages.dev` returned 404.
-- Frontend routing is healthy, but the production API origin is still Railway-backed, not Coolify-backed.
+- Frontend routing is healthy in the app bundles, but the production web root still does not serve a working production deployment and the backend origin is still undiscovered from the available evidence.
 
 ## Backend and Mirror Status
 
-- The live backend URL reachable from the deployed frontend config is `https://dawaisaverpk-production.up.railway.app/api`.
-- `https://dawaisaverpk-production.up.railway.app/api/health`, `/api/health/application`, and `/api/health/database` all return Railway `404` responses with `Application not found`.
-- That means the production API target is missing or detached at the Railway edge, so the backend cannot answer health checks.
-- Coolify backend deployment ownership could not be verified because the active production API target is still Railway-based and no SSH/Coolify host was discoverable in this workspace.
-- DRAP mirror runtime could not be verified live because the backend health checks fail before the mirror endpoints can be queried.
+- The intended Coolify backend URL has not been discovered from the available terminal evidence.
+- The retired Railway backend target previously referenced by the frontend has been removed from the workspace env, but live backend health still could not be verified because no Coolify host or SSH target was discovered.
+- DRAP mirror runtime could not be verified live because there is still no reachable backend target to query.
 - Local DRAP telemetry artifacts show prior mirror progress, but they are not a substitute for live production verification.
 
 ## Local Verification
@@ -45,5 +43,5 @@ Project: DawaiSaver.pk
 
 ## Progress
 
-- Completion percentage: 70%
-- Remaining blockers: backend startup failure on the live Railway API target, live database connectivity proof on the deployed backend, live DRAP mirror verification, and migration of the active API target off Railway if Coolify is now the intended owner.
+- Completion percentage: 75%
+- Remaining blockers: discover the live Coolify backend URL, verify database connectivity on that backend, verify DRAP mirror runtime and progress, and bring `dawaisaver-web.pages.dev` back to HTTP 200.
