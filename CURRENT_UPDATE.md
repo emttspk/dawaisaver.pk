@@ -542,3 +542,43 @@ CMD ["node", "dist/main.js"]
 3. Verify table exists
 4. Test mirror control endpoints
 5. Resume DRAP mirror
+
+---
+
+## Root Cause Analysis (2026-06-20)
+
+### Problem
+`table public.mirror_runtime_control does not exist`
+
+### Root Cause
+1. `MirrorRuntimeControl` model added to `schema.prisma`
+2. Migration created but **never applied** to production
+3. Previous Dockerfile had `RUN npx prisma migrate deploy` at **build time**
+4. DATABASE_URL is a **runtime secret** - not available during build
+5. Migration command failed silently during build
+
+### Fix Applied
+Changed Dockerfile to run migration at **runtime**:
+```dockerfile
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
+```
+
+### Why This Fixes It
+- Migration now runs when container starts
+- DATABASE_URL is available from Coolify environment
+- Migration applies automatically before API starts
+- Idempotent - safe to run on every startup
+
+### Verification Steps (After Redeploy)
+1. Check Coolify deployment logs for:
+   ```
+   Applying migration 20260620000000_add_mirror_runtime_control
+   ```
+2. Verify table exists:
+   ```sql
+   SELECT * FROM mirror_runtime_control;
+   ```
+3. Test endpoint:
+   ```bash
+   curl -X POST /api/v1/admin/mirror/start -H "Authorization: Bearer <token>"
+   ```
