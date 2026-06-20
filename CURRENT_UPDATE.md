@@ -142,6 +142,34 @@ The production container may still have the corrupted UTF-16 LE version. A fresh
 | Progress | 21.6% |
 | Remaining Work | 79.4% |
 
+## Migration Recovery Plan - 2026-06-20
+
+### Migration State
+- Migration `20260617000000_add_medicine_master_data_structure` failed in production
+- Production container has corrupted UTF-16 LE encoded SQL file
+- Local file is UTF-8 with `"primary"` column properly quoted
+
+### Recovery Action
+1. Created recovery migration `20260620000000_mirror_status_recovery`
+2. Uses `DO $$ BEGIN IF NOT EXISTS` blocks - safe to run multiple times
+3. Will create tables only if they don't exist
+4. After deploy, run: `npx prisma migrate deploy`
+
+### Production Deployment Required
+**Manual steps in Coolify:**
+1. Restart/redeploy to pull latest commit (includes new recovery migration)
+2. Run `npx prisma migrate deploy` to apply recovery migration
+3. Verify backend starts successfully
+4. Verify API endpoints work
+
+### Verification Commands
+```bash
+# After deployment
+curl -X GET https://api.dawaisaver.pk/api/admin/mirror-status
+curl -X GET https://api.dawaisaver.pk/api/admin/mirror/runtime
+curl -X GET https://api.dawaisaver.pk/api/admin/mirror/archive-status
+```
+
 ## Live Verification Status
 
 - `DATABASE_URL` is available in production, but this shell still cannot reach the Coolify/production terminal directly.
