@@ -32,6 +32,7 @@ async function bootstrap(): Promise<void> {
       { path: "health/database", method: RequestMethod.GET },
       { path: "health/application", method: RequestMethod.GET },
       { path: "health/deployment", method: RequestMethod.GET },
+      { path: "deploy-fingerprint", method: RequestMethod.GET },
     ],
   });
   app.useGlobalPipes(
