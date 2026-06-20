@@ -9,7 +9,7 @@ Project: DawaiSaver.pk
 - `dawaisaver-web.pages.dev` is healthy and serving the current web SPA.
 - Coolify backend is healthy at `http://yh5wt7bbkhqsjycey5df0lbe.178.105.221.236.sslip.io`.
 - Backend `GET /health` now surfaces the deployment fingerprint in the response payload.
-- Backend `GET /deploy-fingerprint` returns the deployed commit SHA `86edce2f2519be90b6bb78e0ae28df316587f25e` with source `SOURCE_COMMIT`.
+- Backend `GET /deploy-fingerprint` returns the deployed commit SHA `1eb43bc02733b743e6d3d713fb95e3796a816b87` with source `SOURCE_COMMIT`.
 - The deployed backend SHA matches the latest pushed `main` commit.
 
 ## Automation Verification
