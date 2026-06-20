@@ -20,7 +20,7 @@ Project: DawaiSaver.pk
 
 - `GET /health` on the Coolify backend returns `application.status=ok` and `database.status=ok`.
 - `GET /api/health` is not the backend route and returns 404.
-- The backend health surface does not expose a commit SHA or deploy fingerprint, so the exact backend commit cannot be independently extracted from the current public endpoint set.
+- The Dockerfile and runtime startup path do not embed a git SHA or deployment fingerprint, so the exact backend commit cannot be independently extracted from the current public endpoint set.
 - Protected DRAP mirror endpoints are authenticated and live.
 - `admin/mirror/runtime` reports `state=running`, `envState=PAUSED`, `effectiveState=PAUSED`, `mirrorEnabled=false`, and `migrationMode=true`.
 - `admin/mirror-status` reports `processed_count=46550`, `success_count=44221`, `failed_count=2329`, `worker_count=16`, `status=PAUSED`, and `success_rate=95`.
