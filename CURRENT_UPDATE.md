@@ -5,37 +5,34 @@ Project: DawaiSaver.pk
 
 ## Root Cause
 
-- `DrapAcquisitionService` was failing Nest injection because the second constructor dependency was not wired as a proper injectable provider.
-- The bounded validation endpoint also needed explicit validation metadata so Nest's global validation pipe would accept the request payload.
-- Validation batch IDs had to be changed to UUIDs because Prisma rejects non-UUID values for the import batch primary key.
-- The earlier archive upload failures were caused by missing production R2 credentials, not by the Pages proxy or dashboard routes.
-- Production runtime now exposes all required R2 variables, and the current bounded run is uploading archives successfully.
+- The admin mirror dashboard was still resolving its live data requests through the stale `/api/admin/mirror-status` path in the deployed Pages bundle.
+- The production backend itself was healthy; the failure was in the admin frontend deployment artifact and its API target selection.
 
-## Local Verification
+## Production Verification
 
-- `npm.cmd run build` passed after each fix.
-- Application startup validation passed locally and `GET /health/deployment` returned HTTP 200.
-- The Nest app boots cleanly; the only local warning is `DATABASE_URL is not configured` in the shell environment.
+- Production admin Pages deployment is healthy at `https://dawaisaver-admin.pages.dev/`.
+- Latest deployed admin commit SHA: `8d7ea6e0f0e6007b43318dc0f3129d5c6237accc`.
+- The live deployed admin bundle contains the corrected backend origin and no longer contains the stale `/api/admin/mirror-status` path.
+- Authenticated production API verification succeeded against the Coolify backend origin.
 
-## Deployment Status
+## Live Mirror Data
 
-- Production backend rolled the fixes successfully.
-- Latest deployed commit SHA: `a8c9f297d0687f50df5127a5fa9698d7810da6a0`.
-- `GET /health/deployment` reports the same deployed SHA via the production fingerprint endpoint.
-- GitHub -> Coolify auto deployment is confirmed end-to-end on the latest main commit.
+- Mirror status: `PAUSED`
+- Runtime state: `PAUSED`
+- Processed: `1000`
+- Success: `957`
+- Failed: `43`
+- Duplicates: `0`
+- Archive uploads: `4`
+- Archive status endpoint is healthy and returns populated batch data.
 
-## DRAP Validation
+## Dashboard Status
 
-- Bounded validation ran for the next 1,000 registrations only.
-- Result: 1,000 processed, 957 success, 43 failed, 0 duplicates on the latest validation run.
-- Runtime paused again after the bounded run.
-- Worker health remained good.
-- Archive generation succeeded on the fresh production run.
-- Live diagnostic endpoint now reports all required R2 keys present.
-- Mirror dashboard status cards are loading correctly from the admin API.
-- `R2_PUBLIC_BASE_URL` is no longer treated as a hard requirement.
+- Mirror dashboard data endpoints are working again from production.
+- Status cards can now load from the live backend API.
+- Full DRAP crawl remains on hold until the final operational approval is given.
 
 ## Progress
 
-- Completion percentage: 98%
-- Remaining blockers: full DRAP crawl is not yet approved; we should do one more controlled operational review before scaling beyond the bounded validation pattern.
+- Completion percentage: 99%
+- Remaining blockers: no technical blocker is currently known; only the decision to begin the full DRAP crawl remains outstanding.
