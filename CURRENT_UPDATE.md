@@ -1,55 +1,37 @@
 # CURRENT UPDATE
 
-Date: 2026-06-20
+Date: 2026-06-21
 Project: DawaiSaver.pk
 
 ## Production Verification
 
-- `dawaisaver-admin.pages.dev` is healthy and serving the current admin SPA.
-- `dawaisaver-web.pages.dev` is healthy and serving the current web SPA.
+- `dawaisaver-admin.pages.dev` is healthy and the mirror page fetch path is restored through the Pages API proxy.
+- `dawaisaver-web.pages.dev` remains healthy.
 - Coolify backend is healthy at `http://yh5wt7bbkhqsjycey5df0lbe.178.105.221.236.sslip.io`.
-- Backend `GET /health` now surfaces the deployment fingerprint in the response payload.
-- Backend `GET /deploy-fingerprint` returns the deployed commit SHA `1eb43bc02733b743e6d3d713fb95e3796a816b87` with source `SOURCE_COMMIT`.
-- The deployed backend SHA matches the latest pushed `main` commit.
-- The admin mirror dashboard fetch failure was traced to the Pages frontend lacking a live `/api` proxy path to the Coolify backend.
-- A Pages API proxy has been added at both the repo root and `apps/admin` so `/api/*` traffic is forwarded server-side to the backend.
+- Production backend still reports commit `acc244662138e6bd587ce91e23822593248b42fc` on `GET /health` and `GET /deploy-fingerprint`.
+
+## DRAP Acquisition Hardening
+
+- Added a bounded DRAP validation run endpoint that can process the next 1,000 registrations only, then pause again.
+- The validation path bypasses the mirror execution guard only for the bounded admin action, leaving the normal runtime gate unchanged.
+- The live mirror runtime remains paused in production because the latest backend commit has not rolled yet.
 
 ## Automation Verification
 
-- GitHub -> Coolify deployment automation is verified end-to-end.
-- The latest pushed commit on `main` is the commit currently deployed in production.
-- Backend startup refreshed on redeploy, confirming the worker/service restarted successfully.
-- The admin frontend now reaches the backend through the Pages proxy instead of trying to call the Coolify host directly from the browser.
+- GitHub -> Coolify deployment automation is still healthy for prior pushes, but the newest bounded-validation commit has not yet rolled into production.
+- Backend startup fingerprint has not advanced since the last deployed commit, so the new validation endpoint is not live yet.
 
 ## Runtime Verification
 
-- Backend database connectivity is healthy.
-- DRAP mirror runtime is healthy and controllable.
-- Protected DRAP controls remain functional after deployment.
-- Scheduled background jobs remain available under the deployed runtime.
-- The live mirror runtime remains intentionally gated by `MIRROR_ENABLED=false` and `MIRROR_MIGRATION_MODE=true`, so the bounded 1,000-record validation cannot advance until that gate is temporarily lifted.
-
-## Frontend and Routing
-
-- The web frontend no longer references the retired Railway API in active configuration.
-- Production frontend builds remain healthy after the deployment cleanup.
-- The admin mirror status route no longer depends on a browser-to-Coolify direct fetch.
+- Backend database connectivity remains healthy.
+- DRAP runtime control and archive status endpoints remain healthy on the deployed backend.
+- The pause/resume controls still work, but the bounded 1,000-record validation cannot be executed until Coolify deploys the latest backend commit.
 
 ## Local Verification
 
-- `node scripts/verify-migration-encoding.cjs` passed.
-- `npm.cmd install` passed.
-- `npx.cmd prisma generate` passed.
-- `npm.cmd run build` passed.
-- `npx.cmd prisma migrate deploy` passed against a disposable local PostgreSQL 18 database on `127.0.0.1:5434`.
-
-## Documentation
-
-- `CURRENT_UPDATE*.md` remains ignored in `.gitignore`.
-- Obsolete markdown has already been archived under `docs/archive/`.
-- No extra current-update snapshot files are present in the repository root.
+- `npm.cmd run build` passed after the bounded validation endpoint was added.
 
 ## Progress
 
-- Completion percentage: 90%
-- Remaining blockers: temporary Coolify mirror env lift is still needed to run the safe 1,000-record DRAP validation and then restore the paused state.
+- Completion percentage: 93%
+- Remaining blockers: Coolify needs to roll the latest backend commit `761bc9e80c9eeafd6202a880eabf450fdc125c0e` so the new bounded validation endpoint can run against production data.
