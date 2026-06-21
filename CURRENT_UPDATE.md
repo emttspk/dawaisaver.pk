@@ -20,8 +20,9 @@ Project: DawaiSaver.pk
 ## Deployment Status
 
 - Production backend rolled the fixes successfully.
-- Latest deployed commit SHA: `5d6342dc46feec424504e6945b982837a4732494`.
+- Latest deployed commit SHA: `a8c9f297d0687f50df5127a5fa9698d7810da6a0`.
 - `GET /health/deployment` reports the same deployed SHA via the production fingerprint endpoint.
+- GitHub -> Coolify auto deployment is confirmed end-to-end on the latest main commit.
 
 ## DRAP Validation
 
@@ -31,9 +32,10 @@ Project: DawaiSaver.pk
 - Worker health remained good.
 - Archive generation succeeded on the fresh production run.
 - Live diagnostic endpoint now reports all required R2 keys present.
+- Mirror dashboard status cards are loading correctly from the admin API.
 - `R2_PUBLIC_BASE_URL` is no longer treated as a hard requirement.
 
 ## Progress
 
-- Completion percentage: 97%
+- Completion percentage: 98%
 - Remaining blockers: full DRAP crawl is not yet approved; we should do one more controlled operational review before scaling beyond the bounded validation pattern.
