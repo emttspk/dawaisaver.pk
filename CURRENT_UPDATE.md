@@ -72,7 +72,7 @@ At the Railway P40 active-processing rate, 1,000 records require about 79.55 sec
 ## Bottleneck ranking by impact
 
 1. **Worker inactivity / runtime control waiting — dominant (approximately 99.885% of the observed interval versus the Railway active baseline).** Fix execution-state visibility and prove counters advance before adding workers.
-2. **Archive persistence/configuration mismatch — critical durability issue, unquantified throughput impact.** The named R2 bucket is empty despite prior “configured” claims. This may be wrong-account/wrong-bucket configuration or failed uploads.
+2. **Archive persistence/configuration mismatch — critical durability issue, unquantified throughput impact.** The named R2 bucket is empty despite prior "configured" claims. This may be wrong-account/wrong-bucket configuration or failed uploads.
 3. **DRAP fetch latency — largest measured active-path cost.** Historical average 65.50 ms, 7.4x the database-write average, but no current regression is proven.
 4. **R2 batch upload — 3,274.03 ms per historical 1,000-record segment, asynchronous.** It can affect finalization or a sustained upload backlog, but it was outside the per-record hot path.
 5. **Database write — historical average 8.81 ms/record.** Material but not a bottleneck at the validated 12.57/sec Railway rate.
@@ -294,7 +294,7 @@ GROUP BY status;
 
 - **Build**: SUCCESS (npm run build)
 - **Tests**: Not run (no test command specified)
-- **Commit**: `f2c96d7` - "fix: Add try/catch to prevent orphan RUNNING batches in DRAP mirror"
+- **Commit**: `39b76d6` - "feat: Add mirror diagnostics with stale batch detection and R2 status"
 - **Push**: SUCCESS to main
 
 ## Remaining Risks
