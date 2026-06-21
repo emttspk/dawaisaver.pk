@@ -280,3 +280,36 @@ GROUP BY status;
 
 - Evidence used: Git history timestamps and snapshots, live public API health, protected endpoint authorization response, application timing implementation, historical P38/P40 live-run reports, Wrangler identity, and Wrangler R2 bucket metadata.
 - Blocked evidence: production DB row timestamps, Coolify container logs/process list, current protected mirror status, current archive manifest, exact queue/backlog depth, and post-deploy live throughput verification.
+
+## Files Modified
+
+| File | Change |
+|------|--------|
+| `src/modules/drap/drap.acquisition.service.ts` | Added try/catch to wrap processing loop, ensuring batch status updates to COMPLETED_WITH_ERRORS on failure |
+| `src/modules/drap/drap.types.ts` | Added `DrapMirrorDiagnosticsResponse` interface |
+| `src/modules/drap/mirror-status.service.ts` | Added `getMirrorDiagnostics()` method for stale batch detection |
+| `src/modules/drap/controllers/admin-mirror-runtime.controller.ts` | Added `GET /admin/mirror/diagnostics` endpoint |
+
+## Build Result
+
+- **Build**: SUCCESS (npm run build)
+- **Tests**: Not run (no test command specified)
+- **Commit**: `f2c96d7` - "fix: Add try/catch to prevent orphan RUNNING batches in DRAP mirror"
+- **Push**: SUCCESS to main
+
+## Remaining Risks
+
+1. **MIRROR_MIGRATION_MODE=true** still set in production - mirror will remain paused
+2. **R2 configuration** may be missing or incorrect (bucket shows 0 objects)
+3. **No automatic scheduler** - mirror requires manual trigger
+4. **56 stale batches** need manual reset: `UPDATE import_batches SET status = 'PENDING' WHERE adapter_type = 'drap-mirror' AND status = 'RUNNING'`
+
+## Updated Completion Percentage
+
+**95.1%** (based on 47,550 / 50,000 registrations from last verified snapshot)
+
+**Note**: This is a stale snapshot value. Actual completion requires:
+1. Setting `MIRROR_MIGRATION_MODE=false` in Coolify
+2. Verifying R2 environment variables
+3. Triggering the mirror manually
+4. Monitoring the diagnostics endpoint: `/api/v1/admin/mirror/diagnostics`
