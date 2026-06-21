@@ -42,7 +42,6 @@ export class UploadService {
 
   async uploadBuffer(buffer: Buffer, options: UploadObjectOptions): Promise<UploadedFile> {
     const key = options.objectKey || this.createObjectKey(options.originalName, options.folder);
-    const uploadUrl = this.buildObjectUrl(key);
 
     await this.signedRequest("PUT", key, buffer, options.mimeType);
 
@@ -52,7 +51,7 @@ export class UploadService {
       mimeType: options.mimeType,
       size: buffer.length,
       path: key,
-      url: uploadUrl,
+      url: this.buildObjectUrl(key),
     };
   }
 
@@ -134,8 +133,11 @@ export class UploadService {
     }
   }
 
-  private buildObjectUrl(key: string): string {
-    const publicBaseUrl = this.requireEnv("R2_PUBLIC_BASE_URL").replace(/\/+$/, "");
+  private buildObjectUrl(key: string): string | undefined {
+    const publicBaseUrl = String(process.env.R2_PUBLIC_BASE_URL || "").trim();
+    if (!publicBaseUrl) {
+      return undefined;
+    }
     return `${publicBaseUrl}/${this.encodeKey(key)}`;
   }
 
