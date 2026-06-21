@@ -346,6 +346,7 @@ export class DrapMirrorStatusService {
         id: true,
         finishedAt: true,
         metadata: true,
+        importReport: true,
       },
     });
 
@@ -367,6 +368,16 @@ export class DrapMirrorStatusService {
       : 0;
     const currentRegistration = this.extractLastRegistration(latestRunning?.metadata);
     const lastCheckpoint = this.extractCheckpointFromMetadata(latestRunning?.metadata, latestRunning?.importReport);
+    
+    const archive = latestRunning?.importReport && typeof latestRunning.importReport === "object"
+      ? (latestRunning.importReport as Record<string, unknown>).archive as Record<string, unknown> | undefined
+      : undefined;
+    const archiveStatus = archive ? {
+      totalSegments: Number(archive.totalSegments) || 0,
+      uploadedSegments: Number(archive.uploadedSegments) || 0,
+      failedSegments: Number(archive.failedSegments) || 0,
+      pendingSegments: Number(archive.pendingSegments) || 0,
+    } : { totalSegments: 0, uploadedSegments: 0, failedSegments: 0, pendingSegments: 0 };
 
     const warnings: string[] = [];
     if (allRunningBatches > 0) {
@@ -375,6 +386,13 @@ export class DrapMirrorStatusService {
     if (staleBatches.length > 0) {
       warnings.push(`${staleBatches.length} stale batches older than 24h detected`);
     }
+    if (archiveStatus.failedSegments > 0) {
+      warnings.push(`${archiveStatus.failedSegments} archive segments failed - check R2 connectivity`);
+    }
+
+    const workerHeartbeat = latestRunning?.metadata && typeof latestRunning.metadata === "object"
+      ? this.extractWorkerHeartbeat(latestRunning.metadata as Record<string, unknown>)
+      : undefined;
 
     return {
       activeWorkers,
@@ -412,7 +430,24 @@ export class DrapMirrorStatusService {
       }),
       warnings,
       r2Status: this.getR2Status(),
+      archiveStatus,
+      workerHeartbeat,
     };
+  }
+
+  private extractWorkerHeartbeat(metadata: Record<string, unknown>): { workerId?: string; lastActivityAt?: string; ageSeconds?: number } | undefined {
+    const acquisition = metadata.acquisition as Record<string, unknown> | undefined;
+    if (!acquisition) return undefined;
+    
+    const workerId = acquisition.workerId ? String(acquisition.workerId) : undefined;
+    const lastActivityAt = acquisition.lastActivityAt ? String(acquisition.lastActivityAt) : undefined;
+    
+    if (!lastActivityAt) return { workerId };
+    
+    const lastActivity = new Date(lastActivityAt);
+    const ageSeconds = Math.round((Date.now() - lastActivity.getTime()) / 1000);
+    
+    return { workerId, lastActivityAt, ageSeconds };
   }
 
   private getR2Status(): { configured: boolean; accountId?: string; bucketName?: string; publicBaseUrl?: string } {

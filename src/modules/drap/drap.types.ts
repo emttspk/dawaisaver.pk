@@ -361,6 +361,17 @@ export interface DrapMirrorDiagnosticsResponse {
     bucketName?: string;
     publicBaseUrl?: string;
   };
+  archiveStatus: {
+    totalSegments: number;
+    uploadedSegments: number;
+    failedSegments: number;
+    pendingSegments: number;
+  };
+  workerHeartbeat?: {
+    workerId?: string;
+    lastActivityAt?: string;
+    ageSeconds?: number;
+  };
 }
 
 export type DrapAtcMatchMode =
