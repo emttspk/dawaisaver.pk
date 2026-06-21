@@ -1,7 +1,7 @@
-import { Controller, Get, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Body, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { AdminGuard } from "../../../common/guards/admin.guard";
-import { DrapMirrorControlService } from "../drap-mirror-control.service";
+import { DrapMirrorControlService, MirrorControlAction } from "../drap-mirror-control.service";
 import { getMirrorRuntimeState } from "../drap.freeze";
 import { PrismaService } from "../../../database/prisma.service";
 import { DrapAcquisitionService } from "../drap.acquisition.service";
@@ -66,6 +66,26 @@ export class AdminMirrorRuntimeController {
   @ApiOkResponse({ description: "R2 configuration status loaded successfully." })
   getR2Status() {
     return this.acquisitionService.verifyR2Configuration();
+  }
+
+  @Post("control")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Control the DRAP mirror (start, pause, resume, stop)." })
+  @ApiOkResponse({ description: "Mirror control action executed." })
+  async controlMirror(@Body() body: { action: MirrorControlAction }) {
+    const { action } = body;
+    switch (action) {
+      case "start":
+        return this.controlService.start();
+      case "pause":
+        return this.controlService.pause();
+      case "resume":
+        return this.controlService.resume();
+      case "stop":
+        return this.controlService.stop();
+      default:
+        return { success: false, message: `Unknown action: ${action}` };
+    }
   }
 
   private extractArchiveData(batch: { metadata: unknown; importReport: unknown }) {

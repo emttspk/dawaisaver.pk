@@ -16,6 +16,7 @@ import { PriceIntelligenceModule } from "./modules/price-intelligence/price-inte
 import { SearchModule } from "./modules/search/search.module";
 import { SourceModule } from "./modules/sources/source.module";
 import { StatsModule } from "./modules/stats/stats.module";
+import { CatalogueModule } from "./modules/catalogue/catalogue.module";
 import { RuntimeFeatureModule } from "./runtime-feature.module";
 
 @Module({
@@ -45,6 +46,7 @@ import { RuntimeFeatureModule } from "./runtime-feature.module";
     SearchModule,
     DiscoveryModule,
     StatsModule,
+    CatalogueModule,
     RuntimeFeatureModule,
   ],
 })
