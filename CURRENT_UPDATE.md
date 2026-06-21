@@ -286,27 +286,116 @@ GROUP BY status;
 | File | Change |
 |------|--------|
 | `src/modules/drap/drap.acquisition.service.ts` | Added try/catch to wrap processing loop, ensuring batch status updates to COMPLETED_WITH_ERRORS on failure |
-| `src/modules/drap/drap.types.ts` | Added `DrapMirrorDiagnosticsResponse` interface |
-| `src/modules/drap/mirror-status.service.ts` | Added `getMirrorDiagnostics()` method for stale batch detection |
+| `src/modules/drap/drap.types.ts` | Added `DrapMirrorDiagnosticsResponse` interface with archive status and worker heartbeat |
+| `src/modules/drap/mirror-status.service.ts` | Added `getMirrorDiagnostics()` with stale batch detection, R2 status, archive status, worker heartbeat |
 | `src/modules/drap/controllers/admin-mirror-runtime.controller.ts` | Added `GET /admin/mirror/diagnostics` endpoint |
 
 ## Build Result
 
 - **Build**: SUCCESS (npm run build)
 - **Tests**: Not run (no test command specified)
-- **Commit**: `39b76d6` - "feat: Add mirror diagnostics with stale batch detection and R2 status"
-- **Push**: SUCCESS to main
+- **Commits**:
+  - `39b76d6` - "feat: Add mirror diagnostics with stale batch detection and R2 status"
+  - `b2efaa4` - "feat: Enhance diagnostics with archive status, worker heartbeat, and stale worker warnings"
+- **Push**: SUCCESS to main (HEAD: `b2efaa4`)
 
-## Remaining Risks
+## R2 Audit Findings
 
-1. **MIRROR_MIGRATION_MODE=true** still set in production - mirror will remain paused
-2. **R2 configuration** may be missing or incorrect (bucket shows 0 objects)
-3. **No automatic scheduler** - mirror requires manual trigger
-4. **56 stale batches** need manual reset: `UPDATE import_batches SET status = 'PENDING' WHERE adapter_type = 'drap-mirror' AND status = 'RUNNING'`
+| Item | Value |
+|------|-------|
+| Account ID | `85f6a6181b4653c2a45e69cb7ce8a474` |
+| Bucket Name | `dawaisaver-pk` |
+| Endpoint | `https://85f6a6181b4653c2a45e69cb7ce8a474.r2.cloudflarestorage.com` |
+| Objects | **0** |
+| Upload Path | `drap/archive/{batchId}/{fileName}` |
+
+**Root Cause**: Archive uploads are failing silently. The `DrapArchiveManager.uploadSegment()` catches errors and marks segments as FAILED in the manifest, but:
+1. The error message is stored in `segment.errorMessage` not logged
+2. The manifest is persisted locally but not uploaded if R2 is misconfigured
+3. No error propagation to batch status
+
+## Stale Batch Recovery SQL
+
+```sql
+-- 1. Count stale RUNNING batches
+SELECT COUNT(*) as stale_count 
+FROM import_batches 
+WHERE adapter_type = 'drap-mirror' AND status = 'RUNNING';
+
+-- 2. Show stale batches (older than 24h)
+SELECT id, started_at, total_rows, metadata->'acquisition'->'checkpoint' as checkpoint
+FROM import_batches 
+WHERE adapter_type = 'drap-mirror' AND status = 'RUNNING' 
+AND started_at < NOW() - INTERVAL '24 hours'
+ORDER BY started_at ASC;
+
+-- 3. Reset stale batches to PENDING (safe for retry)
+UPDATE import_batches 
+SET status = 'PENDING', 
+    updated_at = NOW()
+WHERE adapter_type = 'drap-mirror' 
+  AND status = 'RUNNING' 
+  AND started_at < NOW() - INTERVAL '24 hours';
+
+-- 4. Verify reset
+SELECT status, COUNT(*) as count 
+FROM import_batches 
+WHERE adapter_type = 'drap-mirror' 
+GROUP BY status;
+
+-- ROLLBACK (if needed)
+UPDATE import_batches 
+SET status = 'RUNNING' 
+WHERE id IN (
+  SELECT id FROM import_batches 
+  WHERE adapter_type = 'drap-mirror' AND status = 'PENDING'
+  AND metadata->'acquisition'->>'mirrorRunId' IS NOT NULL
+);
+```
+
+## Diagnostics Endpoint Response
+
+```json
+GET /api/v1/admin/mirror/diagnostics
+{
+  "activeWorkers": 4,
+  "currentRegistration": "053849",
+  "lastCheckpoint": { "nextIndex": 1234, "processed": 1234, ... },
+  "lastSuccessfulBatch": { "batchId": "...", "completedAt": "...", "processed": 1000 },
+  "staleBatchCount": 56,
+  "staleBatches": [{ "batchId": "...", "startedAt": "...", "checkpoint": {...}, "ageHours": 48 }],
+  "warnings": ["56 batches in RUNNING state", "2 stale batches older than 24h"],
+  "r2Status": { "configured": true, "accountId": "85f6...", "bucketName": "dawaisaver-pk" },
+  "archiveStatus": { "totalSegments": 10, "uploadedSegments": 0, "failedSegments": 10, "pendingSegments": 0 },
+  "workerHeartbeat": { "workerId": "worker-1", "lastActivityAt": "2026-06-21T21:00:00Z", "ageSeconds": 3600 }
+}
+```
+
+## Mirror Resume Validation
+
+| Check | Status |
+|-------|--------|
+| Resume from lastRegistrationNumber | ✅ Implemented in `resolveCheckpoint()` |
+| No duplicate registrations | ✅ Deduplication via `seen` Set |
+| Failed batches retry-safe | ✅ Reset to PENDING allows full retry |
+
+## Scheduler Assessment
+
+- **Current**: No automatic scheduler - mirror must be triggered manually
+- **Coolify**: Manages container deployment, not job scheduling
+- **Recommendation**: Add a cron trigger via Coolify's scheduler or a simple `node-cron` job in the API
+
+## Remaining Action Items
+
+1. **User**: Login to Hetzner console and run recovery SQL
+2. **User**: Set `MIRROR_MIGRATION_MODE=false` in Coolify
+3. **User**: Verify R2 env vars are correctly set
+4. **User**: Trigger mirror via API or scheduler
+5. **Dev**: Add error logging in `DrapArchiveManager.uploadSegment()` for R2 failures
 
 ## Updated Completion Percentage
 
-**95.1%** (based on 47,550 / 50,000 registrations from last verified snapshot)
+**95.1%** (stale snapshot: 47,550 / 50,000)
 
 **Note**: This is a stale snapshot value. Actual completion requires:
 1. Setting `MIRROR_MIGRATION_MODE=false` in Coolify
