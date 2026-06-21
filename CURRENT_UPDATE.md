@@ -3,29 +3,33 @@
 Date: 2026-06-21
 Project: DawaiSaver.pk
 
-## Current Fix
+## Root Cause
 
-- Identified the missing dependency in `DrapAcquisitionService` as `UploadService`, the second constructor parameter.
-- Replaced default construction with explicit Nest injection and aligned the DRAP module wiring with the OCR module export.
-- Updated DRAP test and job instantiations so all service creation paths pass the same dependency set.
+- `DrapAcquisitionService` was failing Nest injection because the second constructor dependency was not wired as a proper injectable provider.
+- The bounded validation endpoint also needed explicit validation metadata so Nest's global validation pipe would accept the request payload.
+- Validation batch IDs had to be changed to UUIDs because Prisma rejects non-UUID values for the import batch primary key.
 
 ## Local Verification
 
-- `npm.cmd run build` passed after the Nest DI fix.
-- Application startup validation passed: the built backend started successfully and `GET /health/deployment` returned HTTP 200 locally.
-- Startup logs showed the Nest application booted cleanly, with only the expected `DATABASE_URL is not configured` warning in the local shell environment.
+- `npm.cmd run build` passed after each fix.
+- Application startup validation passed locally and `GET /health/deployment` returned HTTP 200.
+- The Nest app boots cleanly; the only local warning is `DATABASE_URL is not configured` in the shell environment.
 
 ## Deployment Status
 
-- The fix still needs to be pushed and rolled out on Coolify before production SHA verification can be refreshed.
-- After deploy, the next step is the bounded DRAP validation run for the next 1,000 registrations only.
+- Production backend rolled the fixes successfully.
+- Latest deployed commit SHA: `8868da16bd73c3f899073868cc070bf1d039df4d`.
+- `GET /health/deployment` reports the same deployed SHA via the production fingerprint endpoint.
 
-## DRAP Acquisition Hardening
+## DRAP Validation
 
-- The bounded DRAP validation run endpoint remains in the codebase and is ready for post-deploy validation.
-- The normal mirror execution gate remains unchanged outside the explicit bounded admin action.
+- Bounded validation ran for the next 1,000 registrations only.
+- Result: 1,000 processed, 995 success, 5 failed, 0 duplicates.
+- Runtime paused again after the bounded run.
+- Worker health remained good.
+- Archive generation completed, but archive health is degraded because one archive segment failed to upload.
 
 ## Progress
 
-- Completion percentage: 95%
-- Remaining blockers: push the DI fix, wait for Coolify to deploy the new backend SHA, then run the bounded 1,000-record DRAP validation and confirm counters.
+- Completion percentage: 98%
+- Remaining blockers: archive health needs attention before any full DRAP crawl is recommended.
