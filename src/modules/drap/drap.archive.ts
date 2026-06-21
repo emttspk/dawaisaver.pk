@@ -261,10 +261,12 @@ export class DrapArchiveManager {
       const durationMs = performance.now() - started;
       this.uploadLatencyTotal += durationMs;
       this.uploadCount += 1;
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error(`[DrapArchive] R2 upload failed for ${segment.objectKey}: ${errorMessage}`);
       segment.status = "FAILED";
       segment.failedAt = new Date().toISOString();
       segment.updatedAt = segment.failedAt;
-      segment.errorMessage = error instanceof Error ? error.message : String(error);
+      segment.errorMessage = errorMessage;
       this.rebuildSegmentStats();
       await this.persistManifest();
     }
