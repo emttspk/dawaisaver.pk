@@ -94,6 +94,106 @@ At the Railway P40 active-processing rate, 1,000 records require about 79.55 sec
 - The audit changed documentation only.
 - The superseded current-update document was removed after being archived elsewhere; component READMEs and generated catalogue documentation remain active and were not incorrectly archived.
 
+## Mirror Architecture Analysis
+
+### Progress Counter Storage
+Mirror progress is stored in **PostgreSQL**, NOT in Redis:
+
+1. **Primary Control Table**: `mirror_runtime_control`
+   - Key: `drap_mirror:control`
+   - State: `running`, `paused`, or `stopped`
+   - This is the authoritative source for mirror execution state
+
+2. **Batch Progress Table**: `import_batches` (with `adapterType = 'drap-mirror'`)
+   - Checkpoint data stored in `metadata.acquisition.checkpoint` and `importReport.checkpoint`
+   - Fields: `processed`, `fetched`, `parsed`, `failed`, `duplicate`, `retries`, `nextIndex`, `lastRegistrationNumber`
+   - Archive manifest stored in `metadata.acquisition.archive` and `importReport.archive`
+
+3. **No Redis Usage**: The codebase does not use Redis for mirror state. All state is persisted to PostgreSQL.
+
+### Scheduler/Service
+- **Entry Point**: `src/jobs/drap-mirror.job.ts` - `runDrapMirrorJob()` function
+- **No automatic scheduler**: The mirror is NOT automatically scheduled. It must be triggered manually or via external cron.
+- **Worker Pattern**: Uses `DRAP_MIRROR_WORKERS` env var (default 4) to spawn parallel workers
+- **Coolify**: Not a scheduler - Coolify manages container deployment, not job scheduling
+
+### Mirror Status Polling
+- **Dashboard**: Admin dashboard at `apps/admin/src/pages/MirrorStatusDashboard.tsx` polls every **10 seconds**
+- **API Endpoints** (all require JWT authentication):
+  - `GET /api/v1/admin/mirror-status` - Full mirror status
+  - `GET /api/v1/admin/mirror/runtime` - Runtime state (DB + ENV)
+  - `GET /api/v1/admin/mirror/archive-status` - Archive status
+  - `GET /api/v1/admin/mirror/r2-status` - R2 configuration
+  - `POST /api/v1/admin/mirror/control` - Control endpoint (start/pause/resume/stop)
+
+### Live Verification Commands
+
+**PostgreSQL Queries:**
+```sql
+-- Check mirror control state
+SELECT key, state, updated_at FROM mirror_runtime_control WHERE key = 'drap_mirror:control';
+
+-- Check latest mirror batch
+SELECT id, status, total_rows, started_at, finished_at, 
+       metadata->'acquisition'->'checkpoint' as checkpoint
+FROM import_batches 
+WHERE adapter_type = 'drap-mirror' 
+ORDER BY created_at DESC LIMIT 1;
+
+-- Check processed count from metadata
+SELECT id, 
+       metadata->'acquisition'->'checkpoint'->>'processed' as processed,
+       metadata->'acquisition'->'checkpoint'->>'fetched' as fetched,
+       metadata->'acquisition'->'checkpoint'->>'parsed' as parsed,
+       metadata->'acquisition'->'checkpoint'->>'failed' as failed
+FROM import_batches 
+WHERE adapter_type = 'drap-mirror' 
+ORDER BY created_at DESC LIMIT 5;
+```
+
+**API Commands (requires JWT token):**
+```bash
+# Get mirror status
+curl -H "Authorization: Bearer YOUR_JWT_TOKEN" https://api.dawaisaver.pk/api/v1/admin/mirror-status
+
+# Get runtime state
+curl -H "Authorization: Bearer YOUR_JWT_TOKEN" https://api.dawaisaver.pk/api/v1/admin/mirror/runtime
+
+# Start mirror (if paused)
+curl -X POST -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"action":"start"}' \
+  https://api.dawaisaver.pk/api/v1/admin/mirror/control
+```
+
+**Docker/Coolify:**
+```bash
+# Check running containers
+docker ps | grep -E 'api|drap|mirror'
+
+# View API logs
+docker logs <api_container_id>
+
+# Check environment variables
+docker exec <api_container_id> env | grep -E 'MIRROR_|DRAP_'
+```
+
+### Current State Assessment
+- Mirror control state: `running` (from mirror_runtime_control table)
+- `crawl_jobs` table is empty - NOT used for DRAP mirror
+- Mirror state is tracked entirely in `import_batches` table
+- The mirror is marked `running` but may be idle/waiting if:
+  1. No trigger job is running
+  2. Workers are blocked on rate limiting
+  3. R2 configuration is missing
+  4. `MIRROR_MIGRATION_MODE=true` (currently set, which pauses execution)
+
+### Recommendations
+1. **Verify R2 config**: Check R2 env vars are set in Coolify
+2. **Check migration mode**: `MIRROR_MIGRATION_MODE` should be `false` for live processing
+3. **Trigger mirror**: Run `wrangler` or manual trigger if auto-schedule is not configured
+4. **Monitor workers**: Check if workers are actually fetching from DRAP
+
 ## Verification status
 
 - Evidence used: Git history timestamps and snapshots, live public API health, protected endpoint authorization response, application timing implementation, historical P38/P40 live-run reports, Wrangler identity, and Wrangler R2 bucket metadata.
