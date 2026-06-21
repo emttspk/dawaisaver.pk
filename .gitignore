@@ -22,12 +22,12 @@ Thumbs.db
 # Reports and exports
 docs/reports/
 docs/screenshots/
-docs/exports/
 screenshots/
 logs/
 temp/
 reports/
 reports/generated/catalog/
+docs/exports/catalog/!golden-sample-catalogue-*.{json,md}
 *_REPORT.md
 
 # Historical status snapshots
