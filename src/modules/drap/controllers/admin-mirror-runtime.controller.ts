@@ -4,6 +4,7 @@ import { AdminGuard } from "../../../common/guards/admin.guard";
 import { DrapMirrorControlService } from "../drap-mirror-control.service";
 import { getMirrorRuntimeState } from "../drap.freeze";
 import { PrismaService } from "../../../database/prisma.service";
+import { DrapAcquisitionService } from "../drap.acquisition.service";
 
 @ApiTags("Admin")
 @Controller("admin/mirror")
@@ -12,6 +13,7 @@ export class AdminMirrorRuntimeController {
   constructor(
     private readonly controlService: DrapMirrorControlService,
     private readonly prisma: PrismaService,
+    private readonly acquisitionService: DrapAcquisitionService,
   ) {}
 
   @Get("runtime")
@@ -56,6 +58,14 @@ export class AdminMirrorRuntimeController {
         archive: this.extractArchiveData(batch),
       })),
     };
+  }
+
+  @Get("r2-status")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get required R2 configuration keys." })
+  @ApiOkResponse({ description: "R2 configuration status loaded successfully." })
+  getR2Status() {
+    return this.acquisitionService.verifyR2Configuration();
   }
 
   private extractArchiveData(batch: { metadata: unknown; importReport: unknown }) {
