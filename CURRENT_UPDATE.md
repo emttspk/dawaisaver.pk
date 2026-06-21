@@ -8,7 +8,8 @@ Project: DawaiSaver.pk
 - `DrapAcquisitionService` was failing Nest injection because the second constructor dependency was not wired as a proper injectable provider.
 - The bounded validation endpoint also needed explicit validation metadata so Nest's global validation pipe would accept the request payload.
 - Validation batch IDs had to be changed to UUIDs because Prisma rejects non-UUID values for the import batch primary key.
-- The archive upload failures are caused by missing production R2 credentials, not by the Pages proxy or dashboard routes.
+- The earlier archive upload failures were caused by missing production R2 credentials, not by the Pages proxy or dashboard routes.
+- Production runtime now exposes all required R2 variables, and the current bounded run is uploading archives successfully.
 
 ## Local Verification
 
@@ -19,20 +20,20 @@ Project: DawaiSaver.pk
 ## Deployment Status
 
 - Production backend rolled the fixes successfully.
-- Latest deployed commit SHA: `3c55a6e9287823e5407a446da688808ab87eabd1`.
+- Latest deployed commit SHA: `5d6342dc46feec424504e6945b982837a4732494`.
 - `GET /health/deployment` reports the same deployed SHA via the production fingerprint endpoint.
 
 ## DRAP Validation
 
 - Bounded validation ran for the next 1,000 registrations only.
-- Result: 1,000 processed, 951 success, 49 failed, 0 duplicates on the latest validation run.
+- Result: 1,000 processed, 957 success, 43 failed, 0 duplicates on the latest validation run.
 - Runtime paused again after the bounded run.
 - Worker health remained good.
-- Archive generation still fails because all required R2 credentials are missing in production.
-- Live diagnostic endpoint now reports missing `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, and `R2_BUCKET_NAME`.
+- Archive generation succeeded on the fresh production run.
+- Live diagnostic endpoint now reports all required R2 keys present.
 - `R2_PUBLIC_BASE_URL` is no longer treated as a hard requirement.
 
 ## Progress
 
-- Completion percentage: 94%
-- Remaining blockers: production R2 secrets/configuration must be restored in Coolify before archive uploads can succeed or a full DRAP crawl can be recommended.
+- Completion percentage: 97%
+- Remaining blockers: full DRAP crawl is not yet approved; we should do one more controlled operational review before scaling beyond the bounded validation pattern.
