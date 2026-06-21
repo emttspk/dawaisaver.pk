@@ -1,0 +1,1255 @@
+{
+  "id": "catalogue-2026-06-21",
+  "name": "Golden Sample Catalogue",
+  "version": "1.0.0",
+  "generatedAt": "2026-06-21T15:11:27+05:00",
+  "molecules": [
+    {
+      "id": "mol-001",
+      "atcCode": "A01A",
+      "name": "Amoxicillin",
+      "therapeuticCategory": "Antibacterials for systemic use",
+      "therapeuticCategoryId": "A01A"
+    },
+    {
+      "id": "mol-002",
+      "atcCode": "A02A",
+      "name": "Paracetamol",
+      "therapeuticCategory": "Analgesics",
+      "therapeuticCategoryId": "A02A"
+    },
+    {
+      "id": "mol-003",
+      "atcCode": "A04A",
+      "name": "Folic Acid",
+      "therapeuticCategory": "Vitamins",
+      "therapeuticCategoryId": "A04A"
+    },
+    {
+      "id": "mol-004",
+      "atcCode": "A05A",
+      "name": "Vitamin B Complex",
+      "therapeuticCategory": "Vitamins",
+      "therapeuticCategoryId": "A05A"
+    },
+    {
+      "id": "mol-005",
+      "atcCode": "A07A",
+      "name": "Oral Rehydration Salt",
+      "therapeuticCategory": "Electrolyte Supplements",
+      "therapeuticCategoryId": "A07A"
+    },
+    {
+      "id": "mol-006",
+      "atcCode": "A10A",
+      "name": "Insulin",
+      "therapeuticCategory": "Antidiabetics",
+      "therapeuticCategoryId": "A10A"
+    },
+    {
+      "id": "mol-007",
+      "atcCode": "A11A",
+      "name": "Multivitamin",
+      "therapeuticCategory": "Vitamins",
+      "therapeuticCategoryId": "A11A"
+    },
+    {
+      "id": "mol-008",
+      "atcCode": "A12A",
+      "name": "Calcium Carbonate",
+      "therapeuticCategory": "Minerals",
+      "therapeuticCategoryId": "A12A"
+    },
+    {
+      "id": "mol-009",
+      "atcCode": "A13A",
+      "name": "Iron Sulfate",
+      "therapeuticCategory": "Iron Preparations",
+      "therapeuticCategoryId": "A13A"
+    },
+    {
+      "id": "mol-010",
+      "atcCode": "A16A",
+      "name": "Chlorophyll",
+      "therapeuticCategory": "Vitamins",
+      "therapeuticCategoryId": "A16A"
+    }
+  ],
+  "products": [
+    {
+      "id": "prod-001",
+      "registrationNumber": "000001",
+      "brandName": "Amoxil",
+      "normalizedBrand": "Amoxil",
+      "genericName": "Amoxicillin",
+      "strengthText": "500mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "GlaxoSmithKline",
+      "manufacturerId": "mfr-001",
+      "packSize": "10 tablets",
+      "therapeuticCategories": ["Antibacterials for systemic use"],
+      "compositionGroupSignature": "Amoxil|amoxicillin|500mg|Tablet",
+      "alternativeBrands": ["Zamox", "Moxatag"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 150.00,
+          "unitPrice": 15.00,
+          "availability": "IN_STOCK"
+        },
+        {
+          "pharmacy": "Pharmacy B",
+          "price": 145.00,
+          "unitPrice": 14.50,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-002",
+      "registrationNumber": "000002",
+      "brandName": "Panadol",
+      "normalizedBrand": "Panadol",
+      "genericName": "Paracetamol",
+      "strengthText": "500mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "G Skirt",
+      "manufacturerId": "mfr-002",
+      "packSize": "10 tablets",
+      "therapeuticCategories": ["Analgesics"],
+      "compositionGroupSignature": "Panadol|paracetamol|500mg|Tablet",
+      "alternativeBrands": ["Calpol", "Disprin"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 50.00,
+          "unitPrice": 5.00,
+          "availability": "IN_STOCK"
+        },
+        {
+          "pharmacy": "Pharmacy B",
+          "price": 48.00,
+          "unitPrice": 4.80,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-003",
+      "registrationNumber": "000003",
+      "brandName": "Normocol",
+      "normalizedBrand": "Normocol",
+      "genericName": "Folic Acid",
+      "strengthText": "5mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "Heinz",
+      "manufacturerId": "mfr-003",
+      "packSize": "14 tablets",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Normocol|folic_acid|5mg|Tablet",
+      "alternativeBrands": ["Conception", "Foltrate"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 200.00,
+          "unitPrice": 14.29,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-004",
+      "registrationNumber": "000004",
+      "brandName": "Multivite",
+      "normalizedBrand": "Multivite",
+      "genericName": "Multivitamin",
+      "strengthText": "60ml",
+      "dosageForm": "Syrup",
+      "manufacturer": "Sanofi",
+      "manufacturerId": "mfr-004",
+      "packSize": "150ml bottle",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Multivite|multivitamin|60ml|Syrup",
+      "alternativeBrands": ["Vitamultin", "Daily Care"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 350.00,
+          "unitPrice": 2.33,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-005",
+      "registrationNumber": "000005",
+      "brandName": "Oralyte",
+      "normalizedBrand": "Oralyte",
+      "genericName": "Oral Rehydration Salt",
+      "strengthText": "1 sachet",
+      "dosageForm": "Sachet",
+      "manufacturer": "Abbott",
+      "manufacturerId": "mfr-005",
+      "packSize": "10 sachets",
+      "therapeuticCategories": ["Electrolyte Supplements"],
+      "compositionGroupSignature": "Oralyte|oral_rehydration_salt|1_sachet|Sachet",
+      "alternativeBrands": ["Dioralyte", "Rehidrat"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 120.00,
+          "unitPrice": 12.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-006",
+      "registrationNumber": "000006",
+      "brandName": "Insulina",
+      "normalizedBrand": "Insulina",
+      "genericName": "Insulin",
+      "strengthText": "100 IU/ml",
+      "dosageForm": "Injection",
+      "manufacturer": "Eli Lilly",
+      "manufacturerId": "mfr-006",
+      "packSize": "10ml vial",
+      "therapeuticCategories": ["Antidiabetics"],
+      "compositionGroupSignature": "Insulina|insulin|100_IU_ml|Injection",
+      "alternativeBrands": [],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 2500.00,
+          "unitPrice": 250.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-007",
+      "registrationNumber": "000007",
+      "brandName": "Cycorin",
+      "normalizedBrand": "Cycorin",
+      "genericName": "Multivitamin",
+      "strengthText": "1 tablet",
+      "dosageForm": "Tablet",
+      "manufacturer": "GNP",
+      "manufacturerId": "mfr-007",
+      "packSize": "30 tablets",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Cycorin|multivitamin|1_tablet|Tablet",
+      "alternativeBrands": ["Vitamultin", "One Daily"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 450.00,
+          "unitPrice": 15.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-008",
+      "registrationNumber": "000008",
+      "brandName": "Calcebor",
+      "normalizedBrand": "Calcebor",
+      "genericName": "Calcium Carbonate",
+      "strengthText": "500mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "Pfizer",
+      "manufacturerId": "mfr-008",
+      "packSize": "60 tablets",
+      "therapeuticCategories": ["Minerals"],
+      "compositionGroupSignature": "Calcebor|calcium_carbonate|500mg|Tablet",
+      "alternativeBrands": ["Caltrate", "Osteocare"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 600.00,
+          "unitPrice": 10.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-009",
+      "registrationNumber": "000009",
+      "brandName": "Feroglobin",
+      "normalizedBrand": "Feroglobin",
+      "genericName": "Iron Sulfate",
+      "strengthText": "28mg",
+      "dosageForm": "Capsule",
+      "manufacturer": "Pharmaprix",
+      "manufacturerId": "mfr-009",
+      "packSize": "20 capsules",
+      "therapeuticCategories": ["Iron Preparations"],
+      "compositionGroupSignature": "Feroglobin|iron_sulfate|28mg|Capsule",
+      "alternativeBrands": ["Ironfol", "Ferrous Sulfate"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 180.00,
+          "unitPrice": 9.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-010",
+      "registrationNumber": "000010",
+      "brandName": "Chlorofast",
+      "normalizedBrand": "Chlorofast",
+      "genericName": "Chlorophyll",
+      "strengthText": "200mg",
+      "dosageForm": "Capsule",
+      "manufacturer": "Herbal Life",
+      "manufacturerId": "mfr-010",
+      "packSize": "30 capsules",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Chlorofast|chlorophyll|200mg|Capsule",
+      "alternativeBrands": ["Chlorocap", "Green Vita"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 300.00,
+          "unitPrice": 10.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-011",
+      "registrationNumber": "000011",
+      "brandName": "Amoxil",
+      "normalizedBrand": "Amoxil",
+      "genericName": "Amoxicillin",
+      "strengthText": "250mg",
+      "dosageForm": "Capsule",
+      "manufacturer": "GlaxoSmithKline",
+      "manufacturerId": "mfr-001",
+      "packSize": "10 capsules",
+      "therapeuticCategories": ["Antibacterials for systemic use"],
+      "compositionGroupSignature": "Amoxil|amoxicillin|250mg|Capsule",
+      "alternativeBrands": ["Zamox", "Moxatag"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 120.00,
+          "unitPrice": 12.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-012",
+      "registrationNumber": "000012",
+      "brandName": "Panadol",
+      "normalizedBrand": "Panadol",
+      "genericName": "Paracetamol",
+      "strengthText": "650mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "G Skirt",
+      "manufacturerId": "mfr-002",
+      "packSize": "10 tablets",
+      "therapeuticCategories": ["Analgesics"],
+      "compositionGroupSignature": "Panadol|paracetamol|650mg|Tablet",
+      "alternativeBrands": ["Calpol", "Disprin"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 60.00,
+          "unitPrice": 6.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-013",
+      "registrationNumber": "000013",
+      "brandName": "Normocol",
+      "normalizedBrand": "Normocol",
+      "genericName": "Folic Acid",
+      "strengthText": "5mg",
+      "dosageForm": "Injection",
+      "manufacturer": "Heinz",
+      "manufacturerId": "mfr-003",
+      "packSize": "5 ampoules",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Normocol|folic_acid|5mg|Injection",
+      "alternativeBrands": ["Conception", "Foltrate"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 250.00,
+          "unitPrice": 50.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-014",
+      "registrationNumber": "000014",
+      "brandName": "Multivite",
+      "normalizedBrand": "Multivite",
+      "genericName": "Multivitamin",
+      "strengthText": "50ml",
+      "dosageForm": "Syrup",
+      "manufacturer": "Sanofi",
+      "manufacturerId": "mfr-004",
+      "packSize": "100ml bottle",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Multivite|multivitamin|50ml|Syrup",
+      "alternativeBrands": ["Vitamultin", "Daily Care"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 280.00,
+          "unitPrice": 2.80,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-015",
+      "registrationNumber": "000015",
+      "brandName": "Oralyte",
+      "normalizedBrand": "Oralyte",
+      "genericName": "Oral Rehydration Salt",
+      "strengthText": "1 sachet",
+      "dosageForm": "Powder",
+      "manufacturer": "Abbott",
+      "manufacturerId": "mfr-005",
+      "packSize": "20 sachets",
+      "therapeuticCategories": ["Electrolyte Supplements"],
+      "compositionGroupSignature": "Oralyte|oral_rehydration_salt|1_sachet|Powder",
+      "alternativeBrands": ["Dioralyte", "Rehidrat"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 200.00,
+          "unitPrice": 10.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-016",
+      "registrationNumber": "000016",
+      "brandName": "Insulina",
+      "normalizedBrand": "Insulina",
+      "genericName": "Insulin",
+      "strengthText": "50 IU/ml",
+      "dosageForm": "Injection",
+      "manufacturer": "Eli Lilly",
+      "manufacturerId": "mfr-006",
+      "packSize": "5ml vial",
+      "therapeuticCategories": ["Antidiabetics"],
+      "compositionGroupSignature": "Insulina|insulin|50_IU_ml|Injection",
+      "alternativeBrands": [],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 1800.00,
+          "unitPrice": 360.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-017",
+      "registrationNumber": "000017",
+      "brandName": "Cycorin",
+      "normalizedBrand": "Cycorin",
+      "genericName": "Multivitamin",
+      "strengthText": "1 tablet",
+      "dosageForm": "Chewable",
+      "manufacturer": "GNP",
+      "manufacturerId": "mfr-007",
+      "packSize": "15 tablets",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Cycorin|multivitamin|1_tablet|Chewable",
+      "alternativeBrands": ["Vitamultin", "One Daily"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 220.00,
+          "unitPrice": 14.67,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-018",
+      "registrationNumber": "000018",
+      "brandName": "Calcebor",
+      "normalizedBrand": "Calcebor",
+      "genericName": "Calcium Carbonate",
+      "strengthText": "250mg",
+      "dosageForm": "Syrup",
+      "manufacturer": "Pfizer",
+      "manufacturerId": "mfr-008",
+      "packSize": "150ml bottle",
+      "therapeuticCategories": ["Minerals"],
+      "compositionGroupSignature": "Calcebor|calcium_carbonate|250mg|Syrup",
+      "alternativeBrands": ["Caltrate", "Osteocare"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 180.00,
+          "unitPrice": 1.20,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-019",
+      "registrationNumber": "000019",
+      "brandName": "Feroglobin",
+      "normalizedBrand": "Feroglobin",
+      "genericName": "Iron Sulfate",
+      "strengthText": "20mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "Pharmaprix",
+      "manufacturerId": "mfr-009",
+      "packSize": "30 tablets",
+      "therapeuticCategories": ["Iron Preparations"],
+      "compositionGroupSignature": "Feroglobin|iron_sulfate|20mg|Tablet",
+      "alternativeBrands": ["Ironfol", "Ferrous Sulfate"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 220.00,
+          "unitPrice": 7.33,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-020",
+      "registrationNumber": "000020",
+      "brandName": "Chlorofast",
+      "normalizedBrand": "Chlorofast",
+      "genericName": "Chlorophyll",
+      "strengthText": "100mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "Herbal Life",
+      "manufacturerId": "mfr-010",
+      "packSize": "60 tablets",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Chlorofast|chlorophyll|100mg|Tablet",
+      "alternativeBrands": ["Chlorocap", "Green Vita"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 280.00,
+          "unitPrice": 4.67,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-021",
+      "registrationNumber": "000021",
+      "brandName": "Amoxil",
+      "normalizedBrand": "Amoxil",
+      "genericName": "Amoxicillin",
+      "strengthText": "125mg",
+      "dosageForm": "Suspension",
+      "manufacturer": "GlaxoSmithKline",
+      "manufacturerId": "mfr-001",
+      "packSize": "15ml bottle",
+      "therapeuticCategories": ["Antibacterials for systemic use"],
+      "compositionGroupSignature": "Amoxil|amoxicillin|125mg|Suspension",
+      "alternativeBrands": ["Zamox", "Moxatag"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 90.00,
+          "unitPrice": 6.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-022",
+      "registrationNumber": "000022",
+      "brandName": "Panadol",
+      "normalizedBrand": "Panadol",
+      "genericName": "Paracetamol",
+      "strengthText": "325mg",
+      "dosageForm": "Syrup",
+      "manufacturer": "G Skirt",
+      "manufacturerId": "mfr-002",
+      "packSize": "100ml bottle",
+      "therapeuticCategories": ["Analgesics"],
+      "compositionGroupSignature": "Panadol|paracetamol|325mg|Syrup",
+      "alternativeBrands": ["Calpol", "Disprin"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 75.00,
+          "unitPrice": 0.75,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-023",
+      "registrationNumber": "000023",
+      "brandName": "Normocol",
+      "normalizedBrand": "Normocol",
+      "genericName": "Folic Acid",
+      "strengthText": "5mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "Heinz",
+      "manufacturerId": "mfr-003",
+      "packSize": "30 tablets",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Normocol|folic_acid|5mg|Tablet",
+      "alternativeBrands": ["Conception", "Foltrate"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 350.00,
+          "unitPrice": 11.67,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-024",
+      "registrationNumber": "000024",
+      "brandName": "Multivite",
+      "normalizedBrand": "Multivite",
+      "genericName": "Multivitamin",
+      "strengthText": "100ml",
+      "dosageForm": "Liquid",
+      "manufacturer": "Sanofi",
+      "manufacturerId": "mfr-004",
+      "packSize": "200ml bottle",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Multivite|multivitamin|100ml|Liquid",
+      "alternativeBrands": ["Vitamultin", "Daily Care"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 480.00,
+          "unitPrice": 2.40,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-025",
+      "registrationNumber": "000025",
+      "brandName": "Oralyte",
+      "normalizedBrand": "Oralyte",
+      "genericName": "Oral Rehydration Salt",
+      "strengthText": "1 sachet",
+      "dosageForm": "Powder",
+      "manufacturer": "Abbott",
+      "manufacturerId": "mfr-005",
+      "packSize": "30 sachets",
+      "therapeuticCategories": ["Electrolyte Supplements"],
+      "compositionGroupSignature": "Oralyte|oral_rehydration_salt|1_sachet|Powder",
+      "alternativeBrands": ["Dioralyte", "Rehidrat"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 270.00,
+          "unitPrice": 9.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-026",
+      "registrationNumber": "000026",
+      "brandName": "Insulina",
+      "normalizedBrand": "Insulina",
+      "genericName": "Insulin",
+      "strengthText": "200 IU/ml",
+      "dosageForm": "Injection",
+      "manufacturer": "Eli Lilly",
+      "manufacturerId": "mfr-006",
+      "packSize": "10ml vial",
+      "therapeuticCategories": ["Antidiabetics"],
+      "compositionGroupSignature": "Insulina|insulin|200_IU_ml|Injection",
+      "alternativeBrands": [],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 3200.00,
+          "unitPrice": 320.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-027",
+      "registrationNumber": "000027",
+      "brandName": "Cycorin",
+      "normalizedBrand": "Cycorin",
+      "genericName": "Multivitamin",
+      "strengthText": "2 tablet",
+      "dosageForm": "Tablet",
+      "manufacturer": "GNP",
+      "manufacturerId": "mfr-007",
+      "packSize": "60 tablets",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Cycorin|multivitamin|2_tablet|Tablet",
+      "alternativeBrands": ["Vitamultin", "One Daily"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 750.00,
+          "unitPrice": 12.50,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-028",
+      "registrationNumber": "000028",
+      "brandName": "Calcebor",
+      "normalizedBrand": "Calcebor",
+      "genericName": "Calcium Carbonate",
+      "strengthText": "600mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "Pfizer",
+      "manufacturerId": "mfr-008",
+      "packSize": "120 tablets",
+      "therapeuticCategories": ["Minerals"],
+      "compositionGroupSignature": "Calcebor|calcium_carbonate|600mg|Tablet",
+      "alternativeBrands": ["Caltrate", "Osteocare"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 900.00,
+          "unitPrice": 7.50,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-029",
+      "registrationNumber": "000029",
+      "brandName": "Feroglobin",
+      "normalizedBrand": "Feroglobin",
+      "genericName": "Iron Sulfate",
+      "strengthText": "25mg",
+      "dosageForm": "Capsule",
+      "manufacturer": "Pharmaprix",
+      "manufacturerId": "mfr-009",
+      "packSize": "15 capsules",
+      "therapeuticCategories": ["Iron Preparations"],
+      "compositionGroupSignature": "Feroglobin|iron_sulfate|25mg|Capsule",
+      "alternativeBrands": ["Ironfol", "Ferrous Sulfate"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 150.00,
+          "unitPrice": 10.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-030",
+      "registrationNumber": "000030",
+      "brandName": "Chlorofast",
+      "normalizedBrand": "Chlorofast",
+      "genericName": "Chlorophyll",
+      "strengthText": "50mg",
+      "dosageForm": "Capsule",
+      "manufacturer": "Herbal Life",
+      "manufacturerId": "mfr-010",
+      "packSize": "45 capsules",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Chlorofast|chlorophyll|50mg|Capsule",
+      "alternativeBrands": ["Chlorocap", "Green Vita"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 190.00,
+          "unitPrice": 4.22,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-031",
+      "registrationNumber": "000031",
+      "brandName": "Amoxil",
+      "normalizedBrand": "Amoxil",
+      "genericName": "Amoxicillin",
+      "strengthText": "1000mg",
+      "dosageForm": "Capsule",
+      "manufacturer": "GlaxoSmithKline",
+      "manufacturerId": "mfr-001",
+      "packSize": "4 capsules",
+      "therapeuticCategories": ["Antibacterials for systemic use"],
+      "compositionGroupSignature": "Amoxil|amoxicillin|1000mg|Capsule",
+      "alternativeBrands": ["Zamox", "Moxatag"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 280.00,
+          "unitPrice": 70.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-032",
+      "registrationNumber": "000032",
+      "brandName": "Panadol",
+      "normalizedBrand": "Panadol",
+      "genericName": "Paracetamol",
+      "strengthText": "1000mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "G Skirt",
+      "manufacturerId": "mfr-002",
+      "packSize": "8 tablets",
+      "therapeuticCategories": ["Analgesics"],
+      "compositionGroupSignature": "Panadol|paracetamol|1000mg|Tablet",
+      "alternativeBrands": ["Calpol", "Disprin"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 180.00,
+          "unitPrice": 22.50,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-033",
+      "registrationNumber": "000033",
+      "brandName": "Normocol",
+      "normalizedBrand": "Normocol",
+      "genericName": "Folic Acid",
+      "strengthText": "5mg",
+      "dosageForm": "Injection",
+      "manufacturer": "Heinz",
+      "manufacturerId": "mfr-003",
+      "packSize": "10 ampoules",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Normocol|folic_acid|5mg|Injection",
+      "alternativeBrands": ["Conception", "Foltrate"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 450.00,
+          "unitPrice": 45.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-034",
+      "registrationNumber": "000034",
+      "brandName": "Multivite",
+      "normalizedBrand": "Multivite",
+      "genericName": "Multivitamin",
+      "strengthText": "200ml",
+      "dosageForm": "Syrup",
+      "manufacturer": "Sanofi",
+      "manufacturerId": "mfr-004",
+      "packSize": "400ml bottle",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Multivite|multivitamin|200ml|Syrup",
+      "alternativeBrands": ["Vitamultin", "Daily Care"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 850.00,
+          "unitPrice": 2.13,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-035",
+      "registrationNumber": "000035",
+      "brandName": "Oralyte",
+      "normalizedBrand": "Oralyte",
+      "genericName": "Oral Rehydration Salt",
+      "strengthText": "1 sachet",
+      "dosageForm": "Sachet",
+      "manufacturer": "Abbott",
+      "manufacturerId": "mfr-005",
+      "packSize": "50 sachets",
+      "therapeuticCategories": ["Electrolyte Supplements"],
+      "compositionGroupSignature": "Oralyte|oral_rehydration_salt|1_sachet|Sachet",
+      "alternativeBrands": ["Dioralyte", "Rehidrat"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 450.00,
+          "unitPrice": 9.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-036",
+      "registrationNumber": "000036",
+      "brandName": "Insulina",
+      "normalizedBrand": "Insulina",
+      "genericName": "Insulin",
+      "strengthText": "100 IU/ml",
+      "dosageForm": "Injection",
+      "manufacturer": "Eli Lilly",
+      "manufacturerId": "mfr-006",
+      "packSize": "15ml vial",
+      "therapeuticCategories": ["Antidiabetics"],
+      "compositionGroupSignature": "Insulina|insulin|100_IU_ml|Injection",
+      "alternativeBrands": [],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 3800.00,
+          "unitPrice": 253.33,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-037",
+      "registrationNumber": "000037",
+      "brandName": "Cycorin",
+      "normalizedBrand": "Cycorin",
+      "genericName": "Multivitamin",
+      "strengthText": "3 tablet",
+      "dosageForm": "Tablet",
+      "manufacturer": "GNP",
+      "manufacturerId": "mfr-007",
+      "packSize": "90 tablets",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Cycorin|multivitamin|3_tablet|Tablet",
+      "alternativeBrands": ["Vitamultin", "One Daily"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 1100.00,
+          "unitPrice": 12.22,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-038",
+      "registrationNumber": "000038",
+      "brandName": "Calcebor",
+      "normalizedBrand": "Calcebor",
+      "genericName": "Calcium Carbonate",
+      "strengthText": "1000mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "Pfizer",
+      "manufacturerId": "mfr-008",
+      "packSize": "60 tablets",
+      "therapeuticCategories": ["Minerals"],
+      "compositionGroupSignature": "Calcebor|calcium_carbonate|1000mg|Tablet",
+      "alternativeBrands": ["Caltrate", "Osteocare"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 1200.00,
+          "unitPrice": 20.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-039",
+      "registrationNumber": "000039",
+      "brandName": "Feroglobin",
+      "normalizedBrand": "Feroglobin",
+      "genericName": "Iron Sulfate",
+      "strengthText": "30mg",
+      "dosageForm": "Capsule",
+      "manufacturer": "Pharmaprix",
+      "manufacturerId": "mfr-009",
+      "packSize": "20 capsules",
+      "therapeuticCategories": ["Iron Preparations"],
+      "compositionGroupSignature": "Feroglobin|iron_sulfate|30mg|Capsule",
+      "alternativeBrands": ["Ironfol", "Ferrous Sulfate"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 200.00,
+          "unitPrice": 10.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-040",
+      "registrationNumber": "000040",
+      "brandName": "Chlorofast",
+      "normalizedBrand": "Chlorofast",
+      "genericName": "Chlorophyll",
+      "strengthText": "150mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "Herbal Life",
+      "manufacturerId": "mfr-010",
+      "packSize": "30 tablets",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Chlorofast|chlorophyll|150mg|Tablet",
+      "alternativeBrands": ["Chlorocap", "Green Vita"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 320.00,
+          "unitPrice": 10.67,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-041",
+      "registrationNumber": "000041",
+      "brandName": "Amoxil",
+      "normalizedBrand": "Amoxil",
+      "genericName": "Amoxicillin",
+      "strengthText": "250mg",
+      "dosageForm": "Capsule",
+      "manufacturer": "GlaxoSmithKline",
+      "manufacturerId": "mfr-001",
+      "packSize": "21 capsules",
+      "therapeuticCategories": ["Antibacterials for systemic use"],
+      "compositionGroupSignature": "Amoxil|amoxicillin|250mg|Capsule",
+      "alternativeBrands": ["Zamox", "Moxatag"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 180.00,
+          "unitPrice": 8.57,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-042",
+      "registrationNumber": "000042",
+      "brandName": "Panadol",
+      "normalizedBrand": "Panadol",
+      "genericName": "Paracetamol",
+      "strengthText": "650mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "G Skirt",
+      "manufacturerId": "mfr-002",
+      "packSize": "15 tablets",
+      "therapeuticCategories": ["Analgesics"],
+      "compositionGroupSignature": "Panadol|paracetamol|650mg|Tablet",
+      "alternativeBrands": ["Calpol", "Disprin"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 120.00,
+          "unitPrice": 8.00,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-043",
+      "registrationNumber": "000043",
+      "brandName": "Normocol",
+      "normalizedBrand": "Normocol",
+      "genericName": "Folic Acid",
+      "strengthText": "5mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "Heinz",
+      "manufacturerId": "mfr-003",
+      "packSize": "28 tablets",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Normocol|folic_acid|5mg|Tablet",
+      "alternativeBrands": ["Conception", "Foltrate"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 320.00,
+          "unitPrice": 11.43,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-044",
+      "registrationNumber": "000044",
+      "brandName": "Multivite",
+      "normalizedBrand": "Multivite",
+      "genericName": "Multivitamin",
+      "strengthText": "75ml",
+      "dosageForm": "Liquid",
+      "manufacturer": "Sanofi",
+      "manufacturerId": "mfr-004",
+      "packSize": "150ml bottle",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Multivite|multivitamin|75ml|Liquid",
+      "alternativeBrands": ["Vitamultin", "Daily Care"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 520.00,
+          "unitPrice": 3.47,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-045",
+      "registrationNumber": "000045",
+      "brandName": "Oralyte",
+      "normalizedBrand": "Oralyte",
+      "genericName": "Oral Rehydration Salt",
+      "strengthText": "1 sachet",
+      "dosageForm": "Powder",
+      "manufacturer": "Abbott",
+      "manufacturerId": "mfr-005",
+      "packSize": "25 sachets",
+      "therapeuticCategories": ["Electrolyte Supplements"],
+      "compositionGroupSignature": "Oralyte|oral_rehydration_salt|1_sachet|Powder",
+      "alternativeBrands": ["Dioralyte", "Rehidrat"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 190.00,
+          "unitPrice": 7.60,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-046",
+      "registrationNumber": "000046",
+      "brandName": "Insulina",
+      "normalizedBrand": "Insulina",
+      "genericName": "Insulin",
+      "strengthText": "40 IU/ml",
+      "dosageForm": "Injection",
+      "manufacturer": "Eli Lilly",
+      "manufacturerId": "mfr-006",
+      "packSize": "3ml pen",
+      "therapeuticCategories": ["Antidiabetics"],
+      "compositionGroupSignature": "Insulina|insulin|40_IU_ml|Injection",
+      "alternativeBrands": [],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 2200.00,
+          "unitPrice": 733.33,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-047",
+      "registrationNumber": "000047",
+      "brandName": "Cycorin",
+      "normalizedBrand": "Cycorin",
+      "genericName": "Multivitamin",
+      "strengthText": "4 tablet",
+      "dosageForm": "Chewable",
+      "manufacturer": "GNP",
+      "manufacturerId": "mfr-007",
+      "packSize": "120 tablets",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Cycorin|multivitamin|4_tablet|Chewable",
+      "alternativeBrands": ["Vitamultin", "One Daily"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 880.00,
+          "unitPrice": 7.33,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-048",
+      "registrationNumber": "000048",
+      "brandName": "Calcebor",
+      "normalizedBrand": "Calcebor",
+      "genericName": "Calcium Carbonate",
+      "strengthText": "400mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "Pfizer",
+      "manufacturerId": "mfr-008",
+      "packSize": "180 tablets",
+      "therapeuticCategories": ["Minerals"],
+      "compositionGroupSignature": "Calcebor|calcium_carbonate|400mg|Tablet",
+      "alternativeBrands": ["Caltrate", "Osteocare"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 1400.00,
+          "unitPrice": 7.78,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-049",
+      "registrationNumber": "000049",
+      "brandName": "Feroglobin",
+      "normalizedBrand": "Feroglobin",
+      "genericName": "Iron Sulfate",
+      "strengthText": "15mg",
+      "dosageForm": "Syrup",
+      "manufacturer": "Pharmaprix",
+      "manufacturerId": "mfr-009",
+      "packSize": "150ml bottle",
+      "therapeuticCategories": ["Iron Preparations"],
+      "compositionGroupSignature": "Feroglobin|iron_sulfate|15mg|Syrup",
+      "alternativeBrands": ["Ironfol", "Ferrous Sulfate"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 280.00,
+          "unitPrice": 1.87,
+          "availability": "IN_STOCK"
+        }
+      ]
+    },
+    {
+      "id": "prod-050",
+      "registrationNumber": "000050",
+      "brandName": "Chlorofast",
+      "normalizedBrand": "Chlorofast",
+      "genericName": "Chlorophyll",
+      "strengthText": "75mg",
+      "dosageForm": "Tablet",
+      "manufacturer": "Herbal Life",
+      "manufacturerId": "mfr-010",
+      "packSize": "60 tablets",
+      "therapeuticCategories": ["Vitamins"],
+      "compositionGroupSignature": "Chlorofast|chlorophyll|75mg|Tablet",
+      "alternativeBrands": ["Chlorocap", "Green Vita"],
+      "priceComparison": [
+        {
+          "pharmacy": "Pharmacy A",
+          "price": 380.00,
+          "unitPrice": 6.33,
+          "availability": "IN_STOCK"
+        }
+      ]
+    }
+  ],
+  "therapeuticCategories": [
+    "Antibacterials for systemic use",
+    "Analgesics",
+    "Antidiabetics",
+    "Electrolyte Supplements",
+    "Vitamins"
+  ],
+  "summary": {
+    "totalMolecules": 10,
+    "totalProducts": 50,
+    "totalTherapeuticCategories": 5,
+    "completionPercentage": 100
+  }
+}

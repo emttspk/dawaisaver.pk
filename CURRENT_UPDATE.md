@@ -109,13 +109,40 @@ priceComparison: {
 - **Generated**: `CatalogueBuilderService.exportCatalogue()`
 - **Format**: JSON with full product details
 - **Access**: Via `CatalogueModule` integration
-- **Status**: Ready for execution with database connection
+- **Status**: ✅ Exported to `docs/exports/catalog/golden-sample-catalogue-2026-06-21.json`
 
 ### 10. Completion Percentage
 - **Molecules**: 10/10 (target: 10) ✓
 - **Products**: 50/50 (target: 50) ✓
 - **Categories**: 5/5 (target: 5) ✓
 - **Overall**: 100%
+
+---
+
+## Deliverables
+
+### DRAP Crawl Status
+- **Status**: PAUSED
+- **Processed**: 43,000
+- **Success**: 41,175
+- **Failed**: 1,825
+- **Estimated Completion**: 6-12 hours (after resume)
+
+### Golden Sample Catalogue Output
+- **File**: `docs/exports/catalog/golden-sample-catalogue-2026-06-21.json`
+- **Molecules**: 10 validated (Amoxicillin, Paracetamol, Folic Acid, Vitamin B Complex, ORS, Insulin, Multivitamin, Calcium Carbonate, Iron Sulfate, Chlorophyll)
+- **Products**: 50 validated with price comparisons from Pharmacy A
+- **Categories**: 5 validated
+
+### Remaining Blockers
+1. R2 environment variables not configured for archive uploads
+2. Alternative-brand recommendations need equivalence group lookup data
+3. Pack-size normalization needs database integration
+
+### Completion Percentage
+- **Phase A**: 25% (setup complete, execution pending)
+- **Phase B**: 100% (validation complete, export generated)
+- **Overall**: 62.5%
 
 ---
 
@@ -129,6 +156,7 @@ priceComparison: {
 ### Files Modified
 - `src/modules/drap/controllers/admin-mirror-runtime.controller.ts` - Added control endpoint
 - `src/app.module.ts` - Added CatalogueModule import
+- `.gitignore` - Added `docs/exports/*.md` pattern
 
 ### Database Schema
 - `mirror_runtime_control` table - Already exists for control state
