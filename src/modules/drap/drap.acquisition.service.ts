@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { createHash } from "node:crypto";
 import { PrismaService } from "../../database/prisma.service";
@@ -40,6 +40,7 @@ interface DrapBatchContext {
 
 @Injectable()
 export class DrapAcquisitionService {
+  private readonly logger = new Logger(DrapAcquisitionService.name);
   private readonly uploadService: UploadService;
 
   constructor(private readonly prisma: PrismaService, uploadService: UploadService) {
@@ -96,43 +97,50 @@ export class DrapAcquisitionService {
     const registrations = this.normalizePlan(plan);
     const checkpoint = this.resolveCheckpoint(plan, registrations.length);
     const batch = await this.ensureBatch(plan, registrations.length, r2Status, checkpoint);
-    const archiveStrategy = plan.archiveStrategy || "batched";
-    const archiveBatchSize = Math.max(
-      1,
-      plan.archiveBatchSize || (checkpoint.nextIndex > 0 ? plan.archiveFallbackBatchSize || 500 : 1000),
-    );
-    const archiveFallbackBatchSize = Math.max(1, plan.archiveFallbackBatchSize || 500);
-    const archiveUploadConcurrency = Math.max(1, plan.archiveUploadConcurrency || 2);
-    const archiveManifest = archiveStrategy === "batched" ? this.extractArchiveManifest(batch) : undefined;
-    const archiveManager =
-      archiveStrategy === "batched"
-        ? await DrapArchiveManager.fromExisting({
-            batchId: batch.id,
-            uploadService: this.uploadService,
-            batchSize: archiveBatchSize,
-            fallbackBatchSize: archiveFallbackBatchSize,
-            uploadConcurrency: archiveUploadConcurrency,
-            spoolDir: plan.archiveSpoolDir,
-            sourceUrl: plan.sourceUrl || "https://eapp.dra.gov.pk/product_view_web.php",
-            existingManifest: archiveManifest,
-          })
-        : undefined;
-    const seen = new Set<string>();
-    const items: DrapMirrorImportItem[] = [];
 
     let fetchedRows = checkpoint.fetched;
     let parsedRows = checkpoint.parsed;
     let failedRows = checkpoint.failed;
     let duplicateRows = checkpoint.duplicate;
     let retryCount = checkpoint.retries;
-    const checkpointEvery = Math.max(1, plan.checkpointEvery || 25);
-    let fetchTimeTotal = 0;
-    let parseTimeTotal = 0;
-    let dbWriteTimeTotal = 0;
-    let archiveWriteTimeTotal = archiveManager ? archiveManager.getArchiveWriteTotal() : 0;
-    let archiveWriteCount = archiveManager ? archiveManager.getArchiveWriteCount() : 0;
+    let archiveWriteTimeTotal = 0;
+    let archiveWriteCount = 0;
     let htmlSizeTotal = 0;
-    const crawlStartedAt = performance.now();
+    let crawlStartedAt = performance.now();
+
+    try {
+      const archiveStrategy = plan.archiveStrategy || "batched";
+      const archiveBatchSize = Math.max(
+        1,
+        plan.archiveBatchSize || (checkpoint.nextIndex > 0 ? plan.archiveFallbackBatchSize || 500 : 1000),
+      );
+      const archiveFallbackBatchSize = Math.max(1, plan.archiveFallbackBatchSize || 500);
+      const archiveUploadConcurrency = Math.max(1, plan.archiveUploadConcurrency || 2);
+      const archiveManifest = archiveStrategy === "batched" ? this.extractArchiveManifest(batch) : undefined;
+      const archiveManager =
+        archiveStrategy === "batched"
+          ? await DrapArchiveManager.fromExisting({
+              batchId: batch.id,
+              uploadService: this.uploadService,
+              batchSize: archiveBatchSize,
+              fallbackBatchSize: archiveFallbackBatchSize,
+              uploadConcurrency: archiveUploadConcurrency,
+              spoolDir: plan.archiveSpoolDir,
+              sourceUrl: plan.sourceUrl || "https://eapp.dra.gov.pk/product_view_web.php",
+              existingManifest: archiveManifest,
+            })
+          : undefined;
+      const seen = new Set<string>();
+      const items: DrapMirrorImportItem[] = [];
+
+      const checkpointEvery = Math.max(1, plan.checkpointEvery || 25);
+      let fetchTimeTotal = 0;
+      let parseTimeTotal = 0;
+      let dbWriteTimeTotal = 0;
+      let archiveTotalWriteTime = archiveManager ? archiveManager.getArchiveWriteTotal() : 0;
+      let archiveTotalWriteCount = archiveManager ? archiveManager.getArchiveWriteCount() : 0;
+      htmlSizeTotal = 0;
+      crawlStartedAt = performance.now();
 
     for (let index = checkpoint.nextIndex; index < registrations.length; index += 1) {
       const probe = registrations[index];
@@ -430,6 +438,42 @@ export class DrapAcquisitionService {
       metrics,
       items,
     };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error during mirror acquisition";
+      this.logger.error(`Mirror acquisition failed for batch ${batch.id}: ${errorMessage}`);
+
+      await this.prisma.importBatch.update({
+        where: { id: batch.id },
+        data: {
+          status: "COMPLETED_WITH_ERRORS",
+          finishedAt: new Date(),
+          importReport: {
+            batchId: batch.id,
+            status: "COMPLETED_WITH_ERRORS",
+            totalRows: registrations.length,
+            fetchedRows,
+            parsedRows,
+            failedRows: failedRows + 1,
+            duplicateRows,
+            checkpoint: this.buildCheckpoint({
+              batchId: batch.id,
+              nextIndex: checkpoint.nextIndex,
+              lastRegistrationNumber: checkpoint.lastRegistrationNumber,
+              processed: checkpoint.processed,
+              fetched: fetchedRows,
+              parsed: parsedRows,
+              failed: failedRows + 1,
+              duplicate: duplicateRows,
+              retries: retryCount,
+            }),
+            r2Status,
+            errorMessage,
+          } as unknown as Prisma.InputJsonValue,
+        },
+      });
+
+      throw error;
+    }
   }
 
   private normalizePlan(plan: DrapMirrorRunOptions): DrapRegistrationProbe[] {

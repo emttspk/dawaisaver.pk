@@ -338,6 +338,23 @@ export interface DrapMirrorStatusResponse {
   }>;
 }
 
+export interface DrapMirrorDiagnosticsResponse {
+  activeWorkers: number;
+  currentRegistration?: string;
+  lastCheckpoint?: DrapAcquisitionCheckpoint;
+  lastSuccessfulBatch?: {
+    batchId: string;
+    completedAt: string;
+    processed: number;
+  };
+  staleBatchCount: number;
+  staleBatches: Array<{
+    batchId: string;
+    startedAt: string;
+    checkpoint: DrapAcquisitionCheckpoint;
+  }>;
+}
+
 export type DrapAtcMatchMode =
   | "exact_canonical"
   | "alias_match"

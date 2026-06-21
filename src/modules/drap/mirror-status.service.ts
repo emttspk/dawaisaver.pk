@@ -6,6 +6,7 @@ import {
   DrapAcquisitionMetrics,
   DrapArchiveManifest,
   DrapMirrorStatusResponse,
+  DrapMirrorDiagnosticsResponse,
 } from "./drap.types";
 import { getMirrorRuntimeState } from "./drap.freeze";
 
@@ -304,6 +305,114 @@ export class DrapMirrorStatusService {
       archive_integrity: "unknown",
       r2_integrity: "unknown",
       batches: [],
+    };
+  }
+
+  async getMirrorDiagnostics(): Promise<DrapMirrorDiagnosticsResponse> {
+    const staleBatches = await this.prisma.importBatch.findMany({
+      where: {
+        adapterType: "drap-mirror",
+        status: "RUNNING",
+        startedAt: {
+          lt: new Date(Date.now() - 30 * 60 * 1000),
+        },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 10,
+      select: {
+        id: true,
+        startedAt: true,
+        metadata: true,
+      },
+    });
+
+    const lastSuccessful = await this.prisma.importBatch.findFirst({
+      where: {
+        adapterType: "drap-mirror",
+        status: { in: ["COMPLETED", "COMPLETED_WITH_ERRORS"] },
+      },
+      orderBy: { finishedAt: "desc" },
+      select: {
+        id: true,
+        finishedAt: true,
+        metadata: true,
+      },
+    });
+
+    const latestRunning = await this.prisma.importBatch.findFirst({
+      where: {
+        adapterType: "drap-mirror",
+        status: "RUNNING",
+      },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        metadata: true,
+        importReport: true,
+      },
+    });
+
+    const activeWorkers = latestRunning?.metadata && typeof latestRunning.metadata === "object" 
+      ? Number(((latestRunning.metadata as Record<string, unknown>).acquisition as Record<string, unknown>)?.workerCount) || 0 
+      : 0;
+    const currentRegistration = this.extractLastRegistration(latestRunning?.metadata);
+    const lastCheckpoint = this.extractCheckpointFromMetadata(latestRunning?.metadata, latestRunning?.importReport);
+
+    return {
+      activeWorkers,
+      currentRegistration,
+      lastCheckpoint,
+      lastSuccessfulBatch: lastSuccessful
+        ? {
+            batchId: lastSuccessful.id,
+            completedAt: lastSuccessful.finishedAt?.toISOString() || "",
+            processed: lastSuccessful.metadata && typeof lastSuccessful.metadata === "object"
+              ? Number((((lastSuccessful.metadata as Record<string, unknown>).acquisition as Record<string, unknown>)?.checkpoint as Record<string, unknown>)?.processed) || 0
+              : 0,
+          }
+        : undefined,
+      staleBatchCount: staleBatches.length,
+      staleBatches: staleBatches.map((batch) => ({
+        batchId: batch.id,
+        startedAt: batch.startedAt?.toISOString() || "",
+        checkpoint: this.extractCheckpointFromMetadata(batch.metadata, null) || {
+          batchId: batch.id,
+          nextIndex: 0,
+          lastRegistrationNumber: undefined,
+          processed: 0,
+          fetched: 0,
+          parsed: 0,
+          failed: 0,
+          duplicate: 0,
+          retries: 0,
+        },
+      })),
+    };
+  }
+
+  private extractLastRegistration(metadata: unknown): string | undefined {
+    const record = toRecord(metadata);
+    const acquisition = toRecord(record.acquisition);
+    return stringValue(acquisition.lastRegistrationNumber);
+  }
+
+  private extractCheckpointFromMetadata(metadata: unknown, importReport: unknown): DrapAcquisitionCheckpoint | undefined {
+    const metaRecord = toRecord(metadata);
+    const metaCheckpoint = toRecord(metaRecord.acquisition)?.checkpoint;
+    const reportRecord = toRecord(importReport);
+    const reportCheckpoint = toRecord(reportRecord.checkpoint);
+    const checkpoint = metaCheckpoint || reportCheckpoint;
+    if (!checkpoint || typeof checkpoint !== "object") return undefined;
+    return {
+      batchId: stringValue((checkpoint as Record<string, unknown>).batchId),
+      nextIndex: numberValue((checkpoint as Record<string, unknown>).nextIndex) ?? 0,
+      lastRegistrationNumber: stringValue((checkpoint as Record<string, unknown>).lastRegistrationNumber),
+      processed: numberValue((checkpoint as Record<string, unknown>).processed) ?? 0,
+      fetched: numberValue((checkpoint as Record<string, unknown>).fetched) ?? 0,
+      parsed: numberValue((checkpoint as Record<string, unknown>).parsed) ?? 0,
+      failed: numberValue((checkpoint as Record<string, unknown>).failed) ?? 0,
+      duplicate: numberValue((checkpoint as Record<string, unknown>).duplicate) ?? 0,
+      retries: numberValue((checkpoint as Record<string, unknown>).retries) ?? 0,
     };
   }
 }

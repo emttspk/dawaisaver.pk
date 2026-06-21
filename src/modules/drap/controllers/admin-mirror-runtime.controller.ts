@@ -5,6 +5,7 @@ import { DrapMirrorControlService, MirrorControlAction } from "../drap-mirror-co
 import { getMirrorRuntimeState } from "../drap.freeze";
 import { PrismaService } from "../../../database/prisma.service";
 import { DrapAcquisitionService } from "../drap.acquisition.service";
+import { DrapMirrorStatusService } from "../mirror-status.service";
 
 @ApiTags("Admin")
 @Controller("admin/mirror")
@@ -14,6 +15,7 @@ export class AdminMirrorRuntimeController {
     private readonly controlService: DrapMirrorControlService,
     private readonly prisma: PrismaService,
     private readonly acquisitionService: DrapAcquisitionService,
+    private readonly statusService: DrapMirrorStatusService,
   ) {}
 
   @Get("runtime")
@@ -66,6 +68,14 @@ export class AdminMirrorRuntimeController {
   @ApiOkResponse({ description: "R2 configuration status loaded successfully." })
   getR2Status() {
     return this.acquisitionService.verifyR2Configuration();
+  }
+
+  @Get("diagnostics")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get mirror diagnostics including stale batches." })
+  @ApiOkResponse({ description: "Mirror diagnostics loaded successfully." })
+  getMirrorDiagnostics() {
+    return this.statusService.getMirrorDiagnostics();
   }
 
   @Post("control")
