@@ -1,7 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { DrapAcquisitionService } from "../modules/drap/drap.acquisition.service";
-import { DrapService } from "../modules/drap/drap.service";
 import { PrismaService } from "../database/prisma.service";
 import { assertMirrorExecutionAllowed } from "../modules/drap/drap.freeze";
 
@@ -27,7 +26,7 @@ export class DrapMirrorWorker {
   ) {}
 
   async run(config: DrapMirrorJobConfig): Promise<void> {
-    assertMirrorExecutionAllowed();
+    await assertMirrorExecutionAllowed();
     this.logger.log(`Worker ${config.workerId}/${config.workerCount} starting DRAP mirror acquisition`);
 
     const registrations: string[] = [];

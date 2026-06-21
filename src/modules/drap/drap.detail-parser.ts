@@ -34,7 +34,7 @@ export function parseDrapMirrorPage(html: string, sourceUrl?: string): DrapMirro
 
   const registrationNumber =
     lookupField(generalFields, ["Registration No"]) ||
-    firstTextMatch(headerSection, /Reg\s*#\s*([A-Za-z0-9\-\s.\/]+)<\/span>/i) ||
+    firstTextMatch(headerSection, /Reg\s*#\s*([A-Za-z0-9\-\s./]+)<\/span>/i) ||
     firstTextMatch(normalizedHtml, /name="reg_no"[\s\S]*?value="([^"]*)"/i) ||
     "";
 
