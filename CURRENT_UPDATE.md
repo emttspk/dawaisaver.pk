@@ -10,6 +10,14 @@ The dashboard rate of `0.20/sec` is not an observed processing rate and must not
 
 The current slowdown is not explained by DRAP, PostgreSQL, gzip, or R2 latency measurements. The dominant observed condition is worker inactivity/control-plane waiting: the 46,550 snapshot explicitly reported `effectiveState=PAUSED`, `MIRROR_ENABLED=false`, and `MIRROR_MIGRATION_MODE=true`. A later dashboard snapshot showed 47,550 and 17 configured workers, but no authenticated runtime evidence proves that those workers were actively fetching at the time of this audit.
 
+## Fix applied
+
+The runtime gate now treats the persisted mirror control row as authoritative when it exists. A control state of `running` now overrides the env pause gate, while the env values remain the fallback only when no control row is present yet.
+
+- `src/modules/drap/drap.freeze.ts`: moved the control-table check ahead of the env gate and added a `clearPrismaService()` test seam.
+- `src/modules/drap/testing/drap.freeze.test.ts`: added a regression test that proves `running` overrides the env pause gate.
+- Validation: `npm.cmd run build` passed, and the targeted mirror-gate test passed.
+
 ## Timestamp evidence for the last 1,000
 
 | Counter observation | Timestamp (PKT, UTC+05:00) | Evidence |
@@ -79,4 +87,4 @@ At the Railway P40 active-processing rate, 1,000 records require about 79.55 sec
 ## Verification status
 
 - Evidence used: Git history timestamps and snapshots, live public API health, protected endpoint authorization response, application timing implementation, historical P38/P40 live-run reports, Wrangler identity, and Wrangler R2 bucket metadata.
-- Blocked evidence: production DB row timestamps, Coolify container logs/process list, current protected mirror status, current archive manifest, and exact queue/backlog depth.
+- Blocked evidence: production DB row timestamps, Coolify container logs/process list, current protected mirror status, current archive manifest, exact queue/backlog depth, and post-deploy live throughput verification.

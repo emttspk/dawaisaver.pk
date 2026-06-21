@@ -12,6 +12,10 @@ export function setPrismaService(prisma: PrismaService): void {
   prismaService = prisma;
 }
 
+export function clearPrismaService(): void {
+  prismaService = null;
+}
+
 export function isMirrorEnabled(): boolean {
   return parseBoolean(process.env.MIRROR_ENABLED, false);
 }
@@ -21,15 +25,14 @@ export function isMirrorMigrationMode(): boolean {
 }
 
 export async function getMirrorRuntimeState(): Promise<DrapMirrorRuntimeState> {
-  if (!isMirrorEnabled() || isMirrorMigrationMode()) {
-    return "PAUSED";
-  }
-  
   if (prismaService) {
     try {
       const controlRecord = await prismaService.mirrorRuntimeControl.findUnique({
         where: { key: "drap_mirror:control" },
       });
+      if (controlRecord?.state === "running") {
+        return "RUNNING";
+      }
       if (controlRecord?.state === "paused") {
         return "PAUSED";
       }
@@ -40,6 +43,10 @@ export async function getMirrorRuntimeState(): Promise<DrapMirrorRuntimeState> {
       logger.error("Failed to read mirror control state", error);
       return "PAUSED";
     }
+  }
+
+  if (!isMirrorEnabled() || isMirrorMigrationMode()) {
+    return "PAUSED";
   }
   
   return "RUNNING";
