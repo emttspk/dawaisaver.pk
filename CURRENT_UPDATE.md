@@ -408,3 +408,76 @@ GET /api/v1/admin/mirror/diagnostics
 2. Verifying R2 environment variables
 3. Triggering the mirror manually
 4. Monitoring the diagnostics endpoint: `/api/v1/admin/mirror/diagnostics`
+
+## R2 Upload Failure Investigation
+
+### Upload Flow Trace
+1. `DrapAcquisitionService.runMirrorAcquisition()` creates `DrapArchiveManager`
+2. `DrapArchiveManager.append()` buffers entries, flushes when batch size reached
+3. `DrapArchiveManager.flush()` writes gzip file locally, schedules upload
+4. `DrapArchiveManager.uploadSegment()` calls `UploadService.uploadBuffer()`
+5. `UploadService.signedRequest()` builds AWS4-HMAC-SHA256 signature, makes PUT request
+
+### Failure Points Identified
+- **Local files exist**: Segments written to `temp/drap-archive-spool/{batchId}/`
+- **Manifest generated**: `manifest.json` contains segment status
+- **Upload fails**: Error caught, segment marked FAILED, error logged to console
+- **Error not propagated**: `uploadSegment()` catches error, doesn't throw
+
+### Diagnostic Visibility
+The diagnostics endpoint now shows:
+```json
+{
+  "archiveStatus": {
+    "totalSegments": 10,
+    "uploadedSegments": 0,
+    "failedSegments": 10,
+    "failedSegmentDetails": [{
+      "segmentId": "segment-000001",
+      "fileName": "segment-000001-...",
+      "errorMessage": "403 Forbidden: Invalid R2 credentials"
+    }]
+  }
+}
+```
+
+### Likely Causes
+1. **Missing R2 credentials** in Coolify environment
+2. **Wrong bucket name** - verify `R2_BUCKET_NAME=dawaisaver-pk`
+3. **Wrong account ID** - verify `R2_ACCOUNT_ID`
+4. **R2 service disabled** for account
+
+## Archive Validation
+
+### Local Archive Verification
+```bash
+# Check local spool directory
+ls -la temp/drap-archive-spool/
+
+# Check manifest
+cat temp/drap-archive-spool/{batchId}/manifest.json
+
+# Verify gzip files exist
+ls -la temp/drap-archive-spool/{batchId}/*.jsonl.gz
+```
+
+### Mirror End-to-End Validation
+```bash
+# 1. Check R2 env vars in Coolify
+docker exec <api_container> env | grep R2_
+
+# 2. Test R2 connectivity manually
+curl -X PUT \
+  -H "Authorization: AWS4-HMAC-SHA256 Credential=..." \
+  https://85f6a6181b4653c2a45e69cb7ce8a474.r2.cloudflarestorage.com/dawaisaver-pk/test.txt
+
+# 3. Trigger mirror and monitor
+curl -X POST -H "Authorization: Bearer <JWT>" \
+  -H "Content-Type: application/json" \
+  -d '{"action":"start"}' \
+  https://api.dawaisaver.pk/api/v1/admin/mirror/control
+
+# 4. Check diagnostics
+curl -H "Authorization: Bearer <JWT>" \
+  https://api.dawaisaver.pk/api/v1/admin/mirror/diagnostics
+```
