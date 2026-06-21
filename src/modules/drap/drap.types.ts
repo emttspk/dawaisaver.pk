@@ -192,6 +192,7 @@ export interface DrapAcquisitionPlan {
   batchId?: string;
   sourceUrl?: string;
   resumeFrom?: DrapAcquisitionCheckpoint;
+  forceExecution?: boolean;
   mirrorRunId?: string;
   workerId?: number;
   workerCount?: number;

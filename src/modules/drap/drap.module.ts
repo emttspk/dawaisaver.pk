@@ -4,17 +4,33 @@ import { PrismaService } from "../../database/prisma.service";
 import { DrapImportController } from "./controllers/drap-import.controller";
 import { AdminMirrorStatusController } from "./controllers/admin-mirror-status.controller";
 import { AdminMirrorRuntimeController } from "./controllers/admin-mirror-runtime.controller";
+import { AdminMirrorValidationController } from "./controllers/admin-mirror-validation.controller";
 import { DrapMirrorController } from "./controllers/drap-mirror.controller";
 import { DrapAcquisitionService } from "./drap.acquisition.service";
 import { DrapImporter } from "./drap.importer";
+import { DrapValidationService } from "./drap-validation.service";
 import { DrapMirrorStatusService } from "./mirror-status.service";
 import { DrapMirrorControlService } from "./drap-mirror-control.service";
 import { DrapService } from "./drap.service";
+import { UploadService } from "../ocr/upload.service";
 
 @Module({
   imports: [DatabaseModule],
-  controllers: [DrapImportController, AdminMirrorStatusController, AdminMirrorRuntimeController, DrapMirrorController],
-  providers: [DrapMirrorStatusService, DrapMirrorControlService, PrismaService],
+  controllers: [
+    DrapImportController,
+    AdminMirrorStatusController,
+    AdminMirrorRuntimeController,
+    AdminMirrorValidationController,
+    DrapMirrorController,
+  ],
+  providers: [
+    DrapMirrorStatusService,
+    DrapMirrorControlService,
+    DrapValidationService,
+    DrapAcquisitionService,
+    UploadService,
+    PrismaService,
+  ],
 })
 export class DrapModule {
   static register(prisma: PrismaService): DrapService {

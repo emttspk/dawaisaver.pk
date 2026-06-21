@@ -45,7 +45,11 @@ export async function getMirrorRuntimeState(): Promise<DrapMirrorRuntimeState> {
   return "RUNNING";
 }
 
-export async function assertMirrorExecutionAllowed(): Promise<void> {
+export async function assertMirrorExecutionAllowed(options?: { bypass?: boolean }): Promise<void> {
+  if (options?.bypass) {
+    return;
+  }
+
   const state = await getMirrorRuntimeState();
   if (state === "PAUSED") {
     throw new Error(

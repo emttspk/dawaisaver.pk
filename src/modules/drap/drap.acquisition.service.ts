@@ -92,7 +92,7 @@ export class DrapAcquisitionService {
   }
 
   async runMirrorAcquisition(plan: DrapMirrorRunOptions): Promise<DrapMirrorImportSummary> {
-    await assertMirrorExecutionAllowed();
+    await assertMirrorExecutionAllowed(plan.forceExecution ? { bypass: true } : undefined);
     const r2Status = this.verifyR2Configuration();
     const registrations = this.normalizePlan(plan);
     const checkpoint = this.resolveCheckpoint(plan, registrations.length);
