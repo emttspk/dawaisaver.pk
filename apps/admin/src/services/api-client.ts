@@ -1,4 +1,4 @@
-const PRODUCTION_API_BASE = "http://yh5wt7bbkhqsjycey5df0lbe.178.105.221.236.sslip.io/api";
+const PRODUCTION_API_BASE = "/api";
 const DEFAULT_API_BASE = import.meta.env.DEV
   ? "http://localhost:3000/api"
   : PRODUCTION_API_BASE;
