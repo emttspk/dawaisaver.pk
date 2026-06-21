@@ -1,6 +1,7 @@
+const PRODUCTION_API_BASE = "http://yh5wt7bbkhqsjycey5df0lbe.178.105.221.236.sslip.io/api";
 const DEFAULT_API_BASE = import.meta.env.DEV
   ? "http://localhost:3000/api"
-  : "/api";
+  : PRODUCTION_API_BASE;
 
 export const API_BASE = normalizeApiBase(import.meta.env.VITE_API_URL || DEFAULT_API_BASE);
 const TOKEN_KEY = "dawaisaver.admin.accessToken";
