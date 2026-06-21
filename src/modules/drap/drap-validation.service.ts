@@ -51,7 +51,7 @@ export class DrapValidationService {
 
     try {
       const run = await this.acquisitionService.runMirrorAcquisition({
-        batchId: `validation-${Date.now()}-${randomUUID().slice(0, 8)}`,
+        batchId: randomUUID(),
         mirrorRunId: `validation-${Date.now()}`,
         workerId: 1,
         workerCount: 1,
