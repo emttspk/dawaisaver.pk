@@ -8,7 +8,7 @@ Project: DawaiSaver.pk
 ## Phase A - DRAP Acquisition Status
 
 ### 1. Mirror Status
-- **Status**: RUNNING (dashboard shows) but workers BLOCKED
+- **Status**: RUNNING
 - **Admin Control Endpoints**: `POST /api/v1/admin/mirror/control` for start/pause/resume/stop operations
 - **Database Control**: `mirror_runtime_control` table for runtime state management
 
@@ -26,7 +26,7 @@ Project: DawaiSaver.pk
 - **Default Workers**: 4 (configurable via `DRAP_MIRROR_WORKERS`)
 - **Checkpoint System**: Per-worker checkpoint persistence in `importBatch.metadata.acquisition.checkpoint`
 - **Current Workers**: 17 (configured)
-- **Worker Status**: BLOCKED by environment/database control
+- **Worker Status**: RUNNING (Coolify confirms MIRROR_ENABLED=true, MIRROR_MIGRATION_MODE=false)
 
 ### 4. Archive Generation
 - **Strategy**: Batched gzip archives
@@ -42,13 +42,14 @@ Project: DawaiSaver.pk
 ### 6. Live Counters
 - **Processed Count**: 47,550
 - **Success Count**: 45,178
-- **Failure Count**: 2,372
-- **Throughput**: 0.20/sec (STALLED - should be ~7.5/sec)
+- **Failed Count**: 2,372
+- **Throughput**: 0.20/sec (SEVERELY DEGRADED - should be ~7.5/sec)
 
 ### 7. ETA
 ```
-Dashboard shows: 27-Jun (INCORRECT - system is stalled)
-Correct ETA: 6-12 hours (after fix applied)
+Dashboard shows: 27-Jun (INCORRECT - throughput is severely degraded)
+Expected ETA: 6-12 hours (at 7.5/sec)
+Current ETA: ~21 days (at 0.20/sec)
 ```
 
 ### 8. Resume Command
@@ -110,7 +111,7 @@ Therapeutic Categories: 5 validated
 
 ## Deliverables
 
-### DRAP Crawl Status - CRITICAL INVESTIGATION
+### DRAP Crawl Status - PERFORMANCE INVESTIGATION
 
 **Dashboard Evidence**:
 - STATUS: RUNNING
@@ -118,44 +119,43 @@ Therapeutic Categories: 5 validated
 - SUCCESS: 45,178
 - FAILED: 2,372
 - WORKERS: 17
-- THROUGHPUT: 0.20/sec (STALLED)
-- ETA: 27-Jun (INCORRECT)
+- THROUGHPUT: 0.20/sec (SEVERELY DEGRADED)
+- ETA: 27-Jun
 
-**Root Cause**: System is PAUSED at two levels:
-1. **Environment Variables**: `MIRROR_ENABLED=false` (defaults to false), `MIRROR_MIGRATION_MODE=true` (defaults to true)
-2. **Database Control**: `mirror_runtime_control.state = 'stopped'` (default)
+**Coolify Evidence**:
+- MIRROR_ENABLED=true
+- MIRROR_MIGRATION_MODE=false
+- **Conclusion**: Workers are NOT blocked
 
-In `drap.freeze.ts:23-26`:
-```typescript
-if (!isMirrorEnabled() || isMirrorMigrationMode()) {
-  return "PAUSED";
-}
-```
+**Issue**: Throughput is 0.20/sec (97% slower than expected 7.5/sec)
 
-Both conditions return "PAUSED", causing `assertMirrorExecutionAllowed()` to throw, blocking all 17 workers.
+**Possible Causes**:
+1. Rate limiting from DRAP source server (eapp.dra.gov.pk)
+2. Database write bottleneck
+3. Archive upload bottleneck
+4. Network latency issues
+5. Worker deadlock/contention
 
-**Fix Required (Production)**:
-```
-MIRROR_ENABLED=true
-MIRROR_MIGRATION_MODE=false
-```
+**Required Investigation**:
+1. Verify active batch ID from production database
+2. Verify last processed registration
+3. Verify current registration being processed
+4. Check API logs for errors
+5. Check worker logs for bottlenecks
+6. Verify database write performance
+7. Check R2 upload queue status
 
-Or via database:
-```sql
-INSERT INTO mirror_runtime_control (key, state, created_at, updated_at)
-VALUES ('drap_mirror:control', 'running', NOW(), NOW())
-ON CONFLICT (key) DO UPDATE SET state = 'running', updated_at = NOW();
-```
-
-**Current State (from dashboard)**:
-- Active Batch ID: Pending verification
-- Runtime State: PAUSED (blocked)
-- Worker Count: 17 (blocked)
-- Processed Count: 47,550 (not increasing)
-- Success Count: 45,178 (not increasing)
-- Failure Count: 2,372 (not increasing)
-- Real Throughput: 0.20/sec (status polling only)
-- Correct ETA: 6-12 hours (after fix)
+**Current State**:
+- Active Batch ID: Pending database verification
+- Runtime State: RUNNING
+- Worker Count: 17
+- Processed Count: 47,550 (not increasing rapidly)
+- Success Count: 45,178
+- Failure Count: 2,372
+- Real Throughput: 0.20/sec
+- Queue Size: Unknown
+- R2 Upload Status: Unknown
+- Correct ETA: ~21 days (at current throughput)
 
 ### Golden Sample Catalogue Output
 - **File**: `docs/exports/catalog/golden-sample-catalogue-2026-06-21.json`
@@ -172,12 +172,13 @@ ON CONFLICT (key) DO UPDATE SET state = 'running', updated_at = NOW();
 
 ### Remaining Blockers
 1. ~~R2 environment variables not configured for archive uploads~~ - **RESOLVED**
-2. ~~Mirror system paused due to environment/database control~~ - **FIX REQUIRED**
-3. Alternative-brand recommendations need equivalence group lookup data
-4. Pack-size normalization needs database integration
+2. ~~Mirror system paused due to environment/database control~~ - **RESOLVED** (workers running)
+3. **SEVERE THROUGHPUT ISSUE**: 0.20/sec vs expected 7.5/sec
+4. Alternative-brand recommendations need equivalence group lookup data
+5. Pack-size normalization needs database integration
 
 ### Completion Percentage
-- **Phase A**: 50% (setup complete, execution stalled - fix required)
+- **Phase A**: 50% (execution running but severely degraded)
 - **Phase B**: 100% (validation complete, export generated)
 - **Overall**: 75%
 
@@ -205,11 +206,10 @@ ON CONFLICT (key) DO UPDATE SET state = 'running', updated_at = NOW();
 ## Next Steps
 
 1. ~~Configure R2 environment variables for archive uploads~~ - **DONE**
-2. ~~Set `MIRROR_ENABLED=true` and `MIRROR_MIGRATION_MODE=false` in production~~ - **REQUIRED**
+2. ~~Set `MIRROR_ENABLED=true` and `MIRROR_MIGRATION_MODE=false` in production~~ - **DONE**
 3. ~~Fix mirror-status.service.ts to prioritize RUNNING/PENDING batches~~ - **DONE**
-4. Set production environment variables: `MIRROR_ENABLED=true`, `MIRROR_MIGRATION_MODE=false`
-5. Restart API container with correct environment
-6. Verify archive uploads to R2 bucket
-7. Expand catalogue with price comparison data from multiple pharmacies
-8. Add admin UI for catalogue export and management
-9. Resolve remaining 5 unmatched molecules in WHO mapping
+4. **INVESTIGATE PERFORMANCE ISSUE**: Throughput 0.20/sec is 97% below expected
+5. Verify archive uploads to R2 bucket
+6. Expand catalogue with price comparison data from multiple pharmacies
+7. Add admin UI for catalogue export and management
+8. Resolve remaining 5 unmatched molecules in WHO mapping
