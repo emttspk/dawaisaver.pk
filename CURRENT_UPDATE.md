@@ -20,8 +20,8 @@ Project: DawaiSaver.pk
 
 - Rebuilt the admin application from source with `VITE_API_URL=/api`.
 - Deployed rebuilt asset `index-b79fa125.js` and the Pages Functions bundle with Wrangler.
-- New production deployment: `00dbb357`.
-- Deployed Git commit SHA: `13f0932d1373246ec76e264ff08ab66f490a802a`.
+- Initial repaired production deployment: `00dbb357`, sourced from `13f0932d1373246ec76e264ff08ab66f490a802a`.
+- Durable Git-owned deployment verification: `126755bb`, sourced from `38fbf805c7fb612ff8e0297c3a70b74c5bb2a244`.
 - Cloudflare production variables contain secret `BACKEND_ORIGIN`; no production `VITE_API_URL` variable is configured. The build safely uses the repository-local `/api` value.
 - Cloudflare Git builds now use `apps/admin` as the root, `npm run build` as the build command, and `dist` as the output directory; this prevents successful-but-empty Pages deployments.
 
