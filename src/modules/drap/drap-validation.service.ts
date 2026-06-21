@@ -50,20 +50,20 @@ export class DrapValidationService {
     await this.controlService.resume();
 
     try {
-      const run = await this.acquisitionService.runMirrorAcquisition({
-        batchId: randomUUID(),
-        mirrorRunId: `validation-${Date.now()}`,
-        workerId: 1,
-        workerCount: 1,
+        const run = await this.acquisitionService.runMirrorAcquisition({
+          batchId: randomUUID(),
+          mirrorRunId: `validation-${Date.now()}`,
+          workerId: 1,
+          workerCount: 1,
         sourceUrl: process.env.DRAP_SOURCE_URL || "https://eapp.dra.gov.pk/product_view_web.php",
-        registrations,
-        checkpointEvery: 25,
-        archiveStrategy: "batched",
-        archiveBatchSize: 1000,
-        archiveFallbackBatchSize: 500,
-        archiveUploadConcurrency: 2,
-        forceExecution: true,
-      });
+          registrations,
+          checkpointEvery: 25,
+          archiveStrategy: "batched",
+          archiveBatchSize: 250,
+          archiveFallbackBatchSize: 250,
+          archiveUploadConcurrency: 1,
+          forceExecution: true,
+        });
 
       const after = await this.mirrorStatusService.getMirrorStatus();
       await this.controlService.pause();
