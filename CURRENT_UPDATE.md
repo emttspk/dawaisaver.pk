@@ -194,6 +194,88 @@ docker exec <api_container_id> env | grep -E 'MIRROR_|DRAP_'
 3. **Trigger mirror**: Run `wrangler` or manual trigger if auto-schedule is not configured
 4. **Monitor workers**: Check if workers are actually fetching from DRAP
 
+## Root Cause: Stale RUNNING Batches
+
+**56 batches remain in RUNNING status because exceptions during processing prevent status updates.**
+
+### Code Path Analysis:
+
+1. **Batch Creation** (`src/modules/drap/drap.acquisition.service.ts:495-524`):
+   - Batch created with `status: "RUNNING"` at line 506
+   - No completion handling if exception occurs
+
+2. **Processing Loop** (`src/modules/drap/drap.acquisition.service.ts:137-341`):
+   - Main for-loop processes registrations
+   - **No try-catch wrapping the entire loop**
+   - If exception occurs (network, parse, DB), the function throws
+   - Lines 349-416 (status update to COMPLETED) never execute
+
+3. **Job Runner** (`src/jobs/drap-mirror.job.ts:142`):
+   - `await acquisitionService.runMirrorAcquisition(plan)` can throw
+   - No try-catch to handle failures
+   - Worker result never captured
+
+4. **Worker** (`src/workers/drap-mirror.worker.ts:63`):
+   - Same issue - no exception handling
+
+5. **`MIRROR_MIGRATION_MODE` default** (`src/modules/drap/drap.freeze.ts:24`):
+   - Defaults to `true`, causing PAUSED state
+   - Overrides env vars if DB control record doesn't exist
+
+### Fix Required
+
+**Add try-catch-finally blocks** to ensure batch status is always updated:
+
+```typescript
+// In drap.acquisition.service.ts, wrap the processing loop:
+async runMirrorAcquisition(plan: DrapMirrorRunOptions): Promise<DrapMirrorImportSummary> {
+  // ... setup code ...
+  let batch = await this.ensureBatch(...);
+  
+  try {
+    // ... processing loop ...
+  } catch (error) {
+    // Update batch to COMPLETED_WITH_ERRORS on failure
+    await this.prisma.importBatch.update({
+      where: { id: batch.id },
+      data: { 
+        status: "COMPLETED_WITH_ERRORS",
+        finishedAt: new Date(),
+      },
+    });
+    throw error;
+  }
+}
+```
+
+### Migration Plan
+
+```sql
+-- 1. Find stale RUNNING batches
+SELECT id, created_at, total_rows 
+FROM import_batches 
+WHERE adapter_type = 'drap-mirror' AND status = 'RUNNING'
+ORDER BY created_at DESC;
+
+-- 2. Count stale batches
+SELECT COUNT(*) as stale_count 
+FROM import_batches 
+WHERE adapter_type = 'drap-mirror' AND status = 'RUNNING';
+
+-- 3. Reset stale batches to PENDING (safe for retry)
+UPDATE import_batches 
+SET status = 'PENDING' 
+WHERE adapter_type = 'drap-mirror' AND status = 'RUNNING';
+
+-- 4. Verify fix
+SELECT status, COUNT(*) as count 
+FROM import_batches 
+WHERE adapter_type = 'drap-mirror' 
+GROUP BY status;
+```
+
+**Do not run production SQL yet** - requires verification.
+
 ## Verification status
 
 - Evidence used: Git history timestamps and snapshots, live public API health, protected endpoint authorization response, application timing implementation, historical P38/P40 live-run reports, Wrangler identity, and Wrangler R2 bucket metadata.
