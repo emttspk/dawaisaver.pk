@@ -366,7 +366,13 @@ GET /api/v1/admin/mirror/diagnostics
   "staleBatches": [{ "batchId": "...", "startedAt": "...", "checkpoint": {...}, "ageHours": 48 }],
   "warnings": ["56 batches in RUNNING state", "2 stale batches older than 24h"],
   "r2Status": { "configured": true, "accountId": "85f6...", "bucketName": "dawaisaver-pk" },
-  "archiveStatus": { "totalSegments": 10, "uploadedSegments": 0, "failedSegments": 10, "pendingSegments": 0 },
+  "archiveStatus": { 
+    "totalSegments": 10, 
+    "uploadedSegments": 0, 
+    "failedSegments": 10, 
+    "pendingSegments": 0,
+    "failedSegmentDetails": [{ "segmentId": "segment-000001", "fileName": "segment-000001-...", "errorMessage": "403 Forbidden: Invalid R2 credentials" }]
+  },
   "workerHeartbeat": { "workerId": "worker-1", "lastActivityAt": "2026-06-21T21:00:00Z", "ageSeconds": 3600 }
 }
 ```
@@ -391,7 +397,7 @@ GET /api/v1/admin/mirror/diagnostics
 2. **User**: Set `MIRROR_MIGRATION_MODE=false` in Coolify
 3. **User**: Verify R2 env vars are correctly set
 4. **User**: Trigger mirror via API or scheduler
-5. **Dev**: Add error logging in `DrapArchiveManager.uploadSegment()` for R2 failures
+5. **Dev**: ✅ Error logging added for R2 failures (commit `4b9f462`)
 
 ## Updated Completion Percentage
 
