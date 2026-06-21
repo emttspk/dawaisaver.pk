@@ -3,36 +3,38 @@
 Date: 2026-06-21
 Project: DawaiSaver.pk
 
+## Incident Result
+
+- Production mirror dashboard restored at `https://dawaisaver-admin.pages.dev/#/admin/mirror-status`.
+- Full DRAP crawl remains paused and was not started during this repair.
+- Completion percentage: 99%.
+
 ## Root Cause
 
-- The admin mirror dashboard was still resolving its live data requests through the stale `/api/admin/mirror-status` path in the deployed Pages bundle.
-- The production backend itself was healthy; the failure was in the admin frontend deployment artifact and its API target selection.
+- Cloudflare Pages production was serving stale asset `index-062f52c1.js` even though source commit `13f0932d1373246ec76e264ff08ab66f490a802a` already selected the same-origin `/api` proxy.
+- The stale asset contained `http://yh5wt7bbkhqsjycey5df0lbe.178.105.221.236.sslip.io` and did not contain `/api/admin/mirror-status`.
+- Chrome blocked the HTTP API request from the HTTPS Pages application as mixed content. The failed browser request therefore had no HTTP response status; `Failed to fetch` was the frontend symptom.
+- The same-origin Pages proxy was healthy independently: unauthenticated `GET /api/admin/mirror-status` returned the expected `401`, not `404`, and included valid CORS headers.
 
-## Production Verification
+## Fix Applied
 
-- Production admin Pages deployment is healthy at `https://dawaisaver-admin.pages.dev/`.
-- Latest deployed admin commit SHA: `8d7ea6e0f0e6007b43318dc0f3129d5c6237accc`.
-- The live deployed admin bundle contains the corrected backend origin and no longer contains the stale `/api/admin/mirror-status` path.
-- Authenticated production API verification succeeded against the Coolify backend origin.
+- Rebuilt the admin application from source with `VITE_API_URL=/api`.
+- Deployed rebuilt asset `index-b79fa125.js` and the Pages Functions bundle with Wrangler.
+- New production deployment: `00dbb357`.
+- Deployed Git commit SHA: `13f0932d1373246ec76e264ff08ab66f490a802a`.
+- Cloudflare production variables contain secret `BACKEND_ORIGIN`; no production `VITE_API_URL` variable is configured. The build safely uses the repository-local `/api` value.
 
-## Live Mirror Data
+## Production Proof
 
-- Mirror status: `PAUSED`
-- Runtime state: `PAUSED`
-- Processed: `1000`
-- Success: `957`
-- Failed: `43`
-- Duplicates: `0`
-- Archive uploads: `4`
-- Archive status endpoint is healthy and returns populated batch data.
+- Cache-bypassed production HTML references `/assets/index-b79fa125.js`.
+- New bundle contains zero raw HTTP Coolify-origin matches and uses same-origin `/api`.
+- `OPTIONS /api/admin/mirror-status` returns `204` with the required authorization and CORS headers.
+- Authenticated browser request `GET https://dawaisaver-admin.pages.dev/api/admin/mirror-status` returns `200`.
+- Authenticated browser request `GET https://dawaisaver-admin.pages.dev/api/admin/mirror/runtime` returns `200`.
+- Browser capture reports zero mirror network failures and zero console errors.
+- Production DOM renders the mirror status metrics and does not render `Status load failed`.
 
-## Dashboard Status
+## Remaining Blocker
 
-- Mirror dashboard data endpoints are working again from production.
-- Status cards can now load from the live backend API.
-- Full DRAP crawl remains on hold until the final operational approval is given.
-
-## Progress
-
-- Completion percentage: 99%
-- Remaining blockers: no technical blocker is currently known; only the decision to begin the full DRAP crawl remains outstanding.
+- No dashboard technical blocker remains.
+- Full DRAP acquisition still requires explicit operational approval.
