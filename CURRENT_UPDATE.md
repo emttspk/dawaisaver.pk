@@ -23,6 +23,7 @@ Project: DawaiSaver.pk
 - New production deployment: `00dbb357`.
 - Deployed Git commit SHA: `13f0932d1373246ec76e264ff08ab66f490a802a`.
 - Cloudflare production variables contain secret `BACKEND_ORIGIN`; no production `VITE_API_URL` variable is configured. The build safely uses the repository-local `/api` value.
+- Cloudflare Git builds now use `apps/admin` as the root, `npm run build` as the build command, and `dist` as the output directory; this prevents successful-but-empty Pages deployments.
 
 ## Production Proof
 
