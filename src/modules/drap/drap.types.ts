@@ -352,7 +352,15 @@ export interface DrapMirrorDiagnosticsResponse {
     batchId: string;
     startedAt: string;
     checkpoint: DrapAcquisitionCheckpoint;
+    ageHours: number;
   }>;
+  warnings: string[];
+  r2Status: {
+    configured: boolean;
+    accountId?: string;
+    bucketName?: string;
+    publicBaseUrl?: string;
+  };
 }
 
 export type DrapAtcMatchMode =

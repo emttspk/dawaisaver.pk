@@ -309,12 +309,15 @@ export class DrapMirrorStatusService {
   }
 
   async getMirrorDiagnostics(): Promise<DrapMirrorDiagnosticsResponse> {
+    const now = new Date();
+    const staleThreshold = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    
     const staleBatches = await this.prisma.importBatch.findMany({
       where: {
         adapterType: "drap-mirror",
         status: "RUNNING",
         startedAt: {
-          lt: new Date(Date.now() - 30 * 60 * 1000),
+          lt: staleThreshold,
         },
       },
       orderBy: { createdAt: "desc" },
@@ -323,6 +326,13 @@ export class DrapMirrorStatusService {
         id: true,
         startedAt: true,
         metadata: true,
+      },
+    });
+
+    const allRunningBatches = await this.prisma.importBatch.count({
+      where: {
+        adapterType: "drap-mirror",
+        status: "RUNNING",
       },
     });
 
@@ -358,6 +368,14 @@ export class DrapMirrorStatusService {
     const currentRegistration = this.extractLastRegistration(latestRunning?.metadata);
     const lastCheckpoint = this.extractCheckpointFromMetadata(latestRunning?.metadata, latestRunning?.importReport);
 
+    const warnings: string[] = [];
+    if (allRunningBatches > 0) {
+      warnings.push(`${allRunningBatches} batches in RUNNING state - check for stuck workers`);
+    }
+    if (staleBatches.length > 0) {
+      warnings.push(`${staleBatches.length} stale batches older than 24h detected`);
+    }
+
     return {
       activeWorkers,
       currentRegistration,
@@ -372,21 +390,40 @@ export class DrapMirrorStatusService {
           }
         : undefined,
       staleBatchCount: staleBatches.length,
-      staleBatches: staleBatches.map((batch) => ({
-        batchId: batch.id,
-        startedAt: batch.startedAt?.toISOString() || "",
-        checkpoint: this.extractCheckpointFromMetadata(batch.metadata, null) || {
+      staleBatches: staleBatches.map((batch) => {
+        const startedAt = batch.startedAt || now;
+        const ageHours = startedAt ? Math.round((now.getTime() - startedAt.getTime()) / (1000 * 60 * 60)) : 0;
+        return {
           batchId: batch.id,
-          nextIndex: 0,
-          lastRegistrationNumber: undefined,
-          processed: 0,
-          fetched: 0,
-          parsed: 0,
-          failed: 0,
-          duplicate: 0,
-          retries: 0,
-        },
-      })),
+          startedAt: startedAt.toISOString(),
+          checkpoint: this.extractCheckpointFromMetadata(batch.metadata, null) || {
+            batchId: batch.id,
+            nextIndex: 0,
+            lastRegistrationNumber: undefined,
+            processed: 0,
+            fetched: 0,
+            parsed: 0,
+            failed: 0,
+            duplicate: 0,
+            retries: 0,
+          },
+          ageHours,
+        };
+      }),
+      warnings,
+      r2Status: this.getR2Status(),
+    };
+  }
+
+  private getR2Status(): { configured: boolean; accountId?: string; bucketName?: string; publicBaseUrl?: string } {
+    const accountId = process.env.R2_ACCOUNT_ID?.trim();
+    const bucketName = process.env.R2_BUCKET_NAME?.trim();
+    const publicBaseUrl = process.env.R2_PUBLIC_BASE_URL?.trim();
+    return {
+      configured: Boolean(accountId && bucketName),
+      accountId,
+      bucketName,
+      publicBaseUrl,
     };
   }
 
