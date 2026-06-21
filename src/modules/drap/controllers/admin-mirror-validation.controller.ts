@@ -1,9 +1,16 @@
 import { Body, Controller, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Type } from "class-transformer";
+import { IsInt, IsOptional, Max, Min } from "class-validator";
 import { AdminGuard } from "../../../common/guards/admin.guard";
 import { DrapValidationService } from "../drap-validation.service";
 
 class ValidationRunDto {
+  @Type(() => Number)
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(1000)
   requested?: number;
 }
 
