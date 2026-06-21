@@ -267,10 +267,23 @@ export class DrapMirrorStatusService {
   private fallbackCurrentRun(batches: MirrorBatchRow[]): MirrorBatchRow[] {
     const latest = batches[0];
     if (!latest) return [];
+    
+    const latestStatus = latest.status;
+    const isLatestRunning = latestStatus === "RUNNING" || latestStatus === "PENDING";
+    
+    if (isLatestRunning) {
+      return [latest];
+    }
+    
     const anchor = latest.startedAt ?? latest.createdAt;
+    const windowMs = isLatestRunning ? 15 * 60 * 1000 : 5 * 60 * 1000;
+    
     return batches.filter((batch) => {
+      if (batch.status === "RUNNING" || batch.status === "PENDING") {
+        return true;
+      }
       const startedAt = batch.startedAt ?? batch.createdAt;
-      return Math.abs(startedAt.getTime() - anchor.getTime()) <= 15 * 60 * 1000;
+      return Math.abs(startedAt.getTime() - anchor.getTime()) <= windowMs;
     });
   }
 
