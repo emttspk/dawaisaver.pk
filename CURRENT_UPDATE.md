@@ -18,6 +18,14 @@ The runtime gate now treats the persisted mirror control row as authoritative wh
 - `src/modules/drap/testing/drap.freeze.test.ts`: added a regression test that proves `running` overrides the env pause gate.
 - Validation: `npm.cmd run build` passed, and the targeted mirror-gate test passed.
 
+## Latest live verification attempt
+
+- SSH to `root@178.105.221.236` and `ubuntu@178.105.221.236` with the tracked key still returns `Permission denied (publickey,password)`.
+- Wrangler identity is valid, but `wrangler r2 bucket info dawaisaver-pk` still reports `object_count: 0` and `bucket_size: 0 B`.
+- No authenticated admin or database session was reachable from this workspace, so a true 10-minute live counter observation could not be completed here.
+- The earlier runtime fix is still the best available mitigation, but post-deploy counter movement remains unverified from this shell.
+- The latest verifiable completion percentage remains **95.1%** if the target is still 50,000 registrations, but that is a stale snapshot value, not a fresh live read.
+
 ## Timestamp evidence for the last 1,000
 
 | Counter observation | Timestamp (PKT, UTC+05:00) | Evidence |
@@ -51,11 +59,13 @@ At the Railway P40 active-processing rate, 1,000 records require about 79.55 sec
 - Production API health: HTTP 200 on 2026-06-21; the application is reachable.
 - Protected mirror status: HTTP 401 without an authorized admin session; current worker execution cannot be proven from the public endpoint.
 - SSH: `root`, `ubuntu`, `nazim`, and `coolify` access rejected the available documented keys; container/process inspection is blocked.
+- Latest SSH retry on `root` and `ubuntu` again failed with `Permission denied (publickey,password)`.
 - Last proven state at 46,550: paused, so workers were waiting rather than processing.
 - Later state at 47,550: 17 workers were configured; configured worker count does not prove active work.
 - Queue depth: **unverified**. This mirror partitions registration ranges across in-process workers; no Cloudflare Queue binding exists in the mirror code. The relevant backlog is remaining assigned registrations plus archive `pendingSegments`, neither of which is publicly readable.
 - Wrangler 4.100.0 authentication: verified for Cloudflare account `85f6...a474`.
 - R2 bucket `dawaisaver-pk`: **0 objects, 0 B** at audit time. Therefore archive upload duration for the current run is unavailable and successful persistence to this named bucket/account is not verified.
+- Latest Wrangler probe confirmed the same empty-bucket state.
 - Last successful processed counter: **47,550** (45,178 successes, 2,372 failures) from the last durable dashboard snapshot.
 - Last exact registration number: not exposed by the 47,550 snapshot. The last independently recorded historical Railway run reported `last_registration_seen=053849` and a highest batch checkpoint of `091349`; neither should be mislabeled as the current Hetzner value.
 
@@ -82,7 +92,7 @@ At the Railway P40 active-processing rate, 1,000 records require about 79.55 sec
 
 - No application code, schema, API contract, WHO normalization, matching logic, composition generation, search behavior, or price-intelligence behavior was changed.
 - The audit changed documentation only.
-- The superseded current-update document was archived at `docs/archive/CURRENT_UPDATE_2026-06-21_pre_forensic.md`; component READMEs and generated catalogue documentation remain active and were not incorrectly archived.
+- The superseded current-update document was removed after being archived elsewhere; component READMEs and generated catalogue documentation remain active and were not incorrectly archived.
 
 ## Verification status
 
