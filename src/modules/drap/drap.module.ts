@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { DatabaseModule } from "../../database/database.module";
 import { PrismaService } from "../../database/prisma.service";
+import { OcrModule } from "../ocr/ocr.module";
 import { DrapImportController } from "./controllers/drap-import.controller";
 import { AdminMirrorStatusController } from "./controllers/admin-mirror-status.controller";
 import { AdminMirrorRuntimeController } from "./controllers/admin-mirror-runtime.controller";
@@ -15,7 +16,7 @@ import { DrapService } from "./drap.service";
 import { UploadService } from "../ocr/upload.service";
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, OcrModule],
   controllers: [
     DrapImportController,
     AdminMirrorStatusController,
@@ -28,7 +29,6 @@ import { UploadService } from "../ocr/upload.service";
     DrapMirrorControlService,
     DrapValidationService,
     DrapAcquisitionService,
-    UploadService,
     PrismaService,
   ],
 })
@@ -42,7 +42,7 @@ export class DrapModule {
   }
 
   static createAcquisitionService(prisma: PrismaService): DrapAcquisitionService {
-    return new DrapAcquisitionService(prisma);
+    return new DrapAcquisitionService(prisma, new UploadService());
   }
 }
 

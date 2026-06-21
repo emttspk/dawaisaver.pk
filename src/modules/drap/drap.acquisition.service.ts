@@ -42,7 +42,7 @@ interface DrapBatchContext {
 export class DrapAcquisitionService {
   private readonly uploadService: UploadService;
 
-  constructor(private readonly prisma: PrismaService, uploadService = new UploadService()) {
+  constructor(private readonly prisma: PrismaService, uploadService: UploadService) {
     this.uploadService = uploadService;
   }
 

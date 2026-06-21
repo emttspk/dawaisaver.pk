@@ -1,5 +1,6 @@
 import { strict as assert } from "node:assert";
 import { DrapAcquisitionService } from "../drap.acquisition.service";
+import { UploadService } from "../../ocr/upload.service";
 
 describe("DRAP acquisition service", () => {
   const originalEnv = { ...process.env };
@@ -22,7 +23,7 @@ describe("DRAP acquisition service", () => {
 
     process.env.R2_BUCKET_NAME = "dawaisaver-pk";
 
-    const service = new DrapAcquisitionService({} as any);
+    const service = new DrapAcquisitionService({} as any, new UploadService());
     const report = service.verifyR2Configuration();
 
     assert.deepEqual(report.required, [
@@ -42,7 +43,7 @@ describe("DRAP acquisition service", () => {
   });
 
   it("enumerates and deduplicates registration probes", () => {
-    const service = new DrapAcquisitionService({} as any);
+    const service = new DrapAcquisitionService({} as any, new UploadService());
 
     const explicit = service.enumerateRegistrations({
       registrations: ["031356", "031356", "EX-031356"],
