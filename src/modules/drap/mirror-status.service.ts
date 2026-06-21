@@ -372,12 +372,20 @@ export class DrapMirrorStatusService {
     const archive = latestRunning?.importReport && typeof latestRunning.importReport === "object"
       ? (latestRunning.importReport as Record<string, unknown>).archive as Record<string, unknown> | undefined
       : undefined;
+    
     const archiveStatus = archive ? {
       totalSegments: Number(archive.totalSegments) || 0,
       uploadedSegments: Number(archive.uploadedSegments) || 0,
       failedSegments: Number(archive.failedSegments) || 0,
       pendingSegments: Number(archive.pendingSegments) || 0,
-    } : { totalSegments: 0, uploadedSegments: 0, failedSegments: 0, pendingSegments: 0 };
+      failedSegmentDetails: Array.isArray((archive.segments as unknown[]) || [])
+        ? (archive.segments as Array<Record<string, unknown>>).filter((s) => s.status === "FAILED").map((s) => ({
+            segmentId: String(s.segmentId || ""),
+            fileName: String(s.fileName || ""),
+            errorMessage: typeof s.errorMessage === "string" ? s.errorMessage : undefined,
+          }))
+        : [],
+    } : { totalSegments: 0, uploadedSegments: 0, failedSegments: 0, pendingSegments: 0, failedSegmentDetails: [] };
 
     const warnings: string[] = [];
     if (allRunningBatches > 0) {

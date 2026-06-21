@@ -366,6 +366,11 @@ export interface DrapMirrorDiagnosticsResponse {
     uploadedSegments: number;
     failedSegments: number;
     pendingSegments: number;
+    failedSegmentDetails?: Array<{
+      segmentId: string;
+      fileName: string;
+      errorMessage?: string;
+    }>;
   };
   workerHeartbeat?: {
     workerId?: string;
