@@ -1,97 +1,66 @@
 # CURRENT UPDATE
 
-Date: 2026-06-22 20:30 PKT
+Date: 2026-06-22 20:45 PKT
 Project: DawaiSaver.pk
-Update: DRAP Acquisition Startup & Git Cleanup Complete
+Update: DRAP Acquisition Deployment Instructions
 
-## 1. Git Repository Final Cleanup (COMPLETED)
+## 1. Git Repository Status (COMPLETED)
 
-### Status
-- Repository was clean (no changes to commit)
-- Untracked directories properly ignored by `.gitignore`
-
-### Actions Taken
-1. Updated `.gitignore` with missing exclusions:
-   - `node_modules/`, `dist/`, `build/`, `coverage/`
-   - `*.csv`, `*.xlsx`
-   - `apps/admin/node_modules/`, `apps/web/node_modules/`
-   - `.env.test`, `.kilo/`, `.wrangler-*`
-
-2. Archived `coolifyautomation.md` to `docs/archive/COOLIFY_AUTOMATION.md`
+Repository is clean. All changes committed and pushed.
 
 ---
 
 ## 2. Mirror Status Dashboard Fix (COMPLETED)
 
-### Problem
-Dashboard showed stale metrics:
-- UI: Processed: 47,550, Success: 45,178, Failed: 2,372
-- Database: SAVED: 372,149, FAILED: 25,919
+### Files Changed
+- `src/cli/drap-mirror.ts` - New CLI entry point
+- `package.json` - Added `drap:mirror` script
+- `src/modules/drap/mirror-status.service.ts` - Added `getCurrentBatchItemTotals()`
+- `.gitignore` - Added missing exclusions
 
-### Solution
-Updated `src/modules/drap/mirror-status.service.ts`:
-- Added `getCurrentBatchItemTotals()` method using Prisma `groupBy` on `import_batch_items`
-- Modified `getMirrorStatus()` to query actual database counts
+### Build Result
+**PASS** - `npm run build` completed successfully
 
-### Build & Deploy
-- Build: **PASS**
-- Commit: `806cd4d`, `97b9b91`, `0ce2f9c`
-- Push: `main` branch
-
-**Dashboard values:**
-- Processed: 398,068
-- Success: 372,149
-- Failed: 25,919
+### Git Result
+Commits: `806cd4d`, `97b9b91`, `0ce2f9c`, `5a46190`
+Push: `main` → `origin/main`
 
 ---
 
-## 3. DRAP Acquisition Startup (COMPLETED)
+## 3. DRAP Acquisition Deployment (PENDING COOLIFY)
 
-### Root Cause
-`runDrapMirrorJob()` in `src/jobs/drap-mirror.job.ts` was exported but **never invoked** by the NestJS application. No scheduler or cron was configured to call it.
+### Code Status
+CLI command ready: `npm run drap:mirror`
 
-### Solution
-Created `src/cli/drap-mirror.ts` CLI entry point:
-```typescript
-import { runDrapMirrorJob } from "../jobs/drap-mirror.job";
-import { Logger } from "@nestjs/common";
+### Coolify Deployment Required
+The application container (`yh5wt7bbkhqsjycey5df0lbe`) is running an older image.
+**Manual redeployment through Coolify UI is required** to pick up the new code.
 
-async function main() {
-  const logger = new Logger("DrapMirrorCLI");
-  await runDrapMirrorJob(logger);
-}
+### Steps to Deploy
+1. Log into Coolify dashboard
+2. Navigate to the application
+3. Click "Deploy" or "Redeploy"
+4. Wait for build to complete
+
+### Environment Variables (Set in Coolify)
+```
+DRAP_MIRROR_RUN_ID=run-20260623-001
+DRAP_MIRROR_START_REGISTRATION=091350
+DRAP_MIRROR_END_REGISTRATION=135068
+DRAP_MIRROR_TOTAL_REGISTRATIONS=43719
 ```
 
-Added npm script: `"drap:mirror": "ts-node -r dotenv/config src/cli/drap-mirror.ts"`
-
-### How to Start Acquisition
-
-On production host, run:
-```bash
-cd /app
-export DRAP_MIRROR_RUN_ID=run-20260623-001
-export DRAP_MIRROR_START_REGISTRATION=091350
-export DRAP_MIRROR_END_REGISTRATION=135068
-export DRAP_MIRROR_TOTAL_REGISTRATIONS=43719
-npm run drap:mirror
+### R2 Configuration (Verify in Coolify)
 ```
-
-### Environment Variables Required
-| Variable | Value | Required |
-|----------|-------|----------|
-| DRAP_MIRROR_RUN_ID | run-20260623-001 | Yes |
-| DRAP_MIRROR_START_REGISTRATION | 091350 | Yes |
-| DRAP_MIRROR_END_REGISTRATION | 135068 | Yes |
-| DRAP_MIRROR_TOTAL_REGISTRATIONS | 43719 | Yes |
-| DRAP_MIRROR_WORKERS | 4 | No (default) |
-| R2_ACCOUNT_ID | (your account) | Yes |
-| R2_ACCESS_KEY_ID | (your key) | Yes |
-| R2_SECRET_ACCESS_KEY | (your secret) | Yes |
-| R2_BUCKET_NAME | dawaisaver-pk | Yes |
+R2_ACCOUNT_ID=<your-account-id>
+R2_ACCESS_KEY_ID=<your-access-key>
+R2_SECRET_ACCESS_KEY=<your-secret-key>
+R2_BUCKET_NAME=dawaisaver-pk
+```
 
 ---
 
-## 4. Current State
+## 4. Current State (Pre-Deployment)
 
 | Metric | Value |
 |--------|-------|
@@ -103,15 +72,34 @@ npm run drap:mirror
 
 ---
 
-## 5. R2 Segment Failures (INVESTIGATION COMPLETE)
+## 5. Post-Deployment Verification
 
-| Metric | Count |
+After Coolify deployment, run on production:
+```bash
+export DRAP_MIRROR_RUN_ID=run-20260623-001
+export DRAP_MIRROR_START_REGISTRATION=091350
+export DRAP_MIRROR_END_REGISTRATION=135068
+export DRAP_MIRROR_TOTAL_REGISTRATIONS=43719
+npm run drap:mirror
+```
+
+### Verification Checklist
+- [ ] New batches created with `run-20260623-001`
+- [ ] Registrations >091349 being processed
+- [ ] Dashboard showing advancing registration numbers
+- [ ] R2 archive segments uploading
+- [ ] Progress bar increasing
+
+---
+
+## 6. Expected Results
+
+| Metric | Value |
 |--------|-------|
-| Referenced segments expected | 389 |
-| Segments present | 380 |
-| Missing segments | 9 |
-
-All 9 missing segments cover registrations 059300–062299. Failed due to missing `R2_ACCOUNT_ID` at upload time.
+| Current registration | 091349 → 135068 (advancing) |
+| Remaining registrations | 43,719 → 0 (decreasing) |
+| Completion % | 0% → 100% |
+| Estimated finish | Depends on throughput |
 
 ---
 
@@ -119,27 +107,12 @@ All 9 missing segments cover registrations 059300–062299. Failed due to missin
 
 | File | Change |
 |------|--------|
-| `src/cli/drap-mirror.ts` | New CLI entry point |
+| `src/cli/drap-mirror.ts` | New file |
 | `package.json` | Added `drap:mirror` script |
 | `src/modules/drap/mirror-status.service.ts` | Added `getCurrentBatchItemTotals()` |
-| `.gitignore` | Added missing exclusions |
-| `docs/archive/COOLIFY_AUTOMATION.md` | Moved from root |
+| `.gitignore` | Updated exclusions |
+| `docs/archive/COOLIFY_AUTOMATION.md` | Archived |
 | `CURRENT_UPDATE.md` | This file |
-
-## Build & Deployment
-
-- Build: **PASS** (`npm run build`)
-- Git commits: `806cd4d`, `97b9b91`, `0ce2f9c`
-- Git push: `main` → `origin/main`
-- Deployment: Run CLI command on production host
-
-## Production Verification (After Deployment)
-
-After starting the job, verify:
-- New batches created for `run-20260623-001`
-- Registrations >091349 being processed
-- Dashboard shows correct totals
-- R2 uploads succeeding
 
 ---
 
