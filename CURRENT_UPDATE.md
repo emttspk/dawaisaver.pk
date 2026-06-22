@@ -1,8 +1,42 @@
 # CURRENT UPDATE
 
-Date: 2026-06-21
+Date: 2026-06-22
 Project: DawaiSaver.pk
-Audit: DRAP mirror performance forensics
+Audit: DRAP mirror root-cause live verification
+
+## 2026-06-22 live audit
+
+The live control plane is currently unavailable from this workspace, so the worker/queue/database counters requested in the task could not be truthfully observed end-to-end.
+
+- Production API health on `https://yh5wt7bbkhqsjycey5df0lbe.178.105.221.236.sslip.io/health` returns `no available server`.
+- Direct SSH to `root@178.105.221.236` and `ubuntu@178.105.221.236` with the tracked key is rejected with `Permission denied (publickey,password)`.
+- Wrangler is authenticated to Cloudflare account `85f6a6181b4653c2a45e69cb7ce8a474`.
+- Live R2 bucket `dawaisaver-pk` is empty: `object_count=0`, `bucket_size=0 B`.
+- DRAP source probes are responsive and do not look like the dominant bottleneck:
+  - `041350`: `200`, `total=0.896697s`
+  - `080776`: `200`, `total=0.263406s`
+  - `099999`: `200`, `total=0.909441s`
+  - five-request burst: all `200`, totals `0.252518s` to `1.506436s`, no `429` or timeout observed
+- Architecture is confirmed in code:
+  - gzip batching is enabled
+  - archive objects are uploaded per batch
+  - the mirror does not upload each record individually
+
+## Current deliverables
+
+- 15-minute throughput: **unverified live** because the backend host/API is unavailable from this workspace
+- Current registration: **unverified live**
+- Current queue depth: **unverified live**
+- Current active workers: **unverified live**
+- Latest archive uploaded: **none in the live bucket; R2 is empty**
+- Current ETA: **unavailable**
+- Exact bottleneck: **deployment/runtime availability and control-plane access, not DRAP source latency**
+- Before/after throughput: **before remains the last durable snapshot at 0.0144 registrations/sec; after is unmeasured live**
+- Updated completion percentage: **live unknown; last durable snapshot remains 95.1% (47,550 / 50,000)**
+
+## Scope note
+
+The remaining sections below are historical context from the prior 2026-06-21 forensic pass. They are still useful for comparison, but the live blocker findings above supersede them for today’s audit.
 
 ## Executive finding
 
