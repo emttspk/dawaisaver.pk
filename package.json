@@ -6,6 +6,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
+    "build:cli": "tsc -p tsconfig.json",
     "start": "node dist/main.js",
     "start:dev": "nest start --watch",
     "catalog:build": "ts-node -r dotenv/config src/cli/catalog.ts build",

@@ -38,13 +38,11 @@ export class DrapMirrorWorkerLauncherService {
       NODE_ENV: process.env.NODE_ENV || "production",
     };
 
-    const cliPath = join(__dirname, "..", "..", "..", "node_modules", ".bin", "ts-node");
     const scriptPath = join(__dirname, "..", "..", "..", "src", "cli", "drap-mirror.ts");
-    const args = ["-r", "dotenv/config", scriptPath];
+    
+    this.logger.log(`Launching DRAP mirror worker: ts-node ${scriptPath}`);
 
-    this.logger.log(`Launching DRAP mirror worker: ${cliPath} ${args.join(" ")}`);
-
-    const worker = spawn(cliPath, args, {
+    const worker = spawn("ts-node", ["-r", "dotenv/config", scriptPath], {
       cwd: process.cwd(),
       env,
       detached: true,
@@ -59,6 +57,10 @@ export class DrapMirrorWorkerLauncherService {
 
     worker.on("exit", (code) => {
       this.logger.log(`Worker exited with code ${code}`);
+    });
+
+    worker.on("message", (msg) => {
+      this.logger.log(`Worker message: ${msg}`);
     });
 
     this.logger.log(`Worker spawned with PID ${worker.pid}`);
