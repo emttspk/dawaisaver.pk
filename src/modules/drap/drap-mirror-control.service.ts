@@ -1,8 +1,9 @@
 import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
 import { PrismaService } from "../../database/prisma.service";
 import { setPrismaService } from "./drap.freeze";
+import { DrapMirrorWorkerLauncherService } from "./drap-mirror-worker-launcher.service";
 
-export type MirrorControlAction = "start" | "pause" | "resume" | "stop";
+export type MirrorControlAction = "start" | "pause" | "resume" | "stop" | "recover";
 
 export interface MirrorControlResult {
   success: boolean;
@@ -14,7 +15,10 @@ export class DrapMirrorControlService implements OnModuleInit {
   private readonly logger = new Logger(DrapMirrorControlService.name);
   private static readonly CONTROL_KEY = "drap_mirror:control";
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly workerLauncher: DrapMirrorWorkerLauncherService,
+  ) {}
 
   onModuleInit() {
     setPrismaService(this.prisma);
@@ -23,7 +27,12 @@ export class DrapMirrorControlService implements OnModuleInit {
   async start(): Promise<MirrorControlResult> {
     await this.setControlState("running");
     this.logger.log("DRAP mirror started via admin control");
-    return { success: true, message: "DRAP mirror started successfully." };
+    
+    const launchResult = await this.workerLauncher.launchWorker("start");
+    if (launchResult.alreadyRunning) {
+      return { success: true, message: "DRAP mirror started successfully. Worker already running." };
+    }
+    return { success: true, message: `DRAP mirror started successfully. ${launchResult.message}` };
   }
 
   async pause(): Promise<MirrorControlResult> {
@@ -35,7 +44,12 @@ export class DrapMirrorControlService implements OnModuleInit {
   async resume(): Promise<MirrorControlResult> {
     await this.setControlState("running");
     this.logger.log("DRAP mirror resumed via admin control");
-    return { success: true, message: "DRAP mirror resumed successfully." };
+    
+    const launchResult = await this.workerLauncher.launchWorker("resume");
+    if (launchResult.alreadyRunning) {
+      return { success: true, message: "DRAP mirror resumed successfully. Worker already running." };
+    }
+    return { success: true, message: `DRAP mirror resumed successfully. ${launchResult.message}` };
   }
 
   async recover(): Promise<MirrorControlResult> {
@@ -52,7 +66,9 @@ export class DrapMirrorControlService implements OnModuleInit {
 
     await this.setControlState("running");
     this.logger.log(`DRAP mirror recovery initiated: found ${runningBatches.length} RUNNING batches`);
-    return { success: true, message: `DRAP mirror recovery initiated. Found ${runningBatches.length} RUNNING batches.` };
+    
+    const launchResult = await this.workerLauncher.launchWorker("recover");
+    return { success: true, message: `DRAP mirror recovery initiated. Found ${runningBatches.length} RUNNING batches. ${launchResult.message}` };
   }
 
   async stop(): Promise<MirrorControlResult> {

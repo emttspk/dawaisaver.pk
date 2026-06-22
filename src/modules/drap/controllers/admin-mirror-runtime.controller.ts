@@ -78,9 +78,9 @@ export class AdminMirrorRuntimeController {
     return this.statusService.getMirrorDiagnostics();
   }
 
-  @Post("control")
+@Post("control")
   @ApiBearerAuth()
-  @ApiOperation({ summary: "Control the DRAP mirror (start, pause, resume, stop)." })
+  @ApiOperation({ summary: "Control the DRAP mirror (start, pause, resume, stop, recover)." })
   @ApiOkResponse({ description: "Mirror control action executed." })
   async controlMirror(@Body() body: { action: MirrorControlAction }) {
     const { action } = body;
@@ -93,6 +93,8 @@ export class AdminMirrorRuntimeController {
         return this.controlService.resume();
       case "stop":
         return this.controlService.stop();
+      case "recover":
+        return this.controlService.recover();
       default:
         return { success: false, message: `Unknown action: ${action}` };
     }

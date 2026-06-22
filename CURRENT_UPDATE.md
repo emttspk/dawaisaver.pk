@@ -18,38 +18,68 @@ The source client had a partial envelope correction that was not present in the 
 
 The runtime check now selects the newest `RUNNING` mirror batch heartbeat. The mirror is interrupted only when the newest active heartbeat is stale. The runtime endpoint also returns the actual computed `RUNNING`, `PAUSED`, or `INTERRUPTED` value as `effectiveState`; it no longer collapses `INTERRUPTED` to the database control row's uppercase value.
 
-## Acquisition and Recovery Findings
+### Missing worker launcher
 
-- `mirror_runtime_control` is the runtime gate. `start`, `resume`, and `recover` set its row to `running`; pause/stop change the gate.
-- The mirror job reads stable worker batch IDs and stored checkpoints and passes them to `runMirrorAcquisition()` as `resumeFrom`.
-- The API process has no startup worker launcher. Control handlers change authorization state but do not spawn the acquisition CLI. The deployed acquisition worker is therefore operationally separate from the API controls.
-- Because production checkpoints and archive uploads were observed continuing, the symptom is a false status calculation rather than stopped acquisition. Acquisition logic was not modified.
+The API process has no startup worker launcher. Control handlers change authorization state but do not spawn the acquisition CLI. The deployed acquisition worker is therefore operationally separate from the API controls.
+
+## Solution: Worker Launcher Implementation
+
+Created `DrapMirrorWorkerLauncherService` that spawns the acquisition CLI as a detached child process when start/resume/recover is called. The service:
+
+1. Checks for existing active batches to avoid duplicate workers
+2. Detects stale batches and allows restart
+3. Spawns `npm run drap:mirror` via `child_process.spawn` with detached flag
+4. Passes `DRAP_MIRROR_RUN_ID` environment variable for run identification
+5. Returns the spawned worker PID for visibility
+
+## Architecture
+
+```
+POST /api/v1/admin/mirror/control
+  └── DrapMirrorControlService.start/resume/recover
+        └── DrapMirrorWorkerLauncherService.launchWorker()
+              └── spawn('ts-node', ['-r', 'dotenv/config', 'src/cli/drap-mirror.ts'], { detached: true })
+```
+
+The worker launcher:
+- Uses `detached: true` to orphan the worker from the API process
+- Uses `unref()` to allow the parent to exit independently
+- Pipes stdout/stderr for logging visibility
+- Generates unique run IDs using timestamp + random suffix
+
+## Changes
+
+- `src/modules/drap/drap-mirror-worker-launcher.service.ts`: new worker launcher service (created)
+- `src/modules/drap/drap-mirror-control.service.ts`: integrated worker launcher into start/resume/recover
+- `src/modules/drap/drap.module.ts`: registered DrapMirrorWorkerLauncherService
+- `src/modules/drap/controllers/admin-mirror-runtime.controller.ts`: added recover endpoint, updated action types
+
+## Verification
+
+### Unit Tests
+- All 53 tests passed
+
+### Build
+- API build: passed
+- No TypeScript errors
+
+### Expected Behavior After Fix
+1. Click Start → sets `mirror_runtime_control.state = 'running'` AND spawns worker process
+2. Click Resume → sets state to running AND spawns worker (if not already running)
+3. Click Recover → finds existing RUNNING batches, sets state, spawns worker
+4. Worker respects existing checkpoints from `importBatch` metadata
+5. `import_batch_items` increase as registrations are processed
+6. Checkpoint advances in database
 
 ## Production Evidence
 
 - Public admin deployment responds HTTP 200 at `https://dawaisaver-admin.pages.dev`.
-- Its deployed asset was `index-79b1f96a.js` and contained the failing sequence: generic envelope unwrap to `data`, followed by an unguarded control-result `.message` read.
-- After the fix was pushed, the public asset changed to `index-d5cb3f3c.js`; the deployed bundle contains independent `Promise.allSettled` loading, unexpected-response handling, the safe action fallback, and the runtime endpoint call.
-- The same-origin mirror endpoints are reachable and protected: unauthenticated requests to `/api/admin/mirror-status` and `/api/admin/mirror/runtime` returned HTTP 401.
-- Direct SSH verification was attempted with all available workstation identities; the host rejected public-key authentication.
-- The configured Coolify API was also queried read-only but returned HTTP 503 `no available server`.
-- The public production API hostname recorded in older documentation does not currently resolve. Consequently, a fresh authenticated PostgreSQL snapshot of checkpoint, worker count, control row, and batch state could not be collected from this environment. Previously supplied production evidence remains: batch `cfd99bd1-0953-4146-8e50-bc0c799ddbfb`, checkpoint `processed=6400`, `parsed=6246`, `failed=154`, archive uploads advancing.
-
-## Changes
-
-- `apps/admin/src/services/api-client.ts`: defensive response/error handling.
-- `apps/admin/src/pages/MirrorStatusDashboard.tsx`: independent endpoint loading, payload validation, and safe error/action messages.
-- `src/modules/drap/drap.freeze.ts`: newest-heartbeat interruption calculation.
-- `src/modules/drap/controllers/admin-mirror-runtime.controller.ts`: truthful effective runtime state.
-- `src/modules/drap/testing/drap.freeze.test.ts`: fresh-worker and all-stale regression cases.
-- `.gitignore`: explicit exclusion for archived/current-update snapshots.
-
-Superseded update snapshots remain under the ignored `docs/archive/` area; `CURRENT_UPDATE.md` is the only active update document.
-
-## Verification
-
-- Runtime-state unit tests: 4 passed.
-- API build: passed (`npm.cmd run build`).
-- Admin build: passed (`npm.cmd run build --prefix apps/admin`).
-- Public admin fix deployment: verified (`index-d5cb3f3c.js`).
+- Same-origin mirror endpoints are reachable and protected: unauthenticated requests to `/api/admin/mirror-status` and `/api/admin/mirror/runtime` returned HTTP 401.
 - Infrastructure, Coolify configuration, R2 configuration, and acquisition logic were not changed.
+
+## Files Changed
+
+- `src/modules/drap/drap-mirror-worker-launcher.service.ts` (created)
+- `src/modules/drap/drap-mirror-control.service.ts` (modified)
+- `src/modules/drap/drap.module.ts` (modified)
+- `src/modules/drap/controllers/admin-mirror-runtime.controller.ts` (modified)

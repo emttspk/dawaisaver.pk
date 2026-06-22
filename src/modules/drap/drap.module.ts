@@ -12,6 +12,7 @@ import { DrapImporter } from "./drap.importer";
 import { DrapValidationService } from "./drap-validation.service";
 import { DrapMirrorStatusService } from "./mirror-status.service";
 import { DrapMirrorControlService } from "./drap-mirror-control.service";
+import { DrapMirrorWorkerLauncherService } from "./drap-mirror-worker-launcher.service";
 import { DrapService } from "./drap.service";
 import { UploadService } from "../ocr/upload.service";
 
@@ -27,6 +28,7 @@ import { UploadService } from "../ocr/upload.service";
   providers: [
     DrapMirrorStatusService,
     DrapMirrorControlService,
+    DrapMirrorWorkerLauncherService,
     DrapValidationService,
     DrapAcquisitionService,
     PrismaService,
