@@ -1,73 +1,74 @@
-# Coolify Automation Package - Status Report
+# Coolify Automation Package - Fix Report
 
-## Summary
+## Issue Identified
 
-The Coolify automation package has been created and committed to the repository.
+Validation failed because scripts used incorrect relative paths:
+- Scripts checked for `.env.coolify` instead of `.coolify/.env.coolify`
+- Scripts referenced paths relative to current directory, not script location
 
-## Files Committed
+## Fix Applied
 
-**Commit:** `055f71e` - "Add Coolify automation package for API-driven management"
+All shell scripts now use `SCRIPT_DIR` variable:
+```bash
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+```
 
-| File | Status |
+All paths updated to use `$SCRIPT_DIR`:
+- `$SCRIPT_DIR/.env.coolify`
+- `$SCRIPT_DIR/inventory.json`
+- `$SCRIPT_DIR/discover.sh`
+
+## Files Modified
+
+| File | Change |
 |------|--------|
-| `.coolify/.env.example` | ✅ Committed |
-| `.coolify/validate.sh` | ✅ Committed |
-| `.coolify/validate-full.sh` | ✅ Committed |
-| `.coolify/discover.sh` | ✅ Committed |
-| `.coolify/list-applications.sh` | ✅ Committed |
-| `.coolify/status.sh` | ✅ Committed |
-| `.coolify/deploy-api.sh` | ✅ Committed |
-| `.coolify/restart-api.sh` | ✅ Committed |
-| `.coolify/deploy-web.sh` | ✅ Committed |
-| `.coolify/restart-web.sh` | ✅ Committed |
-| `.coolify/rollback.sh` | ✅ Committed |
-| `.coolify/*.ps1` | ✅ Committed (PowerShell versions) |
+| `validate-full.sh` | Fixed all path references |
+| `validate.sh` | Fixed all path references |
+| `discover.sh` | Fixed all path references |
+| `status.sh` | Fixed all path references |
+| `list-applications.sh` | Fixed all path references |
+| `deploy-api.sh` | Fixed all path references |
+| `restart-api.sh` | Fixed all path references |
+| `deploy-web.sh` | Fixed all path references |
+| `restart-web.sh` | Fixed all path references |
+| `rollback.sh` | Fixed all path references |
 
-## Git Ignore Status
+## Commit Details
 
-| File | Ignored |
-|------|---------|
-| `.coolify/.env.coolify` | ✅ Yes |
-| `.coolify/inventory.json` | ✅ Yes |
+**Commit:** `6142469` - "Fix: Use script-relative paths for all .coolify scripts"
 
-## Actions Required on Hetzner VPS
-
-SSH into the Hetzner server and run:
+## Validation Commands for Hetzner VPS
 
 ```bash
-# 1. Navigate to project
+# SSH to server
+ssh root@178.105.221.236
+
+# Navigate to project
 cd /path/to/DawaiSaver.pk
 
-# 2. Pull latest code
+# Pull latest code
 git pull origin main
 
-# 3. Setup environment
+# Setup environment (if not done)
 cp .coolify/.env.example .coolify/.env.coolify
-# Edit with your values:
+# Edit with:
 # COOLIFY_URL=https://yh5wt7bbkhqsjycey5df0lbe.178.105.221.236.sslip.io
-# COOLIFY_TOKEN=<your-api-token>
+# COOLIFY_TOKEN=<your-token>
 
-# 4. Run validation
+# Run validation
 bash .coolify/validate-full.sh
 
-# 5. Generate inventory
+# Generate inventory
 bash .coolify/discover.sh
 
-# 6. List applications
+# List applications
 bash .coolify/list-applications.sh
 ```
 
-## Validation Checklist
+## Expected Results
 
-- [ ] Authentication test passes
-- [ ] Servers are reachable
-- [ ] Applications are listed
-- [ ] inventory.json created
-- [ ] Git ignore working
-
-## Next Steps
-
-1. Run validation on Hetzner VPS
-2. Report PASS/FAIL results
-3. Fix any issues
-4. Update this document with final status
+```
+PASS: 5
+FAIL: 0
+All validation checks passed!
+```
