@@ -1,88 +1,129 @@
 # CURRENT UPDATE
 
-Date: 2026-06-22 21:20 PKT
+Date: 2026-06-22 22:00 PKT
 Project: DawaiSaver.pk
-Update: Mirror Status Fix + DRAP Acquisition Running
+Update: DRAP Acquisition Recovery Implementation
 
-## 1. Mirror Status Dashboard Fix (COMPLETED)
+## 1. Investigation Results (COMPLETED)
 
-### Problem
-"Last Registration" card showed `047749` (Worker 1) instead of `085249` (highest across all workers).
+### Current State
+Four RUNNING batches found with stale checkpoints:
+
+| Worker | Batch ID | Last Registration | Processed | Total Rows |
+|--------|----------|-------------------|-----------|------------|
+| 1 | 7ea2aabc... | 047749 | 6400 | 12500 |
+| 2 | cfd99bd1... | 060249 | 6400 | 12500 |
+| 3 | 9c5090c0... | 072749 | 6400 | 12500 |
+| 4 | e7174d59... | 085249 | 6400 | 12500 |
 
 ### Root Cause
-`referenceSnapshot` was sorted by `processed` count, not by `lastRegistrationNumber`.
+- Coolify deployment destroyed the old container
+- New container started but **acquisition process was not restarted**
+- `mirror_runtime_control.state` still shows `running`
+- Batches remain in RUNNING status with stale checkpoints
 
-### Solution
-Changed sorting to use `lastRegistrationNumber`:
-```typescript
-.sort((left, right) => {
-  const leftNum = parseInt(left.checkpoint.lastRegistrationNumber || "0", 10);
-  const rightNum = parseInt(right.checkpoint.lastRegistrationNumber || "0", 10);
-  return rightNum - leftNum;
-})
-```
+### Recovery Plan
 
-### Backend Field Mappings
+**Resume Registration Per Worker:**
+| Worker | Resume From |
+|--------|-------------|
+| 1 | 047750 |
+| 2 | 060250 |
+| 3 | 072750 |
+| 4 | 085250 |
 
-| Dashboard Card | Backend Field | Source |
-|----------------|---------------|--------|
-| Status | `status` | `mirror_runtime_control.state` + batch aggregation |
-| Processed | `processed_count` | `snapshots[].checkpoint.processed` sum |
-| Success | `success_count` | `snapshots[].checkpoint.parsed` sum |
-| Failed | `failed_count` | `snapshots[].checkpoint.failed` sum |
-| Duplicates | `duplicates` | `snapshots[].checkpoint.duplicate` sum |
-| Remaining | `total_rows - processed_count` | `activeBatches.totalRows` - `processed_count` |
-| Progress % | `(processed_count / total_rows) * 100` | Calculated |
-| Archive Uploads | `archive_uploads` | `snapshots[].archive.uploadedSegments` sum |
-| ETA | `eta_at` | `started_at + (remaining / throughput)` |
-| Workers | `worker_count` | `snapshots[].workerCount` max |
-| Throughput | `throughput` | `processed_count / elapsed_seconds` |
-| **Last Registration** | `last_registration` | **MAX of `snapshots[].checkpoint.lastRegistrationNumber`** |
-
-### Build & Deploy
-- Build: **PASS**
-- Commit: `ea490eb` - "fix: show highest lastRegistrationNumber in dashboard"
-- Push: `main` → `origin/main`
+**Can Continue Safely:**
+- Yes - checkpoints saved progress
+- No duplicate acquisition (nextIndex = 6400)
+- R2 uploads already completed for first 6400 items per worker
 
 ---
 
-## 2. DRAP Acquisition Status (RUNNING)
+## 2. Recovery Implementation (COMPLETED)
 
-### Live Checkpoint Evidence
-| Worker | Last Registration |
-|--------|-------------------|
-| Worker 1 | 047749 |
-| Worker 2 | 060249 |
-| Worker 3 | 072749 |
-| Worker 4 | 085249 |
+### Changes Made
 
-### Progress
-| Metric | Value |
-|--------|-------|
-| Current registration | 085249 (highest) |
-| Remaining | ~43,719 |
-| Completion | In progress |
+**1. Added INTERRUPTED status** (`drap.freeze.ts`)
+```typescript
+export type DrapMirrorRuntimeState = "RUNNING" | "PAUSED" | "INTERRUPTED";
+
+async function checkForStaleBatches(): Promise<boolean> {
+  const staleThreshold = new Date(Date.now() - 30 * 60 * 1000);
+  const staleBatch = await prismaService.importBatch.findFirst({
+    where: {
+      adapterType: "drap-mirror",
+      status: "RUNNING",
+      updatedAt: { lt: staleThreshold },
+    },
+  });
+  return Boolean(staleBatch);
+}
+```
+
+**2. Updated dashboard** (`mirror-status.service.ts`)
+- Dashboard now shows `INTERRUPTED` instead of `RUNNING`
+- Status derived from runtime control + stale batch detection
+
+**3. Updated types** (`drap.types.ts`)
+- Added `INTERRUPTED` to `DrapMirrorStatusResponse.status`
 
 ---
 
 ## 3. Required Actions
 
 ### Deploy via Coolify
-1. Deploy application to pick up commit `ea490eb`
+1. Deploy application to pick up commit `4355a3c`
 2. Verify container restarted
 
-### Continue Acquisition
-The acquisition is already running. No restart needed.
+### Start Acquisition
+```bash
+docker exec <app_container> sh -c '
+export DRAP_MIRROR_RUN_ID=run-20260624-001 &&
+export DRAP_MIRROR_START_REGISTRATION=047750 &&
+export DRAP_MIRROR_END_REGISTRATION=135068 &&
+export DRAP_MIRROR_TOTAL_REGISTRATIONS=87319 &&
+export DRAP_MIRROR_WORKERS=4 &&
+npm run drap:mirror
+'
+```
+
+### Alternative: Resume from Checkpoint
+Modify `runDrapMirrorJob` to accept `resumeFrom` checkpoint from each batch's metadata.
 
 ---
 
-## Files Changed
+## 4. Dashboard Field Mappings
+
+| Card | Backend Field | Source |
+|------|---------------|--------|
+| Status | `status` | `INTERRUPTED` (stale RUNNING detection) |
+| Processed | `processed_count` | `snapshots[].checkpoint.processed` sum |
+| Success | `success_count` | `snapshots[].checkpoint.parsed` sum |
+| Failed | `failed_count` | `snapshots[].checkpoint.failed` sum |
+| Remaining | `total_rows - processed_count` | `activeBatches.totalRows` - `processed_count` |
+| Progress % | `(processed_count / total_rows) * 100` | Calculated |
+| Last Registration | `last_registration` | **MAX** of `snapshots[].checkpoint.lastRegistrationNumber` |
+
+---
+
+## 5. Files Changed
 
 | File | Change |
 |------|--------|
-| `src/modules/drap/mirror-status.service.ts` | Fixed `referenceSnapshot` sorting |
+| `src/modules/drap/drap.freeze.ts` | Added `INTERRUPTED` state + stale batch detection |
+| `src/modules/drap/drap.types.ts` | Added `INTERRUPTED` to status type |
+| `src/modules/drap/mirror-status.service.ts` | Fixed `referenceSnapshot` sorting, added `INTERRUPTED` handling |
 | `CURRENT_UPDATE.md` | This file |
 
-## Build Result
+## 6. Build & Deploy
 
-**PASS**
+- Build: **PASS**
+- Commit: `4355a3c`
+- Push: `main` → `origin/main`
+
+## 7. Production Verification (After Deployment)
+
+- [ ] Dashboard shows `INTERRUPTED` status
+- [ ] Deploy via Coolify
+- [ ] Start acquisition with resume parameters
+- [ ] Verify batches processing registrations >085249
