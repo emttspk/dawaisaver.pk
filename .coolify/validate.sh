@@ -23,10 +23,10 @@ AUTH_RESPONSE=$(curl -s -w "\n%{http_code}" -H "Authorization: Bearer $COOLIFY_T
 AUTH_CODE=$(echo "$AUTH_RESPONSE" | tail -n1)
 if [ "$AUTH_CODE" = "200" ]; then
   echo "   [PASS] Authentication successful"
-  ((PASS_COUNT++))
+  PASS_COUNT=$((PASS_COUNT + 1))
 else
   echo "   [FAIL] Authentication failed (HTTP $AUTH_CODE)"
-  ((FAIL_COUNT++))
+  FAIL_COUNT=$((FAIL_COUNT + 1))
 fi
 echo ""
 

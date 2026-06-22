@@ -35,10 +35,10 @@ AUTH_RESPONSE=$(curl -s -w "\n%{http_code}" -H "Authorization: Bearer $COOLIFY_T
 AUTH_CODE=$(echo "$AUTH_RESPONSE" | tail -n1)
 if [ "$AUTH_CODE" = "200" ]; then
     echo "   [PASS] Authentication successful"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "   [FAIL] Authentication failed (HTTP $AUTH_CODE)"
-    ((FAIL_COUNT++))
+    FAIL_COUNT=$((FAIL_COUNT + 1))
 fi
 echo ""
 
@@ -49,10 +49,10 @@ UNREACHABLE=$(echo "$SERVERS" | jq '[.[] | select(.settings.is_reachable == fals
 REACHABLE=$(echo "$SERVERS" | jq '[.[] | select(.settings.is_reachable == true)] | length')
 if [ "$REACHABLE" -gt 0 ]; then
     echo "   [PASS] $REACHABLE server(s) reachable"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "   [FAIL] No reachable servers"
-    ((FAIL_COUNT++))
+    FAIL_COUNT=$((FAIL_COUNT + 1))
 fi
 echo ""
 
@@ -62,12 +62,12 @@ APPLICATIONS=$(curl -s -H "Authorization: Bearer $COOLIFY_TOKEN" "$COOLIFY_URL/a
 APP_COUNT=$(echo "$APPLICATIONS" | jq 'length')
 if [ "$APP_COUNT" -gt 0 ]; then
     echo "   [PASS] Found $APP_COUNT application(s)"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
     echo "   Applications:"
     echo "$APPLICATIONS" | jq -r '.[] | "   - \(.name) [\(.uuid)]"'
 else
     echo "   [FAIL] No applications found"
-    ((FAIL_COUNT++))
+    FAIL_COUNT=$((FAIL_COUNT + 1))
 fi
 echo ""
 
@@ -78,14 +78,14 @@ if [ -f "$SCRIPT_DIR/inventory.json" ]; then
     INV_APPS=$(cat "$SCRIPT_DIR/inventory.json" | jq '.applications | length')
     if [ "$INV_APPS" -gt 0 ]; then
         echo "   [PASS] inventory.json created with $INV_APPS applications"
-        ((PASS_COUNT++))
+        PASS_COUNT=$((PASS_COUNT + 1))
     else
         echo "   [FAIL] inventory.json has no applications"
-        ((FAIL_COUNT++))
+        FAIL_COUNT=$((FAIL_COUNT + 1))
     fi
 else
     echo "   [FAIL] inventory.json not created"
-    ((FAIL_COUNT++))
+    FAIL_COUNT=$((FAIL_COUNT + 1))
 fi
 echo ""
 
@@ -93,18 +93,18 @@ echo "5. Git Ignore Test"
 echo "----------------------"
 if git status --ignored 2>/dev/null | grep -q "env.coolify"; then
     echo "   [PASS] .env.coolify is gitignored"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "   [FAIL] .env.coolify not in gitignore"
-    ((FAIL_COUNT++))
+    FAIL_COUNT=$((FAIL_COUNT + 1))
 fi
 
 if git status --ignored 2>/dev/null | grep -q "inventory.json"; then
     echo "   [PASS] inventory.json is gitignored"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "   [FAIL] inventory.json not in gitignore"
-    ((FAIL_COUNT++))
+    FAIL_COUNT=$((FAIL_COUNT + 1))
 fi
 echo ""
 
