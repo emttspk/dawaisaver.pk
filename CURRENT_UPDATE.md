@@ -83,3 +83,80 @@ The worker launcher:
 - `src/modules/drap/drap-mirror-control.service.ts` (modified)
 - `src/modules/drap/drap.module.ts` (modified)
 - `src/modules/drap/controllers/admin-mirror-runtime.controller.ts` (modified)
+
+## Production Verification Required
+
+**IMPORTANT**: SSH access to production is required to verify acquisition is progressing.
+
+### Verification Commands (to run on production server)
+
+1. **PID Status**:
+```bash
+ps -fp 209
+ps -fp 230
+```
+
+2. **Worker Process Check**:
+```bash
+ps aux | grep drap
+ps aux | grep node
+```
+
+3. **Item Count Verification** (run twice 60 seconds apart):
+```sql
+SELECT COUNT(*)
+FROM import_batch_items
+WHERE import_batch_id='<latest_running_batch>';
+```
+
+4. **Checkpoint Movement**:
+```sql
+SELECT id, metadata, import_report
+FROM import_batch
+WHERE adapter_type = 'drap-mirror' AND status = 'RUNNING'
+ORDER BY created_at DESC
+LIMIT 1;
+```
+Compare processed, parsed, failed, nextIndex, lastRegistrationNumber before/after.
+
+5. **Archive Growth**:
+```sql
+SELECT 
+  metadata->'acquisition'->'archive'->>'uploadedSegments' as uploaded,
+  metadata->'acquisition'->'archive'->>'totalRecords' as total_records
+FROM import_batch
+WHERE adapter_type = 'drap-mirror' AND status = 'RUNNING'
+ORDER BY created_at DESC
+LIMIT 1;
+```
+
+### Expected Results
+
+**A. Acquisition actively progressing** (SUCCESS):
+- PIDs 209/230 exist in process list
+- import_batch_items count increases
+- Checkpoint values advance
+- Archive segments grow
+
+**B. Worker launched but immediately exited** (CODE ISSUE):
+- PIDs not found
+- No new items
+- No checkpoint movement
+
+**C. Worker running but blocked** (CONFIG ISSUE):
+- PIDs exist but no activity
+- Items/states unchanged for >60 seconds
+
+**D. Worker writing to wrong batch** (LOGIC ISSUE):
+- Items exist but for wrong batch ID
+- Checkpoint mismatch
+
+### Current Status
+
+- SSH verification: **NOT POSSIBLE** - Host rejected public-key authentication
+- Public API hostname: **DOES NOT RESOLVE**
+- Last verified production evidence: batch `cfd99bd1-0953-4146-8e50-bc0c799ddbfb`, checkpoint `processed=6400`, `parsed=6246`, `failed=154`
+
+### Conclusion
+
+**NEEDS PRODUCTION VERIFICATION** - Code changes are complete but acquisition must be verified running in production before further development.
