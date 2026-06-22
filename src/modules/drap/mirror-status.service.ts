@@ -99,8 +99,17 @@ export class DrapMirrorStatusService {
     const successRate = processedCount > 0 ? (successCount / processedCount) * 100 : 0;
     const operationalState = await getMirrorRuntimeState();
 
+    let finalStatus: DrapMirrorStatusResponse["status"];
+    if (operationalState === "PAUSED") {
+      finalStatus = "PAUSED";
+    } else if (operationalState === "INTERRUPTED") {
+      finalStatus = "INTERRUPTED";
+    } else {
+      finalStatus = status as DrapMirrorStatusResponse["status"];
+    }
+
     return {
-      status: operationalState === "PAUSED" ? "PAUSED" : (status as DrapMirrorStatusResponse["status"]),
+      status: finalStatus,
       started_at: startedAt?.toISOString(),
       completed_at:
         snapshots.every((snapshot) => snapshot.status === "COMPLETED" || snapshot.status === "COMPLETED_WITH_ERRORS")

@@ -298,7 +298,7 @@ export interface DrapMirrorImportSummary {
 }
 
 export interface DrapMirrorStatusResponse {
-  status: DrapImportStatus | "PAUSED";
+  status: DrapImportStatus | "PAUSED" | "INTERRUPTED";
   started_at?: string;
   completed_at?: string;
   processed_count: number;

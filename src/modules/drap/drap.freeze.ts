@@ -2,7 +2,7 @@ import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PrismaService } from "../../database/prisma.service";
 
-export type DrapMirrorRuntimeState = "RUNNING" | "PAUSED";
+export type DrapMirrorRuntimeState = "RUNNING" | "PAUSED" | "INTERRUPTED";
 
 const logger = new Logger("DrapFreeze");
 
@@ -31,6 +31,10 @@ export async function getMirrorRuntimeState(): Promise<DrapMirrorRuntimeState> {
         where: { key: "drap_mirror:control" },
       });
       if (controlRecord?.state === "running") {
+        const isStale = await checkForStaleBatches();
+        if (isStale) {
+          return "INTERRUPTED";
+        }
         return "RUNNING";
       }
       if (controlRecord?.state === "paused") {
@@ -52,15 +56,33 @@ export async function getMirrorRuntimeState(): Promise<DrapMirrorRuntimeState> {
   return "RUNNING";
 }
 
+async function checkForStaleBatches(): Promise<boolean> {
+  if (!prismaService) return false;
+  
+  const staleThreshold = new Date(Date.now() - 30 * 60 * 1000);
+  
+  const staleBatch = await prismaService.importBatch.findFirst({
+    where: {
+      adapterType: "drap-mirror",
+      status: "RUNNING",
+      updatedAt: {
+        lt: staleThreshold,
+      },
+    },
+  });
+  
+  return Boolean(staleBatch);
+}
+
 export async function assertMirrorExecutionAllowed(options?: { bypass?: boolean }): Promise<void> {
   if (options?.bypass) {
     return;
   }
 
   const state = await getMirrorRuntimeState();
-  if (state === "PAUSED") {
+  if (state === "PAUSED" || state === "INTERRUPTED") {
     throw new Error(
-      "DRAP mirror execution is paused. Use admin control panel to start the mirror.",
+      "DRAP mirror execution is paused or interrupted. Use admin control panel to start the mirror.",
     );
   }
 }
