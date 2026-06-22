@@ -90,7 +90,7 @@ class AdminApiClient {
       throw new Error(isEnvelope(payload) ? payload.error || payload.code || "Request failed." : "Request failed.");
     }
     
-    if (isEnvelope(payload)) {
+    if (isEnvelope(payload) && "data" in payload) {
       return payload.data as T;
     }
     
