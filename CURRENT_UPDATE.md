@@ -29,6 +29,7 @@ The runtime check now selects the newest `RUNNING` mirror batch heartbeat. The m
 
 - Public admin deployment responds HTTP 200 at `https://dawaisaver-admin.pages.dev`.
 - Its deployed asset was `index-79b1f96a.js` and contained the failing sequence: generic envelope unwrap to `data`, followed by an unguarded control-result `.message` read.
+- After the fix was pushed, the public asset changed to `index-d5cb3f3c.js`; the deployed bundle contains independent `Promise.allSettled` loading, unexpected-response handling, the safe action fallback, and the runtime endpoint call.
 - The same-origin mirror endpoints are reachable and protected: unauthenticated requests to `/api/admin/mirror-status` and `/api/admin/mirror/runtime` returned HTTP 401.
 - Direct SSH verification was attempted with all available workstation identities; the host rejected public-key authentication.
 - The configured Coolify API was also queried read-only but returned HTTP 503 `no available server`.
@@ -50,4 +51,5 @@ Superseded update snapshots remain under the ignored `docs/archive/` area; `CURR
 - Runtime-state unit tests: 4 passed.
 - API build: passed (`npm.cmd run build`).
 - Admin build: passed (`npm.cmd run build --prefix apps/admin`).
+- Public admin fix deployment: verified (`index-d5cb3f3c.js`).
 - Infrastructure, Coolify configuration, R2 configuration, and acquisition logic were not changed.
