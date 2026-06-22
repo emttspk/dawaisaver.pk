@@ -1,20 +1,26 @@
 # CURRENT UPDATE
 
-Date: 2026-06-22 21:15 PKT
+Date: 2026-06-22 21:20 PKT
 Project: DawaiSaver.pk
-Update: Mirror Status Fix + DRAP Acquisition Deployment
+Update: Mirror Status Fix + DRAP Acquisition Running
 
 ## 1. Mirror Status Dashboard Fix (COMPLETED)
 
 ### Problem
-Dashboard was mixing metrics:
-- `processed_count`, `success_count`, `failed_count` from `getCurrentBatchItemTotals()` (all batches)
-- `total_rows`, `archive_uploads` from snapshot (active run only)
+"Last Registration" card showed `047749` (Worker 1) instead of `085249` (highest across all workers).
+
+### Root Cause
+`referenceSnapshot` was sorted by `processed` count, not by `lastRegistrationNumber`.
 
 ### Solution
-- Removed `getCurrentBatchItemTotals()` method
-- All metrics now derived from `snapshots` of active run batches
-- Consistent data source for all cards
+Changed sorting to use `lastRegistrationNumber`:
+```typescript
+.sort((left, right) => {
+  const leftNum = parseInt(left.checkpoint.lastRegistrationNumber || "0", 10);
+  const rightNum = parseInt(right.checkpoint.lastRegistrationNumber || "0", 10);
+  return rightNum - leftNum;
+})
+```
 
 ### Backend Field Mappings
 
@@ -31,43 +37,42 @@ Dashboard was mixing metrics:
 | ETA | `eta_at` | `started_at + (remaining / throughput)` |
 | Workers | `worker_count` | `snapshots[].workerCount` max |
 | Throughput | `throughput` | `processed_count / elapsed_seconds` |
+| **Last Registration** | `last_registration` | **MAX of `snapshots[].checkpoint.lastRegistrationNumber`** |
 
 ### Build & Deploy
 - Build: **PASS**
-- Commit: `832fff5` - "fix: use snapshot checkpoint metrics consistently"
+- Commit: `ea490eb` - "fix: show highest lastRegistrationNumber in dashboard"
 - Push: `main` → `origin/main`
 
 ---
 
-## 2. DRAP Acquisition Deployment (PENDING)
+## 2. DRAP Acquisition Status (RUNNING)
 
-### Current State
+### Live Checkpoint Evidence
+| Worker | Last Registration |
+|--------|-------------------|
+| Worker 1 | 047749 |
+| Worker 2 | 060249 |
+| Worker 3 | 072749 |
+| Worker 4 | 085249 |
+
+### Progress
 | Metric | Value |
 |--------|-------|
-| Highest acquired registration | 091349 |
-| Highest source registration | 135068 |
-| Remaining registrations | 43,719 |
-| RUNNING batches | 0 |
-| R2 completeness | 97.69% |
-
-### Required Coolify Deployment
-1. Log into Coolify dashboard
-2. Deploy application to pick up commit `832fff5`
-3. Verify container restarted
+| Current registration | 085249 (highest) |
+| Remaining | ~43,719 |
+| Completion | In progress |
 
 ---
 
-## 3. Start Acquisition (After Deployment)
+## 3. Required Actions
 
-```bash
-docker exec <app_container> sh -c '
-export DRAP_MIRROR_RUN_ID=run-20260623-001 &&
-export DRAP_MIRROR_START_REGISTRATION=091350 &&
-export DRAP_MIRROR_END_REGISTRATION=135068 &&
-export DRAP_MIRROR_TOTAL_REGISTRATIONS=43719 &&
-npm run drap:mirror
-'
-```
+### Deploy via Coolify
+1. Deploy application to pick up commit `ea490eb`
+2. Verify container restarted
+
+### Continue Acquisition
+The acquisition is already running. No restart needed.
 
 ---
 
@@ -75,7 +80,7 @@ npm run drap:mirror
 
 | File | Change |
 |------|--------|
-| `src/modules/drap/mirror-status.service.ts` | Fixed metric consistency |
+| `src/modules/drap/mirror-status.service.ts` | Fixed `referenceSnapshot` sorting |
 | `CURRENT_UPDATE.md` | This file |
 
 ## Build Result
