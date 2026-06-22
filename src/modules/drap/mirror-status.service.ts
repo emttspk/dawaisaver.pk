@@ -74,7 +74,11 @@ export class DrapMirrorStatusService {
     );
     const referenceSnapshot = snapshots
       .slice()
-      .sort((left, right) => right.checkpoint.processed - left.checkpoint.processed || right.updatedAt.getTime() - left.updatedAt.getTime())[0];
+      .sort((left, right) => {
+        const leftNum = parseInt(left.checkpoint.lastRegistrationNumber || "0", 10);
+        const rightNum = parseInt(right.checkpoint.lastRegistrationNumber || "0", 10);
+        return rightNum - leftNum;
+      })[0];
     const elapsedMs = startedAt ? Math.max(Date.now() - startedAt.getTime(), 1) : 1;
     const throughput = processedCount > 0 ? processedCount / (elapsedMs / 1000) : 0;
     const remainingRows = Math.max(totalRows - processedCount, 0);
