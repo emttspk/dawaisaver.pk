@@ -10,9 +10,16 @@ export interface WorkerLaunchResult {
   alreadyRunning: boolean;
 }
 
+interface ActiveBatchSnapshot {
+  id: string;
+  updatedAt: Date;
+  metadata: unknown;
+}
+
 @Injectable()
 export class DrapMirrorWorkerLauncherService {
   private readonly logger = new Logger(DrapMirrorWorkerLauncherService.name);
+  private static readonly ACTIVE_BATCH_STALE_MS = 5 * 60 * 1000;
 
   constructor(
     private readonly prisma: PrismaService,
@@ -28,6 +35,9 @@ export class DrapMirrorWorkerLauncherService {
         this.logger.log(`Worker already running for batch ${existingBatch.id}`);
         return { success: true, message: "Worker already running.", alreadyRunning: true };
       }
+      this.logger.warn(
+        `Active batch ${existingBatch.id} is stale; launching a replacement worker`,
+      );
     }
 
     const runId = this.generateRunId();
@@ -72,26 +82,46 @@ export class DrapMirrorWorkerLauncherService {
     };
   }
 
-  private async findActiveBatch(): Promise<{ id: string; updatedAt: Date } | null> {
+  private async findActiveBatch(): Promise<ActiveBatchSnapshot | null> {
     const batch = await this.prisma.importBatch.findFirst({
       where: {
         adapterType: "drap-mirror",
         status: "RUNNING",
       },
       orderBy: { createdAt: "desc" },
-      select: { id: true, updatedAt: true },
+      select: { id: true, updatedAt: true, metadata: true },
     });
     return batch;
   }
 
-  private async isBatchStale(batch: { updatedAt: Date }): Promise<boolean> {
-    const staleThreshold = new Date(Date.now() - 30 * 60 * 1000);
-    return batch.updatedAt < staleThreshold;
+  private async isBatchStale(batch: ActiveBatchSnapshot): Promise<boolean> {
+    const activityAt = this.extractLastActivityAt(batch.metadata) ?? batch.updatedAt;
+    const staleThreshold = Date.now() - DrapMirrorWorkerLauncherService.ACTIVE_BATCH_STALE_MS;
+    return activityAt.getTime() < staleThreshold;
   }
 
   private generateRunId(): string {
     const timestamp = Date.now();
     const random = Math.random().toString(36).substring(2, 9);
     return `run_${timestamp}_${random}`;
+  }
+
+  private extractLastActivityAt(metadata: unknown): Date | undefined {
+    if (!metadata || typeof metadata !== "object" || Array.isArray(metadata)) {
+      return undefined;
+    }
+
+    const acquisition = (metadata as Record<string, unknown>).acquisition;
+    if (!acquisition || typeof acquisition !== "object" || Array.isArray(acquisition)) {
+      return undefined;
+    }
+
+    const value = (acquisition as Record<string, unknown>).lastActivityAt;
+    if (typeof value !== "string" || !value.trim()) {
+      return undefined;
+    }
+
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? undefined : parsed;
   }
 }

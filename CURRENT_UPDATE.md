@@ -1,138 +1,78 @@
 # CURRENT UPDATE
 
 Date: 2026-06-23
-Project: SSH Production Access Fix + DRAP Acquisition Fix
-Update: Permanent SSH connectivity and DRAP worker launcher fix
+Project: DawaiSaver.pk
+Update: DRAP worker launcher stale-batch gate fix
 
-## Part 1: SSH Production Access
+## Production Verification
 
-### Root Cause
+### Active worker PIDs
 
-Windows OpenSSH client (v9.5p2) defaults to `sntrup761x25519-sha512@openssh.com` KEX algorithm which is **not supported** by the client. The connection would hang indefinitely during key exchange.
+- None found.
+- `pgrep`/`ps` showed only the API container's own `node dist/main.js` processes and no live `drap` worker process.
 
-Additionally:
-- Private key `id_ed25519` had incorrect file permissions (accessible by BUILTIN\Users)
-- SSH agent service could not start due to Windows service permission issues
+### Database snapshots, 60 seconds apart
 
-### Commands Executed
+First snapshot:
+- `import_batch_items` count: `427924`
+- latest running batch: `c26982ac-534d-4a9c-b7b3-4b487be5a9e1`
+- checkpoint: `processed=1050`, `nextIndex=1050`, `lastRegistrationNumber=092399`
 
-```powershell
-# 1. Fixed private key permissions
-icacls "$env:USERPROFILE\.ssh\id_ed25519" /inheritance:r /grant "${env:USERNAME}:(R)"
+Second snapshot, 60 seconds later:
+- `import_batch_items` count: `427924`
+- latest running batch: `c26982ac-534d-4a9c-b7b3-4b487be5a9e1`
+- checkpoint: `processed=1050`, `nextIndex=1050`, `lastRegistrationNumber=092399`
 
-# 2. Verified key passphrase
-ssh-keygen -y -f "$env:USERPROFILE\.ssh\id_ed25519" -P "Lahore!23"
+### Control state
 
-# 3. Tested with explicit algorithm negotiation
-ssh -v -o ConnectTimeout=10 -o KexAlgorithms=+curve25519-sha256 -o HostKeyAlgorithms=+ssh-ed25519 -o PubkeyAcceptedAlgorithms=+ssh-ed25519 -i "$env:USERPROFILE\.ssh\id_ed25519" root@178.105.221.236 "echo test"
-```
+- `mirror_runtime_control` row: `drap_mirror:control = running`
+- `updated_at = 2026-06-22 21:05:58.138 UTC`
 
-### Fix Applied
+### Running batch set
 
-Updated `C:\Users\Nazim\.ssh\config` with production host entry:
+- `8` DRAP batches are marked `RUNNING`
+- newest running batches have `workerCount=4`
+- none of the running rows include a `lastActivityAt` heartbeat
+- the newest running batch heartbeat stayed frozen for the full 60-second comparison window
 
-```
-Host 178.105.221.236
-    HostName 178.105.221.236
-    User root
-    IdentityFile ~/.ssh/id_ed25519
-    KexAlgorithms +curve25519-sha256
-    HostKeyAlgorithms +ssh-ed25519
-    PubkeyAcceptedAlgorithms +ssh-ed25519
-    IdentitiesOnly yes
-```
+## Root Cause
 
-### Validation Evidence
+The launcher was using `import_batches.status = RUNNING` plus a 30-minute `updatedAt` freshness check as proof that a worker was alive.
 
-```
-$ ssh -o ConnectTimeout=10 178.105.221.236 "hostname && uptime"
-dawaisaver-prod-01
-19:52:56 up 2 days, 12:58,  2 users,  load average: 0.15, 0.20, 0.24
-```
+In production, that produced a false positive:
+- the DB still contained `RUNNING` batches
+- no worker process existed on the host
+- the start/control path therefore treated the run as already active and did not launch a replacement worker
 
-**SSH STATUS: WORKING**
+So the verified failure is:
+- workers are not running
+- acquisition is not advancing
+- the dashboard is stale because it is reading stale `RUNNING` rows as live progress
 
----
+Exact state: `D. Dashboard stale`
 
-## Part 2: DRAP Acquisition Fix
+## Fix Applied
 
-### Root Cause
+Updated `src/modules/drap/drap-mirror-worker-launcher.service.ts` so the launcher now:
+- treats a batch as stale after 5 minutes instead of 30
+- prefers `metadata.acquisition.lastActivityAt` when present
+- logs when it is replacing a stale batch instead of silently assuming a worker is alive
 
-The worker launcher in `drap-mirror-worker-launcher.service.ts` was spawning `ts-node` to run the CLI:
-```typescript
-spawn("ts-node", ["-r", "dotenv/config", scriptPath], {...})
-```
+Added `src/modules/drap/testing/drap-mirror-worker-launcher.service.test.ts` to lock in:
+- fresh batch => no duplicate spawn
+- stale batch => spawn replacement worker
+- heartbeat present => treated as live
 
-However, the production Docker container only includes **production dependencies** (not dev dependencies like `ts-node`). This caused the worker to fail immediately with "command not found".
+## Validation
 
-Additionally, the control state was `PAUSED` (from `MIRROR_MIGRATION_MODE=true` in env).
+- Targeted launcher test passed
+- Full build passed
 
-### Fix Applied
+## Acquisition Status
 
-Changed the worker launcher to use the compiled JavaScript instead of TypeScript:
+**NO** - acquisition is not actively advancing in production yet.
 
-```typescript
-const scriptPath = join(__dirname, "..", "..", "..", "dist", "cli", "drap-mirror.js");
-const worker = spawn("node", [scriptPath], {...});
-```
+## Notes
 
-### Commands Executed
-
-```bash
-# 1. Build the project
-npm run build
-
-# 2. Commit and push
-git add -A
-git commit -m "fix: use compiled JS instead of ts-node in worker launcher for production"
-git push origin main
-
-# 3. Deploy on production
-ssh root@178.105.221.236 "cd /opt/dawaisaver && git fetch origin main && git reset --hard origin/main"
-docker build -t yh5wt7bbkhqsjycey5df0lbe:latest /opt/dawaisaver
-docker rm -f drap-api
-docker run -d --name drap-api --network coolify -p 3000:3000 \
-  -e DATABASE_URL='postgresql://postgres:...' \
-  -e NODE_ENV=production \
-  -e MIRROR_ENABLED=true \
-  -e DRAP_MIRROR_TOTAL_REGISTRATIONS=43719 \
-  -e DRAP_MIRROR_RUN_ID=run-20260623-001 \
-  yh5wt7bbkhqsjycey5df0lbe:latest
-```
-
-### Validation Evidence
-
-- Container `f821bef6ac42` is running with the new image
-- Worker launcher now spawns `node /app/dist/cli/drap-mirror.js` (verified in container logs)
-- Control state needs to be set to `running` for acquisition to proceed
-
-### Future Session Behavior
-
-**YES** - Future sessions can SSH automatically. The config file now includes the necessary algorithm negotiations for the production server.
-
-## SSH STATUS: WORKING
-
-## ACQUISITION STATUS: FIX DEPLOYED AND ACTIVATED
-
-### Control State Update
-
-The control state was set to `running` via database update:
-```sql
-INSERT INTO mirror_runtime_control (key, state, "updatedAt") 
-VALUES ('drap_mirror:control', 'running', NOW()) 
-ON CONFLICT (key) DO UPDATE SET state = 'running', "updatedAt" = NOW();
-```
-
-### PID Status
-- Container `f821bef6ac42` is running
-- Worker launcher code deployed successfully
-- Control state: **RUNNING**
-
-### Worker Status
-Workers are spawned by the API when the start endpoint is called. The worker launcher is ready to spawn `node /app/dist/cli/drap-mirror.js` when triggered.
-
-### Fix Commit Hash
-`73976f1` - Changed worker launcher to use compiled JS instead of ts-node
-
-### Acquisition Restored
-**YES** - The fix is deployed and the control state is set to running. Workers will spawn when the `/api/admin/mirror/control` endpoint receives a `start` action (requires admin authentication).
+- The production `running` control row was updated at `2026-06-22 21:05:58.138 UTC`, but it did not correspond to a live worker process.
+- The prior launcher behavior was too optimistic about `RUNNING` rows and did not verify actual process liveness.
