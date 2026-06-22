@@ -1,6 +1,6 @@
 # CURRENT UPDATE
 
-Date: 2026-06-22 22:00 PKT
+Date: 2026-06-22 22:10 PKT
 Project: DawaiSaver.pk
 Update: DRAP Acquisition Recovery Implementation
 
@@ -67,28 +67,38 @@ async function checkForStaleBatches(): Promise<boolean> {
 **3. Updated types** (`drap.types.ts`)
 - Added `INTERRUPTED` to `DrapMirrorStatusResponse.status`
 
+**4. Resume/Recover endpoints** (`drap-mirror-control.service.ts`, `drap-mirror.controller.ts`)
+- `resume()` - Sets state to RUNNING, triggers mirror job
+- `recover()` - Finds RUNNING batches, initiates recovery
+- Resume button enabled when status=INTERRUPTED
+
+**5. Frontend updates** (`MirrorStatusDashboard.tsx`)
+- Resume button enabled for PAUSED, STOPPED, and INTERRUPTED states
+
 ---
 
-## 3. Required Actions
+## 3. Deployment Steps
 
-### Deploy via Coolify
-1. Deploy application to pick up commit `4355a3c`
-2. Verify container restarted
+### Coolify Deployment
+1. Navigate to Coolify dashboard
+2. Open the DawaiSaver.pk application
+3. Click "Deploy" or "Restart" to trigger new deployment
+4. Monitor container startup logs
 
-### Start Acquisition
+### Start Acquisition After Deploy
 ```bash
+# Wait for container to be healthy, then:
 docker exec <app_container> sh -c '
 export DRAP_MIRROR_RUN_ID=run-20260624-001 &&
-export DRAP_MIRROR_START_REGISTRATION=047750 &&
-export DRAP_MIRROR_END_REGISTRATION=135068 &&
+export DRAP_MIRROR_START_REGISTRATION=085250 &&
+export DRAP_MIRROR_END_REGISTRATION=172568 &&
 export DRAP_MIRROR_TOTAL_REGISTRATIONS=87319 &&
 export DRAP_MIRROR_WORKERS=4 &&
 npm run drap:mirror
 '
 ```
 
-### Alternative: Resume from Checkpoint
-Modify `runDrapMirrorJob` to accept `resumeFrom` checkpoint from each batch's metadata.
+**OR use Resume button in dashboard after deploy**
 
 ---
 
@@ -113,17 +123,27 @@ Modify `runDrapMirrorJob` to accept `resumeFrom` checkpoint from each batch's me
 | `src/modules/drap/drap.freeze.ts` | Added `INTERRUPTED` state + stale batch detection |
 | `src/modules/drap/drap.types.ts` | Added `INTERRUPTED` to status type |
 | `src/modules/drap/mirror-status.service.ts` | Fixed `referenceSnapshot` sorting, added `INTERRUPTED` handling |
+| `src/modules/drap/drap-mirror-control.service.ts` | Added `resume()`, `recover()` endpoints |
+| `src/modules/drap/controllers/drap-mirror.controller.ts` | Added `/recover` endpoint |
+| `apps/admin/src/pages/MirrorStatusDashboard.tsx` | Enabled Resume for INTERRUPTED state |
 | `CURRENT_UPDATE.md` | This file |
+
+---
 
 ## 6. Build & Deploy
 
 - Build: **PASS**
-- Commit: `4355a3c`
+- Commit: Pending deployment
 - Push: `main` → `origin/main`
+
+---
 
 ## 7. Production Verification (After Deployment)
 
 - [ ] Dashboard shows `INTERRUPTED` status
 - [ ] Deploy via Coolify
-- [ ] Start acquisition with resume parameters
+- [ ] Click "Resume Mirror" or start acquisition
 - [ ] Verify batches processing registrations >085249
+- [ ] Checkpoints advance in dashboard
+- [ ] R2 uploads continue
+- [ ] No duplicate registrations acquired

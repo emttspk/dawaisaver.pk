@@ -114,9 +114,9 @@ export default function MirrorStatusDashboard() {
     }
   };
 
-  const canStart = data?.status === "PAUSED" || data?.status === "STOPPED" || !data?.status || (runtimeState && runtimeState.effectiveState === "PAUSED");
+  const canStart = data?.status === "PAUSED" || data?.status === "STOPPED" || data?.status === "INTERRUPTED" || !data?.status || (runtimeState && runtimeState.effectiveState === "PAUSED");
   const canPause = data?.status === "RUNNING" || data?.status === "PAUSED";
-  const canResume = data?.status === "PAUSED" || data?.status === "STOPPED" || (runtimeState && runtimeState.effectiveState === "PAUSED");
+  const canResume = data?.status === "PAUSED" || data?.status === "STOPPED" || data?.status === "INTERRUPTED" || (runtimeState && runtimeState.effectiveState === "PAUSED");
   const canStop = data?.status === "RUNNING" || data?.status === "PAUSED";
 
   return (

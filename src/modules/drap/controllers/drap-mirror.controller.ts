@@ -30,6 +30,13 @@ export class DrapMirrorController {
     return this.controlService.resume();
   }
 
+  @Post("recover")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Recover interrupted DRAP mirror acquisition from saved checkpoints." })
+  async recover(): Promise<{ success: boolean; message: string }> {
+    return this.controlService.recover();
+  }
+
   @Post("stop")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Stop the DRAP mirror acquisition." })

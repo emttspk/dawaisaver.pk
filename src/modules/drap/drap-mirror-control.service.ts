@@ -38,13 +38,30 @@ export class DrapMirrorControlService implements OnModuleInit {
     return { success: true, message: "DRAP mirror resumed successfully." };
   }
 
+  async recover(): Promise<MirrorControlResult> {
+    const runningBatches = await this.prisma.importBatch.findMany({
+      where: {
+        adapterType: "drap-mirror",
+        status: "RUNNING",
+      },
+    });
+
+    if (runningBatches.length === 0) {
+      return { success: false, message: "No saved checkpoints found for recovery." };
+    }
+
+    await this.setControlState("running");
+    this.logger.log(`DRAP mirror recovery initiated: found ${runningBatches.length} RUNNING batches`);
+    return { success: true, message: `DRAP mirror recovery initiated. Found ${runningBatches.length} RUNNING batches.` };
+  }
+
   async stop(): Promise<MirrorControlResult> {
     await this.setControlState("stopped");
     this.logger.log("DRAP mirror stopped via admin control");
     return { success: true, message: "DRAP mirror stopped successfully." };
   }
 
-  async getMirrorState(): Promise<"running" | "paused" | "stopped"> {
+  async getMirrorState(): Promise<"running" | "paused" | "stopped" | "interrupted"> {
     const state = await this.getControlState();
     if (state === "running" || state === "paused" || state === "stopped") {
       return state;
