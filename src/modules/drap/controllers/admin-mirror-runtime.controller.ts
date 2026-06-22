@@ -28,7 +28,7 @@ export class AdminMirrorRuntimeController {
     return {
       state: dbState,
       envState,
-      effectiveState: envState === "PAUSED" ? "PAUSED" : dbState.toUpperCase(),
+      effectiveState: envState,
       mirrorEnabled: process.env.MIRROR_ENABLED === "true",
       migrationMode: process.env.MIRROR_MIGRATION_MODE !== "false",
     };

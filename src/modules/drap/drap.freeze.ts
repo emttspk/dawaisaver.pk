@@ -68,18 +68,19 @@ async function checkForStaleBatches(): Promise<boolean> {
   }
   
   const staleThreshold = new Date(Date.now() - 30 * 60 * 1000);
-  
-  const staleBatch = await prismaService.importBatch.findFirst({
+
+  // A mirror run may have multiple worker batches. An old sibling must not
+  // mark the whole run interrupted while another worker is still advancing.
+  const latestActiveBatch = await prismaService.importBatch.findFirst({
     where: {
       adapterType: "drap-mirror",
       status: "RUNNING",
-      updatedAt: {
-        lt: staleThreshold,
-      },
     },
+    orderBy: { updatedAt: "desc" },
+    select: { updatedAt: true },
   });
-  
-  return Boolean(staleBatch);
+
+  return Boolean(latestActiveBatch && latestActiveBatch.updatedAt < staleThreshold);
 }
 
 export async function assertMirrorExecutionAllowed(options?: { bypass?: boolean }): Promise<void> {

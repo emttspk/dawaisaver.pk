@@ -2,45 +2,52 @@
 
 Date: 2026-06-22
 Project: DawaiSaver.pk
-Update: DRAP mirror import batch summary counter synchronization
+Update: Mirror status frontend and runtime-state restoration
+
+## Root Causes
+
+### Frontend error
+
+The deployed admin bundle (`/assets/index-79b1f96a.js`) treated every response containing `success` as a data envelope and always returned `response.data`. Mirror control endpoints return a direct object such as `{ success: true, message: "..." }`, so the deployed client returned `undefined`. The action handler then read `result.message`, producing `Cannot read properties of undefined (reading 'message')`.
+
+The source client had a partial envelope correction that was not present in the deployed bundle. This change additionally makes error extraction safe for absent, string, and nested error values. The status page now loads `/admin/mirror-status` and `/admin/mirror/runtime` independently with `Promise.allSettled`, validates the status payload, uses optional action messages, and never dereferences an unknown caught value.
+
+### False `INTERRUPTED` state
+
+`getMirrorRuntimeState()` queried for any `RUNNING` mirror batch with `updated_at` older than 30 minutes. A multi-worker run could therefore be reported globally as `INTERRUPTED` because of one stale sibling even while another worker continued updating checkpoints, counters, and archive uploads.
+
+The runtime check now selects the newest `RUNNING` mirror batch heartbeat. The mirror is interrupted only when the newest active heartbeat is stale. The runtime endpoint also returns the actual computed `RUNNING`, `PAUSED`, or `INTERRUPTED` value as `effectiveState`; it no longer collapses `INTERRUPTED` to the database control row's uppercase value.
+
+## Acquisition and Recovery Findings
+
+- `mirror_runtime_control` is the runtime gate. `start`, `resume`, and `recover` set its row to `running`; pause/stop change the gate.
+- The mirror job reads stable worker batch IDs and stored checkpoints and passes them to `runMirrorAcquisition()` as `resumeFrom`.
+- The API process has no startup worker launcher. Control handlers change authorization state but do not spawn the acquisition CLI. The deployed acquisition worker is therefore operationally separate from the API controls.
+- Because production checkpoints and archive uploads were observed continuing, the symptom is a false status calculation rather than stopped acquisition. Acquisition logic was not modified.
 
 ## Production Evidence
 
-- Active batch: `cfd99bd1-0953-4146-8e50-bc0c799ddbfb`
-- `import_batches`: `status=RUNNING`, `total_rows=12500`, and all four summary counters were `0`.
-- The same row's acquisition checkpoint had `processed=6400`, `fetched=6400`, `parsed=6246`, and `failed=154`.
-- Its archive manifest had 6 uploaded segments and 6400 records; `import_batch_items` contained 6412 rows.
-- This proves acquisition, item persistence, checkpoint persistence, archiving, and R2 upload were progressing while scalar summary fields were stale.
+- Public admin deployment responds HTTP 200 at `https://dawaisaver-admin.pages.dev`.
+- Its deployed asset was `index-79b1f96a.js` and contained the failing sequence: generic envelope unwrap to `data`, followed by an unguarded control-result `.message` read.
+- The same-origin mirror endpoints are reachable and protected: unauthenticated requests to `/api/admin/mirror-status` and `/api/admin/mirror/runtime` returned HTTP 401.
+- Direct SSH verification was attempted with all available workstation identities; the host rejected public-key authentication.
+- The configured Coolify API was also queried read-only but returned HTTP 503 `no available server`.
+- The public production API hostname recorded in older documentation does not currently resolve. Consequently, a fresh authenticated PostgreSQL snapshot of checkpoint, worker count, control row, and batch state could not be collected from this environment. Previously supplied production evidence remains: batch `cfd99bd1-0953-4146-8e50-bc0c799ddbfb`, checkpoint `processed=6400`, `parsed=6246`, `failed=154`, archive uploads advancing.
 
-## Root Cause
+## Changes
 
-`DrapAcquisitionService.persistBatchState()` is called at each configured checkpoint and successfully writes `metadata.acquisition.checkpoint`, R2 state, and archive state. Before this fix, that update omitted `validRows`, `invalidRows`, `duplicateRows`, and `savedRows`.
+- `apps/admin/src/services/api-client.ts`: defensive response/error handling.
+- `apps/admin/src/pages/MirrorStatusDashboard.tsx`: independent endpoint loading, payload validation, and safe error/action messages.
+- `src/modules/drap/drap.freeze.ts`: newest-heartbeat interruption calculation.
+- `src/modules/drap/controllers/admin-mirror-runtime.controller.ts`: truthful effective runtime state.
+- `src/modules/drap/testing/drap.freeze.test.ts`: fresh-worker and all-stale regression cases.
+- `.gitignore`: explicit exclusion for archived/current-update snapshots.
 
-Those scalar fields were initialized from the starting checkpoint in `ensureBatch()` and otherwise written only by the final completion update. A new, long-running batch therefore retained zeros until the full range completed, even though its JSON checkpoint advanced. There is no separate transaction, alternate table, or wrong-batch update involved: both checkpoint and final updates target `importBatch` by `batch.id`.
-
-Status behavior is separate and intentional: `RUNNING` is set at batch creation, completion changes it to `COMPLETED` or `COMPLETED_WITH_ERRORS`, and the acquisition catch path marks an aborted run `COMPLETED_WITH_ERRORS`.
-
-## Fix
-
-The checkpoint update now synchronizes:
-
-- `validRows = checkpoint.parsed`
-- `invalidRows = checkpoint.failed`
-- `duplicateRows = checkpoint.duplicate`
-- `savedRows = checkpoint.parsed`
-
-This matches the existing creation and completion semantics and does not alter acquisition, infrastructure, Coolify, or R2 behavior.
-
-A focused unit test verifies that a checkpoint with the production-shaped values writes both the metadata checkpoint and all four scalar counters in the same Prisma update.
-
-## Files Changed
-
-- `src/modules/drap/drap.acquisition.service.ts`
-- `src/modules/drap/testing/drap-acquisition.service.test.ts`
-- `CURRENT_UPDATE.md`
+Superseded update snapshots remain under the ignored `docs/archive/` area; `CURRENT_UPDATE.md` is the only active update document.
 
 ## Verification
 
-- Focused unit test: passed (3 tests)
-- Build: passed (`npm.cmd run build` / `nest build`)
-- Commit: changes committed after verification
+- Runtime-state unit tests: 4 passed.
+- API build: passed (`npm.cmd run build`).
+- Admin build: passed (`npm.cmd run build --prefix apps/admin`).
+- Infrastructure, Coolify configuration, R2 configuration, and acquisition logic were not changed.

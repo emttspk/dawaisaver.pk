@@ -23,18 +23,28 @@ export default function MirrorStatusDashboard() {
 
     const load = async () => {
       try {
-        const [response, runtime] = await Promise.all([
+        const [statusResult, runtimeResult] = await Promise.allSettled([
           apiClient.getMirrorStatus(),
           apiClient.getMirrorRuntime(),
         ]);
         if (!mounted) return;
-        setData(response);
-        setRuntimeState(runtime);
-        setError("");
+        if (statusResult.status === "fulfilled" && isMirrorStatusResponse(statusResult.value)) {
+          setData(statusResult.value);
+        } else {
+          setError(
+            statusResult.status === "rejected"
+              ? safeErrorMessage(statusResult.reason, "Could not load mirror status.")
+              : "Mirror status endpoint returned an unexpected response.",
+          );
+        }
+        if (runtimeResult.status === "fulfilled" && runtimeResult.value && typeof runtimeResult.value === "object") {
+          setRuntimeState(runtimeResult.value);
+        }
+        if (statusResult.status === "fulfilled" && isMirrorStatusResponse(statusResult.value)) setError("");
         setLastUpdated(new Date().toISOString());
       } catch (caught) {
         if (!mounted) return;
-        setError(caught instanceof Error ? caught.message : "Could not load mirror status.");
+        setError(safeErrorMessage(caught, "Could not load mirror status."));
       } finally {
         if (mounted) setLoading(false);
       }
@@ -110,7 +120,7 @@ export default function MirrorStatusDashboard() {
       }, 3000);
     } catch (err) {
       setActionState("error");
-      setActionMessage(err instanceof Error ? err.message : "Action failed");
+      setActionMessage(safeErrorMessage(err, "Action failed"));
     }
   };
 
@@ -374,6 +384,22 @@ export default function MirrorStatusDashboard() {
       </section>
     </div>
   );
+}
+
+function isMirrorStatusResponse(value: unknown): value is MirrorStatusResponse {
+  if (!value || typeof value !== "object") return false;
+  const record = value as Record<string, unknown>;
+  return typeof record.status === "string" && Array.isArray(record.batches);
+}
+
+function safeErrorMessage(value: unknown, fallback: string): string {
+  if (value instanceof Error && value.message) return value.message;
+  if (value && typeof value === "object") {
+    const message = (value as Record<string, unknown>).message;
+    if (typeof message === "string" && message.trim()) return message;
+  }
+  if (typeof value === "string" && value.trim()) return value;
+  return fallback;
 }
 
 function MetricCard({ label, value, tone }: { label: string; value: string; tone: "emerald" | "blue" | "amber" | "slate" | "red" }) {

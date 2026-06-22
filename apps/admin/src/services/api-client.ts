@@ -64,8 +64,9 @@ export interface MirrorStatusResponse {
 
 interface ApiEnvelope<T> {
   success: boolean;
-  data: T;
-  error?: string;
+  data?: T;
+  error?: unknown;
+  message?: unknown;
   code?: string;
 }
 
@@ -87,7 +88,7 @@ class AdminApiClient {
     
     const payload = (await response.json().catch(() => ({}))) as Partial<ApiEnvelope<T>> | T;
     if (!response.ok || (isEnvelope(payload) && payload.success === false)) {
-      throw new Error(isEnvelope(payload) ? payload.error || payload.code || "Request failed." : "Request failed.");
+      throw new Error(responseErrorMessage(payload, response.status));
     }
     
     if (isEnvelope(payload) && "data" in payload) {
@@ -285,9 +286,14 @@ function isEnvelope<T>(payload: Partial<ApiEnvelope<T>> | T): payload is Partial
   return Boolean(payload && typeof payload === "object" && "success" in payload);
 }
 
-function unwrap<T>(payload: Partial<ApiEnvelope<T>> | T): T {
-  if (!isEnvelope(payload)) return payload as T;
-  const data = payload.data as T | Partial<ApiEnvelope<T>>;
-  if (isEnvelope(data)) return data.data as T;
-  return data as T;
+function responseErrorMessage<T>(payload: Partial<ApiEnvelope<T>> | T, status: number): string {
+  if (!payload || typeof payload !== "object") return `Request failed (${status}).`;
+  const record = payload as Record<string, unknown>;
+  const candidate = record.error ?? record.message ?? record.code;
+  if (typeof candidate === "string" && candidate.trim()) return candidate;
+  if (candidate && typeof candidate === "object") {
+    const nestedMessage = (candidate as Record<string, unknown>).message;
+    if (typeof nestedMessage === "string" && nestedMessage.trim()) return nestedMessage;
+  }
+  return `Request failed (${status}).`;
 }
