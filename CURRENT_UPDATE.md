@@ -22,6 +22,16 @@ The live control plane is currently unavailable from this workspace, so the work
   - archive objects are uploaded per batch
   - the mirror does not upload each record individually
 
+## 2026-06-22 verification refresh
+
+- `wrangler r2 bucket list` confirms the live Cloudflare account still has the `dawaisaver-pk` bucket.
+- `wrangler r2 object list dawaisaver-pk --remote` is not supported by the installed Wrangler 4.100.0 CLI; the command is rejected with `Unknown arguments: remote, list, dawaisaver-pk`.
+- `wrangler r2 bucket info dawaisaver-pk` reports `object_count=0` and `bucket_size=0 B`, so there are no remote object keys to list. First 20 keys: none.
+- Direct SSH to `root@178.105.221.236` and `ubuntu@178.105.221.236` still fails with `Permission denied (publickey,password)`.
+- `https://yh5wt7bbkhqsjycey5df0lbe.178.105.221.236.sslip.io/health` and `/api/v1/health` both return `503 Service Unavailable`.
+- Direct probe to `http://178.105.221.236:3000/health` times out, so the backend service is not reachable on its exposed port from this workspace.
+- The Coolify env file only contains a placeholder token, so Coolify automation is still not authenticated here.
+
 ## Current deliverables
 
 - 15-minute throughput: **unverified live** because the backend host/API is unavailable from this workspace
