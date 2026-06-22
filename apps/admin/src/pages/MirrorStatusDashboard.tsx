@@ -102,7 +102,7 @@ export default function MirrorStatusDashboard() {
           break;
       }
       setActionState("success");
-      setActionMessage(result.message);
+      setActionMessage(result?.message || "Action completed.");
       setShowStopConfirm(false);
       setTimeout(() => {
         setActionState("idle");

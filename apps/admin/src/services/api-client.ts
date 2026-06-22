@@ -89,7 +89,12 @@ class AdminApiClient {
     if (!response.ok || (isEnvelope(payload) && payload.success === false)) {
       throw new Error(isEnvelope(payload) ? payload.error || payload.code || "Request failed." : "Request failed.");
     }
-    return unwrap<T>(payload);
+    
+    if (isEnvelope(payload)) {
+      return payload.data as T;
+    }
+    
+    return payload as T;
   }
 
   private async refresh(): Promise<boolean> {

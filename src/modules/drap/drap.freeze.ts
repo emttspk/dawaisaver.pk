@@ -59,6 +59,14 @@ export async function getMirrorRuntimeState(): Promise<DrapMirrorRuntimeState> {
 async function checkForStaleBatches(): Promise<boolean> {
   if (!prismaService) return false;
   
+  const controlRecord = await prismaService.mirrorRuntimeControl.findUnique({
+    where: { key: "drap_mirror:control" },
+  });
+  
+  if (controlRecord?.state !== "running") {
+    return false;
+  }
+  
   const staleThreshold = new Date(Date.now() - 30 * 60 * 1000);
   
   const staleBatch = await prismaService.importBatch.findFirst({
