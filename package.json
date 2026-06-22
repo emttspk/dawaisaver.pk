@@ -11,6 +11,7 @@
     "catalog:build": "ts-node -r dotenv/config src/cli/catalog.ts build",
     "catalog:resume": "ts-node -r dotenv/config src/cli/catalog.ts resume",
     "catalog:verify": "ts-node -r dotenv/config src/cli/catalog.ts verify",
+    "drap:mirror": "ts-node -r dotenv/config src/cli/drap-mirror.ts",
     "lint": "eslint \"src/**/*.ts\"",
     "format": "prettier --write \"src/**/*.ts\" \"docs/**/*.md\"",
     "test": "jest",
