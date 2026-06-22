@@ -83,6 +83,7 @@ The worker launcher:
 - `src/modules/drap/drap-mirror-control.service.ts` (modified)
 - `src/modules/drap/drap.module.ts` (modified)
 - `src/modules/drap/controllers/admin-mirror-runtime.controller.ts` (modified)
+- `package.json` (added build:cli script)
 
 ## Production Verification Required
 
@@ -92,26 +93,21 @@ The worker launcher:
 
 1. **PID Status**:
 ```bash
-ps -fp 209
-ps -fp 230
+ps -fp <returned_pid>
+pgrep -af drap
+pgrep -af node
 ```
 
-2. **Worker Process Check**:
-```bash
-ps aux | grep drap
-ps aux | grep node
-```
-
-3. **Item Count Verification** (run twice 60 seconds apart):
+2. **Item Count Verification** (run twice 60 seconds apart):
 ```sql
 SELECT COUNT(*)
 FROM import_batch_items
 WHERE import_batch_id='<latest_running_batch>';
 ```
 
-4. **Checkpoint Movement**:
+3. **Checkpoint Movement**:
 ```sql
-SELECT id, metadata, import_report
+SELECT id, metadata->'acquisition'->'checkpoint' as checkpoint
 FROM import_batch
 WHERE adapter_type = 'drap-mirror' AND status = 'RUNNING'
 ORDER BY created_at DESC
@@ -119,7 +115,7 @@ LIMIT 1;
 ```
 Compare processed, parsed, failed, nextIndex, lastRegistrationNumber before/after.
 
-5. **Archive Growth**:
+4. **Archive Growth**:
 ```sql
 SELECT 
   metadata->'acquisition'->'archive'->>'uploadedSegments' as uploaded,
@@ -130,21 +126,26 @@ ORDER BY created_at DESC
 LIMIT 1;
 ```
 
+5. **Recent Acquisition Logs**:
+```bash
+find /opt/dawaisaver -type f -mmin -30 -name "*.log" -exec tail -50 {} \;
+```
+
 ### Expected Results
 
 **A. Acquisition actively progressing** (SUCCESS):
-- PIDs 209/230 exist in process list
+- PID exists in process list
 - import_batch_items count increases
 - Checkpoint values advance
 - Archive segments grow
 
 **B. Worker launched but immediately exited** (CODE ISSUE):
-- PIDs not found
+- PID not found
 - No new items
 - No checkpoint movement
 
 **C. Worker running but blocked** (CONFIG ISSUE):
-- PIDs exist but no activity
+- PID exists but no activity
 - Items/states unchanged for >60 seconds
 
 **D. Worker writing to wrong batch** (LOGIC ISSUE):
@@ -153,10 +154,13 @@ LIMIT 1;
 
 ### Current Status
 
-- SSH verification: **NOT POSSIBLE** - Host rejected public-key authentication
-- Public API hostname: **DOES NOT RESOLVE**
 - Last verified production evidence: batch `cfd99bd1-0953-4146-8e50-bc0c799ddbfb`, checkpoint `processed=6400`, `parsed=6246`, `failed=154`
 
 ### Conclusion
 
 **NEEDS PRODUCTION VERIFICATION** - Code changes are complete but acquisition must be verified running in production before further development.
+
+## Commits
+
+- `9c91a83` - fix: use ts-node for worker launch to resolve job compilation issue
+- `2df41c1` - feat: add worker launcher for mirror start/resume/recover
