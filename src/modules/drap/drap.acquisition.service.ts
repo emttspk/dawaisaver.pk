@@ -589,6 +589,10 @@ export class DrapAcquisitionService {
     await this.prisma.importBatch.update({
       where: { id: batch.id },
       data: {
+        validRows: checkpoint.parsed,
+        invalidRows: checkpoint.failed,
+        duplicateRows: checkpoint.duplicate,
+        savedRows: checkpoint.parsed,
         metadata: {
           ...existingMetadata,
           acquisition: {

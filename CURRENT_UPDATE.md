@@ -1,55 +1,46 @@
 # CURRENT UPDATE
 
-Date: 2026-06-22 22:45 PKT
+Date: 2026-06-22
 Project: DawaiSaver.pk
-Update: DRAP Acquisition Recovery Implementation - ROOT CAUSE IDENTIFIED
+Update: DRAP mirror import batch summary counter synchronization
 
-## 1. Root Cause Analysis (IDENTIFIED)
+## Production Evidence
 
-### Problem
-Resume Mirror button fails with: "Cannot read properties of undefined (reading 'message')"
+- Active batch: `cfd99bd1-0953-4146-8e50-bc0c799ddbfb`
+- `import_batches`: `status=RUNNING`, `total_rows=12500`, and all four summary counters were `0`.
+- The same row's acquisition checkpoint had `processed=6400`, `fetched=6400`, `parsed=6246`, and `failed=154`.
+- Its archive manifest had 6 uploaded segments and 6400 records; `import_batch_items` contained 6412 rows.
+- This proves acquisition, item persistence, checkpoint persistence, archiving, and R2 upload were progressing while scalar summary fields were stale.
 
-### Root Cause
-The backend `/admin/mirror/resume` endpoint returns `{ success: boolean; message: string }` directly, without wrapping in a `{ success, data }` envelope. The frontend `api-client.ts` was checking `isEnvelope(payload)` which returned true for `{ success, message }`, then trying to access `payload.data` which was undefined.
+## Root Cause
 
-### Fix Applied
-Modified `api-client.ts` to check for `data` property existence before unwrapping:
-```typescript
-if (isEnvelope(payload) && "data" in payload) {
-  return payload.data as T;
-}
-return payload as T;
-```
+`DrapAcquisitionService.persistBatchState()` is called at each configured checkpoint and successfully writes `metadata.acquisition.checkpoint`, R2 state, and archive state. Before this fix, that update omitted `validRows`, `invalidRows`, `duplicateRows`, and `savedRows`.
 
----
+Those scalar fields were initialized from the starting checkpoint in `ensureBatch()` and otherwise written only by the final completion update. A new, long-running batch therefore retained zeros until the full range completed, even though its JSON checkpoint advanced. There is no separate transaction, alternate table, or wrong-batch update involved: both checkpoint and final updates target `importBatch` by `batch.id`.
 
-## 2. Deployment Steps
+Status behavior is separate and intentional: `RUNNING` is set at batch creation, completion changes it to `COMPLETED` or `COMPLETED_WITH_ERRORS`, and the acquisition catch path marks an aborted run `COMPLETED_WITH_ERRORS`.
 
-### Coolify Deployment
-1. Navigate to Coolify dashboard → DawaiSaver.pk application
-2. Click "Restart" to deploy commit `8c66231`
-3. Wait for health check to pass
-4. Click "Resume Mirror" in dashboard
-5. Verify status changes: `INTERRUPTED` → `RUNNING`
-6. Verify checkpoints advance beyond `085249`
+## Fix
 
----
+The checkpoint update now synchronizes:
 
-## 3. Expected Production Verification
+- `validRows = checkpoint.parsed`
+- `invalidRows = checkpoint.failed`
+- `duplicateRows = checkpoint.duplicate`
+- `savedRows = checkpoint.parsed`
 
-After deployment:
+This matches the existing creation and completion semantics and does not alter acquisition, infrastructure, Coolify, or R2 behavior.
 
-- [ ] A. Resume click returns 200
-- [ ] B. Status changes INTERRUPTED → RUNNING  
-- [ ] C. New import_batches rows appear OR existing checkpoints advance
-- [ ] D. lastRegistrationNumber exceeds 085249
-- [ ] E. R2 uploads continue
-- [ ] F. No duplicate registrations acquired
+A focused unit test verifies that a checkpoint with the production-shaped values writes both the metadata checkpoint and all four scalar counters in the same Prisma update.
 
----
+## Files Changed
 
-## 4. Files Changed
+- `src/modules/drap/drap.acquisition.service.ts`
+- `src/modules/drap/testing/drap-acquisition.service.test.ts`
+- `CURRENT_UPDATE.md`
 
-| File | Change |
-|------|--------|
-| `apps/admin/src/services/api-client.ts` | Fixed envelope detection for direct responses |
+## Verification
+
+- Focused unit test: passed (3 tests)
+- Build: passed (`npm.cmd run build` / `nest build`)
+- Commit: changes committed after verification

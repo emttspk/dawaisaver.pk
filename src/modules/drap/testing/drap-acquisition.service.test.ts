@@ -62,4 +62,40 @@ describe("DRAP acquisition service", () => {
       ["000001", "000002", "000003"],
     );
   });
+
+  it("synchronizes import batch summary counters when persisting a checkpoint", async () => {
+    const updates: unknown[] = [];
+    const prisma = {
+      importBatch: {
+        update: async (args: unknown) => {
+          updates.push(args);
+          return args;
+        },
+      },
+    };
+    const service = new DrapAcquisitionService(prisma as any, new UploadService());
+
+    await (service as any).persistBatchState(
+      { id: "batch-1", metadata: null, importReport: null },
+      {
+        batchId: "batch-1",
+        nextIndex: 6400,
+        lastRegistrationNumber: "060249",
+        processed: 6400,
+        fetched: 6400,
+        parsed: 6246,
+        failed: 154,
+        duplicate: 12,
+        retries: 3,
+      },
+      { required: [], present: [], missing: [] },
+    );
+
+    assert.equal(updates.length, 1);
+    assert.deepEqual((updates[0] as any).data.validRows, 6246);
+    assert.deepEqual((updates[0] as any).data.invalidRows, 154);
+    assert.deepEqual((updates[0] as any).data.duplicateRows, 12);
+    assert.deepEqual((updates[0] as any).data.savedRows, 6246);
+    assert.deepEqual((updates[0] as any).data.metadata.acquisition.checkpoint.processed, 6400);
+  });
 });
