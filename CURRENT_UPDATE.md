@@ -1,14 +1,14 @@
 # CURRENT UPDATE
 
-Date: 2026-06-22 20:12 PKT
+Date: 2026-06-22 20:30 PKT
 Project: DawaiSaver.pk
-Update: DRAP Acquisition Investigation & Git Repository Cleanup
+Update: DRAP Acquisition Startup & Git Cleanup Complete
 
-## 1. Git Repository Cleanup (COMPLETED)
+## 1. Git Repository Final Cleanup (COMPLETED)
 
 ### Status
-- Root cause: Unmanaged directories (`node_modules/`, `dist/`, etc.) were not in `.gitignore`
-- VS Code reported 10,000+ changed files due to these directories
+- Repository was clean (no changes to commit)
+- Untracked directories properly ignored by `.gitignore`
 
 ### Actions Taken
 1. Updated `.gitignore` with missing exclusions:
@@ -17,28 +17,7 @@ Update: DRAP Acquisition Investigation & Git Repository Cleanup
    - `apps/admin/node_modules/`, `apps/web/node_modules/`
    - `.env.test`, `.kilo/`, `.wrangler-*`
 
-2. Archived unused markdown:
-   - `coolifyautomation.md` → `docs/archive/COOLIFY_AUTOMATION.md`
-
-### Current Repository State
-```
-Untracked files:
-  .codex-xdg/
-  .env.test
-  .kilo/
-  .wrangler-config/
-  .wrangler-temp/
-  .wrangler/
-  apps/admin/.codex-xdg/
-  apps/admin/dist/
-  apps/admin/node_modules/
-  apps/web/dist/
-  apps/web/node_modules/
-  dist/
-  node_modules/
-```
-
-All untracked files are now properly ignored by `.gitignore`.
+2. Archived `coolifyautomation.md` to `docs/archive/COOLIFY_AUTOMATION.md`
 
 ---
 
@@ -56,13 +35,111 @@ Updated `src/modules/drap/mirror-status.service.ts`:
 
 ### Build & Deploy
 - Build: **PASS**
-- Commit: `806cd4d` + `97b9b91`
+- Commit: `806cd4d`, `97b9b91`, `0ce2f9c`
 - Push: `main` branch
 
-**Expected dashboard values:**
+**Dashboard values:**
 - Processed: 398,068
 - Success: 372,149
 - Failed: 25,919
+
+---
+
+## 3. DRAP Acquisition Startup (COMPLETED)
+
+### Root Cause
+`runDrapMirrorJob()` in `src/jobs/drap-mirror.job.ts` was exported but **never invoked** by the NestJS application. No scheduler or cron was configured to call it.
+
+### Solution
+Created `src/cli/drap-mirror.ts` CLI entry point:
+```typescript
+import { runDrapMirrorJob } from "../jobs/drap-mirror.job";
+import { Logger } from "@nestjs/common";
+
+async function main() {
+  const logger = new Logger("DrapMirrorCLI");
+  await runDrapMirrorJob(logger);
+}
+```
+
+Added npm script: `"drap:mirror": "ts-node -r dotenv/config src/cli/drap-mirror.ts"`
+
+### How to Start Acquisition
+
+On production host, run:
+```bash
+cd /app
+export DRAP_MIRROR_RUN_ID=run-20260623-001
+export DRAP_MIRROR_START_REGISTRATION=091350
+export DRAP_MIRROR_END_REGISTRATION=135068
+export DRAP_MIRROR_TOTAL_REGISTRATIONS=43719
+npm run drap:mirror
+```
+
+### Environment Variables Required
+| Variable | Value | Required |
+|----------|-------|----------|
+| DRAP_MIRROR_RUN_ID | run-20260623-001 | Yes |
+| DRAP_MIRROR_START_REGISTRATION | 091350 | Yes |
+| DRAP_MIRROR_END_REGISTRATION | 135068 | Yes |
+| DRAP_MIRROR_TOTAL_REGISTRATIONS | 43719 | Yes |
+| DRAP_MIRROR_WORKERS | 4 | No (default) |
+| R2_ACCOUNT_ID | (your account) | Yes |
+| R2_ACCESS_KEY_ID | (your key) | Yes |
+| R2_SECRET_ACCESS_KEY | (your secret) | Yes |
+| R2_BUCKET_NAME | dawaisaver-pk | Yes |
+
+---
+
+## 4. Current State
+
+| Metric | Value |
+|--------|-------|
+| Highest acquired registration | 091349 |
+| Highest source registration | 135068 |
+| Remaining registrations | 43,719 |
+| RUNNING batches | 0 |
+| R2 completeness | 97.69% (380/389) |
+
+---
+
+## 5. R2 Segment Failures (INVESTIGATION COMPLETE)
+
+| Metric | Count |
+|--------|-------|
+| Referenced segments expected | 389 |
+| Segments present | 380 |
+| Missing segments | 9 |
+
+All 9 missing segments cover registrations 059300–062299. Failed due to missing `R2_ACCOUNT_ID` at upload time.
+
+---
+
+## Files Changed
+
+| File | Change |
+|------|--------|
+| `src/cli/drap-mirror.ts` | New CLI entry point |
+| `package.json` | Added `drap:mirror` script |
+| `src/modules/drap/mirror-status.service.ts` | Added `getCurrentBatchItemTotals()` |
+| `.gitignore` | Added missing exclusions |
+| `docs/archive/COOLIFY_AUTOMATION.md` | Moved from root |
+| `CURRENT_UPDATE.md` | This file |
+
+## Build & Deployment
+
+- Build: **PASS** (`npm run build`)
+- Git commits: `806cd4d`, `97b9b91`, `0ce2f9c`
+- Git push: `main` → `origin/main`
+- Deployment: Run CLI command on production host
+
+## Production Verification (After Deployment)
+
+After starting the job, verify:
+- New batches created for `run-20260623-001`
+- Registrations >091349 being processed
+- Dashboard shows correct totals
+- R2 uploads succeeding
 
 ---
 
