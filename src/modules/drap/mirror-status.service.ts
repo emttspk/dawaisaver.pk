@@ -56,6 +56,9 @@ export class DrapMirrorStatusService {
 
     const activeBatches = (runBatches.length > 0 ? runBatches : [latest]).map((batch) => batch as MirrorBatchRow);
     const snapshots = activeBatches.map((batch) => this.snapshot(batch));
+
+    const currentTotals = await this.getCurrentBatchItemTotals();
+
     const startedAt = snapshots
       .map((snapshot) => snapshot.startedAt)
       .filter((value): value is Date => Boolean(value))
@@ -105,9 +108,9 @@ export class DrapMirrorStatusService {
               .sort((left, right) => right.getTime() - left.getTime())[0]
               ?.toISOString()
           : undefined,
-      processed_count: processedCount,
-      success_count: successCount,
-      failed_count: failedCount,
+      processed_count: currentTotals.processedCount,
+      success_count: currentTotals.successCount,
+      failed_count: currentTotals.failedCount,
       retries,
       duplicates: duplicateCount,
       throughput: round(throughput),
@@ -140,6 +143,30 @@ export class DrapMirrorStatusService {
         updated_at: snapshot.updatedAt.toISOString(),
       })),
     };
+  }
+
+  private async getCurrentBatchItemTotals(): Promise<{
+    processedCount: number;
+    successCount: number;
+    failedCount: number;
+  }> {
+    const counts = await this.prisma.importBatchItem.groupBy({
+      by: ["status"],
+      where: {
+        importBatch: {
+          adapterType: "drap-mirror",
+        },
+      },
+      _count: {
+        status: true,
+      },
+    });
+
+    const processedCount = counts.reduce((sum, c) => sum + Number(c._count.status), 0);
+    const successCount = counts.find((c) => c.status === "SAVED")?._count.status ?? 0;
+    const failedCount = counts.find((c) => c.status === "FAILED")?._count.status ?? 0;
+
+    return { processedCount, successCount, failedCount };
   }
 
   private snapshot(batch: MirrorBatchRow) {
