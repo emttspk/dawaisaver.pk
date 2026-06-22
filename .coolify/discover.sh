@@ -1,25 +1,18 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-if [ -f .env.coolify ]; then
-  export $(cat .env.coolify | grep -v '^#' | xargs)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [ -f "$SCRIPT_DIR/.env.coolify" ]; then
+  export $(cat "$SCRIPT_DIR/.env.coolify" | grep -v '^#' | xargs)
 fi
 
 if [ -z "$COOLIFY_URL" ] || [ -z "$COOLIFY_TOKEN" ]; then
   echo "Error: COOLIFY_URL and COOLIFY_TOKEN must be set in .env.coolify"
-  echo "Creating template .env.coolify..."
-  cat > .env.coolify << 'ENVEOF'
-# Coolify API Configuration
-# Your Coolify instance URL (no trailing slash)
-COOLIFY_URL=https://your-coolify-instance.com
-
-# Your API token with read, write, and deploy permissions
-COOLIFY_TOKEN=your_api_token_here
-ENVEOF
-  echo "Created .env.coolify - please edit with your values"
+  echo "Run: cp $SCRIPT_DIR/.env.example $SCRIPT_DIR/.env.coolify"
   exit 1
 fi
 
-OUTPUT_FILE="${1:-.coolify/inventory.json}"
+OUTPUT_FILE="${1:-$SCRIPT_DIR/inventory.json}"
 
 echo "=== Discovering Coolify Resources ==="
 echo ""

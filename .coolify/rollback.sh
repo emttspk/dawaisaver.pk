@@ -1,12 +1,14 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-if [ -f .env.coolify ]; then
-  export $(cat .env.coolify | grep -v '^#' | xargs)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [ -f "$SCRIPT_DIR/.env.coolify" ]; then
+  export $(cat "$SCRIPT_DIR/.env.coolify" | grep -v '^#' | xargs)
 fi
 
 if [ -z "$COOLIFY_URL" ] || [ -z "$COOLIFY_TOKEN" ]; then
   echo "Error: COOLIFY_URL and COOLIFY_TOKEN must be set in .env.coolify"
-  echo "Run: cp .coolify/.env.example .coolify/.env.coolify"
+  echo "Run: cp $SCRIPT_DIR/.env.example $SCRIPT_DIR/.env.coolify"
   exit 1
 fi
 
@@ -15,7 +17,7 @@ ROLLBACK_TO="${2:-}"
 
 if [ -z "$APP_UUID" ]; then
   echo "Usage: $0 <application_uuid> [rollback_to_deployment_uuid]"
-  echo "Run 'bash .coolify/list-applications.sh' to see available applications"
+  echo "Run 'bash $SCRIPT_DIR/list-applications.sh' to see available applications"
   exit 1
 fi
 

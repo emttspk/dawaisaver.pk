@@ -2,6 +2,8 @@
 # Comprehensive validation script for Coolify automation package
 # Run this on the Hetzner VPS where Coolify is installed
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 set -e
 
 echo "========================================"
@@ -10,14 +12,14 @@ echo "========================================"
 echo ""
 
 # Check for .env.coolify
-if [ ! -f .env.coolify ]; then
+if [ ! -f "$SCRIPT_DIR/.env.coolify" ]; then
     echo "ERROR: .env.coolify not found"
-    echo "Run: cp .coolify/.env.example .coolify/.env.coolify"
+    echo "Run: cp $SCRIPT_DIR/.env.example $SCRIPT_DIR/.env.coolify"
     echo "Then edit with your COOLIFY_URL and COOLIFY_TOKEN"
     exit 1
 fi
 
-export $(cat .env.coolify | grep -v '^#' | xargs)
+export $(cat "$SCRIPT_DIR/.env.coolify" | grep -v '^#' | xargs)
 
 if [ -z "$COOLIFY_URL" ] || [ -z "$COOLIFY_TOKEN" ]; then
     echo "ERROR: COOLIFY_URL and COOLIFY_TOKEN must be set"
@@ -71,9 +73,9 @@ echo ""
 
 echo "4. Inventory Generation Test"
 echo "----------------------"
-bash .coolify/discover.sh > /dev/null 2>&1
-if [ -f .coolify/inventory.json ]; then
-    INV_APPS=$(cat .coolify/inventory.json | jq '.applications | length')
+bash "$SCRIPT_DIR/discover.sh" > /dev/null 2>&1
+if [ -f "$SCRIPT_DIR/inventory.json" ]; then
+    INV_APPS=$(cat "$SCRIPT_DIR/inventory.json" | jq '.applications | length')
     if [ "$INV_APPS" -gt 0 ]; then
         echo "   [PASS] inventory.json created with $INV_APPS applications"
         ((PASS_COUNT++))
