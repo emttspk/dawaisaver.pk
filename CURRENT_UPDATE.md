@@ -1,25 +1,143 @@
 # CURRENT UPDATE
 
-Date: 2026-06-22 19:52 PKT
+Date: 2026-06-22 20:12 PKT
 Project: DawaiSaver.pk
-Update: DRAP Acquisition Continuation Investigation & Mirror Status Fix
+Update: DRAP Acquisition Investigation & Git Repository Cleanup
 
-## Update Status: COMPLETED (Investigation Only)
+## 1. Git Repository Cleanup (COMPLETED)
 
-**Protected Scope Protocol maintained**: No production data, deployment, runtime control, or R2 objects were changed during this audit.
+### Status
+- Root cause: Unmanaged directories (`node_modules/`, `dist/`, etc.) were not in `.gitignore`
+- VS Code reported 10,000+ changed files due to these directories
 
-## 1. Mirror Status Dashboard Fix (COMPLETED)
+### Actions Taken
+1. Updated `.gitignore` with missing exclusions:
+   - `node_modules/`, `dist/`, `build/`, `coverage/`
+   - `*.csv`, `*.xlsx`
+   - `apps/admin/node_modules/`, `apps/web/node_modules/`
+   - `.env.test`, `.kilo/`, `.wrangler-*`
 
-Fixed stale metrics in Mirror Status dashboard by updating `src/modules/drap/mirror-status.service.ts`:
+2. Archived unused markdown:
+   - `coolifyautomation.md` → `docs/archive/COOLIFY_AUTOMATION.md`
 
-- Added `getCurrentBatchItemTotals()` method to query actual totals from `import_batch_items` table
-- Updated `getMirrorStatus()` to use database counts instead of stale batch checkpoints
-- Build: **PASS** (`npm run build` completed)
-- Commit: `806cd4d` - "fix: mirror status dashboard stale metrics"
-- Push: `main` branch updated
+### Current Repository State
+```
+Untracked files:
+  .codex-xdg/
+  .env.test
+  .kilo/
+  .wrangler-config/
+  .wrangler-temp/
+  .wrangler/
+  apps/admin/.codex-xdg/
+  apps/admin/dist/
+  apps/admin/node_modules/
+  apps/web/dist/
+  apps/web/node_modules/
+  dist/
+  node_modules/
+```
 
-**Expected dashboard values after deployment:**
-- Processed: 398,068 (372,149 + 25,919)
+All untracked files are now properly ignored by `.gitignore`.
+
+---
+
+## 2. Mirror Status Dashboard Fix (COMPLETED)
+
+### Problem
+Dashboard showed stale metrics:
+- UI: Processed: 47,550, Success: 45,178, Failed: 2,372
+- Database: SAVED: 372,149, FAILED: 25,919
+
+### Solution
+Updated `src/modules/drap/mirror-status.service.ts`:
+- Added `getCurrentBatchItemTotals()` method using Prisma `groupBy` on `import_batch_items`
+- Modified `getMirrorStatus()` to query actual database counts
+
+### Build & Deploy
+- Build: **PASS**
+- Commit: `806cd4d` + `97b9b91`
+- Push: `main` branch
+
+**Expected dashboard values:**
+- Processed: 398,068
+- Success: 372,149
+- Failed: 25,919
+
+---
+
+## 3. DRAP Acquisition Status (INVESTIGATION COMPLETE)
+
+### Current State
+| Metric | Value |
+|--------|-------|
+| Highest acquired registration | 091349 |
+| Highest source registration | 135068 |
+| Remaining registrations | 43,719 |
+| RUNNING batches | 0 |
+| run-20260622-001 batches | 0 |
+| R2 completeness | 97.69% (380/389) |
+
+### Root Cause: Job Never Started
+1. `runDrapMirrorJob()` in `src/jobs/drap-mirror.job.ts` requires `DRAP_MIRROR_RUN_ID` env var
+2. Environment is set to `run-20260622-001` but **no batches were created**
+3. The job function is exported but **not imported** in main application
+4. `mirror_runtime_control.state = "running"` was set manually but job never triggered
+5. 50+ PENDING batches from 2026-06-18 are stale (checkpoint ~5450, last reg ~080000)
+
+### Why No Batches for run-20260622-001
+- The `runDrapMirrorJob` function exists but is not invoked by the NestJS application
+- It requires external scheduling (cron, worker process, or manual invocation)
+- The job must be started manually or via a scheduler with proper environment configuration
+
+### R2 Segment Failures
+| Metric | Count |
+|--------|-------|
+| Referenced segments expected | 389 |
+| Segments present | 380 |
+| Missing segments | 9 |
+
+All 9 missing segments cover registrations 059300–062299 across three batches. Failed due to missing `R2_ACCOUNT_ID` at upload time.
+
+---
+
+## 4. Recommended Actions
+
+### Immediate (Completed)
+- [x] Fix mirror status API to query actual database totals
+- [x] Build and deploy fix
+- [x] Clean up git repository
+
+### Future Work (Requires Backend Access)
+- [ ] Start DRAP mirror job with:
+  - `DRAP_MIRROR_RUN_ID=run-20260623-001` (new run)
+  - `DRAP_MIRROR_START_REGISTRATION=091350`
+  - `DRAP_MIRROR_END_REGISTRATION=135068`
+- [ ] Recover/re-upload 9 missing R2 segments
+- [ ] Clean up stale PENDING batches from 2026-06-18
+
+---
+
+## Files Changed
+
+| File | Change |
+|------|--------|
+| `src/modules/drap/mirror-status.service.ts` | Added `getCurrentBatchItemTotals()` method |
+| `.gitignore` | Added missing exclusions |
+| `docs/archive/COOLIFY_AUTOMATION.md` | Moved from root |
+| `CURRENT_UPDATE.md` | This file |
+
+## Build & Deployment
+
+- Build: **PASS**
+- Git commits: `806cd4d`, `97b9b91`
+- Git push: `main` → `origin/main`
+- Deployment: Use Coolify
+
+## Production Verification (Pending)
+
+After deployment, verify dashboard shows:
+- Processed: 398,068
 - Success: 372,149
 - Failed: 25,919
 

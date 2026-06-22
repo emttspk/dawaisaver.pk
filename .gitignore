@@ -5,13 +5,8 @@ docs/reports/*.md
 docs/exports/*.md
 CURRENT_UPDATE.md
 CURRENT_UPDATE_*.md
-.wrangler/
-node_modules/
-dist/
-.env
-.env.*
-!.env.example
-apps/admin/.env*
+.coolify/
+.coolify/inventory.json
 
 # Temporary artifacts
 *.log
@@ -35,4 +30,27 @@ docs/exports/catalog/!golden-sample-catalogue-*.{json,md}
 docs/archive/CURRENT_UPDATE_*.md
 backups/
 .env.coolify
-.coolify/inventory.json
+
+# SSH keys (security)
+.ssh/
+
+# Build artifacts
+node_modules/
+dist/
+build/
+coverage/
+*.csv
+*.xlsx
+
+# Development
+.env.test
+.kilo/
+.wrangler-config/
+.wrangler-temp/
+.wrangler/
+.codex-xdg/
+apps/admin/.codex-xdg/
+apps/admin/dist/
+apps/admin/node_modules/
+apps/web/dist/
+apps/web/node_modules/
