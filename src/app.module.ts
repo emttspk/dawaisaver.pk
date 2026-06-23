@@ -17,6 +17,7 @@ import { SearchModule } from "./modules/search/search.module";
 import { SourceModule } from "./modules/sources/source.module";
 import { StatsModule } from "./modules/stats/stats.module";
 import { CatalogueModule } from "./modules/catalogue/catalogue.module";
+import { IngredientReviewModule } from "./modules/ingredient-review/ingredient-review.module";
 import { RuntimeFeatureModule } from "./runtime-feature.module";
 
 @Module({
@@ -47,6 +48,7 @@ import { RuntimeFeatureModule } from "./runtime-feature.module";
     DiscoveryModule,
     StatsModule,
     CatalogueModule,
+    IngredientReviewModule,
     RuntimeFeatureModule,
   ],
 })
