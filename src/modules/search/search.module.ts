@@ -3,6 +3,8 @@ import { DatabaseModule } from "../../database/database.module";
 import { AlternativesController } from "./controllers/alternatives.controller";
 import { AutocompleteController } from "./controllers/autocomplete.controller";
 import { SearchController } from "./controllers/search.controller";
+import { ProductsController } from "./controllers/products.controller";
+import { CanonicalProductsController } from "./controllers/canonical-products.controller";
 import { AlternativeSearchService } from "./alternative-search.service";
 import { AutocompleteService } from "./autocomplete.service";
 import { GenericSearchService } from "./generic-search.service";
@@ -12,7 +14,13 @@ import { SearchService } from "./search.service";
 
 @Module({
   imports: [DatabaseModule],
-  controllers: [SearchController, AutocompleteController, AlternativesController],
+  controllers: [
+    SearchController,
+    AutocompleteController,
+    AlternativesController,
+    ProductsController,
+    CanonicalProductsController,
+  ],
 })
 export class SearchModule {
   static createService(): SearchService {
