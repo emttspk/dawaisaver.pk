@@ -1,6 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { SourceType } from "@prisma/client";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { normalizeKey } from "../atc/molecule-normalizer.service";
+import { AtcService } from "../atc/atc.service";
+import { PrismaService } from "../../database/prisma.service";
 import { classifyIngredientPattern, classifyReviewLane, normalizeIngredientText, scoreIngredientConfidence } from "./ingredient-review.patterns";
 import {
   IngredientAliasPromotionInput,
@@ -12,7 +16,11 @@ import { IngredientReviewRepository } from "./ingredient-review.repository";
 
 @Injectable()
 export class IngredientReviewService {
-  constructor(private readonly repository: IngredientReviewRepository) {}
+  constructor(
+    private readonly repository: IngredientReviewRepository,
+    private readonly prisma: PrismaService,
+    private readonly atcService: AtcService,
+  ) {}
 
   async evaluate(input: IngredientReviewInput): Promise<IngredientReviewEvaluation> {
     const normalizedIngredient = normalizeIngredientText(input.rawIngredient);
@@ -100,6 +108,103 @@ export class IngredientReviewService {
 
   async getQueueSummary(): Promise<Array<{ reviewStatus: string; count: number; occurrences: number }>> {
     return this.repository.listQueueSummary();
+  }
+
+  async listQueue(params: {
+    limit: number;
+    offset: number;
+    search?: string;
+    reviewStatus?: string;
+    patternClass?: string;
+    sourceType?: SourceType;
+    minConfidence?: number;
+    maxConfidence?: number;
+  }) {
+    return this.repository.listQueueItems(params);
+  }
+
+  async getQueueItem(id: string) {
+    return this.repository.findQueueItem(id);
+  }
+
+  async approveQueueItem(id: string, notes?: string, actorId?: string) {
+    return this.repository.approveQueueItem({
+      queueId: id,
+      notes,
+      approvedById: actorId,
+      sourceType: SourceType.ADMIN_REVIEW,
+    });
+  }
+
+  async rejectQueueItem(id: string, notes?: string, actorId?: string) {
+    return this.repository.rejectQueueItem({
+      queueId: id,
+      notes,
+      rejectedById: actorId,
+      sourceType: SourceType.ADMIN_REVIEW,
+    });
+  }
+
+  async bulkApprove(ids: string[], notes?: string, actorId?: string) {
+    return this.repository.bulkQueueAction({
+      queueIds: ids,
+      action: "approve",
+      actorId,
+      notes,
+      sourceType: SourceType.ADMIN_REVIEW,
+    });
+  }
+
+  async bulkReject(ids: string[], notes?: string, actorId?: string) {
+    return this.repository.bulkQueueAction({
+      queueIds: ids,
+      action: "reject",
+      actorId,
+      notes,
+      sourceType: SourceType.ADMIN_REVIEW,
+    });
+  }
+
+  async getStats() {
+    return this.repository.getStats();
+  }
+
+  async backfillFromAuditAssets() {
+    const whoReport = await this.atcService.importWhoAtcMaster();
+    const queueCsv = await readFile(join(process.cwd(), "docs", "audits", "ingredient-review-queue.csv"), "utf8");
+    const rows = parseCsv(queueCsv).slice(1);
+    let queueCount = 0;
+
+    for (const row of rows) {
+      const rawIngredient = String(row.raw_ingredient || "");
+      const evaluation = await this.evaluate({
+        rawIngredient,
+        occurrenceCount: Number(row.occurrence_count || 1),
+        sourceType: SourceType.ADMIN_IMPORT,
+        sourceUrl: "docs/audits/ingredient-review-queue.csv",
+      });
+
+      await this.repository.upsertQueueItem({
+        rawIngredient,
+        normalizedIngredient: evaluation.normalizedIngredient,
+        occurrenceCount: Number(row.occurrence_count || 1),
+        patternClass: evaluation.patternClass,
+        confidenceScore: evaluation.confidenceScore,
+        reviewLane: evaluation.reviewLane,
+        suggestedGenericId: evaluation.suggestedGenericId,
+        suggestedCanonicalMolecule: evaluation.suggestedCanonicalMolecule,
+        reasoning: evaluation.reasoning,
+        sourceType: SourceType.ADMIN_IMPORT,
+        sourceUrl: "docs/audits/ingredient-review-queue.csv",
+      });
+      queueCount += 1;
+    }
+
+    return {
+      queueCount,
+      whoCanonicalMolecules: whoReport.totalCanonicalMolecules,
+      whoAliasSeeds: whoReport.totalAliases,
+    };
   }
 
   private async resolveCandidate(
@@ -220,4 +325,58 @@ export class IngredientReviewService {
       evaluations,
     };
   }
+}
+
+function parseCsv(input: string): Array<Record<string, string>> {
+  const lines = input
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (lines.length === 0) {
+    return [];
+  }
+
+  const headers = splitCsvLine(lines[0]).map((header) => header.trim());
+
+  return lines.slice(1).map((line) => {
+    const values = splitCsvLine(line);
+    return headers.reduce<Record<string, string>>((record, header, index) => {
+      record[header] = values[index] || "";
+      return record;
+    }, {});
+  });
+}
+
+function splitCsvLine(line: string): string[] {
+  const result: string[] = [];
+  let current = "";
+  let quoted = false;
+
+  for (let index = 0; index < line.length; index += 1) {
+    const char = line[index];
+    const next = line[index + 1];
+
+    if (char === '"' && next === '"') {
+      current += '"';
+      index += 1;
+      continue;
+    }
+
+    if (char === '"') {
+      quoted = !quoted;
+      continue;
+    }
+
+    if (char === "," && !quoted) {
+      result.push(current.trim());
+      current = "";
+      continue;
+    }
+
+    current += char;
+  }
+
+  result.push(current.trim());
+  return result;
 }

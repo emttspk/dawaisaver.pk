@@ -12,6 +12,263 @@ export class IngredientReviewRepository {
     return this.prisma.ingredientReviewQueue.findUnique({ where: { id } });
   }
 
+  async findQueueItem(id: string) {
+    return this.prisma.ingredientReviewQueue.findUnique({
+      where: { id },
+      include: {
+        suggestedGeneric: true,
+        resolvedGeneric: true,
+        history: {
+          orderBy: { createdAt: "desc" },
+        },
+        aliases: {
+          where: { deletedAt: null },
+          orderBy: { createdAt: "desc" },
+        },
+      },
+    });
+  }
+
+  async listQueueItems(params: {
+    limit: number;
+    offset: number;
+    search?: string;
+    reviewStatus?: string;
+    patternClass?: string;
+    sourceType?: SourceType;
+    minConfidence?: number;
+    maxConfidence?: number;
+  }) {
+    const where: Prisma.IngredientReviewQueueWhereInput = {
+      deletedAt: null,
+      ...(params.reviewStatus ? { reviewStatus: params.reviewStatus } : {}),
+      ...(params.patternClass ? { matchPattern: params.patternClass } : {}),
+      ...(params.sourceType ? { sourceType: params.sourceType } : {}),
+      ...(params.minConfidence != null || params.maxConfidence != null
+        ? {
+            confidenceScore: {
+              ...(params.minConfidence != null ? { gte: new Prisma.Decimal(params.minConfidence) } : {}),
+              ...(params.maxConfidence != null ? { lte: new Prisma.Decimal(params.maxConfidence) } : {}),
+            },
+          }
+        : {}),
+      ...(params.search
+        ? {
+            OR: [
+              { rawIngredient: { contains: params.search, mode: "insensitive" } },
+              { normalizedIngredient: { contains: params.search, mode: "insensitive" } },
+              { aiReasoning: { contains: params.search, mode: "insensitive" } },
+            ],
+          }
+        : {}),
+    };
+
+    const [items, total] = await Promise.all([
+      this.prisma.ingredientReviewQueue.findMany({
+        where,
+        include: {
+          suggestedGeneric: true,
+          resolvedGeneric: true,
+          aliases: true,
+        },
+        orderBy: [{ confidenceScore: "desc" }, { occurrenceCount: "desc" }, { createdAt: "desc" }],
+        take: params.limit,
+        skip: params.offset,
+      }),
+      this.prisma.ingredientReviewQueue.count({ where }),
+    ]);
+
+    return { items, total };
+  }
+
+  async getStats() {
+    const rows = await this.prisma.ingredientReviewQueue.findMany({
+      where: { deletedAt: null },
+      select: {
+        reviewStatus: true,
+        occurrenceCount: true,
+      },
+    });
+
+    const stats = new Map<string, { rows: number; occurrences: number }>();
+    for (const row of rows) {
+      const current = stats.get(row.reviewStatus) || { rows: 0, occurrences: 0 };
+      current.rows += 1;
+      current.occurrences += row.occurrenceCount;
+      stats.set(row.reviewStatus, current);
+    }
+
+    return Array.from(stats.entries()).map(([reviewStatus, value]) => ({
+      reviewStatus,
+      rows: value.rows,
+      occurrences: value.occurrences,
+    }));
+  }
+
+  async approveQueueItem(params: {
+    queueId: string;
+    approvedById?: string;
+    notes?: string;
+    sourceType?: SourceType;
+    sourceUrl?: string;
+  }) {
+    const queue = await this.findQueueItem(params.queueId);
+    if (!queue) return null;
+
+    const genericId = queue.suggestedGenericId || queue.resolvedGenericId;
+    if (!genericId) return null;
+
+    const alias = await this.promoteAlias({
+      genericId,
+      aliasValue: queue.rawIngredient,
+      aliasType: "RAW_INGREDIENT",
+      confidenceScore: Number(queue.confidenceScore || 0.96),
+      sourceType: params.sourceType || SourceType.ADMIN_REVIEW,
+      sourceUrl: params.sourceUrl || queue.sourceUrl || undefined,
+      queueId: queue.id,
+      approvedById: params.approvedById,
+    });
+
+    const updated = await this.prisma.ingredientReviewQueue.update({
+      where: { id: queue.id },
+      data: {
+        reviewStatus: "APPROVED",
+        resolvedGenericId: genericId,
+        metadata: {
+          ...((queue.metadata as Record<string, unknown> | null) || {}),
+          approvedAliasId: alias.id,
+          reviewNotes: params.notes || null,
+        },
+      },
+      include: {
+        suggestedGeneric: true,
+        resolvedGeneric: true,
+        history: true,
+        aliases: true,
+      },
+    });
+
+    await this.appendHistory({
+      ingredientReviewQueueId: queue.id,
+      previousStatus: queue.reviewStatus,
+      newStatus: "APPROVED",
+      previousSuggestedGenericId: queue.suggestedGenericId,
+      newSuggestedGenericId: genericId,
+      confidenceScore: Number(queue.confidenceScore || 0),
+      reasoning: params.notes || queue.aiReasoning || "Approved by admin review.",
+      actorType: params.approvedById ? "HUMAN" : "SYSTEM",
+      actorId: params.approvedById,
+      sourceType: params.sourceType || SourceType.ADMIN_REVIEW,
+      sourceUrl: params.sourceUrl || queue.sourceUrl || undefined,
+    });
+
+    return updated;
+  }
+
+  async rejectQueueItem(params: {
+    queueId: string;
+    rejectedById?: string;
+    notes?: string;
+    sourceType?: SourceType;
+    sourceUrl?: string;
+  }) {
+    const queue = await this.findQueueItem(params.queueId);
+    if (!queue) return null;
+
+    const updated = await this.prisma.ingredientReviewQueue.update({
+      where: { id: queue.id },
+      data: {
+        reviewStatus: "REJECTED",
+        metadata: {
+          ...((queue.metadata as Record<string, unknown> | null) || {}),
+          reviewNotes: params.notes || null,
+        },
+      },
+      include: {
+        suggestedGeneric: true,
+        resolvedGeneric: true,
+        history: true,
+        aliases: true,
+      },
+    });
+
+    await this.appendHistory({
+      ingredientReviewQueueId: queue.id,
+      previousStatus: queue.reviewStatus,
+      newStatus: "REJECTED",
+      previousSuggestedGenericId: queue.suggestedGenericId,
+      newSuggestedGenericId: queue.suggestedGenericId,
+      confidenceScore: Number(queue.confidenceScore || 0),
+      reasoning: params.notes || queue.aiReasoning || "Rejected by admin review.",
+      actorType: params.rejectedById ? "HUMAN" : "SYSTEM",
+      actorId: params.rejectedById,
+      sourceType: params.sourceType || SourceType.ADMIN_REVIEW,
+      sourceUrl: params.sourceUrl || queue.sourceUrl || undefined,
+    });
+
+    return updated;
+  }
+
+  async bulkQueueAction(params: {
+    queueIds: string[];
+    action: "approve" | "reject";
+    actorId?: string;
+    notes?: string;
+    sourceType?: SourceType;
+    sourceUrl?: string;
+  }) {
+    const results: Array<Record<string, unknown>> = [];
+    for (const queueId of params.queueIds) {
+      const result =
+        params.action === "approve"
+          ? await this.approveQueueItem({
+              queueId,
+              approvedById: params.actorId,
+              notes: params.notes,
+              sourceType: params.sourceType,
+              sourceUrl: params.sourceUrl,
+            })
+          : await this.rejectQueueItem({
+              queueId,
+              rejectedById: params.actorId,
+              notes: params.notes,
+              sourceType: params.sourceType,
+              sourceUrl: params.sourceUrl,
+            });
+      if (result) {
+        results.push(result as Record<string, unknown>);
+      }
+    }
+
+    return { count: results.length, items: results };
+  }
+
+  async backfillQueueFromSeedFile(
+    items: Array<
+      IngredientReviewInput & {
+        normalizedIngredient: string;
+        patternClass: string;
+        suggestedCanonicalMolecule?: string | null;
+        confidenceScore?: number;
+        reviewStatus?: string;
+      }
+    >,
+  ) {
+    let created = 0;
+    for (const item of items) {
+      await this.upsertQueueItem({
+        ...item,
+        reviewLane: item.reviewStatus === "manual_review" ? "MANUAL_REVIEW" : item.reviewStatus === "review_candidate" ? "REVIEW_REQUIRED" : "AUTO_APPROVE",
+        suggestedGenericId: null,
+        suggestedCanonicalMolecule: item.suggestedCanonicalMolecule || null,
+        confidenceScore: item.confidenceScore ?? 0,
+        reasoning: "Backfilled from audit seed file.",
+      });
+      created += 1;
+    }
+    return created;
+  }
+
   async findGenericCandidate(normalizedIngredient: string): Promise<
     | { genericId: string; canonicalName: string; matchedBy: "generic" | "ingredient_alias" | "molecule_alias" }
     | null

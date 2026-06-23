@@ -5,6 +5,7 @@ docs/reports/*.md
 docs/exports/*.md
 CURRENT_UPDATE.md
 CURRENT_UPDATE_*.md
+Data-Fields.md
 .coolify/
 .coolify/inventory.json
 

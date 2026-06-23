@@ -62,6 +62,64 @@ export interface MirrorStatusResponse {
   batches: MirrorStatusBatch[];
 }
 
+export interface IngredientReviewGeneric {
+  id: string;
+  name: string;
+  normalizedName: string;
+}
+
+export interface IngredientReviewHistoryEntry {
+  id: string;
+  previousStatus: string | null;
+  newStatus: string;
+  reasoning: string | null;
+  confidenceScore: number | null;
+  actorType: string | null;
+  createdAt: string;
+}
+
+export interface IngredientReviewAliasEntry {
+  id: string;
+  aliasValue: string;
+  normalizedValue: string;
+  aliasType: string;
+  confidenceScore: number | null;
+  sourceType: string | null;
+  sourceUrl: string | null;
+  approvedAt: string | null;
+}
+
+export interface IngredientReviewQueueItem {
+  id: string;
+  rawIngredient: string;
+  normalizedIngredient: string;
+  occurrenceCount: number;
+  matchPattern: string | null;
+  confidenceScore: number | string | null;
+  reviewStatus: string;
+  aiReasoning: string | null;
+  sourceType: string | null;
+  sourceUrl: string | null;
+  metadata?: Record<string, unknown> | null;
+  createdAt: string;
+  updatedAt: string;
+  suggestedGeneric?: IngredientReviewGeneric | null;
+  resolvedGeneric?: IngredientReviewGeneric | null;
+  history?: IngredientReviewHistoryEntry[];
+  aliases?: IngredientReviewAliasEntry[];
+}
+
+export interface IngredientReviewQueueResponse {
+  items: IngredientReviewQueueItem[];
+  total: number;
+}
+
+export interface IngredientReviewStatsEntry {
+  reviewStatus: string;
+  rows: number;
+  occurrences: number;
+}
+
 interface ApiEnvelope<T> {
   success: boolean;
   data?: T;
@@ -259,6 +317,70 @@ class AdminApiClient {
 
   stopMirror() {
     return this.request<{ success: boolean; message: string }>("/admin/mirror/stop", { method: "POST" });
+  }
+
+  getIngredientReviewQueue(params?: {
+    search?: string;
+    reviewStatus?: string;
+    patternClass?: string;
+    minConfidence?: number;
+    maxConfidence?: number;
+    limit?: number;
+    offset?: number;
+  }) {
+    const query = new URLSearchParams();
+    if (params?.search) query.set("search", params.search);
+    if (params?.reviewStatus) query.set("reviewStatus", params.reviewStatus);
+    if (params?.patternClass) query.set("patternClass", params.patternClass);
+    if (params?.minConfidence != null) query.set("minConfidence", String(params.minConfidence));
+    if (params?.maxConfidence != null) query.set("maxConfidence", String(params.maxConfidence));
+    if (params?.limit != null) query.set("limit", String(params.limit));
+    if (params?.offset != null) query.set("offset", String(params.offset));
+    const suffix = query.toString() ? `?${query.toString()}` : "";
+    return this.request<IngredientReviewQueueResponse>(`/admin/ingredient-review/queue${suffix}`);
+  }
+
+  getIngredientReviewItem(id: string) {
+    return this.request<IngredientReviewQueueItem>(`/admin/ingredient-review/queue/${id}`);
+  }
+
+  approveIngredientReviewItem(id: string, notes?: string) {
+    return this.request<IngredientReviewQueueItem>(`/admin/ingredient-review/queue/${id}/approve`, {
+      method: "POST",
+      body: JSON.stringify({ notes }),
+    });
+  }
+
+  rejectIngredientReviewItem(id: string, notes?: string) {
+    return this.request<IngredientReviewQueueItem>(`/admin/ingredient-review/queue/${id}/reject`, {
+      method: "POST",
+      body: JSON.stringify({ notes }),
+    });
+  }
+
+  bulkApproveIngredientReviewItems(queueIds: string[], notes?: string) {
+    return this.request<{ count: number; items: IngredientReviewQueueItem[] }>("/admin/ingredient-review/bulk-approve", {
+      method: "POST",
+      body: JSON.stringify({ queueIds, notes }),
+    });
+  }
+
+  bulkRejectIngredientReviewItems(queueIds: string[], notes?: string) {
+    return this.request<{ count: number; items: IngredientReviewQueueItem[] }>("/admin/ingredient-review/bulk-reject", {
+      method: "POST",
+      body: JSON.stringify({ queueIds, notes }),
+    });
+  }
+
+  getIngredientReviewStats() {
+    return this.request<IngredientReviewStatsEntry[]>("/admin/ingredient-review/stats");
+  }
+
+  backfillIngredientReviewQueue() {
+    return this.request<{ queueCount: number; whoCanonicalMolecules: number; whoAliasSeeds: number }>(
+      "/admin/ingredient-review/backfill",
+      { method: "POST" },
+    );
   }
 }
 
