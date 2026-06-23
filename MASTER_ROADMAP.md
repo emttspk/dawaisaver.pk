@@ -142,17 +142,11 @@ src/modules/atc/molecule-normalizer.service.ts -> buildAliasSeeds()
 
 ## 8. Remaining Work
 
-### Phase 5: Product Matching Engine
-- [x] Match products within composition groups
-- [x] Generate `product_matches` table entries
-- [x] Measure match coverage
-- [x] Create analysis document
-
 ### Phase 6: Canonical Products
-- [ ] Generate canonical products from composition groups
-- [ ] Attach ATC classifications
-- [ ] Attach therapeutic categories
-- [ ] Measure coverage
+- [x] Generate canonical products from composition groups
+- [x] Attach ATC classifications
+- [x] Attach therapeutic categories
+- [x] Measure coverage
 
 ### Phase 7: Catalog Search
 - [ ] Design search pipeline
@@ -307,12 +301,13 @@ npm run build
 
 ## 15. Next Phase (Phase 5: Product Matching)
 
-**Objective:** Generate canonical products from composition groups.
+**Objective:** Design and implement catalog search.
 
 **Key Files to Modify:**
-- `src/modules/composition/composition.service.ts`
-- `src/modules/composition/controllers/composition.controller.ts`
+- `src/modules/search/` - Search service
+- API endpoints for search
 
 **Metrics to Track:**
-- Canonical products count
-- Coverage %
+- Search coverage
+- Response time
+- Accuracy
