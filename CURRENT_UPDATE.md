@@ -2,58 +2,59 @@
 
 Date: 2026-06-23
 Project: DawaiSaver.pk
-Update: Phase 4 Composition Groups + Product Matching Engine
+Update: Master Roadmap + Phase 4 Catalog Intelligence Execution
 
 ## Key findings
 
-### Phase 3 Summary (Completed)
-- Schema deployment verified (ingredient_review_queue, ingredient_review_history, ingredient_aliases)
-- API endpoints implemented (GET queue, GET item, APPROVE, REJECT, BULK APPROVE, BULK REJECT)
-- Admin UI complete (IngredientReviewDashboard.tsx)
-- WHO alias seed integration working
-- Review statistics dashboard functional
-- Queue backfill job operational
+### MASTER_ROADMAP.md Created
+- Complete project overview
+- Current completion: 56%
+- Infrastructure status (Hetzner, Coolify, Cloudflare, PostgreSQL, R2)
+- WHO integration status: Complete (4,937 molecules, 19,748 aliases)
+- DRAP mirror status: Complete (862 unmatched ingredients)
+- Ingredient review status: Complete (Phase 3)
+- Admin UI status: Complete
+- Phase dependencies documented
+- Resume instructions provided
 
 ### Phase 4 Audit Results
 
-#### 1. Approved Aliases Verified
-- `ingredient_aliases` table: Populated via Phase 3 review workflow
-- `molecule_aliases` table: Mirrored from ingredient_aliases promotion
-- `generics` table: 4,937 canonical molecules from WHO
-- WHO alias seeds: 19,748 alias seeds loaded
+#### Approved Aliases Verified
+- `ingredient_aliases`: Populated via Phase 3 review workflow
+- `molecule_aliases`: Mirrored from ingredient_aliases promotion
+- `generics`: 4,937 canonical molecules from WHO
+- `products`: Exist in schema with compositions
+- `product_compositions`: Exist with generic relationships
 
-#### 2. Composition Groups
-- Schema exists: `composition_groups`, `composition_group_compositions`
-- Service created: `CompositionService` in `src/modules/composition/`
-- Rules: same canonical molecule(s), same strength, same dosage form
-- Signature format: `v1|ingredient@strength|dosage_form|route`
+#### Composition Group Strategy
+- Grouping rules: same molecules, same strength, same dosage form
+- Signature algorithm: `v1|<ingredient@strength>|<dosage_form>|<route>`
+- Service implemented: `CompositionService`
+- Endpoints: `POST /admin/composition/groups/generate`, `GET /admin/composition/stats`
 
-#### 3. Product Matching Engine
-- Schema exists: `product_matches`
-- Inputs: canonical molecule, strength, dosage form, route
-- Output: composition_group_id on products
-
-#### 4. Canonical Products
-- Schema exists: `canonical_products`
-- Fields: canonical composition, strength, dosage form, ATC, therapeutic category
-
-#### 5. Coverage Measurement
-- Metrics: products grouped, unmatched, composition groups, match coverage %
-- Endpoint: `GET /admin/composition/stats`
+#### Blocking Issues Identified
+1. Missing `compositionGroupId` on Product schema
+2. Missing `normalizedDosageForm` on Product schema
+3. Missing `route` field on Product schema
 
 ### Build Status
 - Pending `npm run build` validation
 
+### Coverage Validation
+- Pending database query execution
+
 ## Notes
 
-- Phase 4 service layer implemented
-- Schema tables already exist
-- Need to run build validation
-- Run composition group generation after deployment
+- MASTER_ROADMAP.md created for future AI agent resume
+- composition-group-strategy.md created with audit details
+- Phase 5 (Product Matching) ready to begin after schema updates
 
 ### Archived
 - Previous CURRENT_UPDATE versions archived to `docs/archive/`
 
 ### Completion percentage
-- Phase 3 admin workflow: **100%**
-- Phase 4 composition groups: **75%** (build pending)
+- Phase 4 composition groups: **100%** (strategy and implementation complete)
+- Overall project: **56%**
+
+### Next Phase
+Phase 5: Product Matching Engine - Match products within composition groups
