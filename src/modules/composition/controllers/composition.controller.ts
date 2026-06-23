@@ -21,4 +21,16 @@ export class CompositionController {
   async getStats() {
     return this.composition.getCompositionGroupStats();
   }
+
+  @Post("match/generate")
+  @ApiOperation({ summary: "Generate product matches within composition groups" })
+  async generateMatches() {
+    return this.composition.generateProductMatches();
+  }
+
+  @Get("match/stats")
+  @ApiOperation({ summary: "Get product matching statistics" })
+  async getMatchStats() {
+    return this.composition.getProductMatchStats();
+  }
 }
