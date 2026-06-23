@@ -33,4 +33,16 @@ export class CompositionController {
   async getMatchStats() {
     return this.composition.getProductMatchStats();
   }
+
+  @Post("canonical/generate")
+  @ApiOperation({ summary: "Generate canonical products from composition groups" })
+  async generateCanonicalProducts() {
+    return this.composition.generateCanonicalProducts();
+  }
+
+  @Get("canonical/stats")
+  @ApiOperation({ summary: "Get canonical product statistics" })
+  async getCanonicalProductStats() {
+    return this.composition.getCanonicalProductStats();
+  }
 }

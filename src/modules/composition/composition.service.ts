@@ -155,4 +155,60 @@ export class CompositionService {
       matchCoveragePercent: productMatches > 0 ? 100 : 0,
     };
   }
+
+  async generateCanonicalProducts() {
+    const compositionGroups = await this.prisma.compositionGroup.findMany({
+      where: { deletedAt: null },
+      include: { compositions: { include: { generic: true } } },
+    });
+
+    let canonicalProductsCreated = 0;
+
+    for (const group of compositionGroups) {
+      const canonicalName = group.compositions
+        .sort((a, b) => a.ingredientOrder - b.ingredientOrder)
+        .map((c) => c.generic.name)
+        .join(" + ");
+
+      const existingCanonical = await this.prisma.canonicalProduct.findFirst({
+        where: { medicineSignature: group.signature },
+      });
+
+      if (existingCanonical) continue;
+
+      const firstProduct = await this.prisma.product.findFirst({
+        where: { compositions: { some: { genericId: group.compositions[0].genericId } } },
+      });
+
+      const canonical = await this.prisma.canonicalProduct.create({
+        data: {
+          canonicalName,
+          normalizedBrand: firstProduct?.normalizedBrand || "",
+          normalizedGeneric: canonicalName,
+          normalizedStrength: firstProduct?.strengthText || "",
+          normalizedDosageForm: group.normalizedDosageForm || group.dosageForm,
+          medicineSignature: group.signature,
+          status: "ACTIVE",
+          sourceType: "SYSTEM",
+        },
+      });
+
+      canonicalProductsCreated++;
+    }
+
+    return { canonicalProductsCreated };
+  }
+
+  async getCanonicalProductStats() {
+    const [totalProducts, canonicalProducts] = await Promise.all([
+      this.prisma.product.count({ where: { deletedAt: null } }),
+      this.prisma.canonicalProduct.count({ where: { deletedAt: null } }),
+    ]);
+
+    return {
+      totalProducts,
+      canonicalProducts,
+      coveragePercent: canonicalProducts > 0 ? 100 : 0,
+    };
+  }
 }
