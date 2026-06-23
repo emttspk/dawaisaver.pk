@@ -1,0 +1,863 @@
+raw_ingredient,normalized_ingredient,occurrence_count,suggested_canonical_molecule,confidence_score,review_status
+Atomoxetine hydrochloride eq. to Atomoxetine,Atomoxetine Hydrochloride Eq To Atomoxetine,225,Atomoxetine hydrochloride eq. to Atomoxetine,0.99,auto_candidate
+Enteric coated pellets of Esomeprazole Magnesium Trihydrate eq. to Esomeprazole,Enteric Coated Pellets of Esomeprazole Magnesium Trihydrate Eq To Esomeprazole,188,Enteric Coated Pellets of Esomeprazole Magnesium Trihydrate Eq. to Esomeprazole,0.99,auto_candidate
+Artemether + Lumefantrine,Artemether + Lumefantrine,100,Artemether + Lumefantrine,0.99,auto_candidate
+Atomoxetine as hydrochloride,Atomoxetine As Hydrochloride,87,Atomoxetine as hydrochloride,0.99,auto_candidate
+Tazobactam sodium eq to tazobactam,Tazobactam Sodium Eq To Tazobactam,87,Tazobactam sodium eq to tazobactam,0.99,auto_candidate
+Clavulanic potassium eq to clavulanic acid,Clavulanic Potassium Eq To Clavulanic Acid,76,Clavulanic potassium eq to clavulanic acid,0.99,auto_candidate
+Ezetimibe + Simvastatin,Ezetimibe + Simvastatin,72,Ezetimibe + Simvastatin,0.99,auto_candidate
+Piperacillin (as sodium),Piperacillin (as Sodium),66,Piperacillin (as Sodium),0.99,auto_candidate
+Tazobactam (as sodium),Tazobactam (as Sodium),66,Tazobactam (as sodium),0.99,auto_candidate
+-,-,61,eq. to elemental Iron,0.99,auto_candidate
+Cefepime hydrochloride with L-arginine eq. to Cefepime,Cefepime Hydrochloride With L-arginine Eq To Cefepime,60,Cefepime hydrochloride with L-arginine eq. to Cefepime,0.99,auto_candidate
+Cefepime as HCl with L-arginine eq. to Cefipime,Cefepime As Hcl With L-arginine Eq To Cefipime,58,cefepime as HCL,0.99,auto_candidate
+Alendronate (as sodium),Alendronate (as Sodium),56,Alendronate(as Sodium),0.99,auto_candidate
+Doxazosin (as mesylate),Doxazosin (as Mesylate),55,Doxazosin as Mesilate,0.99,auto_candidate
+Sterile Ceftriaxone (as Sodium),Sterile Ceftriaxone (as Sodium),48,Sterile Ceftriaxone (as Sodium),0.99,auto_candidate
+Ceftazidime as pentahydrate with sodium carbonate,Ceftazidime As Pentahydrate With Sodium Carbonate,45,Ceftazidime as Ceftazidime Pentahydrate,0.99,auto_candidate
+Sterile Cephradine Arginine eq. to Cephradine Base,Sterile Cephradine Arginine Eq To Cephradine Base,45,Sterile Cephradine Arginine eq. to Cephradine Base,0.99,auto_candidate
+Artemether + Lumifantrine,Artemether + Lumifantrine,44,Artemether + Lumifantrine,0.99,auto_candidate
+Tiotropium (as bromide monohydrate),Tiotropium (as Bromide Monohydrate),42,Tiotropium (as Bromide monohydrate),0.99,auto_candidate
+Bosentan Monohydrate eq to Bosentan,Bosentan Monohydrate Eq To Bosentan,41,Bosentan monohydrate eq to Bosentan,0.99,auto_candidate
+Esomeprazole enteric coated pellets (22.5% w/w) eq. to Esomeprazole,Esomeprazole Enteric Coated Pellets (22.5% W / W) Eq To Esomeprazole,40,Esomeprazole enteric coated pellets (as Magnesium Trihydrate),0.99,auto_candidate
+Galantamine HBr eq to galantamine,Galantamine Hbr Eq To Galantamine,40,Galantamine HBr eq to galantamine,0.99,auto_candidate
+Ceftazidime as Pentahydrate buffered with sodium carbonate,Ceftazidime As Pentahydrate Buffered With Sodium Carbonate,39,Ceftazidime as Ceftazidime Pentahydrate,0.99,auto_candidate
+Mupirocin(as calcium),Mupirocin(as Calcium),38,Mupirocin(as calcium dihydrate),0.99,auto_candidate
+Artemether+Lumefantrine,Artemether + Lumefantrine,37,Artemether + Lumefantrine,0.99,auto_candidate
+Salbactum (as Sodium),Salbactum (as Sodium),36,Salbactum as Sodium,0.99,auto_candidate
+Bosentan Monohydrate eq. to Bosentan,Bosentan Monohydrate Eq To Bosentan,34,Bosentan monohydrate eq to Bosentan,0.99,auto_candidate
+Levofloxacin(as Hemihydrate),Levofloxacin(as Hemihydrate),34,levofloxacin (as Hemihydrate),0.99,auto_candidate
+Ticarcillin disodium eq to Ticarcillin,Ticarcillin Disodium Eq To Ticarcillin,34,Ticarcillin disodium eq to Ticarcillin,0.99,auto_candidate
+"Adsorbed on Aluminum Phosphate, Al+++","Adsorbed On Aluminum Phosphate, Al + + +",34,"Adsorbed on Aluminum Phosphate, Al+++",0.83,review_candidate
+Artemether +Lumefantrine,Artemether + Lumefantrine,33,Artemether + Lumefantrine,0.99,auto_candidate
+Bosentan as Monohydrate,Bosentan As Monohydrate,32,Bosentan (as Monohydrate),0.99,auto_candidate
+Each ml contains: Lincomycin as HCl,Each Ml Contains: Lincomycin As Hcl,32,Each ml contains: Lincomycin as HCl,0.99,auto_candidate
+Olmesartan (as medoxomil),Olmesartan (as Medoxomil),32,Olmesartan (as medoxomil),0.99,auto_candidate
+Omeprazole (as enteric coated pellets 8.5% w/w),Omeprazole (as Enteric Coated Pellets 8.5% W / W),32,Omeprazole as enteric coated pellets eq. to Omeprazole,0.99,auto_candidate
+Salbactam (as Sodium Salt),Salbactam (as Sodium Salt),32,Salbactam (as Sodium Salt),0.99,auto_candidate
+GLIMEPRIDE+ PIOGLITAZONE,Glimepride + Pioglitazone,32,GLIMEPRIDE+ PIOGLITAZONE,0.96,auto_candidate
+Alendronate (as Sodium),Alendronate (as Sodium),30,Alendronate(as Sodium),0.99,auto_candidate
+Cefepime as HCl and L-Arginine eq. to Cefepime,Cefepime As Hcl and L-arginine Eq To Cefepime,30,cefepime as HCL,0.99,auto_candidate
+Cefepime Hydrochloride with L Arginine eq. to Cefepime,Cefepime Hydrochloride With L Arginine Eq To Cefepime,30,Cefepime Hydrochloride with L Arginine eq. to Cefepime,0.99,auto_candidate
+Cefquinome as Sulfate,Cefquinome As Sulfate,30,Cefquinome as Sulfate,0.99,auto_candidate
+Ceftriaxone(as sodium),Ceftriaxone(as Sodium),30,Ceftriaxone(as s0dium),0.99,auto_candidate
+Clemastine (as Hydrogen Fumarate),Clemastine (as Hydrogen Fumarate),30,Clemastine (as Hydrogen Fumarate),0.99,auto_candidate
+eq. to,Eq To,30,eq. to elemental Iron,0.99,auto_candidate
+Sterile Cefepime (as hydrochloride),Sterile Cefepime (as Hydrochloride),30,Sterile Cefepime (as hydrochloride),0.99,auto_candidate
+Sterile Cefotaxime Sodium eq. to Cefotaxime Base,Sterile Cefotaxime Sodium Eq To Cefotaxime Base,30,Sterile Cefotaxime Sodium eq. to Cefotaxime Base,0.99,auto_candidate
+.,.,28,eq. to elemental Iron,0.99,auto_candidate
+Cefoperazone Sodium + Sulbactam Sodium,Cefoperazone Sodium + Sulbactam Sodium,28,Cefoperazone Sodium + Sulbactam Sodium,0.99,auto_candidate
+Cephradine with L-Arginine,Cephradine With L-arginine,28,Cephradine with L-Arginine eq. to Cephradine,0.99,auto_candidate
+Chlorhexidine Gluconate 7.1% w/w eq. to Chlorhexidine,Chlorhexidine Gluconate 7.1% W / W Eq To Chlorhexidine,28,Chlorhexidine (as chlorhexidine digluconate solution 7.1%w/v),0.92,review_candidate
+Atorvastatin(as Calcium Trihydrate),Atorvastatin(as Calcium Trihydrate),27,Atorvastatin(calcium trihydrate),0.99,auto_candidate
+Azithromycin(as Dihydrate),Azithromycin(as Dihydrate),27,Azithromycin as dihydrate eq. Azithromycin,0.99,auto_candidate
+Ceftraixone (as sodium),Ceftraixone (as Sodium),27,Ceftraixone (as sodium),0.99,auto_candidate
+Clarithromycin (as 27.5% w/w taste masked granules),Clarithromycin (as 27.5% W / W Taste Masked Granules),27,Clarithromycin (as lactobionate),0.99,auto_candidate
+Iron-III-Hydroxide Polymaltose complex eq. to elemental Iron,Iron-iii-hydroxide Polymaltose Complex Eq To Elemental Iron,27,Iron-III-hydroxide polymaltose complex eq. to Elemental Iron + Folic Acid,0.99,auto_candidate
+Losartan Potassium + Hydrochlorothiazide,Losartan Potassium + Hydrochlorothiazide,27,Losartan Potassium + Hydrochlorothiazide,0.99,auto_candidate
+Rabeprazole(as sodium),Rabeprazole(as Sodium),27,Rabeprazole (pellets),0.99,auto_candidate
+Cefoparazone+Sulbactum,Cefoparazone + Sulbactum,27,Cefoparazone+Sulbactum,0.96,auto_candidate
+cefoperazone (as sodium) +Sulbactam(as sodium),Cefoperazone (as Sodium) + Sulbactam(as Sodium),26,cefoperazone + sulbactam,0.99,auto_candidate
+Loratidine + Pseudoephedrine HCL,Loratidine + Pseudoephedrine Hcl,26,Loratidine + Pseudoephedrine HCL,0.99,auto_candidate
+Orlistat pellets 50% w/w,Orlistat Pellets 50% W / W,26,Orlistat pellets 50% w/w,0.79,manual_review
+Alendronate as Sodium,Alendronate As Sodium,25,Alendronate(as Sodium),0.99,auto_candidate
+Ceftazidime as Pentahydrate (Buffered with Sodium Bicarbonate),Ceftazidime As Pentahydrate (buffered With Sodium Bicarbonate),25,Ceftazidime as Ceftazidime Pentahydrate,0.99,auto_candidate
+Ceftazidime with Sodium Carbonate eq. to Ceftazidime sterile USP,Ceftazidime With Sodium Carbonate Eq To Ceftazidime Sterile Usp,25,Ceftazidime with Sodium Carbonate eq. to Ceftazidime sterile USP,0.99,auto_candidate
+Eprosartan (as Mesylate),Eprosartan (as Mesylate),25,Eprosartan (as Mesylate),0.99,auto_candidate
+Escitalopram(as Oxalate),Escitalopram(as Oxalate),25,escitalopram as oxalate,0.99,auto_candidate
+R/O water qs,R / O Water Qs,25,R/O water qs,0.96,auto_candidate
+Metoprolol as Succinate eq. to Metoprolol Tartrate,Metoprolol As Succinate Eq To Metoprolol Tartrate,24,Metoprolol (as tartrate),0.99,auto_candidate
+Microencapsulated-ciprofloxacin eq. to Ciprofloxacin,Microencapsulated-ciprofloxacin Eq To Ciprofloxacin,24,Microencapsulated-ciprofloxacin eq. to Ciprofloxacin,0.99,auto_candidate
+Salmeterol as xinafoate,Salmeterol As Xinafoate,24,Salmeterol (as xinafoate),0.99,auto_candidate
+Sterile Cefotaxime (as Sodium),Sterile Cefotaxime (as Sodium),24,Sterile Cefotaxime (as Sodium),0.99,auto_candidate
+Morphine (Sulphate),Morphine (sulphate),23,Morphine (Sulphate),0.99,auto_candidate
+Naftifine (as HCl),Naftifine (as Hcl),23,Naftifine (as HCl),0.99,auto_candidate
+Omeprazole+Sodium bicarbonate,Omeprazole + Sodium Bicarbonate,23,Omeprazole + Sodium Bicarbonate,0.99,auto_candidate
+Artemthe/Lumefantrine,Artemthe / Lumefantrine,22,Artemthe/Lumefantrine,0.96,auto_candidate
+Cefradine with L-Arginine,Cefradine With L-arginine,21,Cefradine with L-Arginine,0.99,auto_candidate
+Ceftazidime as Pentahydrate and Sodium Carbonate,Ceftazidime As Pentahydrate and Sodium Carbonate,21,Ceftazidime as Ceftazidime Pentahydrate,0.99,auto_candidate
+Salmeterol xinafoate eq. to Salmeterol,Salmeterol Xinafoate Eq To Salmeterol,21,Salmeterol xinafoate eq. to Salmeterol,0.99,auto_candidate
+Orlistat immediate release pellets 50% w/w eq. to Orlistat,Orlistat Immediate Release Pellets 50% W / W Eq To Orlistat,21,orlistat,0.92,review_candidate
+Amlodipine + Atorvastatin,Amlodipine + Atorvastatin,20,Amlodipine (as Besylate) + Atorvastatin (as Calcium Trihydrate),0.99,auto_candidate
+Cefazoline Sodium eq. to Cefazoline Base,Cefazoline Sodium Eq To Cefazoline Base,20,Cefazoline Sodium eq. to Cefazoline Base,0.99,auto_candidate
+Cefepime HCl with L-arginine eq. to Cefipime (anhydrous),Cefepime Hcl With L-arginine Eq To Cefipime (anhydrous),20,Cefepime HCl with L-Arginine eq. to Cefepime,0.99,auto_candidate
+Cefepime with L-Arginine,Cefepime With L-arginine,20,Cefepime with L-Arginine eq. to Cefepime,0.99,auto_candidate
+Cefixime(as Trihydrate),Cefixime(as Trihydrate),20,cefixime as Trihydrate,0.99,auto_candidate
+Ceftazidime Pentahydrate Sterile USP buffered with Sodium Carbonate Sterile eq. to Ceftazidime,Ceftazidime Pentahydrate Sterile Usp Buffered With Sodium Carbonate Sterile Eq To Ceftazidime,20,Ceftazidime Pentahydrate Sterile USP buffered with Sodium Carbonate Sterile eq. to Ceftazidime,0.99,auto_candidate
+Cofoperazone as Sodium,Cofoperazone As Sodium,20,Cofoperazone as Sodium,0.99,auto_candidate
+Corresponding to:,Corresponding To:,20,Corresponding to:,0.99,auto_candidate
+Diclofenac Sodium (32% w/w enteric coated pellets) eq to Diclofenac Sodium,Diclofenac Sodium (32% W / W Enteric Coated Pellets) Eq To Diclofenac Sodium,20,diclofenac sodium,0.99,auto_candidate
+Metformin HCl + Pioglitazone as HCl,Metformin Hcl + Pioglitazone As Hcl,20,Metformin HCl + Pioglitazone as HCl,0.99,auto_candidate
+Methylprednisolone (as sodium succinate),Methylprednisolone (as Sodium Succinate),20,Methylprednisolone (as sodium succinate),0.99,auto_candidate
+Nicotine Polacrilex eq. to Nicotine,Nicotine Polacrilex Eq To Nicotine,20,Nicotine Polacrilex eq. to Nicotine,0.99,auto_candidate
+Oprelvekin Recombinant Human Interleukin-11 (rHu1L - 11),Oprelvekin Recombinant Human Interleukin-11 (rhu1l - 11),20,Oprelvekin Recombinant Human Interleukin-11 (rHu1L - 11),0.99,auto_candidate
+Piroxicam-Beta Cyclodextrine eq to piroxicam 20mg,Piroxicam-beta Cyclodextrine Eq To Piroxicam 20mg,20,Piroxicam-Beta Cyclodextrine eq to piroxicam 20mg,0.99,auto_candidate
+Piroxicam(USP),Piroxicam(usp),20,piroxicam,0.99,auto_candidate
+Polyethylene(PU) Tape Benzalkonium Chloride Pad,Polyethylene(pu) Tape Benzalkonium Chloride Pad,20,Polyethylene(PU) Tape Benzalkonium Chloride Pad,0.99,auto_candidate
+Salmeterol as Salmeterol xinafoate,Salmeterol As Salmeterol Xinafoate,20,Salmeterol (as xinafoate),0.99,auto_candidate
+Simvastatin + Ezetimibe,Simvastatin + Ezetimibe,20,Simvastatin + Ezetimibe,0.99,auto_candidate
+Valproate (as Sodium Salt),Valproate (as Sodium Salt),20,Valproate (as Sodium Salt),0.99,auto_candidate
+Cefipime( as Cefipime HCL,Cefipime( As Cefipime Hcl,19,Cefipime( as Cefipime HCL,0.99,auto_candidate
+L-Arginine.,L-arginine.,19,L-Arginine,0.99,auto_candidate
+Pheniramine as Maleate,Pheniramine As Maleate,19,Pheniramine as Maleate,0.99,auto_candidate
+Vilanterol (As Trifenatate),Vilanterol (as Trifenatate),19,Vilanterol (As Trifenatate),0.99,auto_candidate
+Betamethasone Dipropionate 0.064 % w/w eq. to Betamethasone,Betamethasone Dipropionate 0.064 % W / W Eq To Betamethasone,19,"Betamethasone as valerate, Neomycin sulphate",0.92,review_candidate
+Alendronate as sodium………70mg,Alendronate As Sodium………70mg,18,Alendronate(as Sodium),0.99,auto_candidate
+Attenuated avian infectious Bursal Disease Virus (intermediate strain) Taishu strain,Attenuated Avian Infectious Bursal Disease Virus (intermediate Strain) Taishu Strain,18,Attenuated avian infectious Bursal Disease Virus (intermediate strain) Taishu strain,0.99,auto_candidate
+azithromycinazithromycin as dihydrate,Azithromycinazithromycin As Dihydrate,18,azithromycinazithromycin as dihydrate,0.99,auto_candidate
+Cefepime as HCl with L-Arginine,Cefepime As Hcl With L-arginine,18,cefepime as HCL,0.99,auto_candidate
+Cefiroxime as Axetil,Cefiroxime As Axetil,18,Cefiroxime as Axetil,0.99,auto_candidate
+Cefoparazone (as Sodium),Cefoparazone (as Sodium),18,Cefoparazone (as Sodium),0.99,auto_candidate
+Cefoperazone + Sulbactam,Cefoperazone + Sulbactam,18,cefoperazone + sulbactam,0.99,auto_candidate
+Clomiphne citrate.,Clomiphne Citrate.,18,Clomiphne citrate.,0.99,auto_candidate
+CYD Dengue Virus Serotype 1 (Produced in Serum Free Vero Cells by Recombinant DNA Technology),Cyd Dengue Virus Serotype 1 (produced In Serum Free Vero Cells By Recombinant Dna Technology),18,CYD Dengue Virus Serotype 1 (Produced in Serum Free Vero Cells by Recombinant DNA Technology),0.99,auto_candidate
+CYD Dengue Virus Serotype 2 (Produced in Serum Free Vero Cells by Recombinant DNA Technology),Cyd Dengue Virus Serotype 2 (produced In Serum Free Vero Cells By Recombinant Dna Technology),18,CYD Dengue Virus Serotype 2 (Produced in Serum Free Vero Cells by Recombinant DNA Technology),0.99,auto_candidate
+CYD Dengue Virus Serotype 3 (Produced in Serum Free Vero Cells by Recombinant DNA Technology),Cyd Dengue Virus Serotype 3 (produced In Serum Free Vero Cells By Recombinant Dna Technology),18,CYD Dengue Virus Serotype 3 (Produced in Serum Free Vero Cells by Recombinant DNA Technology),0.99,auto_candidate
+CYD Dengue Virus Serotype 4 (Produced in Serum Free Vero Cells by Recombinant DNA Technology),Cyd Dengue Virus Serotype 4 (produced In Serum Free Vero Cells By Recombinant Dna Technology),18,CYD Dengue Virus Serotype 4 (Produced in Serum Free Vero Cells by Recombinant DNA Technology),0.99,auto_candidate
+Each tablet contains; Escitalopram as oxalate ..,Each Tablet Contains; Escitalopram As Oxalate ..,18,Each tablet contains; Escitalopram as oxalate ..,0.99,auto_candidate
+Erythropoietin.,Erythropoietin.,18,Erythropoietin.,0.99,auto_candidate
+Fusidic Acid + Hydrocortisone Acetate,Fusidic Acid + Hydrocortisone Acetate,18,Fusidic Acid + Hydrocortisone Acetate,0.99,auto_candidate
+Glimepiride + Metformin,Glimepiride + Metformin,18,Glimepiride + Metformin,0.99,auto_candidate
+Indacaterol Maleate eq. to Indacaterol,Indacaterol Maleate Eq To Indacaterol,18,indacaterol maleate eq to indacaterol,0.99,auto_candidate
+Iron protein succinylate (eq. Iron (Fe+3) 40mg),Iron Protein Succinylate (eq. Iron (fe + 3) 40mg),18,Iron protein succinylate (eq. Iron (Fe+3) 40mg),0.99,auto_candidate
+Iron-III Hydroxide Polymaltose complex eq. to Elemetal Iron + Folic acid,Iron-iii Hydroxide Polymaltose Complex Eq To Elemetal Iron + Folic Acid,18,Iron-III Hydroxide Polymaltose complex eq. to elemental iron,0.99,auto_candidate
+Naratriptan as HCl,Naratriptan As Hcl,18,Naratriptan as HCl,0.99,auto_candidate
+Omeprazole + Sodium Bicarbonate,Omeprazole + Sodium Bicarbonate,18,Omeprazole + Sodium Bicarbonate,0.99,auto_candidate
+rBST (Recombinant Bovine Somatotropin) Lyophilized,Rbst (recombinant Bovine Somatotropin) Lyophilized,18,rBST (Recombinant Bovine Somatotropin) Lyophilized,0.99,auto_candidate
+Rosuvastatin as Calcium/ Ezetimibe,Rosuvastatin As Calcium / Ezetimibe,18,Rosuvastatin(as calcium),0.99,auto_candidate
+Silicon Dioxide(Aerosil),Silicon Dioxide(aerosil),18,Silicon Dioxide,0.99,auto_candidate
+Sterile Capreomycin Sulphate eq to Capreomycin,Sterile Capreomycin Sulphate Eq To Capreomycin,18,Sterile Capreomycin Sulphate eq to Capreomycin,0.99,auto_candidate
+Sterile piperacillin sodium eq. to Piperacillin,Sterile Piperacillin Sodium Eq To Piperacillin,18,Sterile Piperacillin sodium eq to Piperacillin,0.99,auto_candidate
+Sterile Tazobactam Sodium eq.to Tazobactam,Sterile Tazobactam Sodium Eq To Tazobactam,18,Sterile tazobactam sodium eq to tazobactam,0.99,auto_candidate
+Tetrahydrate cobalt (ii) acetate,Tetrahydrate Cobalt (ii) Acetate,18,Tetrahydrate cobalt (ii) acetate,0.99,auto_candidate
+Valsartan+Hydrochlorothiazide,Valsartan + Hydrochlorothiazide,18,Valsartan+Hydrochlorothiazide,0.96,auto_candidate
+Cefoperazone Sodium +Salbactum Sodium.,Cefoperazone Sodium + Salbactum Sodium.,18,cefoperazone (as sodium) +Sulbactam(as sodium),0.83,review_candidate
+Acefylline Piperazine 45mg + Diphenhydramine HCI 8mg,Acefylline Piperazine 45mg + Diphenhydramine Hci 8mg,17,Acefylline Piperazine 45mg + Diphenhydramine HCI 8mg,0.99,auto_candidate
+aluminum phosphate gel eq. to Al+++,Aluminum Phosphate Gel Eq To Al + + +,17,aluminum phosphate gel eq. to Al+++,0.99,auto_candidate
+Cephradine Sterile with Arginine Sterile,Cephradine Sterile With Arginine Sterile,17,Cephradine Sterile with Arginine Sterile,0.99,auto_candidate
+Diptheria Toxoid and Tetanus Toxoid and Tetanus Toxoid,Diptheria Toxoid and Tetanus Toxoid and Tetanus Toxoid,17,Diptheria Toxoid and Tetanus Toxoid and Tetanus Toxoid,0.99,auto_candidate
+Each 5ml contains : Paracetamol / Dedtromethorphan HBr / Promethazine HCI..,Each 5ml Contains : Paracetamol / Dedtromethorphan Hbr / Promethazine Hci..,17,Each 5ml contains : Paracetamol / Dedtromethorphan HBr / Promethazine HCI..,0.99,auto_candidate
+Each DS tablet contains:- Diloxanide Furoate + Metronidazole,Each Ds Tablet Contains:- Diloxanide Furoate + Metronidazole,17,Each DS tablet contains:- Diloxanide Furoate + Metronidazole,0.99,auto_candidate
+Each tablet contains:- Diloxanide Furoate + Metronidazole,Each Tablet Contains:- Diloxanide Furoate + Metronidazole,17,Each tablet contains:- Diloxanide Furoate + Metronidazole,0.99,auto_candidate
+Elemental iron + Folic acid,Elemental Iron + Folic Acid,17,Elemental iron + Folic acid,0.99,auto_candidate
+Eprison (As HCL,Eprison (as Hcl,17,Eprison (As HCL,0.99,auto_candidate
+Ibuprofen 100mg + Pseudoephedrine HCI 15mg,Ibuprofen 100mg + Pseudoephedrine Hci 15mg,17,Ibuprofen 100mg + Pseudoephedrine HCI 15mg,0.99,auto_candidate
+meropenem(as meropenem trihydrate),Meropenem(as Meropenem Trihydrate),17,Meropenem (as mixture of sodium carbonate) eq. to Meropenem,0.99,auto_candidate
+Metoprolol Succinate eq. to Metoprolol Tartate,Metoprolol Succinate Eq To Metoprolol Tartate,17,Metoprolol succinate eq. to metoprolol tartrate,0.99,auto_candidate
+Metronidazole (as Benzoate) + Furazolidone,Metronidazole (as Benzoate) + Furazolidone,17,Metronidazole (as Benzoate) + Furazolidone,0.99,auto_candidate
+Polio virus (Inactivated),Polio Virus (inactivated),17,Polio virus (Inactivated),0.99,auto_candidate
+Tiotropium ( as bromide mono hydrate),Tiotropium ( As Bromide Mono Hydrate),17,Tiotropium (as Bromide monohydrate),0.99,auto_candidate
+Tiotropium (as Bromide monohydrate),Tiotropium (as Bromide Monohydrate),17,Tiotropium (as Bromide monohydrate),0.99,auto_candidate
+Inactivated Newcastle Disease NDV/Chicken/Egypt/11478AF/2011 (ND),Inactivated Newcastle Disease Ndv / Chicken / Egypt / 11478af / 2011 (nd),17,Inactivated Newcastle Disease NDV/Chicken/Egypt/11478AF/2011 (ND),0.96,auto_candidate
+Diloxanide Furoate ....250mg+ Metronidazole Benzoate equivalent to Metronidazole....200mg,Diloxanide Furoate ....250mg + Metronidazole Benzoate Eq To Metronidazole....200mg,17,metronidazole 400mg,0.92,review_candidate
+Flucinolone Acetonide+ Hydroquinone + Tretinoin,Flucinolone Acetonide + Hydroquinone + Tretinoin,17,Flucinolone Acetonide + Hydroquinone + Tretinoin,0.91,review_candidate
+Sodium Cromoglycate /Tetrahydrozoline,Sodium Cromoglycate / Tetrahydrozoline,17,Sodium Cromoglycate /Tetrahydrozoline,0.83,review_candidate
+Tamsulosin Hydrochloride SR pellets 0.2% w/w ≡Tamsulosin HCL,Tamsulosin Hydrochloride Sr Pellets 0.2% W / W ≡tamsulosin Hcl,17,Tamsulosin Hydrochloride SR pellets 0.2% w/w ≡Tamsulosin HCL,0.83,review_candidate
+Atenolol.,Atenolol.,16,Atenolol.,0.99,auto_candidate
+Cefoperazone as sodium + Sulbactam,Cefoperazone As Sodium + Sulbactam,16,Cefoperazone as sodium + Sulbactam as sodium,0.99,auto_candidate
+Each capsule contains: Esomeprazole Magnesium Trihydrate enteric coated pellets eq. to Esomeprazole,Each Capsule Contains: Esomeprazole Magnesium Trihydrate Enteric Coated Pellets Eq To Esomeprazole,16,Each capsule contains: Esomeprazole Magnesium Trihydrate enteric coated pellets eq. to Esomeprazole,0.99,auto_candidate
+Each Capsule Contains: Lincomycine as HCl,Each Capsule Contains: Lincomycine As Hcl,16,Each Capsule Contains: Lincomycine as HCl,0.99,auto_candidate
+Esomeprazole (as enteric coated pellets 22.5% w/w),Esomeprazole (as Enteric Coated Pellets 22.5% W / W),16,esomeprazole as magnesium trihydrate (Pellets),0.99,auto_candidate
+Glyceryl Trinitrate 2% with Lactose,Glyceryl Trinitrate 2% With Lactose,16,Glyceryl Trinitrate 2% with Lactose,0.99,auto_candidate
+Linezolid.,Linezolid.,16,Linezolid (USP),0.99,auto_candidate
+"Live, frozen vaccine, Marek’s disease HVT strain and Newcastle disease virus Serotype 3, Live Marek’s disease Vector, for the active immunization of chickens against Marek’s disease and Newcastle dis","Live, Frozen Vaccine, Marek’s Disease Hvt Strain and Newcastle Disease Virus Serotype 3, Live Marek’s Disease Vector, For The Active Immunization of Chickens Against Marek’s Disease and Newcastle Dis",16,"Live, frozen vaccine, Marek’s disease HVT strain and Newcastle disease virus Serotype 3, Live Marek’s disease Vector, for the active immunization of chickens against Marek’s disease and Newcastle dis",0.99,auto_candidate
+Lymecycline eq. to Tetracycline,Lymecycline Eq To Tetracycline,16,Lymecycline eq. to Tetracycline,0.99,auto_candidate
+Paracetamol + Caffeine + Chlorpheniramine Maleate,Paracetamol + Caffeine + Chlorpheniramine Maleate,16,Paracetamol + Caffeine + Chlorpheniramine Maleate,0.99,auto_candidate
+Pazopanib (As Hydrochloride),Pazopanib (as Hydrochloride),16,Pazopanib (As Hydrochloride),0.99,auto_candidate
+Piroxcam (as Betadex),Piroxcam (as Betadex),16,Piroxcam (as Betadex),0.99,auto_candidate
+Radeparzole as sodium,Radeparzole As Sodium,16,Radeparzole as sodium,0.99,auto_candidate
+Recombinant Human Granulocyte Colony-Stimulating Factor (rhG-CSF),Recombinant Human Granulocyte Colony-stimulating Factor (rhg-csf),16,Recombinant Human Granulocyte Colony-Stimulating Factor (rhG-CSF),0.99,auto_candidate
+Sterile Cefoperazone (as Sodium),Sterile Cefoperazone (as Sodium),16,Sterile Cefoperazone (as Sodium),0.99,auto_candidate
+Vinorelbine Tartrate eq. to Vinorelbine,Vinorelbine Tartrate Eq To Vinorelbine,16,Vinorelbine Tartrate eq. to Vinorelbine,0.99,auto_candidate
+Metronidazole+Diloxamide Furoate,Metronidazole + Diloxamide Furoate,16,Metronidazole+Diloxamide Furoate,0.96,auto_candidate
+-------,-------,15,eq. to elemental Iron,0.99,auto_candidate
+(III)Hydroxide Polymaltose Complex to Elemental Iron,(iii)hydroxide Polymaltose Complex To Elemental Iron,15,(III)Hydroxide Polymaltose Complex to Elemental Iron,0.99,auto_candidate
+Amlodipine(as Besylate),Amlodipine(as Besylate),15,Amlodipine as besylate eq. to Amlodipine,0.99,auto_candidate
+Atorvastatin(as Calcium),Atorvastatin(as Calcium),15,Atorvastatin(calcium trihydrate),0.99,auto_candidate
+Azithromycine Dihydrate eq. to Azithromycin,Azithromycine Dihydrate Eq To Azithromycin,15,Azithromycine Dihydrate eq. to Azithromycin,0.99,auto_candidate
+Buspirone HCl eq to Buspirone,Buspirone Hcl Eq To Buspirone,15,Buspirone HCl eq to Buspirone,0.99,auto_candidate
+Cephradine with L-Arginine eq. to Cephradine,Cephradine With L-arginine Eq To Cephradine,15,Cephradine with L-Arginine eq. to Cephradine,0.99,auto_candidate
+Dapagliflozin propanediol monohydrate eq. to Dapagliflozin,Dapagliflozin Propanediol Monohydrate Eq To Dapagliflozin,15,Dapagliflozin propanediol monohydrate eq. to Dapagliflozin,0.99,auto_candidate
+Dexketoprofen as Trometamol,Dexketoprofen As Trometamol,15,Dexketoprofen as Trometamol,0.99,auto_candidate
+Domeridone as Maleate,Domeridone As Maleate,15,Domeridone as Maleate,0.99,auto_candidate
+Doxazosin as Mesylate,Doxazosin As Mesylate,15,Doxazosin as Mesilate,0.99,auto_candidate
+"Each 100ml contains: Chorphenamine Maleate ....100mg,Terpin hydrate ....200mg,Potassium bicarbonate .....2mg,Ammonium chloride.....500mg, Tincture senega.....1ml , Menthol.......20mg, Ephedrine HCI...","Each 100ml Contains: Chorphenamine Maleate ....100mg,terpin Hydrate ....200mg,potassium Bicarbonate .....2mg,ammonium Chloride.....500mg, Tincture Senega.....1ml , Menthol.......20mg, Ephedrine Hci...",15,"Each 100ml contains: Chorphenamine Maleate ....100mg,Terpin hydrate ....200mg,Potassium bicarbonate .....2mg,Ammonium chloride.....500mg, Tincture senega.....1ml , Menthol.......20mg, Ephedrine HCI...",0.99,auto_candidate
+Each 5ml contains: Cefixime (as Trihydrate),Each 5ml Contains: Cefixime (as Trihydrate),15,Each 5ml contains: Cefixime (as Trihydrate),0.99,auto_candidate
+Each tablet contains: Betahistine (BP Specification),Each Tablet Contains: Betahistine (bp Specification),15,Each tablet contains: Betahistine (BP Specification),0.99,auto_candidate
+Each1mlcontains:- (Cetirizine1.0mg),Each1mlcontains:- (cetirizine1.0mg),15,Each1mlcontains:- (Cetirizine1.0mg),0.99,auto_candidate
+Each20gmsContains:- (Diclofenacdiethylammoniumsalt 0.2494gms),Each20gmscontains:- (diclofenacdiethylammoniumsalt 0.2494gms),15,"Each20gmsContains:- (PolymyxinB Sulphate10,000units, Bacitracinzinc500units)",0.99,auto_candidate
+"Each20gmsContains:- (PolymyxinB Sulphate10,000units, Bacitracinzinc500units)","Each20gmscontains:- (polymyxinb Sulphate10,000units, Bacitracinzinc500units)",15,"Each20gmsContains:- (PolymyxinB Sulphate10,000units, Bacitracinzinc500units)",0.99,auto_candidate
+Each2mlContains:- (AmikacinSulphate100mg),Each2mlcontains:- (amikacinsulphate100mg),15,Each2mlContains:- (TobramycinasSulphate20mg),0.99,auto_candidate
+Each2mlContains:- (Gentamycin80mg),Each2mlcontains:- (gentamycin80mg),15,Each2mlContains:- (TobramycinasSulphate20mg),0.99,auto_candidate
+Each2mlContains:- (Kanamycine500mg),Each2mlcontains:- (kanamycine500mg),15,Each2mlContains:- (TobramycinasSulphate20mg),0.99,auto_candidate
+Each2mlContains:- (TobramycinasSulphate20mg),Each2mlcontains:- (tobramycinassulphate20mg),15,Each2mlContains:- (TobramycinasSulphate20mg),0.99,auto_candidate
+Each4mlContains:- (Kanamycine1.0gm),Each4mlcontains:- (kanamycine1.0gm),15,Each4mlContains:- (Kanamycine1.0gm),0.99,auto_candidate
+Each5mlcontains:- (Famotidine10mg),Each5mlcontains:- (famotidine10mg),15,Each5mlcontains:- (PromethazineHCl25mg),0.99,auto_candidate
+Each5mlcontains:- (Ibuprofen100mg),Each5mlcontains:- (ibuprofen100mg),15,Each5mlcontains:- (PromethazineHCl25mg),0.99,auto_candidate
+Each5mlcontains:- (IronIII HydroxidePolyMaltose 50mg),Each5mlcontains:- (ironiii Hydroxidepolymaltose 50mg),15,Each5mlcontains:- (PromethazineHCl25mg),0.99,auto_candidate
+Each5mlcontains:- (MefenamicAcid50mg),Each5mlcontains:- (mefenamicacid50mg),15,Each5mlcontains:- (PromethazineHCl25mg),0.99,auto_candidate
+Each5mlcontains:- (PromethazineHCl25mg),Each5mlcontains:- (promethazinehcl25mg),15,Each5mlcontains:- (PromethazineHCl25mg),0.99,auto_candidate
+Each60mlContains:- (Minoxidil2%),Each60mlcontains:- (minoxidil2%),15,Each60mlContains:- (Minoxidil2%),0.99,auto_candidate
+EachmlContains:- (Gentamycin40mg),Eachmlcontains:- (gentamycin40mg),15,EachmlContains:- (Gentamycin40mg),0.99,auto_candidate
+EachTabletcontains: (Pantoprazole40mg),Eachtabletcontains: (pantoprazole40mg),15,EachTabletcontains:- (Paracetamol500mg),0.99,auto_candidate
+EachTabletcontains:- (Famotidine20mg),Eachtabletcontains:- (famotidine20mg),15,EachTabletcontains:- (Paracetamol500mg),0.99,auto_candidate
+EachTabletcontains:- (Fexofenadine120mg),Eachtabletcontains:- (fexofenadine120mg),15,EachTabletcontains:- (Paracetamol500mg),0.99,auto_candidate
+EachTabletcontains:- (Fexofenadine180mg),Eachtabletcontains:- (fexofenadine180mg),15,EachTabletcontains:- (Paracetamol500mg),0.99,auto_candidate
+EachTabletcontains:- (Ibuprofen200mg),Eachtabletcontains:- (ibuprofen200mg),15,EachTabletcontains:- (Paracetamol500mg),0.99,auto_candidate
+EachTabletcontains:- (Mecobalamine500mcg),Eachtabletcontains:- (mecobalamine500mcg),15,EachTabletcontains:- (Paracetamol500mg),0.99,auto_candidate
+EachTabletcontains:- (MefenamicAcid500mg),Eachtabletcontains:- (mefenamicacid500mg),15,EachTabletcontains:- (Paracetamol500mg),0.99,auto_candidate
+EachTabletcontains:- (Meloxicam15mg),Eachtabletcontains:- (meloxicam15mg),15,EachTabletcontains:- (Paracetamol500mg),0.99,auto_candidate
+EachTabletcontains:- (Meloxicam7.5mg),Eachtabletcontains:- (meloxicam7.5mg),15,EachTabletcontains:- (Paracetamol500mg),0.99,auto_candidate
+EachTabletcontains:- (Paracetamol500mg),Eachtabletcontains:- (paracetamol500mg),15,EachTabletcontains:- (Paracetamol500mg),0.99,auto_candidate
+EachVialContains:- (CefotaximeSodium1.0gm),Eachvialcontains:- (cefotaximesodium1.0gm),15,EachVialContains:- (Cepharadine500mg),0.99,auto_candidate
+EachVialContains:- (CefotaximeSodium250mg),Eachvialcontains:- (cefotaximesodium250mg),15,EachVialContains:- (Cepharadine500mg),0.99,auto_candidate
+EachVialContains:- (Ceftazidime1.0gm),Eachvialcontains:- (ceftazidime1.0gm),15,EachVialContains:- (Cepharadine500mg),0.99,auto_candidate
+EachVialContains:- (Ceftazidime250mg),Eachvialcontains:- (ceftazidime250mg),15,EachVialContains:- (Cepharadine500mg),0.99,auto_candidate
+EachVialContains:- (Ceftazidime500mg),Eachvialcontains:- (ceftazidime500mg),15,EachVialContains:- (Cepharadine500mg),0.99,auto_candidate
+EachVialContains:- (Cefuroxime1.5gm),Eachvialcontains:- (cefuroxime1.5gm),15,EachVialContains:- (Cepharadine500mg),0.99,auto_candidate
+EachVialContains:- (Cefuroxime250mg),Eachvialcontains:- (cefuroxime250mg),15,EachVialContains:- (Cepharadine500mg),0.99,auto_candidate
+EachVialContains:- (Cefuroxime750mg),Eachvialcontains:- (cefuroxime750mg),15,EachVialContains:- (Cepharadine500mg),0.99,auto_candidate
+EachVialContains:- (Cepharadine1.0gm),Eachvialcontains:- (cepharadine1.0gm),15,EachVialContains:- (Cepharadine500mg),0.99,auto_candidate
+EachVialContains:- (Cepharadine250mg),Eachvialcontains:- (cepharadine250mg),15,EachVialContains:- (Cepharadine500mg),0.99,auto_candidate
+EachVialContains:- (Cepharadine500mg),Eachvialcontains:- (cepharadine500mg),15,EachVialContains:- (Cepharadine500mg),0.99,auto_candidate
+Imatinib mesilate Eq. to Imatinib,Imatinib Mesilate Eq To Imatinib,15,Imatinib mesilate Eq. to Imatinib,0.99,auto_candidate
+imidocarb as dipropionate,Imidocarb As Dipropionate,15,imidocarb as dipropionate,0.99,auto_candidate
+Lidocain as hydrochloride,Lidocain As Hydrochloride,15,Lidocain as hydrochloride,0.99,auto_candidate
+Lymecycline 408mg eq. to Tetracycline,Lymecycline 408mg Eq To Tetracycline,15,Lymecycline 408mg eq. to Tetracycline,0.99,auto_candidate
+Newcastle Disease Virus-Fusion(F) Protein,Newcastle Disease Virus-fusion(f) Protein,15,Newcastle Disease Virus-Fusion(F) Protein,0.99,auto_candidate
+Pasireotide (as Pasireotide diaspartate),Pasireotide (as Pasireotide Diaspartate),15,Pasireotide (as Pasireotide diaspartate),0.99,auto_candidate
+Pioglitazone + Glimepiride,Pioglitazone + Glimepiride,15,Pioglitazone + Glimepiride,0.99,auto_candidate
+ron (III) hydroxide polymaltsoe complex eq. to elemental iron,Ron (iii) Hydroxide Polymaltsoe Complex Eq To Elemental Iron,15,ron (III) hydroxide polymaltsoe complex eq. to elemental iron,0.99,auto_candidate
+Sterile Cefoperazone Sodium eq. to Cefoperazone,Sterile Cefoperazone Sodium Eq To Cefoperazone,15,Sterile Cefoperazone Sodium eq. to Cefoperazone,0.99,auto_candidate
+Sterile Chloramphenicol Sodium Succinate eq. to Chloramphenicol Base,Sterile Chloramphenicol Sodium Succinate Eq To Chloramphenicol Base,15,Sterile Chloramphenicol Sodium Succinate eq. to Chloramphenicol Base,0.99,auto_candidate
+Sterile Sulbactum Sodium eq. to Sulbactum,Sterile Sulbactum Sodium Eq To Sulbactum,15,Sterile Sulbactum Sodium eq. to Sulbactum,0.99,auto_candidate
+Turkey Herpesvirus (HVT),Turkey Herpesvirus (hvt),15,Turkey Herpesvirus (HVT),0.99,auto_candidate
+A1+++ (as AIPO4),A1 + + + (as Aipo4),15,A1+++ (as AIPO4),0.96,auto_candidate
+-III Hydroxide Polymaltose complex equivalent to elemental Iron,-iii Hydroxide Polymaltose Complex Eq To Elemental Iron,15,Elemental Iron (III) as Iron Sucrose,0.92,review_candidate
+Eflornithine (as hydrochloride monohydrate)....11.5% (Equivalent to Eflornithine Hydrochloride (as m,Eflornithine (as Hydrochloride Monohydrate)....11.5% (eq To Eflornithine Hydrochloride (as M,15,Eflornithine Hydrochloride (as monohydrate),0.92,review_candidate
+Alendronate as sodium,Alendronate As Sodium,14,Alendronate(as Sodium),0.99,auto_candidate
+Artemether/Lumefantrine,Artemether / Lumefantrine,14,Artemether / Lumefantrine,0.99,auto_candidate
+Bosentan (as Monohydrate),Bosentan (as Monohydrate),14,Bosentan (as Monohydrate),0.99,auto_candidate
+Cefdroxil as (Monohydrate) USP,Cefdroxil As (monohydrate) Usp,14,Cefdroxil as (Monohydrate) USP,0.99,auto_candidate
+Cefepime as HCl with L- Arginine,Cefepime As Hcl With L- Arginine,14,cefepime as HCL,0.99,auto_candidate
+Cefepime HCl with L-Arginine eq. to Cefepime,Cefepime Hcl With L-arginine Eq To Cefepime,14,Cefepime HCl with L-Arginine eq. to Cefepime,0.99,auto_candidate
+Cefoprazone + Sulbactum,Cefoprazone + Sulbactum,14,Cefoprazone + Sulbactum,0.99,auto_candidate
+Cefpirome sulphate with sodium carbonate eq to Cefpirome,Cefpirome Sulphate With Sodium Carbonate Eq To Cefpirome,14,Cefpirome sulphate with sodium carbonate eq to Cefpirome,0.99,auto_candidate
+Ceftazidime pentahydrate with sodium carbonate eq. to Ceftazidime,Ceftazidime Pentahydrate With Sodium Carbonate Eq To Ceftazidime,14,Ceftazidime Pentahydrate with sodium carbonate eq. to Ceftazidime,0.99,auto_candidate
+Freeze Dried Avian Infectious Bronchitis Disease virus (Massachusetts H-120 Strain) not less than,Freeze Dried Avian Infectious Bronchitis Disease Virus (massachusetts H-120 Strain) Not Less Than,14,Freeze Dried Avian Infectious Bronchitis Disease virus (Massachusetts H-120 Strain) not less than,0.99,auto_candidate
+Gadobutrol (equivalent to 604.72mg Gadobutrol),Gadobutrol (eq To 604.72mg Gadobutrol),14,Gadobutrol (equivalent to 604.72mg Gadobutrol),0.99,auto_candidate
+Inactivated Hydropericardium syndrome virus (adenovirus) not less than,Inactivated Hydropericardium Syndrome Virus (adenovirus) Not Less Than,14,Inactivated Hydropericardium syndrome virus (adenovirus) not less than,0.99,auto_candidate
+Iron Polymaltose + Folic acid,Iron Polymaltose + Folic Acid,14,Iron Polymaltose + Folic acid,0.99,auto_candidate
+Levofloxacine (as Hemihydrate),Levofloxacine (as Hemihydrate),14,Levofloxacine (as Hemihydrate),0.99,auto_candidate
+Levofloxacine (As hemihydrates,Levofloxacine (as Hemihydrates,14,Levofloxacine (As hemihydrates,0.99,auto_candidate
+Prednisolone.,Prednisolone.,14,Prednisolone as acetate,0.99,auto_candidate
+Salbactum as Sodium,Salbactum As Sodium,14,Salbactum as Sodium,0.99,auto_candidate
+Sterile clavulanate potassium eq. to clavulanic acid,Sterile Clavulanate Potassium Eq To Clavulanic Acid,14,Sterile clavulanate potassium eq. to clavulanic acid,0.99,auto_candidate
+Sterile Lyophilized Gemcitabine HCl eq. to Gemcitabine,Sterile Lyophilized Gemcitabine Hcl Eq To Gemcitabine,14,Sterile Lyophilized Gemcitabine HCl eq. to Gemcitabine,0.99,auto_candidate
+Sterile ticarcillin sodium eq. to ticarcillin,Sterile Ticarcillin Sodium Eq To Ticarcillin,14,Sterile ticarcillin sodium eq. to ticarcillin,0.99,auto_candidate
+Clavulanic acid/ amoxicillin,Clavulanic Acid / Amoxicillin,14,Clavulanic acid/ amoxicillin,0.96,auto_candidate
+Bovine respiratory syncytial Virus (BRSV),Bovine Respiratory Syncytial Virus (brsv),13,Bovine respiratory syncytial Virus (BRSV),0.99,auto_candidate
+Bovine Rhinotracheitis Virus (IBR),Bovine Rhinotracheitis Virus (ibr),13,Bovine Rhinotracheitis Virus (IBR),0.99,auto_candidate
+Bovine Virus Diarrhea Virus (BVD),Bovine Virus Diarrhea Virus (bvd),13,Bovine Virus Diarrhea Virus (BVD),0.99,auto_candidate
+Calcipotril Hydrate eq. to Calcipotriol (Anhydrous),Calcipotril Hydrate Eq To Calcipotriol (anhydrous),13,Calcipotril Hydrate eq. to Calcipotriol (Anhydrous),0.99,auto_candidate
+Carbopol (adjuvant 0.5%),Carbopol (adjuvant 0.5%),13,Carbopol (adjuvant 0.5%),0.99,auto_candidate
+Control Released Pellets Containing Tamsulosin HCl eq. to Tamsulosin,Control Released Pellets Containing Tamsulosin Hcl Eq To Tamsulosin,13,Control Released Pellets Containing Tamsulosin HCl eq. to Tamsulosin,0.99,auto_candidate
+"ENROFLOXACIN,","Enrofloxacin,",13,Enrofloxacin as HCl,0.99,auto_candidate
+Ethylene diamine tetra acetic acid (chelating agent 14%),Ethylene Diamine Tetra Acetic Acid (chelating Agent 14%),13,Ethylene diamine tetra acetic acid (chelating agent 14%),0.99,auto_candidate
+Fluphenazine as Decanoate,Fluphenazine As Decanoate,13,Fluphenazine as Decanoate,0.99,auto_candidate
+Human Albumin (human plasma protein with at least 96% albumin),Human Albumin (human Plasma Protein With At Least 96% Albumin),13,Human Albumin (human plasma protein with at least 96% albumin),0.99,auto_candidate
+Myxovirus parainfluenza3(PI3),Myxovirus Parainfluenza3(pi3),13,Myxovirus parainfluenza3(PI3),0.99,auto_candidate
+Sulbactam(as Sodium),Sulbactam(as Sodium),13,sulbactam as sodium,0.99,auto_candidate
+"Equine Influenza, strain A/Equi-2/Ohio/03","Equine Influenza, Strain A / Equi-2 / Ohio / 03",13,"Equine Influenza, strain A/Equi-2/Ohio/03",0.96,auto_candidate
+"Equine Influenza, strain Kentucky/95, subtype A2","Equine Influenza, Strain Kentucky / 95, Subtype A2",13,"Equine Influenza, strain Kentucky/95, subtype A2",0.96,auto_candidate
+"Equine Influenza, strain newmarket/2/93, subtype A2","Equine Influenza, Strain Newmarket / 2 / 93, Subtype A2",13,"Equine Influenza, strain newmarket/2/93, subtype A2",0.96,auto_candidate
+Alprazolam.,Alprazolam.,12,ALPRAZOLAM,0.99,auto_candidate
+Artemether and Lumefantrine,Artemether and Lumefantrine,12,Artemether and lumefantrine,0.99,auto_candidate
+Atorvastatin as Calcium Trihydrate + Ezetimibe,Atorvastatin As Calcium Trihydrate + Ezetimibe,12,Atorvastatin(calcium trihydrate),0.99,auto_candidate
+Bromocriptine as meshlate,Bromocriptine As Meshlate,12,Bromocriptine (as mesylate),0.99,auto_candidate
+Cefepime as HCl with Sterile Arginine,Cefepime As Hcl With Sterile Arginine,12,cefepime as HCL,0.99,auto_candidate
+Cefoperazone As sodium + Sulbactum as Sodium,Cefoperazone As Sodium + Sulbactum As Sodium,12,Cefoperazone as sodium + Sulbactam as sodium,0.99,auto_candidate
+Cefoperazone sodium and Sulbactam Sodium,Cefoperazone Sodium and Sulbactam Sodium,12,Cefoperazone sodium and sulbactam sodium,0.99,auto_candidate
+Dextropropoxyphene as HCL,Dextropropoxyphene As Hcl,12,Dextropropoxyphene as HCL,0.99,auto_candidate
+Divalproex (as sodium),Divalproex (as Sodium),12,Divalproex as sodium,0.99,auto_candidate
+Enteric coated pellets Duloxetine (as hydrochloride),Enteric Coated Pellets Duloxetine (as Hydrochloride),12,Enteric coated pellets Duloxetine (as hydrochloride),0.99,auto_candidate
+hiamine HCI (Vitamin B1),Hiamine Hci (vitamin B1),12,hiamine HCI (Vitamin B1),0.99,auto_candidate
+Cyclobenzaprine as hydrochloride,Cyclobenzaprine As Hydrochloride,11,Cyclobenzaprine (as HCl),0.99,auto_candidate
+Dorzolamide as HCL + Timolol as Maleate,Dorzolamide As Hcl + Timolol As Maleate,11,Dorzolamide as HCL + Timolol as Maleate,0.99,auto_candidate
+Glucosamine Sulphate as Potassium Chloride + Chondroitin Sulphate as Sodium,Glucosamine Sulphate As Potassium Chloride + Chondroitin Sulphate As Sodium,11,Glucosamine sulphate (as sodium chloride),0.99,auto_candidate
+0.8% Mannitol Solution In Water For Injection.,0.8% Mannitol Solution In Water For Injection.,10,0.8% Mannitol Solution In Water For Injection.,0.99,auto_candidate
+"1-ethyl-6-fluoro-1, 4 dihydro-4-oxo-7-(-1-piperazinyl)-3-quinoline carboxylic acid.","1-ethyl-6-fluoro-1, 4 Dihydro-4-oxo-7-(-1-piperazinyl)-3-quinoline Carboxylic Acid.",10,"1-ethyl-6-fluoro-1, 4 dihydro-4-oxo-7-(-1-piperazinyl)-3-quinoline carboxylic acid.",0.99,auto_candidate
+280mg of Extended Release granules of anhydrous Theophylline eq to 200mg of USP Anhydrous Theophylli,280mg of Extended Release Granules of Anhydrous Theophylline Eq To 200mg of Usp Anhydrous Theophylli,10,280mg of Extended Release granules of anhydrous Theophylline eq to 200mg of USP Anhydrous Theophylli,0.99,auto_candidate
+Acepromazine as Maleate,Acepromazine As Maleate,10,Acepromazine as Maleate,0.99,auto_candidate
+Acetylsalicyclic Acid (Aspirin),Acetylsalicyclic Acid (aspirin),10,Acetylsalicyclic Acid (Aspirin),0.99,auto_candidate
+Ambroxol as HCl,Ambroxol As Hcl,10,Ambroxol as HCl,0.99,auto_candidate
+Amlodipine (as Besylate) + Atorvastatin (as Calcium Trihydrate),Amlodipine (as Besylate) + Atorvastatin (as Calcium Trihydrate),10,Amlodipine (as Besylate) + Atorvastatin (as Calcium Trihydrate),0.99,auto_candidate
+Anhydrous benzoyl peroxide (as hydrous benzoyl peroxide),Anhydrous Benzoyl Peroxide (as Hydrous Benzoyl Peroxide),10,Anhydrous benzoyl peroxide (as hydrous benzoyl peroxide),0.99,auto_candidate
+Artemether 20 + Lumefantrine 120mg,Artemether 20 + Lumefantrine 120mg,10,Artemether 20 + Lumefantrine 120mg,0.99,auto_candidate
+Artemether+ Lumefantrine,Artemether + Lumefantrine,10,Artemether + Lumefantrine,0.99,auto_candidate
+Atorvasatin as calcium trihydrate,Atorvasatin As Calcium Trihydrate,10,Atorvasatin as calcium trihydrate,0.99,auto_candidate
+Atorvastatin(as calcium trihydrated salt),Atorvastatin(as Calcium Trihydrated Salt),10,Atorvastatin(calcium trihydrate),0.99,auto_candidate
+Avian Influenza Inactivated virus (H7 serotype),Avian Influenza Inactivated Virus (h7 Serotype),10,Avian influenza inactivated virus (H9 serotype),0.99,auto_candidate
+Avian Influenza Inactivated virus (H9 serotype),Avian Influenza Inactivated Virus (h9 Serotype),10,Avian influenza inactivated virus (H9 serotype),0.99,auto_candidate
+Azithromycine (as dihydrate),Azithromycine (as Dihydrate),10,Azithromycine (as dihydrate),0.99,auto_candidate
+Belimumab(Human IgG 1? monoclonal antibody),Belimumab(human Igg 1 Monoclonal Antibody),10,Belimumab(Human IgG 1? monoclonal antibody),0.99,auto_candidate
+Bosentan monohydrate eq to Bosentan,Bosentan Monohydrate Eq To Bosentan,10,Bosentan monohydrate eq to Bosentan,0.99,auto_candidate
+Bromocriptine (as mesylate),Bromocriptine (as Mesylate),10,Bromocriptine (as mesylate),0.99,auto_candidate
+Cefepime as (Hcl) with L-Arginine),Cefepime As (hcl) With L-arginine),10,cefepime as HCL,0.99,auto_candidate
+Cefepime HCl eq to Cefepime with L-arginine,Cefepime Hcl Eq To Cefepime With L-arginine,10,Cefepime HCl eq to Cefepime with L-arginine,0.99,auto_candidate
+Cefepime with L-Arginine eq. to Cefepime,Cefepime With L-arginine Eq To Cefepime,10,Cefepime with L-Arginine eq. to Cefepime,0.99,auto_candidate
+Cefoperazone as Sodium+Sulbactam as Sodium,Cefoperazone As Sodium + Sulbactam As Sodium,10,Cefoperazone as sodium + Sulbactam as sodium,0.99,auto_candidate
+Cefoperazone Sodium and Sulbactam Sodium (1:1),Cefoperazone Sodium and Sulbactam Sodium (1:1),10,Cefoperazone sodium and sulbactam sodium,0.99,auto_candidate
+cefoperazone sodium eq.to cefoperazone 1000mg + sulbactam sodium eq. to sulbactam 1000mg,Cefoperazone Sodium Eq To Cefoperazone 1000mg + Sulbactam Sodium Eq To Sulbactam 1000mg,10,Cefoperazone sodium eq. to Cefoperazone,0.99,auto_candidate
+cefoperazone sodium eq.to cefoperazone 500mg + sulbactam sodium eq. to sulbactam 500mg,Cefoperazone Sodium Eq To Cefoperazone 500mg + Sulbactam Sodium Eq To Sulbactam 500mg,10,Cefoperazone sodium eq. to Cefoperazone,0.99,auto_candidate
+Cefoprazone (as sodium),Cefoprazone (as Sodium),10,Cefoprazone (as sodium),0.99,auto_candidate
+Cefpodoxime...(as Proxetil)....100mg,Cefpodoxime...(as Proxetil)....100mg,10,Cefpodoxime...(as Proxetil)....100mg,0.99,auto_candidate
+Cefpodoxime...(as Proxetil)....40mg,Cefpodoxime...(as Proxetil)....40mg,10,Cefpodoxime...(as Proxetil)....40mg,0.99,auto_candidate
+Cefprozol as Monohydrate,Cefprozol As Monohydrate,10,Cefprozol as Monohydrate,0.99,auto_candidate
+Ceftazidime Pentahydrate with Sodium Carbonate anhydrous,Ceftazidime Pentahydrate With Sodium Carbonate Anhydrous,10,Ceftazidime Pentahydrate with Sodium Carbonate anhydrous,0.99,auto_candidate
+Ceftazidime Pentahydrate with sodium carbonate eq. to Ceftazidime,Ceftazidime Pentahydrate With Sodium Carbonate Eq To Ceftazidime,10,Ceftazidime Pentahydrate with sodium carbonate eq. to Ceftazidime,0.99,auto_candidate
+Certoparin Sodium (Anti-Xa),Certoparin Sodium (anti-xa),10,Certoparin Sodium (Anti-Xa),0.99,auto_candidate
+citalopram(as HBr),Citalopram(as Hbr),10,citalopram,0.99,auto_candidate
+CItirizine as HCL,Citirizine As Hcl,10,CItirizine as HCL,0.99,auto_candidate
+Clomipramine as HCl,Clomipramine As Hcl,10,Clomipramine as HCl,0.99,auto_candidate
+Cloprosterol Vet 263ug eq to Cloprostenol 250ug,Cloprosterol Vet 263ug Eq To Cloprostenol 250ug,10,Cloprosterol Vet 263ug eq to Cloprostenol 250ug,0.99,auto_candidate
+Cryoprotectant No.1 + HVT / NDV and Rispens CV1988 strains,Cryoprotectant No.1 + Hvt / Ndv and Rispens Cv1988 Strains,10,Cryoprotectant No.1 + HVT / NDV and Rispens CV1988 strains,0.99,auto_candidate
+Cryoprotectant No.1 + HVT and Rispens CV1988 Strains,Cryoprotectant No.1 + Hvt and Rispens Cv1988 Strains,10,Cryoprotectant No.1 + HVT and Rispens CV1988 Strains,0.99,auto_candidate
+Dexamethasone(in the form of Disodium Salt),Dexamethasone(in The Form of Disodium Salt),10,Dexamethasone as Sodium Phosphate,0.99,auto_candidate
+Diclofenac sodium (as sustained release pellets 45% w/w),Diclofenac Sodium (as Sustained Release Pellets 45% W / W),10,diclofenac sodium,0.99,auto_candidate
+dl-α-tocopherol acetate (Ph. Eur.),Dl-α-tocopherol Acetate (ph. Eur.),10,dl-α-tocopherol acetate (Ph. Eur.),0.99,auto_candidate
+Each 100ml Contains: Dextrose Monohydrate eq. to Anhydrous Dextrose,Each 100ml Contains: Dextrose Monohydrate Eq To Anhydrous Dextrose,10,Each 100ml Contains: Dextrose Monohydrate eq. to Anhydrous Dextrose,0.99,auto_candidate
+each 15ml contain iron protein succinylate 800mg eq to elemental iron 40mg,Each 15ml Contain Iron Protein Succinylate 800mg Eq To Elemental Iron 40mg,10,each 15ml contain iron protein succinylate 800mg eq to elemental iron 40mg,0.99,auto_candidate
+Each capsule contains: Diclofenac Sodium (enteric coated pellets),Each Capsule Contains: Diclofenac Sodium (enteric Coated Pellets),10,Each capsule contains: Diclofenac Sodium (enteric coated pellets),0.99,auto_candidate
+Each chewable tablet contains: Iron (III) hydroxide polymaltose complex equivalent and Folic acid,Each Chewable Tablet Contains: Iron (iii) Hydroxide Polymaltose Complex Equivalent and Folic Acid,10,Each chewable tablet contains: Iron (III) hydroxide polymaltose complex equivalent and Folic acid,0.99,auto_candidate
+Each chewable tablet contains: Montelukast (as Sodium)….4mg,Each Chewable Tablet Contains: Montelukast (as Sodium)….4mg,10,Each chewable tablet contains: Montelukast (as Sodium)….4mg,0.99,auto_candidate
+Each film coated tablet contains: Escitalopram (as oxalate).....10mg,Each Film Coated Tablet Contains: Escitalopram (as Oxalate).....10mg,10,Each film coated tablet contains: Escitalopram (as oxalate).....10mg,0.99,auto_candidate
+Each film coated tablet contains: Levocetirizine dihydrochloride….5mg (USP specifications),Each Film Coated Tablet Contains: Levocetirizine Dihydrochloride….5mg (usp Specifications),10,Each film coated tablet contains: Levocetirizine dihydrochloride….5mg (USP specifications),0.99,auto_candidate
+Each film- coated tablet contains: Montelukast (as Sodium)….10mg,Each Film- Coated Tablet Contains: Montelukast (as Sodium)….10mg,10,Each film- coated tablet contains: Montelukast (as Sodium)….10mg,0.99,auto_candidate
+Each vial contains: Cefipime (as HCL)...1gm,Each Vial Contains: Cefipime (as Hcl)...1gm,10,Each vial contains: Cefipime (as HCL)...1gm,0.99,auto_candidate
+Each vial contains: Cefoperazone (as sodium)...500mg Sulbactam ( as sodium)....500mg,Each Vial Contains: Cefoperazone (as Sodium)...500mg Sulbactam ( As Sodium)....500mg,10,Each vial contains: Cefoperazone (as sodium)...500mg Sulbactam ( as sodium)....500mg,0.99,auto_candidate
+efoperazone as sodium,Efoperazone As Sodium,10,efoperazone as sodium,0.99,auto_candidate
+Elemental Calcium (as Calcium Lactate Pentahydrate 134mg and TriCalcium Phosphate 300mg),Elemental Calcium (as Calcium Lactate Pentahydrate 134mg and Tricalcium Phosphate 300mg),10,elemental calcium,0.99,auto_candidate
+Emedastine (as difumerate),Emedastine (as Difumerate),10,Emedastine (as difumerate),0.99,auto_candidate
+Emedastine Difumerate eq. to Emedastine,Emedastine Difumerate Eq To Emedastine,10,Emedastine Difumerate eq. to Emedastine,0.99,auto_candidate
+Enteric Coated Pellets of Esomeprazole Magnesium Trihydrate Eq. to Esomeprazole,Enteric Coated Pellets of Esomeprazole Magnesium Trihydrate Eq To Esomeprazole,10,Enteric Coated Pellets of Esomeprazole Magnesium Trihydrate Eq. to Esomeprazole,0.99,auto_candidate
+Enteric coated taste mask pellets of Clarithromycin eq. to Clarithromycin,Enteric Coated Taste Mask Pellets of Clarithromycin Eq To Clarithromycin,10,Enteric coated taste mask pellets of Clarithromycin eq. to Clarithromycin,0.99,auto_candidate
+Erlotinib Hcl Eq To Erlotinib,Erlotinib Hcl Eq To Erlotinib,10,Erlotinib Hcl Eq To Erlotinib,0.99,auto_candidate
+Esomeprazol manessium as trihydrate(Pellets),Esomeprazol Manessium As Trihydrate(pellets),10,Esomeprazol manessium as trihydrate(Pellets),0.99,auto_candidate
+Esomperazole (as magnesium trihydrate) enteric coated granules,Esomperazole (as Magnesium Trihydrate) Enteric Coated Granules,10,Esomperazole (as magnesium trihydrate) enteric coated granules,0.99,auto_candidate
+Ferrous Fumarate / Folic Acid,Ferrous Fumarate / Folic Acid,10,Ferrous Fumarate / Folic Acid,0.99,auto_candidate
+Flupentixol (as dihydrochloride,Flupentixol (as Dihydrochloride,10,Flupentixol (as dihydrochloride,0.99,auto_candidate
+Gastro resistant pellets of Esomeprazole magnesium trihydrate eq. to Esomeprazole (Pellets),Gastro Resistant Pellets of Esomeprazole Magnesium Trihydrate Eq To Esomeprazole (pellets),10,Gastro resistant pellets of Esomeprazole magnesium trihydrate eq. to Esomeprazole (Pellets),0.99,auto_candidate
+Ginseing extract eq. to Radix Panax C.A Meyer,Ginseing Extract Eq To Radix Panax C.a Meyer,10,Ginseing extract eq. to Radix Panax C.A Meyer,0.99,auto_candidate
+Glycopyrronium Bromide 63mcg Eq. to Glycopyrronium,Glycopyrronium Bromide 63mcg Eq To Glycopyrronium,10,Glycopyrronium Bromide 63mcg Eq. to Glycopyrronium,0.99,auto_candidate
+Gumbro (Winterfielf 2512 Bulk viral fluids),Gumbro (winterfielf 2512 Bulk Viral Fluids),10,Gumbro (Winterfielf 2512 Bulk viral fluids),0.99,auto_candidate
+IBDV (Lukert CEO Strain),Ibdv (lukert Ceo Strain),10,IBDV (Lukert CEO Strain),0.99,auto_candidate
+Inactivated Pasteurella multiocida (Robert's strain),Inactivated Pasteurella Multiocida (robert's Strain),10,Inactivated Pasteurella multiocida (Robert's strain),0.99,auto_candidate
+Iohexol 755mg eq. to organic iodine,Iohexol 755mg Eq To Organic Iodine,10,Iohexol 755mg eq. to organic iodine,0.99,auto_candidate
+Ipratropium Bromide... 0.5218mg eq to Ipratropium.,Ipratropium Bromide... 0.5218mg Eq To Ipratropium.,10,Ipratropium Bromide... 0.5218mg eq to Ipratropium.,0.99,auto_candidate
+Iron + Folic Acid,Iron + Folic Acid,10,Iron + Folic Acid,0.99,auto_candidate
+Lansoperazole pellets eq. to Lansoperazole,Lansoperazole Pellets Eq To Lansoperazole,10,Lansoperazole pellets eq. to Lansoperazole,0.99,auto_candidate
+Levofloxacin(as hemihydrate),Levofloxacin(as Hemihydrate),10,levofloxacin (as Hemihydrate),0.99,auto_candidate
+Levofloxacin(As hemihydrate),Levofloxacin(as Hemihydrate),10,levofloxacin (as Hemihydrate),0.99,auto_candidate
+"Losartan Potassium., Hydrochlorothiazide.","Losartan Potassium., Hydrochlorothiazide.",10,"Losartan Potassium., Hydrochlorothiazide.",0.99,auto_candidate
+Meconazole (as nitrate),Meconazole (as Nitrate),10,Meconazole (as nitrate),0.99,auto_candidate
+Melitracen (as HCl),Melitracen (as Hcl),10,Melitracen (HCl),0.99,auto_candidate
+Metoprolol (as tartrate),Metoprolol (as Tartrate),10,Metoprolol (as tartrate),0.99,auto_candidate
+Metronidazole(as Benzoate),Metronidazole(as Benzoate),10,Metronidazole as benzoate.,0.99,auto_candidate
+Minocylcin as HCl,Minocylcin As Hcl,10,Minocylcin as HCl,0.99,auto_candidate
+Modified release pellets Tamsulosin hcl eq to Tamsulosin hcl,Modified Release Pellets Tamsulosin Hcl Eq To Tamsulosin Hcl,10,Modified release pellets Tamsulosin hcl eq to Tamsulosin hcl,0.99,auto_candidate
+Molybdenum (molybdate),Molybdenum (molybdate),10,Molybdenum (molybdate),0.99,auto_candidate
+Nalbuphene as HCL,Nalbuphene As Hcl,10,Nalbuphene as HCL,0.99,auto_candidate
+Neomycin(in the form of sulphate),Neomycin(in The Form of Sulphate),10,Neomycin (activity),0.99,auto_candidate
+Newcastle Disease Live Virus with a minimum infectious titer of 10 (6.5) D1E50 Gumboro Disease Live,Newcastle Disease Live Virus With A Minimum Infectious Titer of 10 (6.5) D1e50 Gumboro Disease Live,10,Newcastle Disease Live Virus with a minimum infectious titer of 10 (6.5) D1E50 Gumboro Disease Live,0.99,auto_candidate
+Pancreatic digest of casein (USP),Pancreatic Digest of Casein (usp),10,Pancreatic digest of casein (USP),0.99,auto_candidate
+Paracetamol + Caffeine + Codeine phosphate,Paracetamol + Caffeine + Codeine Phosphate,10,Paracetamol + Caffeine + Codeine phosphate,0.99,auto_candidate
+Pentavalent Vaccine (DTwP – HB – Hib),Pentavalent Vaccine (dtwp – Hb – Hib),10,Pentavalent Vaccine (DTwP – HB – Hib),0.99,auto_candidate
+Phenosulfonphthalein (Ph.Eur/USP),Phenosulfonphthalein (ph.eur / Usp),10,Phenosulfonphthalein (Ph.Eur/USP),0.99,auto_candidate
+Piperazine (as Sulphate),Piperazine (as Sulphate),10,Piperazine (as Sulphate),0.99,auto_candidate
+Piroxicam(as Betacyclodextrin),Piroxicam(as Betacyclodextrin),10,piroxicam,0.99,auto_candidate
+Promethazine as HCL,Promethazine As Hcl,10,Promethazine as HCL,0.99,auto_candidate
+Raloxifene as HCl,Raloxifene As Hcl,10,Raloxifene as HCl,0.99,auto_candidate
+Rebeprazole as Sodium,Rebeprazole As Sodium,10,Rebeprazole as Sodium,0.99,auto_candidate
+Rosuvastatin(as calcium),Rosuvastatin(as Calcium),10,Rosuvastatin(as calcium),0.99,auto_candidate
+Salmeterol (as xinafoate),Salmeterol (as Xinafoate),10,Salmeterol (as xinafoate),0.99,auto_candidate
+Selegiline (as HCl),Selegiline (as Hcl),10,Selegiline (as HCl),0.99,auto_candidate
+Standard Cobre Venom (Naja-naja),Standard Cobre Venom (naja-naja),10,Standard Cobre Venom (Naja-naja),0.99,auto_candidate
+Sterile Cefepime (as HCl) with L-Arginine,Sterile Cefepime (as Hcl) With L-arginine,10,Sterile Cefepime (as HCl) with L-Arginine,0.99,auto_candidate
+Sulfadimerazine (as Sodium),Sulfadimerazine (as Sodium),10,Sulfadimerazine (as Sodium),0.99,auto_candidate
+Sustained release pellets of Venlafaxine hydrochloride eq. to Venlafaxine,Sustained Release Pellets of Venlafaxine Hydrochloride Eq To Venlafaxine,10,Sustained release pellets of Venlafaxine hydrochloride eq. to Venlafaxine,0.99,auto_candidate
+Tenofovir as disoproxil fumarate,Tenofovir As Disoproxil Fumarate,10,Tenofovir as disoproxil fumarate,0.99,auto_candidate
+Tiotropium bromide monohydrate eq. to tiotropium,Tiotropium Bromide Monohydrate Eq To Tiotropium,10,Tiotropium bromide monohydrate eq. to tiotropium,0.99,auto_candidate
+Tizinidine Sustained Release Pellets containing Tizanidine HCL eq to Tizanidine Base,Tizinidine Sustained Release Pellets Containing Tizanidine Hcl Eq To Tizanidine Base,10,Tizinidine Sustained Release Pellets containing Tizanidine HCL eq to Tizanidine Base,0.99,auto_candidate
+Tobramycin and Dexamethasone,Tobramycin and Dexamethasone,10,Tobramycin and Dexamethasone,0.99,auto_candidate
+Umeclidinium Eq to 74.2mcg of Umecidinium Bromide,Umeclidinium Eq To 74.2mcg of Umecidinium Bromide,10,Umeclidinium Eq to 74.2mcg of Umecidinium Bromide,0.99,auto_candidate
+Vortioxetine (As Hydrobromide),Vortioxetine (as Hydrobromide),10,Vortioxetine (As Hydrobromide),0.99,auto_candidate
+?-keto analogue to isoleucine (calcium salt),-keto Analogue To Isoleucine (calcium Salt),10,?-keto analogue to isoleucine (calcium salt),0.96,auto_candidate
+?-keto analogue to leucine (calcium salt),-keto Analogue To Leucine (calcium Salt),10,?-keto analogue to leucine (calcium salt),0.96,auto_candidate
+?-keto analogue to methionine (calcium salt),-keto Analogue To Methionine (calcium Salt),10,?-keto analogue to methionine (calcium salt),0.96,auto_candidate
+?-keto analogue to phenylalanine (calcium salt),-keto Analogue To Phenylalanine (calcium Salt),10,?-keto analogue to phenylalanine (calcium salt),0.96,auto_candidate
+Artemether 40mg+ Lumefantrine 240mg,Artemether 40mg + Lumefantrine 240mg,10,Artemether 40mg+ Lumefantrine 240mg,0.96,auto_candidate
+B/Phuket/3073/2013,B / Phuket / 3073 / 2013,10,B/Phuket/3073/2013,0.96,auto_candidate
+Cephradine D/S,Cephradine D / S,10,Cephradine D/S,0.96,auto_candidate
+Cephradine inj IV/IM,Cephradine Inj Iv / Im,10,Cephradine inj IV/IM,0.96,auto_candidate
+Ibuprofen/Pseudoephedrine HCl,Ibuprofen / Pseudoephedrine Hcl,10,Ibuprofen/Pseudoephedrine HCl,0.96,auto_candidate
+NIB-88 Reassortant Derived from A/Switzerland/9715293/2013,Nib-88 Reassortant Derived From A / Switzerland / 9715293 / 2013,10,NIB-88 Reassortant Derived from A/Switzerland/9715293/2013,0.96,auto_candidate
+NYMC X-179A Reassortant Derived from A/California/7/2009,Nymc X-179a Reassortant Derived From A / California / 7 / 2009,10,NYMC X-179A Reassortant Derived from A/California/7/2009,0.96,auto_candidate
+Permethrin 5% w/w/,Permethrin 5% W / W /,10,Permethrin 5% w/w/,0.96,auto_candidate
+Sulfadoxine Pyrimethamine 500mg/25mg,Sulfadoxine Pyrimethamine 500mg / 25mg,10,Sulfadoxine Pyrimethamine 500mg/25mg,0.96,auto_candidate
+Trichlorfon/Metrifonate,Trichlorfon / Metrifonate,10,Trichlorfon/Metrifonate,0.96,auto_candidate
+VASTOR PLUS 10/10MG TABLET,Vastor Plus 10 / 10mg Tablet,10,VASTOR PLUS 10/10MG TABLET,0.96,auto_candidate
+Phenoxymethylpenicillin 325mg/g eq to Potassium Phenoxymethylpenicillin,Phenoxymethylpenicillin 325mg / G Eq To Potassium Phenoxymethylpenicillin,10,Procaine Benzylpenicillin,0.92,review_candidate
+"? toxoid of tyep B, C and D Clostridium perfringens","Toxoid of Tyep B, C and D Clostridium Perfringens",10,Itopride HCl + Clostridium septicum,0.91,review_candidate
+"? toxoid of type B, C and D Clostridium perfringens","Toxoid of Type B, C and D Clostridium Perfringens",10,Polio Virus Type 1 + Clostridium septicum,0.91,review_candidate
+Hydroquinone + Fluocinolone Acetonide+Tretinoin,Hydroquinone + Fluocinolone Acetonide + Tretinoin,10,Hydroquinone + Fluocinolone acetonide eq. to Fluocinolone + Tretinoin,0.91,review_candidate
+calcium lactate gluconate+calcium carbonate+Ascorbic acid,Calcium Lactate Gluconate + Calcium Carbonate + Ascorbic Acid,10,calcium lactate gluconate+calcium carbonate+Ascorbic acid,0.83,review_candidate
+Flumequine+Colistin Sulphate,Flumequine + Colistin Sulphate,10,Flumequine Sodium,0.83,review_candidate
+Lyophilized Powder/cake Warfarin Sodium,Lyophilized Powder / Cake Warfarin Sodium,10,Lyophilized Powder/cake Warfarin Sodium,0.83,review_candidate
+Paracetamol+Orphenadrine citrate,Paracetamol + Orphenadrine Citrate,10,Paracetamol+Orphenadrine citrate,0.83,review_candidate
+Sodium chloride+Potassium chloride+Sodium citrate+Glucose anhydrous,Sodium Chloride + Potassium Chloride + Sodium Citrate + Glucose Anhydrous,10,Glucose anhydrous,0.83,review_candidate
+Aminosideine (Sulphate),Aminosideine (sulphate),9,Aminosideine (Sulphate),0.99,auto_candidate
+Anti-thymocyte Globulin (Equine),Anti-thymocyte Globulin (equine),9,Anti-thymocyte Globulin (Equine),0.99,auto_candidate
+Artemether/ Lumefantrine,Artemether / Lumefantrine,9,Artemether / Lumefantrine,0.99,auto_candidate
+Atorvastatin + Ezetimibe,Atorvastatin + Ezetimibe,9,Atorvastatin + Ezetimibe,0.99,auto_candidate
+Atorvatatin as Calcium,Atorvatatin As Calcium,9,Atorvatatin as Calcium,0.99,auto_candidate
+Attenuated canine adenovirus (CAV2),Attenuated Canine Adenovirus (cav2),9,Attenuated canine adenovirus (CAV2),0.99,auto_candidate
+Avian Infectious Bursal Disease Vaccine(Live),Avian Infectious Bursal Disease Vaccine(live),9,Avian Infectious Bursal Disease Vaccine(Live),0.99,auto_candidate
+Azithromycin( as Dihydrate),Azithromycin( As Dihydrate),9,Azithromycin as dihydrate eq. Azithromycin,0.99,auto_candidate
+Balloon Expandable Stainless Steel Stent. Poly Ethylene terephthalate (PET).,Balloon Expandable Stainless Steel Stent. Poly Ethylene Terephthalate (pet).,9,Balloon Expandable Stainless Steel Stent. Poly Ethylene terephthalate (PET).,0.99,auto_candidate
+Brimonidine Tartrate…2mg eq. to Brimonidine…1.3mg,Brimonidine Tartrate…2mg Eq To Brimonidine…1.3mg,9,Brimonidine Tartrate…2mg eq. to Brimonidine…1.3mg,0.99,auto_candidate
+Cefepim (as HCL),Cefepim (as Hcl),9,Cefepim (as HCL),0.99,auto_candidate
+Cefepime HCI with L-arginine,Cefepime Hci With L-arginine,9,Cefepime HCI with L-arginine,0.99,auto_candidate
+Ceftriaxone(as Sodium),Ceftriaxone(as Sodium),9,Ceftriaxone(as s0dium),0.99,auto_candidate
+Ciclopirox Olamine.,Ciclopirox Olamine.,9,Ciclopirox Olamine.,0.99,auto_candidate
+Cinacalcet (as HCl),Cinacalcet (as Hcl),9,Cinacalcet (as HCl),0.99,auto_candidate
+Ciprofloxacin( as HCl),Ciprofloxacin( As Hcl),9,Ciprofloxacin(as HCL),0.99,auto_candidate
+ciprofloxacin(asHCl),Ciprofloxacin(ashcl),9,Ciprofloxacin(as HCL),0.99,auto_candidate
+"CLOSANTAL,","Closantal,",9,Closantal,0.99,auto_candidate
+Clotrimazole..,Clotrimazole..,9,CLOTRIMAZOLE,0.99,auto_candidate
+Diclofenac Sodium Diethyl Ammonium eq.to Diclofenac Sodium 1% w/w,Diclofenac Sodium Diethyl Ammonium Eq To Diclofenac Sodium 1% W / W,9,Diclofenac Sodium Diethyl Ammonium eq.to Diclofenac Sodium 1% w/w,0.99,auto_candidate
+Domperidine as Maleate,Domperidine As Maleate,9,Domperidine as Maleate,0.99,auto_candidate
+Each delivered dose contains (Beclomethasone dipropionate),Each Delivered Dose Contains (beclomethasone Dipropionate),9,Each delivered dose contains (Beclomethasone dipropionate),0.99,auto_candidate
+Each kg contains:,Each Kg Contains:,9,Each kg contains:,0.99,auto_candidate
+Each ml suspension contains: Humalin Insulin (rDNA)….100IU,Each Ml Suspension Contains: Humalin Insulin (rdna)….100iu,9,Each ml suspension contains: Humalin Insulin (rDNA)….100IU,0.99,auto_candidate
+EDS (127),Eds (127),9,EDS (127),0.99,auto_candidate
+EDS Virus (127 Strain),Eds Virus (127 Strain),9,EDS Virus (127 Strain),0.99,auto_candidate
+Erythromcin ethylsuccinate eq to erythromycin,Erythromcin Ethylsuccinate Eq To Erythromycin,9,Erythromcin ethylsuccinate eq to erythromycin,0.99,auto_candidate
+Human Insulin Regular 30% + NPH 70%....100IU,Human Insulin Regular 30% + Nph 70%....100iu,9,Human Insulin Regular 30% + NPH 70%....100IU,0.99,auto_candidate
+IBV (Mass):,Ibv (mass):,9,IBV (Mass):,0.99,auto_candidate
+"Inactivated EDS,76 Virus...","Inactivated Eds,76 Virus...",9,"Inactivated EDS,76 Virus........",0.99,auto_candidate
+"Inactivated EDS,76 Virus........","Inactivated Eds,76 Virus........",9,"Inactivated EDS,76 Virus........",0.99,auto_candidate
+Inactivated IB Virus (H-120).........,Inactivated Ib Virus (h-120).........,9,Inactivated IB Virus (H-120).........,0.99,auto_candidate
+Inactivated ND Virus (BI),Inactivated Nd Virus (bi),9,Inactivated ND Virus (BI),0.99,auto_candidate
+Inactivated ND Virus (BI).........,Inactivated Nd Virus (bi).........,9,Inactivated ND Virus (BI).........,0.99,auto_candidate
+Irbesartan + Hydrochlorothiazide,Irbesartan + Hydrochlorothiazide,9,Irbesartan + Hydrochlorothiazide,0.99,auto_candidate
+iron (III) Hydroxide Polymaltose Complex equivalent to elemental iron + Folic Acid,Iron (iii) Hydroxide Polymaltose Complex Eq To Elemental Iron + Folic Acid,9,Iron(III)Hydroxide polymaltose complex eq.to elemental iron+Folic acid,0.99,auto_candidate
+Levamizole (as Hcl),Levamizole (as Hcl),9,Levamizole (as Hcl),0.99,auto_candidate
+Levocitirizine (as 2HCl),Levocitirizine (as 2hcl),9,Levocitirizine (as 2HCl),0.99,auto_candidate
+levofloxacin(as hemihydrate),Levofloxacin(as Hemihydrate),9,levofloxacin (as Hemihydrate),0.99,auto_candidate
+Lodoxamide as Tromethamine,Lodoxamide As Tromethamine,9,Lodoxamide as Tromethamine,0.99,auto_candidate
+Lyophilized omeprazole sodium eq. to omeprazole,Lyophilized Omeprazole Sodium Eq To Omeprazole,9,Lyophilized omeprazole sodium eq. to omeprazole,0.99,auto_candidate
+Marek HVT Serotype with a minimum Ifectious titer of 5000 PFU,Marek Hvt Serotype With A Minimum Ifectious Titer of 5000 Pfu,9,Marek HVT Serotype with a minimum Ifectious titer of 5000 PFU,0.99,auto_candidate
+OlanzapOlanzapine (As Citrate)ine,Olanzapolanzapine (as Citrate)ine,9,OlanzapOlanzapine (As Citrate)ine,0.99,auto_candidate
+Palonosetron as HCl,Palonosetron As Hcl,9,Palonosetron as HCl.,0.99,auto_candidate
+Palonosetron as HCl.,Palonosetron As Hcl.,9,Palonosetron as HCl.,0.99,auto_candidate
+Patent Blue (E-131),Patent Blue (e-131),9,Patent Blue (E-131),0.99,auto_candidate
+Phytonadione (Vit-K),Phytonadione (vit-k),9,Phytonadione (Vit-K),0.99,auto_candidate
+Quinine Bisulphate (as heptahydrate),Quinine Bisulphate (as Heptahydrate),9,Quinine Bisulphate (as heptahydrate),0.99,auto_candidate
+SB Marek Serotype with a minimum infectious titer of 3000 PFU,Sb Marek Serotype With A Minimum Infectious Titer of 3000 Pfu,9,SB Marek Serotype with a minimum infectious titer of 3000 PFU,0.99,auto_candidate
+Selinium (As Sodium Selenite),Selinium (as Sodium Selenite),9,Selinium (As Sodium Selenite),0.99,auto_candidate
+Sucrose / Gelatin stabilizer,Sucrose / Gelatin Stabilizer,9,Sucrose / Gelatin stabilizer,0.99,auto_candidate
+Vinorelbine As Tartrate Eq. To Vinorelbine,Vinorelbine As Tartrate Eq To Vinorelbine,9,Vinorelbine As Tartrate Eq. To Vinorelbine,0.99,auto_candidate
+Isotretinoin/ Erythromycin,Isotretinoin / Erythromycin,9,Isotretinoin/ Erythromycin,0.96,auto_candidate
+"Newcastle disease virus, VG/GA strain","Newcastle Disease Virus, Vg / Ga Strain",9,"Newcastle disease virus, VG/GA strain",0.96,auto_candidate
+Mebeverine hydrochloride 80% w/w pellets eq to mebeverine,Mebeverine Hydrochloride 80% W / W Pellets Eq To Mebeverine,9,Mebeverine as HCl (Prolonged release pellets),0.92,review_candidate
+Citric acid+Sodium bicarbonate+Sodium citrate+Tartaric acid,Citric Acid + Sodium Bicarbonate + Sodium Citrate + Tartaric Acid,9,Citric Acid Monohydrate,0.83,review_candidate
+(DHP VACCINE) ATTENUATED CANINE DISTEMPER VIRUS CULTURE FLUID (TCO-D STRAIN),(dhp Vaccine) Attenuated Canine Distemper Virus Culture Fluid (tco-d Strain),8,(DHP VACCINE) ATTENUATED CANINE DISTEMPER VIRUS CULTURE FLUID (TCO-D STRAIN),0.99,auto_candidate
+(DHP VACCINE) Attenuated Canine Infectious Hepatitis virus culture fluid (TCO- H strain),(dhp Vaccine) Attenuated Canine Infectious Hepatitis Virus Culture Fluid (tco- H Strain),8,(DHP VACCINE) Attenuated Canine Infectious Hepatitis virus culture fluid (TCO- H strain),0.99,auto_candidate
+(DHP VACCINE) Attenuated Canine Parainfluenza virus culture fluid (CPIV-37 strain),(dhp Vaccine) Attenuated Canine Parainfluenza Virus Culture Fluid (cpiv-37 Strain),8,(DHP VACCINE) Attenuated Canine Parainfluenza virus culture fluid (CPIV-37 strain),0.99,auto_candidate
+Alcohol 95% (V/V),Alcohol 95% (v / V),8,Alcohol 95%,0.99,auto_candidate
+Atracurium as Besylate,Atracurium As Besylate,8,Atracurium as Besylate,0.99,auto_candidate
+Bleomycin Sulphate eq. to Bleomycin,Bleomycin Sulphate Eq To Bleomycin,8,Bleomycin Sulphate eq. to Bleomycin,0.99,auto_candidate
+Calciferol (Vitamin D3),Calciferol (vitamin D3),8,Calciferol (Vitamin D3),0.99,auto_candidate
+Cefepime (as HCL ) with Sterile Arginine .,Cefepime (as Hcl ) With Sterile Arginine .,8,Cefepime (as HCL ) with Sterile Arginine .,0.99,auto_candidate
+Cefixime(as Hydrate,Cefixime(as Hydrate,8,Cefixime(as Hydrate.,0.99,auto_candidate
+Cefixime(as Hydrate.,Cefixime(as Hydrate.,8,Cefixime(as Hydrate.,0.99,auto_candidate
+Cefixme trihydrate eq.to Cefixime,Cefixme Trihydrate Eq To Cefixime,8,Cefixme trihydrate eq.to Cefixime,0.99,auto_candidate
+Cefoperazone + Sulbactum,Cefoperazone + Sulbactum,8,Cefoperazone (as Sodium) + Sulbactum (as Sodium),0.99,auto_candidate
+Cefoperazone(as Sodium),Cefoperazone(as Sodium),8,Cefoperazone as sodium + Sulbactam as sodium,0.99,auto_candidate
+Ciprofloxacine as HCL,Ciprofloxacine As Hcl,8,Ciprofloxacine as HCL,0.99,auto_candidate
+Clarithromycin.,Clarithromycin.,8,Clarithromycin (as lactobionate),0.99,auto_candidate
+Clavulanate Potassium eq. to Clavulanic Acid,Clavulanate Potassium Eq To Clavulanic Acid,8,Clavulanate Potassium eq. to Clavulanic Acid,0.99,auto_candidate
+Clonastel (As Sodium),Clonastel (as Sodium),8,Clonastel (As Sodium),0.99,auto_candidate
+Cobalt(Sulphate),Cobalt(sulphate),8,Cobalt as sulphate,0.99,auto_candidate
+Dexamethasone / Neomycin,Dexamethasone / Neomycin,8,Dexamethasone / Neomycin,0.99,auto_candidate
+Dopamine as HCl,Dopamine As Hcl,8,Dopamine as HCl,0.99,auto_candidate
+Each 5ml contains; Trimethoprim / Sulphamethoxazole,Each 5ml Contains; Trimethoprim / Sulphamethoxazole,8,Each 5ml contains; Trimethoprim / Sulphamethoxazole,0.99,auto_candidate
+Each film coated tablet contains:-Iron(III) Hydroxide Polymaltose complex eq.to Elemental Iron,Each Film Coated Tablet Contains:-iron(iii) Hydroxide Polymaltose Complex Eq To Elemental Iron,8,Each film coated tablet contains:-Iron(III) Hydroxide Polymaltose complex eq.to Elemental Iron,0.99,auto_candidate
+"Each tablet contains: Pioglitazone (as HCI)........15mg , Glimepiride..........1mg","Each Tablet Contains: Pioglitazone (as Hci)........15mg , Glimepiride..........1mg",8,"Each tablet contains: Pioglitazone (as HCI)........15mg , Glimepiride..........1mg",0.99,auto_candidate
+"Each tablet contains: Pioglitazone (asHCI) ............30mg , Glimepiride..........2mg","Each Tablet Contains: Pioglitazone (ashci) ............30mg , Glimepiride..........2mg",8,"Each tablet contains: Pioglitazone (asHCI) ............30mg , Glimepiride..........2mg",0.99,auto_candidate
+Enteric Coated pellets of Esomeprazole as Magnessium Trihydrate,Enteric Coated Pellets of Esomeprazole As Magnessium Trihydrate,8,Enteric Coated pellets of Esomeprazole as Magnessium Trihydrate,0.99,auto_candidate
+Enteric coated pellets of Omprazole eq. to Omeprazole,Enteric Coated Pellets of Omprazole Eq To Omeprazole,8,Enteric coated pellets of Omprazole eq. to Omeprazole,0.99,auto_candidate
+Human Immunoglobulin (pH4) for Intravenous Injection 2.5g,Human Immunoglobulin (ph4) For Intravenous Injection 2.5g,8,Human Immunoglobulin (pH4) for Intravenous Injection 2.5g,0.99,auto_candidate
+Ibandronic monosodium monohydrate eq. to Ibandronic Acid,Ibandronic Monosodium Monohydrate Eq To Ibandronic Acid,8,Ibandronic monosodium monohydrate eq. to Ibandronic Acid,0.99,auto_candidate
+Inactivated Haemophilus paragallinarum germsType A (HA-l) strain 221,Inactivated Haemophilus Paragallinarum Germstype A (ha-l) Strain 221,8,Inactivated Haemophilus paragallinarum germsType A (HA-l) strain 221,0.99,auto_candidate
+Inactivated Haemophilus paragallinarum germsType C (HA-4) strain H-I8,Inactivated Haemophilus Paragallinarum Germstype C (ha-4) Strain H-i8,8,Inactivated Haemophilus paragallinarum germsType C (HA-4) strain H-I8,0.99,auto_candidate
+lavulanic Acid as potassium,Lavulanic Acid As Potassium,8,lavulanic Acid as potassium,0.99,auto_candidate
+LopramideHCl eq. to Lopramide,Lopramidehcl Eq To Lopramide,8,LopramideHCl eq. to Lopramide,0.99,auto_candidate
+Metoprolol Succinate eq. to Metoprolol Tartrate,Metoprolol Succinate Eq To Metoprolol Tartrate,8,Metoprolol succinate eq. to metoprolol tartrate,0.99,auto_candidate
+NZ Amine AS,Nz Amine As,8,NZ Amine AS,0.99,auto_candidate
+Olmesartan Medoxomil.,Olmesartan Medoxomil.,8,Olmesartan Medoxomil.,0.99,auto_candidate
+Omeprazole(as 8.5% enteric coated Pellets),Omeprazole(as 8.5% Enteric Coated Pellets),8,Omeprazole as enteric coated pellets eq. to Omeprazole,0.99,auto_candidate
+"On reconstitution in 125ml of water, each sachet provides:","On Reconstitution In 125ml of Water, Each Sachet Provides:",8,"On reconstitution in 125ml of water, each sachet provides:",0.99,auto_candidate
+Ondasetron as HCL,Ondasetron As Hcl,8,Ondasetron as HCL,0.99,auto_candidate
+Paracetamol / Caffeine.,Paracetamol / Caffeine.,8,Paracetamol / Caffeine.,0.99,auto_candidate
+"Paramyxovirus pseudopestis avium(La Sota, SL 93)","Paramyxovirus Pseudopestis Avium(la Sota, Sl 93)",8,"Paramyxovirus pseudopestis avium(La Sota, SL 93)",0.99,auto_candidate
+PERMETHRIN.,Permethrin.,8,Permethrin (B.P),0.99,auto_candidate
+PL VACCINE (DHP MELTING SOLUTION) CANINE LEPTOSPIRA CANICOLA CULTURE FLUID,Pl Vaccine (dhp Melting Solution) Canine Leptospira Canicola Culture Fluid,8,PL VACCINE (DHP MELTING SOLUTION) CANINE LEPTOSPIRA CANICOLA CULTURE FLUID,0.99,auto_candidate
+PL VACCINE (DHP MELTING SOLUTION) CANINE LEPTOSPIRA INTEROHEMORRAGE CULTURE FLUID,Pl Vaccine (dhp Melting Solution) Canine Leptospira Interohemorrage Culture Fluid,8,PL VACCINE (DHP MELTING SOLUTION) CANINE LEPTOSPIRA INTEROHEMORRAGE CULTURE FLUID,0.99,auto_candidate
+PL VACCINE (DHP MELTING SOLUTION) CANINE PARVOVIRUS CULTURE (CPV-6 STRAIN),Pl Vaccine (dhp Melting Solution) Canine Parvovirus Culture (cpv-6 Strain),8,PL VACCINE (DHP MELTING SOLUTION) CANINE PARVOVIRUS CULTURE (CPV-6 STRAIN),0.99,auto_candidate
+Raloxifene hydrochloride eq. to Raloxifen,Raloxifene Hydrochloride Eq To Raloxifen,8,Raloxifene hydrochloride eq. to Raloxifen,0.99,auto_candidate
+Riboflavin-5-Phosphate Sodium (Vitamin B2),Riboflavin-5-phosphate Sodium (vitamin B2),8,Riboflavin-5-Phosphate Sodium (Vitamin B2),0.99,auto_candidate
+Riboflavine (BP),Riboflavine (bp),8,Riboflavine (BP),0.99,auto_candidate
+Selenium(Sodium Selenite),Selenium(sodium Selenite),8,Selenium as Sodium selenate,0.99,auto_candidate
+Speeda(Vero Cell Anti-Rabies Vaccine),Speeda(vero Cell Anti-rabies Vaccine),8,Speeda(Vero Cell Anti-Rabies Vaccine),0.99,auto_candidate
+Suxamethonium as Suxamethonium Chloride,Suxamethonium As Suxamethonium Chloride,8,Suxamethonium as Suxamethonium Chloride,0.99,auto_candidate
+Thiamin HCl (Vitamin B1),Thiamin Hcl (vitamin B1),8,Thiamin HCl (Vitamin B1),0.99,auto_candidate
+Tianeptine (as Sodium),Tianeptine (as Sodium),8,Tianeptine (as Sodium),0.99,auto_candidate
+Trisodium Citrat Dihydrate BP.,Trisodium Citrat Dihydrate Bp.,8,Trisodium Citrat Dihydrate BP.,0.99,auto_candidate
+Aspirin....75mg/Clopidogrel as Bisulafte........75mg,Aspirin....75mg / Clopidogrel As Bisulafte........75mg,8,Aspirin....75mg/Clopidogrel as Bisulafte........75mg,0.96,auto_candidate
+Each 2 ml contains: Adrenaline........0.001%w/v Lignocaine HCl.........2%w/v,Each 2 Ml Contains: Adrenaline........0.001%w / V Lignocaine Hcl.........2%w / V,8,Each 2 ml contains: Adrenaline........0.001%w/v Lignocaine HCl.........2%w/v,0.96,auto_candidate
+Silver Sulphadiazine ……. 0.1% w/w,Silver Sulphadiazine ……. 0.1% W / W,8,Silver Sulphadiazine ……. 0.1% w/w,0.96,auto_candidate
+Rivastigmine 18mg and releases rivastigmine at the rate of 9.5mg/24hours.,Rivastigmine 18mg and Releases Rivastigmine At The Rate of 9.5mg / 24hours.,8,Rivastigmine (as Tartrate) + Rivastigmine hydrogen tartrate as Rivastigmine + Cobra,0.91,review_candidate
+(Serogroup A) Polysaccharide (Monovalent Conjugate),(serogroup A) Polysaccharide (monovalent Conjugate),7,(Serogroup A) Polysaccharide (Monovalent Conjugate),0.99,auto_candidate
+2-oxo-3-phenyl propionic acid (Alpha- ketoanalogue of phenylalanine),2-oxo-3-phenyl Propionic Acid (alpha- Ketoanalogue of Phenylalanine),7,2-oxo-3-phenyl propionic acid (Alpha- ketoanalogue of phenylalanine),0.99,auto_candidate
+3-methyl-2-oxo-butyric acid(Alpha-ketoanalogue to valine),3-methyl-2-oxo-butyric Acid(alpha-ketoanalogue To Valine),7,3-methyl-2-oxo-butyric acid(Alpha-ketoanalogue to valine),0.99,auto_candidate
+4-methyl-2-oxo-valeric acid (Alpha-ketoanalogue of leucine),4-methyl-2-oxo-valeric Acid (alpha-ketoanalogue of Leucine),7,4-methyl-2-oxo-valeric acid (Alpha-ketoanalogue of leucine),0.99,auto_candidate
+Acefylline Piperazine and Diphenhydramine HCl,Acefylline Piperazine and Diphenhydramine Hcl,7,Acefylline Piperazine and Diphenhydramine HCl,0.99,auto_candidate
+Alendronate(as Sodium),Alendronate(as Sodium),7,Alendronate(as Sodium),0.99,auto_candidate
+Amoxacillin (as trihydrate),Amoxacillin (as Trihydrate),7,Amoxacillin (as trihydrate),0.99,auto_candidate
+Artemether / Lumefantrine,Artemether / Lumefantrine,7,Artemether / Lumefantrine,0.99,auto_candidate
+Artemether / Lumefentrine,Artemether / Lumefentrine,7,Artemether / Lumefentrine,0.99,auto_candidate
+Artemether and lumefantrine,Artemether and Lumefantrine,7,Artemether and lumefantrine,0.99,auto_candidate
+Artemether+ lumefantrine,Artemether + Lumefantrine,7,Artemether + Lumefantrine,0.99,auto_candidate
+Avian Encephalomyelitis Virus (Calnek 1143 strain),Avian Encephalomyelitis Virus (calnek 1143 Strain),7,Avian Encephalomyelitis Virus (Calnek 1143 strain),0.99,auto_candidate
+Avian influenza inactivated virus (H9 serotype),Avian Influenza Inactivated Virus (h9 Serotype),7,Avian influenza inactivated virus (H9 serotype),0.99,auto_candidate
+Azithromycin(as dihydrate),Azithromycin(as Dihydrate),7,Azithromycin as dihydrate eq. Azithromycin,0.99,auto_candidate
+Cefalexine Monohydrate eq to Cefalexine 15gm,Cefalexine Monohydrate Eq To Cefalexine 15gm,7,Cefalexine Monohydrate eq to Cefalexine 15gm,0.99,auto_candidate
+Cefepime as HCl+Arginine,Cefepime As Hcl + Arginine,7,cefepime as HCL,0.99,auto_candidate
+Cefoperazone (as Sodium) + Sulbactum (as Sodium),Cefoperazone (as Sodium) + Sulbactum (as Sodium),7,Cefoperazone (as Sodium) + Sulbactum (as Sodium),0.99,auto_candidate
+Cefoperazone (as Sodium) + Sulbactum (as Sodium))),Cefoperazone (as Sodium) + Sulbactum (as Sodium))),7,Cefoperazone (as Sodium) + Sulbactum (as Sodium))),0.99,auto_candidate
+Cefoperazone as Sodium and Sulbactam as Sodium,Cefoperazone As Sodium and Sulbactam As Sodium,7,Cefoperazone as sodium + Sulbactam as sodium,0.99,auto_candidate
+Cefoperazone as Sodium and Sulbactam as Sodium.,Cefoperazone As Sodium and Sulbactam As Sodium.,7,Cefoperazone as sodium + Sulbactam as sodium,0.99,auto_candidate
+Cefoperazone sodium and sulbactam sodium,Cefoperazone Sodium and Sulbactam Sodium,7,Cefoperazone sodium and sulbactam sodium,0.99,auto_candidate
+Ceforerazone as sodium,Ceforerazone As Sodium,7,Ceforerazone as sodium,0.99,auto_candidate
+Ceftazidime Pentahydrate eq. to ceftazidime with L-arginine ...500,Ceftazidime Pentahydrate Eq To Ceftazidime With L-arginine ...500,7,Ceftazidime Pentahydrate eq. to ceftazidime with L-arginine ...500,0.99,auto_candidate
+Cephadroxil as Monohydrate,Cephadroxil As Monohydrate,7,Cephadroxil as Monohydrate,0.99,auto_candidate
+Chloroheniramine as maleate,Chloroheniramine As Maleate,7,Chloroheniramine as maleate,0.99,auto_candidate
+Clopidogrel (As Clopidogrel Bisulphate) / Aspirin,Clopidogrel (as Clopidogrel Bisulphate) / Aspirin,7,Clopidogrel (As Clopidogrel Bisulphate) / Aspirin,0.99,auto_candidate
+Clopidogrel (As Clopidogrel Bisulphate)/Aspirin,Clopidogrel (as Clopidogrel Bisulphate) / Aspirin,7,Clopidogrel (As Clopidogrel Bisulphate) / Aspirin,0.99,auto_candidate
+D1-2-hydroxy-4-methylthiobutyric (Alpha-ketoanalogue of methionine),D1-2-hydroxy-4-methylthiobutyric (alpha-ketoanalogue of Methionine),7,D1-2-hydroxy-4-methylthiobutyric (Alpha-ketoanalogue of methionine),0.99,auto_candidate
+D1-3-methyl-2-oxo-valeric acid (Alpha-ketoanalogue of DL-isoleucine),D1-3-methyl-2-oxo-valeric Acid (alpha-ketoanalogue of Dl-isoleucine),7,D1-3-methyl-2-oxo-valeric acid (Alpha-ketoanalogue of DL-isoleucine),0.99,auto_candidate
+Desmopressin Acetate Hydrate eq to Desmopressin 0.534mg,Desmopressin Acetate Hydrate Eq To Desmopressin 0.534mg,7,Desmopressin Acetate Hydrate eq to Desmopressin 0.534mg,0.99,auto_candidate
+Diosmectite (Dioctahedral Smectite),Diosmectite (dioctahedral Smectite),7,Diosmectite (Dioctahedral Smectite),0.99,auto_candidate
+Each 100ml contains Oxyclozanide 3gm Levamisole HCl 1.5gm Cobalt chloride 0.382gm (As per Innovator’s Specifications),Each 100ml Contains Oxyclozanide 3gm Levamisole Hcl 1.5gm Cobalt Chloride 0.382gm (as Per Innovator’s Specifications),7,Each 100ml contains Oxyclozanide 3gm Levamisole HCl 1.5gm Cobalt chloride 0.382gm (As per Innovator’s Specifications),0.99,auto_candidate
+Each film coated tablet contains: Paroxitine HCL ............20mg (USP Specification),Each Film Coated Tablet Contains: Paroxitine Hcl ............20mg (usp Specification),7,Each film coated tablet contains: Paroxitine HCL ............20mg (USP Specification),0.99,auto_candidate
+Each film coated tablet contains:- Itopride HCI...........50mg (Manufacturer Specification),Each Film Coated Tablet Contains:- Itopride Hci...........50mg (manufacturer Specification),7,Each film coated tablet contains:- Itopride HCI...........50mg (Manufacturer Specification),0.99,auto_candidate
+Each Levofloxacin (as hemihydrate),Each Levofloxacin (as Hemihydrate),7,Each Levofloxacin (as hemihydrate),0.99,auto_candidate
+Each Tablet Contains:- Levodopa.........250mg Carbidopa .........25mg (USP Specification),Each Tablet Contains:- Levodopa.........250mg Carbidopa .........25mg (usp Specification),7,Each Tablet Contains:- Levodopa.........250mg Carbidopa .........25mg (USP Specification),0.99,auto_candidate
+Each vial contains: PipeTazobactam (as Sodium),Each Vial Contains: Pipetazobactam (as Sodium),7,Each vial contains: PipeTazobactam (as Sodium),0.99,auto_candidate
+Enteric coated pellets of Lansoprazole Magnesium Trihydrate eq. to Lansoprazole,Enteric Coated Pellets of Lansoprazole Magnesium Trihydrate Eq To Lansoprazole,7,Enteric coated pellets of Lansoprazole Magnesium Trihydrate eq. to Lansoprazole,0.99,auto_candidate
+Furaltadone.,Furaltadone.,7,Furaltadone.,0.99,auto_candidate
+Hydroxychloroquine 155mg eq. to Hydroxychloroquine Sulphate,Hydroxychloroquine 155mg Eq To Hydroxychloroquine Sulphate,7,Hydroxychloroquine 155mg eq. to Hydroxychloroquine Sulphate,0.99,auto_candidate
+Hypermelose (HPMC),Hypermelose (hpmc),7,Hypermelose (HPMC),0.99,auto_candidate
+Insulin (Biphasic Isophane 70/30),Insulin (biphasic Isophane 70 / 30),7,Insulin (Biphasic Isophane 70/30),0.99,auto_candidate
+Iron Polymaltose+Folic acid,Iron Polymaltose + Folic Acid,7,Iron Polymaltose + Folic acid,0.99,auto_candidate
+ITA NEW (ND),Ita New (nd),7,ITA NEW (ND),0.99,auto_candidate
+Levoflocxacin as Hemihydrate,Levoflocxacin As Hemihydrate,7,Levoflocxacin as Hemihydrate,0.99,auto_candidate
+Lodoxamide trometamol eq. to lodoxamine,Lodoxamide Trometamol Eq To Lodoxamine,7,Lodoxamide trometamol eq. to lodoxamine,0.99,auto_candidate
+Newcastle virus (B1 Strain) not less than,Newcastle Virus (b1 Strain) Not Less Than,7,Newcastle virus (B1 Strain) not less than,0.99,auto_candidate
+Omeprazole(as enteric coated Pellets,Omeprazole(as Enteric Coated Pellets,7,Omeprazole(as enteric coated Pellets,0.99,auto_candidate
+Omeprazole(as enteric coated Pellets),Omeprazole(as Enteric Coated Pellets),7,Omeprazole as enteric coated pellets eq. to Omeprazole,0.99,auto_candidate
+Pantoprazole(as pantoprazole sodium lyophilized powder),Pantoprazole(as Pantoprazole Sodium Lyophilized Powder),7,pantoprazole,0.99,auto_candidate
+Paroxetine(as HCL),Paroxetine(as Hcl),7,PAROXETINE (HCL) EQ TO PAROXETINE,0.99,auto_candidate
+Pasteurella Multocida 86-1913 Strain (Type 3x4),Pasteurella Multocida 86-1913 Strain (type 3x4),7,Pasteurella Multocida 86-1913 Strain (Type 3x4),0.99,auto_candidate
+Pasteurella Multocida P-1662 Strain (Type 4),Pasteurella Multocida P-1662 Strain (type 4),7,Pasteurella Multocida P-1662 Strain (Type 4),0.99,auto_candidate
+Pasteurella Multocida X-73 Strain (Type 1),Pasteurella Multocida X-73 Strain (type 1),7,Pasteurella Multocida X-73 Strain (Type 1),0.99,auto_candidate
+Pentazocin(as HCL),Pentazocin(as Hcl),7,Pentazocin (as lactate),0.99,auto_candidate
+Phaniramine as Maleate,Phaniramine As Maleate,7,Phaniramine as Maleate,0.99,auto_candidate
+Pioglitazone HCl + Glimipiride,Pioglitazone Hcl + Glimipiride,7,Pioglitazone HCl + Glimipiride,0.99,auto_candidate
+Pioglitazone(as HCL),Pioglitazone(as Hcl),7,Pioglitazone(as HCL),0.99,auto_candidate
+Piperacillin (as Sodium),Piperacillin (as Sodium),7,Piperacillin (as Sodium),0.99,auto_candidate
+Procyclidine as HCl,Procyclidine As Hcl,7,Procyclidine as HCl,0.99,auto_candidate
+Purified Inactivated Japanese Encephalitis Virus Strain (SA 14-14-2),Purified Inactivated Japanese Encephalitis Virus Strain (sa 14-14-2),7,Purified Inactivated Japanese Encephalitis Virus Strain (SA 14-14-2),0.99,auto_candidate
+Purified Inactivated Japanese Encephalitis Virus Vaccine Strain (SA 14-14-2),Purified Inactivated Japanese Encephalitis Virus Vaccine Strain (sa 14-14-2),7,Purified Inactivated Japanese Encephalitis Virus Vaccine Strain (SA 14-14-2),0.99,auto_candidate
+Quetiapine(as Fumarate),Quetiapine(as Fumarate),7,Quetiapine as furmarate,0.99,auto_candidate
+"Virus of Newcastle Disease, Live and Attenuated Strain Hitchner B1","Virus of Newcastle Disease, Live and Attenuated Strain Hitchner B1",7,"Virus of Newcastle Disease, Live and Attenuated Strain Hitchner B1",0.99,auto_candidate
+Vital Catgut Chromic Suture (Absorbable),Vital Catgut Chromic Suture (absorbable),7,Vital Catgut Chromic Suture (Absorbable),0.99,auto_candidate
+Vital Polyglactin Plus Suture (Absorbable),Vital Polyglactin Plus Suture (absorbable),7,Vital Polyglactin Plus Suture (Absorbable),0.99,auto_candidate
+Artemether...40/240mg,Artemether...40 / 240mg,7,Artemether...40/240mg,0.96,auto_candidate
+ITA ND+IBD Vaccine,Ita Nd + Ibd Vaccine,7,ITA ND+IBD Vaccine,0.96,auto_candidate
+Methylprednisolone Aceponate 0.1% w/w,Methylprednisolone Aceponate 0.1% W / W,7,Methylprednisolone Aceponate 0.1% w/w,0.96,auto_candidate
+salbutamol/guaiphenesin,Salbutamol / Guaiphenesin,7,salbutamol/guaiphenesin,0.96,auto_candidate
+iron-(III) Hydroxide polymaltose complex equivalent to Elemental iron,Iron-(iii) Hydroxide Polymaltose Complex Eq To Elemental Iron,7,Elemental Iron (III) as Iron Sucrose,0.92,review_candidate
+Iron-(III)Hydroxide polymaltose complex equivalent to Elementral iron,Iron-(iii)hydroxide Polymaltose Complex Eq To Elementral Iron,7,Elemental Iron,0.92,review_candidate
+Sustained release pellets 80.0%w/w of Mebeverine Hydrochloride,Sustained Release Pellets 80.0%w / W of Mebeverine Hydrochloride,7,Sustained release pellets 80.0%w/w of Mebeverine Hydrochloride,0.83,review_candidate
+Tylvalosin ( as Tylvalosin Tartrate)....62.5% w/w,Tylvalosin ( As Tylvalosin Tartrate)....62.5% W / W,7,Tylvalosin ( as Tylvalosin Tartrate)....62.5% w/w,0.83,review_candidate
+Anhydrous dextrose B.P.,Anhydrous Dextrose B.p.,6,Anhydrous dextrose B.P.,0.99,auto_candidate
+Beraprost as Sodium,Beraprost As Sodium,6,Beraprost as Sodium,0.99,auto_candidate
+Cefepime as Hydrochloride with sterile arginine,Cefepime As Hydrochloride With Sterile Arginine,6,cefepime as HCL,0.99,auto_candidate
+Cefepime as Hydrochloride with sterile L-arginine,Cefepime As Hydrochloride With Sterile L-arginine,6,cefepime as HCL,0.99,auto_candidate
+Clobetasol Propionate 0.5% + Add Missing Composition(s),Clobetasol Propionate 0.5% + Add Missing Composition(s),6,Clobetasol Propionate 0.5% + Add Missing Composition(s),0.99,auto_candidate
+Delayed Release Esomeprazole magnesium Eq.to Esomeprazole,Delayed Release Esomeprazole Magnesium Eq To Esomeprazole,6,Delayed Release Esomeprazole magnesium Eq.to Esomeprazole,0.99,auto_candidate
+Delayed release pellets of esomeprazole magnesium eq. to Esomeprazole,Delayed Release Pellets of Esomeprazole Magnesium Eq To Esomeprazole,6,Delayed release pellets of esomeprazole magnesium eq. to Esomeprazole,0.99,auto_candidate
+Diosmin (EP),Diosmin (ep),6,Diosmin (EP),0.99,auto_candidate
+"Inactivated Infectious Bronchitis Virus, IBV Classical (Eg/11539F) & IBV Variant Type 2 (Eg/1212B)","Inactivated Infectious Bronchitis Virus, Ibv Classical (eg / 11539f) & Ibv Variant Type 2 (eg / 1212b)",6,"Inactivated Infectious Bronchitis Virus, IBV Classical (Eg/11539F) & IBV Variant Type 2 (Eg/1212B)",0.99,auto_candidate
+Sodium Chloride + Trisodium Citrate Dihydrate + Potassium Chloride + Glucose Anhydrous,Sodium Chloride + Trisodium Citrate Dihydrate + Potassium Chloride + Glucose Anhydrous,6,Sodium Chloride + Trisodium Citrate Dihydrate + Potassium Chloride + Glucose Anhydrous,0.99,auto_candidate
+Zin Sulphate Monohydrate eq.to Elemental Zinc,Zin Sulphate Monohydrate Eq To Elemental Zinc,6,Zin Sulphate Monohydrate eq.to Elemental Zinc,0.99,auto_candidate
+Fusidic Acid/Betamethasone Valerate,Fusidic Acid / Betamethasone Valerate,6,Fusidic Acid/Betamethasone Valerate,0.96,auto_candidate
+Each 5ml contains:- Iron (III) Hydroxide Polymaltose complex equivalent to elemental Iron…50mg,Each 5ml Contains:- Iron (iii) Hydroxide Polymaltose Complex Eq To Elemental Iron…50mg,6,Elemental Iron 100mg,0.92,review_candidate
+------,------,5,eq. to elemental Iron,0.99,auto_candidate
+"1 microgram of Saccharide for Serotype 1,5,6B,7F,9V, 14 and 23F and 3 micrograms of serotypes 4,18C and 19F","1 Microgram of Saccharide For Serotype 1,5,6b,7f,9v, 14 and 23f and 3 Micrograms of Serotypes 4,18c and 19f",5,"1 microgram of Saccharide for Serotype 1,5,6B,7F,9V, 14 and 23F and 3 micrograms of serotypes 4,18C and 19F",0.99,auto_candidate
+"15 microgram of each strain H1,N1,H3,N2 and B per dose of 0.5ml","15 Microgram of Each Strain H1,n1,h3,n2 and B Per Dose of 0.5ml",5,"15 microgram of each strain H1,N1,H3,N2 and B per dose of 0.5ml",0.99,auto_candidate
+a-keto analogue to isoleucine (calcium salt),A-keto Analogue To Isoleucine (calcium Salt),5,a-keto analogue to isoleucine (calcium salt),0.99,auto_candidate
+a-keto analogue to leucine (calcium salt),A-keto Analogue To Leucine (calcium Salt),5,a-keto analogue to leucine (calcium salt),0.99,auto_candidate
+a-keto analogue to methionine (calcium salt),A-keto Analogue To Methionine (calcium Salt),5,a-keto analogue to methionine (calcium salt),0.99,auto_candidate
+a-keto analogue to phenylalanine (calcium salt),A-keto Analogue To Phenylalanine (calcium Salt),5,a-keto analogue to phenylalanine (calcium salt),0.99,auto_candidate
+a-keto analogue to valine (calcium salt),A-keto Analogue To Valine (calcium Salt),5,a-keto analogue to valine (calcium salt),0.99,auto_candidate
+Absorbed on Aluminium Phosphate (AIPO4),Absorbed On Aluminium Phosphate (aipo4),5,Absorbed on Aluminium Phosphate (AIPO4),0.99,auto_candidate
+Acetaminophen.,Acetaminophen.,5,Acetaminophen.,0.99,auto_candidate
+Acetaminphen (Paracetamol),Acetaminphen (paracetamol),5,Acetaminphen (Paracetamol),0.99,auto_candidate
+Adsorbed on Aluminium Phosphate (AIPO4),Adsorbed On Aluminium Phosphate (aipo4),5,Adsorbed on Aluminium Phosphate (AIPO4),0.99,auto_candidate
+Amprolium HCl + Furaltadone HCl + Vitamin K3,Amprolium Hcl + Furaltadone Hcl + Vitamin K3,5,Amprolium HCl + Furaltadone HCl + Vitamin K3,0.99,auto_candidate
+Artemether .......40mg / Lumefantrine.......240mg,Artemether .......40mg / Lumefantrine.......240mg,5,Artemether .......40mg / Lumefantrine.......240mg,0.99,auto_candidate
+Artemether ....80mg / Lumefantrine ....480,Artemether ....80mg / Lumefantrine ....480,5,Artemether ....80mg / Lumefantrine ....480,0.99,auto_candidate
+Atorvastatin(calcium trihydrate),Atorvastatin(calcium Trihydrate),5,Atorvastatin(calcium trihydrate),0.99,auto_candidate
+Attenuated Live Virus of avian infectious bursal disease (Gumboro Disease)intermediate Strain VMG 91,Attenuated Live Virus of Avian Infectious Bursal Disease (gumboro Disease)intermediate Strain Vmg 91,5,Attenuated Live Virus of avian infectious bursal disease (Gumboro Disease)intermediate Strain VMG 91,0.99,auto_candidate
+Azihtromycin as dihydrate,Azihtromycin As Dihydrate,5,Azihtromycin as dihydrate,0.99,auto_candidate
+b) Component P (fluid) Parvovirus enteritidis canis inact.,B) Component P (fluid) Parvovirus Enteritidis Canis Inact.,5,b) Component P (fluid) Parvovirus enteritidis canis inact.,0.99,auto_candidate
+b) Liquid component: Leptospira icterohaemorrhagiae inact.,B) Liquid Component: Leptospira Icterohaemorrhagiae Inact.,5,b) Liquid component: Leptospira icterohaemorrhagiae inact.,0.99,auto_candidate
+Benzyl Alcohol(as preservative),Benzyl Alcohol(as Preservative),5,Benzyl Alcohol(as preservative),0.99,auto_candidate
+Betaxolol as HCl,Betaxolol As Hcl,5,Betaxolol as HCl,0.99,auto_candidate
+Betaxolol HCl eq. to Betaxolol,Betaxolol Hcl Eq To Betaxolol,5,Betaxolol HCl eq. to Betaxolol,0.99,auto_candidate
+Bisoprolol.,Bisoprolol.,5,Bisoprolol.,0.99,auto_candidate
+Bovine Lipid Extract Surfactant (Phospolipid),Bovine Lipid Extract Surfactant (phospolipid),5,Bovine Lipid Extract Surfactant (Phospolipid),0.99,auto_candidate
+"Calcium-3-methyl-2-oxovaleric acid (?-ketoanalogue to DL-isoleucine), calcium-salt","Calcium-3-methyl-2-oxovaleric Acid ( -ketoanalogue To Dl-isoleucine), Calcium-salt",5,"Calcium-3-methyl-2-oxovaleric acid (?-ketoanalogue to DL-isoleucine), calcium-salt",0.99,auto_candidate
+"Calcium-4-methyl-2-oxovaleric acid (?-ketoanalogue to leucine), calcium-salt","Calcium-4-methyl-2-oxovaleric Acid ( -ketoanalogue To Leucine), Calcium-salt",5,"Calcium-4-methyl-2-oxovaleric acid (?-ketoanalogue to leucine), calcium-salt",0.99,auto_candidate
+"Calcium2-oxo-3-phenylpropionic acid (?-ketoanalogue to phenylalanine), calcium-salt","Calcium2-oxo-3-phenylpropionic Acid ( -ketoanalogue To Phenylalanine), Calcium-salt",5,"Calcium2-oxo-3-phenylpropionic acid (?-ketoanalogue to phenylalanine), calcium-salt",0.99,auto_candidate
+"Calcium3-methyl-2-oxobutyric acid (?-ketoanalogue to valine), calcium salt","Calcium3-methyl-2-oxobutyric Acid ( -ketoanalogue To Valine), Calcium Salt",5,"Calcium3-methyl-2-oxobutyric acid (?-ketoanalogue to valine), calcium salt",0.99,auto_candidate
+Carded cotton fibres of not less than 10 mm average staple length (Cellulose),Carded Cotton Fibres of Not Less Than 10 Mm Average Staple Length (cellulose),5,Carded cotton fibres of not less than 10 mm average staple length (Cellulose),0.99,auto_candidate
+Cefepime.,Cefepime.,5,cefepime as HCL,0.99,auto_candidate
+Cefipime as HCl with L-A rginine,Cefipime As Hcl With L-a Rginine,5,Cefipime as HCl with L-Arginine,0.99,auto_candidate
+Cefipime as HCl with L-Arginine,Cefipime As Hcl With L-arginine,5,Cefipime as HCl with L-Arginine,0.99,auto_candidate
+Cefoeprazone (as Sodium) and Sulbactum (as Sodium),Cefoeprazone (as Sodium) and Sulbactum (as Sodium),5,Cefoeprazone (as Sodium) and Sulbactum (as Sodium),0.99,auto_candidate
+"Cefoeprazone (as Sodium)......0.5gm, Sulbactum (as Sodium).........0.5gm","Cefoeprazone (as Sodium)......0.5gm, Sulbactum (as Sodium).........0.5gm",5,"Cefoeprazone (as Sodium)......0.5gm, Sulbactum (as Sodium).........0.5gm",0.99,auto_candidate
+cefoperazone + sulbactam,Cefoperazone + Sulbactam,5,cefoperazone + sulbactam,0.99,auto_candidate
+cefoperazone and sulbactam,Cefoperazone and Sulbactam,5,cefoperazone and sulbactam,0.99,auto_candidate
+Cefoperazone as sodium + Sulbactam as sodium,Cefoperazone As Sodium + Sulbactam As Sodium,5,Cefoperazone as sodium + Sulbactam as sodium,0.99,auto_candidate
+Cefoperazone Na / Sulbactum Na,Cefoperazone Na / Sulbactum Na,5,Cefoperazone Na / Sulbactum Na,0.99,auto_candidate
+Cefoperazone sodium + Sulbactum sodium,Cefoperazone Sodium + Sulbactum Sodium,5,Cefoperazone sodium + Sulbactum sodium,0.99,auto_candidate
+cefoperazone+ sulbactam,Cefoperazone + Sulbactam,5,cefoperazone + sulbactam,0.99,auto_candidate
+cefoperazone+sulbactam,Cefoperazone + Sulbactam,5,cefoperazone + sulbactam,0.99,auto_candidate
+Cefprodoxime (as Proxetil),Cefprodoxime (as Proxetil),5,Cefprodoxime (as Proxetil),0.99,auto_candidate
+Ceftriaxone(as s0dium),Ceftriaxone(as S0dium),5,Ceftriaxone(as s0dium),0.99,auto_candidate
+Cefuroxine as Sodium,Cefuroxine As Sodium,5,Cefuroxine as Sodium,0.99,auto_candidate
+Cefxime (as Trihydrate),Cefxime (as Trihydrate),5,Cefxime (as Trihydrate),0.99,auto_candidate
+cephradine 1 g with L-Arginine,Cephradine 1 G With L-arginine,5,cephradine 1 g with L-Arginine,0.99,auto_candidate
+Cephradine 250 mg with L-Arginine,Cephradine 250 Mg With L-arginine,5,Cephradine 250 mg with L-Arginine,0.99,auto_candidate
+Cephradine 500mg with L-Arginine,Cephradine 500mg With L-arginine,5,Cephradine 500mg with L-Arginine,0.99,auto_candidate
+Chlorhexidine (as chlorhexidine digluconate solution 7.1%w/v),Chlorhexidine (as Chlorhexidine Digluconate Solution 7.1%w / V),5,Chlorhexidine (as chlorhexidine digluconate solution 7.1%w/v),0.99,auto_candidate
+Chondroitin as sulphate,Chondroitin As Sulphate,5,Chondroitin as sulphate,0.99,auto_candidate
+Chondroitin as Sulphate,Chondroitin As Sulphate,5,Chondroitin as sulphate,0.99,auto_candidate
+Chondroiton as Sulphate,Chondroiton As Sulphate,5,Chondroiton as Sulphate,0.99,auto_candidate
+Chromic Catgut Absorbable Suture With Needle,Chromic Catgut Absorbable Suture With Needle,5,Chromic Catgut Absorbable Suture With Needle,0.99,auto_candidate
+Ciprofloxacin(as HCL),Ciprofloxacin(as Hcl),5,Ciprofloxacin(as HCL),0.99,auto_candidate
+Cirpfloxacin HCl eq. to Ciprofloxacin,Cirpfloxacin Hcl Eq To Ciprofloxacin,5,Cirpfloxacin HCl eq. to Ciprofloxacin,0.99,auto_candidate
+Cisatracurium as besylate,Cisatracurium As Besylate,5,Cisatracurium as besylate,0.99,auto_candidate
+Clavulanate As Potassium,Clavulanate As Potassium,5,Clavulanate As Potassium,0.99,auto_candidate
+Clindmaycin palmitate HC1 eq. to clindamycin,Clindmaycin Palmitate Hc1 Eq To Clindamycin,5,Clindmaycin palmitate HC1 eq. to clindamycin,0.99,auto_candidate
+Clomiphene as Citrate,Clomiphene As Citrate,5,Clomiphene as Citrate,0.99,auto_candidate
+Coated Polyglycolic Acid Braid With Fast Resorption,Coated Polyglycolic Acid Braid With Fast Resorption,5,Coated Polyglycolic Acid Braid With Fast Resorption,0.99,auto_candidate
+"Composition (0.5mL/ dose) Inactivated Avian influenza virus (A/CK/Kor/01310/2001, CE20) (H9N2, 108.5EID50/0.1mL) ----------------------- 11%","Composition (0.5ml / Dose) Inactivated Avian Influenza Virus (a / Ck / Kor / 01310 / 2001, Ce20) (h9n2, 108.5eid50 / 0.1ml) ----------------------- 11%",5,"Composition (0.5mL/ dose) Inactivated Avian influenza virus (A/CK/Kor/01310/2001, CE20) (H9N2, 108.5EID50/0.1mL) ----------------------- 11%",0.99,auto_candidate
+Cotton (Support Bandage),Cotton (support Bandage),5,Cotton (Support Bandage),0.99,auto_candidate
+Cotton 100% (Support Bandage),Cotton 100% (support Bandage),5,Cotton 100% (Support Bandage),0.99,auto_candidate
+Cyclobenzaprine (as HCl),Cyclobenzaprine (as Hcl),5,Cyclobenzaprine (as HCl),0.99,auto_candidate
+Danofloxacin..,Danofloxacin..,5,Danofloxacin..,0.99,auto_candidate
+Dexmedetomidine (as Dexmedetomidine HCl),Dexmedetomidine (as Dexmedetomidine Hcl),5,Dexmedetomidine (as Dexmedetomidine HCl),0.99,auto_candidate
+"Di-Iodohydroxyquinolone 325mg,Metronidazole as benzoate 250mg","Di-iodohydroxyquinolone 325mg,metronidazole As Benzoate 250mg",5,"Di-Iodohydroxyquinolone 325mg,Metronidazole as benzoate 250mg",0.99,auto_candidate
+Dinoprost as Trometamol,Dinoprost As Trometamol,5,Dinoprost as tromethamine,0.99,auto_candidate
+Dinoprost as tromethamine,Dinoprost As Tromethamine,5,Dinoprost as tromethamine,0.99,auto_candidate
+Divalproex as sodium,Divalproex As Sodium,5,Divalproex as sodium,0.99,auto_candidate
+Dolutegravir as Dolutegravir Sodium 50mg,Dolutegravir As Dolutegravir Sodium 50mg,5,Dolutegravir as Dolutegravir Sodium 50mg,0.99,auto_candidate
+Donepezil Hydrochloride.,Donepezil Hydrochloride.,5,Donepezil Hydrochloride.,0.99,auto_candidate
+Doripenem Monohydrate eq to Doripenem,Doripenem Monohydrate Eq To Doripenem,5,Doripenem Monohydrate eq to Doripenem,0.99,auto_candidate
+Doxazosin as Mesilate,Doxazosin As Mesilate,5,Doxazosin as Mesilate,0.99,auto_candidate
+Dual delayed release Dexlansoprazole Pellets eq. to Dexlansoprazole,Dual Delayed Release Dexlansoprazole Pellets Eq To Dexlansoprazole,5,Dual delayed release Dexlansoprazole Pellets eq. to Dexlansoprazole,0.99,auto_candidate
+Duloxtine (as HCl) enteric coated pellets,Duloxtine (as Hcl) Enteric Coated Pellets,5,Duloxtine (as HCl) enteric coated pellets,0.99,auto_candidate
+Each Ampoule Contains :Lincomycin (as HCl),Each Ampoule Contains :lincomycin (as Hcl),5,Each Ampoule Contains :Lincomycin (as HCl),0.99,auto_candidate
+Each enteric coated tablet contains: Esomeprazole Magnesium trihydrate eq. to Esomeprazole,Each Enteric Coated Tablet Contains: Esomeprazole Magnesium Trihydrate Eq To Esomeprazole,5,Each enteric coated tablet contains: Esomeprazole Magnesium trihydrate eq. to Esomeprazole,0.99,auto_candidate
+Each ml contains: Clindamycin as Phosphate …..150mg,Each Ml Contains: Clindamycin As Phosphate …..150mg,5,Each ml contains: Clindamycin as Phosphate …..150mg,0.99,auto_candidate
+Each ml contains: Infectious Bursal disease virus (GP 12) …….Inducing ≥ 3000 ELISA Units,Each Ml Contains: Infectious Bursal Disease Virus (gp 12) …….inducing ≥ 3000 Elisa Units,5,Each ml contains: Infectious Bursal disease virus (GP 12) …….Inducing ≥ 3000 ELISA Units,0.99,auto_candidate
+Each one dose (one ml) contains: a) Component D (freeze-dried) Virus febris contagiosae canis,Each One Dose (one Ml) Contains: A) Component D (freeze-dried) Virus Febris Contagiosae Canis,5,Each one dose (one ml) contains: a) Component D (freeze-dried) Virus febris contagiosae canis,0.99,auto_candidate
+Each vial contains: -Cefoperazone (as Sodium) Sulbactam (as Sodium) .,Each Vial Contains: -cefoperazone (as Sodium) Sulbactam (as Sodium) .,5,Each vial contains: -Cefoperazone (as Sodium) Sulbactam (as Sodium) .,0.99,auto_candidate
+Egg Drop Syndrome (EDS) inactivated virus,Egg Drop Syndrome (eds) Inactivated Virus,5,Egg Drop Syndrome (EDS) inactivated virus,0.99,auto_candidate
+Enoxacin (as Sesquihydrate),Enoxacin (as Sesquihydrate),5,Enoxacin as Sesquihydrate,0.99,auto_candidate
+Enoxacin as Sesquihydrate,Enoxacin As Sesquihydrate,5,Enoxacin as Sesquihydrate,0.99,auto_candidate
+Enteric coated pellets of Diclofenac sodium eq. to Diclofenac sodium,Enteric Coated Pellets of Diclofenac Sodium Eq To Diclofenac Sodium,5,Enteric coated pellets of Diclofenac sodium eq. to Diclofenac sodium,0.99,auto_candidate
+Enteric-coated Pellets of Duloxetine Hydrochloride eq. to Duloxetine,Enteric-coated Pellets of Duloxetine Hydrochloride Eq To Duloxetine,5,Enteric-coated Pellets of Duloxetine Hydrochloride eq. to Duloxetine,0.99,auto_candidate
+Erlotinib (as hydrochloride),Erlotinib (as Hydrochloride),5,Erlotinib (as hydrochloride),0.99,auto_candidate
+Extended released pellets of Venlafaxine HCl eq. to Venlafaxine,Extended Released Pellets of Venlafaxine Hcl Eq To Venlafaxine,5,Extended released pellets of Venlafaxine HCl eq. to Venlafaxine,0.99,auto_candidate
+Fexofenadine HCl + Pseudoephedrine HCl,Fexofenadine Hcl + Pseudoephedrine Hcl,5,Fexofenadine HCl + Pseudoephedrine HCl,0.99,auto_candidate
+Flucoxacillin as Sodium,Flucoxacillin As Sodium,5,Flucoxacillin as Sodium,0.99,auto_candidate
+Fluocinolone as Acetate,Fluocinolone As Acetate,5,Fluocinolone as Acetate,0.99,auto_candidate
+Flupenthixol (HCl and Decanoate),Flupenthixol (hcl and Decanoate),5,Flupenthixol (HCl and Decanoate),0.99,auto_candidate
+Glucosamin Sulphate Potassium Chloride USP eq.to Glucosamine .…500mg Chondroitin Sulphate Sodium (USP)…..400mg,Glucosamin Sulphate Potassium Chloride Usp Eq To Glucosamine .…500mg Chondroitin Sulphate Sodium (usp)…..400mg,5,Glucosamin Sulphate Potassium Chloride USP eq.to Glucosamine .…500mg Chondroitin Sulphate Sodium (USP)…..400mg,0.99,auto_candidate
+Gmefloxacin (as Mesylate),Gmefloxacin (as Mesylate),5,Gmefloxacin (as Mesylate),0.99,auto_candidate
+GPVAC FLU 7 + 9 Injectable Each ml contains: Inactivated Avian Influenza type H7.……..Inducing ≥ 5 log2 HI units Inactivated Avian Influenza type,Gpvac Flu 7 + 9 Injectable Each Ml Contains: Inactivated Avian Influenza Type H7.……..inducing ≥ 5 Log2 Hi Units Inactivated Avian Influenza Type,5,GPVAC FLU 7 + 9 Injectable Each ml contains: Inactivated Avian Influenza type H7.……..Inducing ≥ 5 log2 HI units Inactivated Avian Influenza type,0.99,auto_candidate
+Human Immunoglobulin (human plasma protein with at least 98%IgG,Human Immunoglobulin (human Plasma Protein With At Least 98%igg,5,Human Immunoglobulin (human plasma protein with at least 98%IgG,0.99,auto_candidate
+Hydrated Al(OH)3,Hydrated Al(oh)3,5,Hydrated Al(OH)3,0.99,auto_candidate
+Hydro pericardium syndrome inactivated virus (Adenovirus),Hydro Pericardium Syndrome Inactivated Virus (adenovirus),5,Hydro pericardium syndrome inactivated virus (Adenovirus),0.99,auto_candidate
+Hydrous Bezoyl Peroxide eq. to Anhydrous Benzoyl Peroxide,Hydrous Bezoyl Peroxide Eq To Anhydrous Benzoyl Peroxide,5,Hydrous Bezoyl Peroxide eq. to Anhydrous Benzoyl Peroxide,0.99,auto_candidate
+Imipramine as HCl,Imipramine As Hcl,5,Imipramine as HCl,0.99,auto_candidate
+Inactivated Adenovirus of Egg Drop Syndrome (EDS) (127 Strain),Inactivated Adenovirus of Egg Drop Syndrome (eds) (127 Strain),5,Inactivated Adenovirus of Egg Drop Syndrome (EDS) (127 Strain),0.99,auto_candidate
+Inactivated Avian Adenovirus-,Inactivated Avian Adenovirus-,5,Inactivated Avian Adenovirus-,0.99,auto_candidate
+Inactivated Avian Adenovirus-4….......Inducing ≥ 4 log2 IHA units.,Inactivated Avian Adenovirus-4….......inducing ≥ 4 Log2 Iha Units.,5,Inactivated Avian Adenovirus-4….......Inducing ≥ 4 log2 IHA units.,0.99,auto_candidate
+"Inactivated Avian Influenza Virus (A/Chicken/Korea/01310/2001 (H9N2), CE20 Strain)","Inactivated Avian Influenza Virus (a / Chicken / Korea / 01310 / 2001 (h9n2), Ce20 Strain)",5,"Inactivated Avian Influenza Virus (A/Chicken/Korea/01310/2001 (H9N2), CE20 Strain)",0.99,auto_candidate
+"Inactivated Avian Newcastle disease virus culture solution (Ulster 2C strain, 109.5EID50/0.1mL) --------------- 19%","Inactivated Avian Newcastle Disease Virus Culture Solution (ulster 2c Strain, 109.5eid50 / 0.1ml) --------------- 19%",5,"Inactivated Avian Newcastle disease virus culture solution (Ulster 2C strain, 109.5EID50/0.1mL) --------------- 19%",0.99,auto_candidate
+Inactivated Cultures of Infectious Bovine Rhinotracheitis (IBR) Virus,Inactivated Cultures of Infectious Bovine Rhinotracheitis (ibr) Virus,5,Inactivated Cultures of Infectious Bovine Rhinotracheitis (IBR) Virus,0.99,auto_candidate
+Inactivated Infectious Bronchitis virus (M41 strain),Inactivated Infectious Bronchitis Virus (m41 Strain),5,Inactivated Infectious Bronchitis virus (M41 strain),0.99,auto_candidate
+Inactivated Infectious Bronchtitis Virus (KM91 strain),Inactivated Infectious Bronchtitis Virus (km91 Strain),5,Inactivated Infectious Bronchtitis Virus (KM91 strain),0.99,auto_candidate
+"Inactivated Virus of Infectious Bronchitis (Strain M41 NEV 14, NEV 24)","Inactivated Virus of Infectious Bronchitis (strain M41 Nev 14, Nev 24)",5,"Inactivated Virus of Infectious Bronchitis (Strain M41 NEV 14, NEV 24)",0.99,auto_candidate
+indacaterol maleate eq to indacaterol,Indacaterol Maleate Eq To Indacaterol,5,indacaterol maleate eq to indacaterol,0.99,auto_candidate
+Infectious Laryngotracheitis Virus culture ---------(Min. 103.5TICD50/ dose or 102.0EID50/ dose)-,Infectious Laryngotracheitis Virus Culture ---------(min. 103.5ticd50 / Dose Or 102.0eid50 / Dose)-,5,Infectious Laryngotracheitis Virus culture ---------(Min. 103.5TICD50/ dose or 102.0EID50/ dose)-,0.99,auto_candidate
+Iron as polymaltose complex+Folic acid,Iron As Polymaltose Complex + Folic Acid,5,Iron as polymaltose complex+Folic acid,0.99,auto_candidate
+Iron III Hydroxide Polymaltose Complex eq. to Elemental Iron + Folic Acid,Iron Iii Hydroxide Polymaltose Complex Eq To Elemental Iron + Folic Acid,5,Iron III hydroxide polymaltose complex eq to. Elemental Iron....................100mg,0.99,auto_candidate
+Iron-III-hydroxide polymaltose complex eq. to Elemental Iron,Iron-iii-hydroxide Polymaltose Complex Eq To Elemental Iron,5,Iron-III-hydroxide polymaltose complex eq. to Elemental Iron + Folic Acid,0.99,auto_candidate
+Iron-III-hydroxide polymaltose complex eq. to Elemental Iron + Folic Acid,Iron-iii-hydroxide Polymaltose Complex Eq To Elemental Iron + Folic Acid,5,Iron-III-hydroxide polymaltose complex eq. to Elemental Iron + Folic Acid,0.99,auto_candidate
+Iron(III)Hydroxide polymaltose complex eq.to elemental iron+Folic acid,Iron(iii)hydroxide Polymaltose Complex Eq To Elemental Iron + Folic Acid,5,Iron(III)Hydroxide polymaltose complex eq.to elemental iron+Folic acid,0.99,auto_candidate
+Itraconazole (as IR Pellets 22% w/w),Itraconazole (as Ir Pellets 22% W / W),5,Itraconazole (as IR Pellets 22% w/w),0.99,auto_candidate
+Ketoanalogue of Isoleucine (Calcium Salt),Ketoanalogue of Isoleucine (calcium Salt),5,Ketoanalogue of Isoleucine (Calcium Salt),0.99,auto_candidate
+Ketoanalogue of Leucin (Calcium Salt),Ketoanalogue of Leucin (calcium Salt),5,Ketoanalogue of Leucin (Calcium Salt),0.99,auto_candidate
+Ketoanalogue of Methionine (Calcium Salt),Ketoanalogue of Methionine (calcium Salt),5,Ketoanalogue of Methionine (Calcium Salt),0.99,auto_candidate
+Ketoanalogue of Phenylalanine (Calcium Salt),Ketoanalogue of Phenylalanine (calcium Salt),5,Ketoanalogue of Phenylalanine (Calcium Salt),0.99,auto_candidate
+Ketoanalogue of Valine (Calcium Salt),Ketoanalogue of Valine (calcium Salt),5,Ketoanalogue of Valine (Calcium Salt),0.99,auto_candidate
+Ketoanalogue to isoleucine (calcium salt),Ketoanalogue To Isoleucine (calcium Salt),5,Ketoanalogue to isoleucine (calcium salt),0.99,auto_candidate
+Ketoanalogue to leucine (calcium salt),Ketoanalogue To Leucine (calcium Salt),5,Ketoanalogue to leucine (calcium salt),0.99,auto_candidate
+Ketoanalogue to methionine (calcium salt),Ketoanalogue To Methionine (calcium Salt),5,Ketoanalogue to methionine (calcium salt),0.99,auto_candidate
+Ketoanalogue to phenylalanine (calcium salt),Ketoanalogue To Phenylalanine (calcium Salt),5,Ketoanalogue to phenylalanine (calcium salt),0.99,auto_candidate
+Ketoanalogue to valine (calcium salt),Ketoanalogue To Valine (calcium Salt),5,Ketoanalogue to valine (calcium salt),0.99,auto_candidate
+Lansoparazole (pellets),Lansoparazole (pellets),5,Lansoparazole (pellets),0.99,auto_candidate
+Leptospira Australis (Strain As-05-073),Leptospira Australis (strain As-05-073),5,Leptospira Australis (Strain As-05-073),0.99,auto_candidate
+Levalbuterol as HCl,Levalbuterol As Hcl,5,Levalbuterol as HCl,0.99,auto_candidate
+Lignocaine HCl 02% with epinephrine (1:100000),Lignocaine Hcl 02% With Epinephrine (1:100000),5,Lignocaine HCl 02% with epinephrine (1:100000),0.99,auto_candidate
+Lincomycin(HCl),Lincomycin(hcl),5,Lincomycin(HCl),0.99,auto_candidate
+Live attenuated measles Virus (Schwarz strain),Live Attenuated Measles Virus (schwarz Strain),5,Live attenuated measles Virus (Schwarz strain),0.99,auto_candidate
+Live attenuated mumps virus (RIT 4385 strain),Live Attenuated Mumps Virus (rit 4385 Strain),5,Live attenuated mumps virus (RIT 4385 strain),0.99,auto_candidate
+Live attenuated rubella Virus (WIstar RA 27/3 strain),Live Attenuated Rubella Virus (wistar Ra 27 / 3 Strain),5,Live attenuated rubella Virus (WIstar RA 27/3 strain),0.99,auto_candidate
+Live attenuated varicella virus (OKA strain),Live Attenuated Varicella Virus (oka Strain),5,Live attenuated varicella virus (OKA strain),0.99,auto_candidate
+lron (III) hydroxide polymaltose complex eq.to elemental Iron,Lron (iii) Hydroxide Polymaltose Complex Eq To Elemental Iron,5,lron (III) hydroxide polymaltose complex eq.to elemental Iron,0.99,auto_candidate
+Mefloquine( as HCL),Mefloquine( As Hcl),5,Mefloquine( as HCL),0.99,auto_candidate
+Melitracen (HCl),Melitracen (hcl),5,Melitracen (HCl),0.99,auto_candidate
+"Menotrophin (human menopausal gonadotrophin HMG, highly purified) corresponding to FSH and LH","Menotrophin (human Menopausal Gonadotrophin Hmg, Highly Purified) Corresponding To Fsh and Lh",5,"Menotrophin (human menopausal gonadotrophin HMG, highly purified) corresponding to FSH and LH",0.99,auto_candidate
+Metoprolol succinate eq. to metoprolol tartrate,Metoprolol Succinate Eq To Metoprolol Tartrate,5,Metoprolol succinate eq. to metoprolol tartrate,0.99,auto_candidate
+Metoprolol succinate eq. To Metoprolol tartrate,Metoprolol Succinate Eq To Metoprolol Tartrate,5,Metoprolol succinate eq. to metoprolol tartrate,0.99,auto_candidate
+Metronandazole (as Benzoate),Metronandazole (as Benzoate),5,Metronandazole (as Benzoate),0.99,auto_candidate
+Misoprostol (1% w/w dispersion in HPMC 20mg) eq. to misoprostol,Misoprostol (1% W / W Dispersion In Hpmc 20mg) Eq To Misoprostol,5,Misoprostol (Dispersion),0.99,auto_candidate
+Mixed Grass Extract of Lolim Temulentum + Cynodon Dactylon,Mixed Grass Extract of Lolim Temulentum + Cynodon Dactylon,5,Mixed Grass Extract of Lolim Temulentum + Cynodon Dactylon,0.99,auto_candidate
+Montelukast(as Sodium),Montelukast(as Sodium),5,Montelukast(as Sodium),0.99,auto_candidate
+Mupirocin(as calcium dihydrate),Mupirocin(as Calcium Dihydrate),5,Mupirocin(as calcium dihydrate),0.99,auto_candidate
+Newcastle Disease (ND) inactivated virus,Newcastle Disease (nd) Inactivated Virus,5,"Newcastle disease inactivated virus (NDV, LaSota strain)",0.99,auto_candidate
+Newcastle Disease Virus….........…Inducing ≥ 5 log2 HI units.,Newcastle Disease Virus….........…inducing ≥ 5 Log2 Hi Units.,5,Newcastle Disease Virus….........…Inducing ≥ 5 log2 HI units.,0.99,auto_candidate
+Oil(Montanide ISA 70),Oil(montanide Isa 70),5,Oil(Montanide ISA 70),0.99,auto_candidate
+Olopatedine Hydrochloride 1.11mg eq. to Olopatadine,Olopatedine Hydrochloride 1.11mg Eq To Olopatadine,5,Olopatedine Hydrochloride 1.11mg eq. to Olopatadine,0.99,auto_candidate
+Omeperazole (Pallets),Omeperazole (pallets),5,Omeperazole (Pallets),0.99,auto_candidate
+Omeprazole enteric coated pellets (8.5%w/w) eq. to Omeprazole,Omeprazole Enteric Coated Pellets (8.5%w / W) Eq To Omeprazole,5,Omeprazole enteric coated pellets eq. to Omeprazole,0.99,auto_candidate
+Ondansetron(as HCL),Ondansetron(as Hcl),5,Ondansetron(as HCL),0.99,auto_candidate
+One immidiate relese layer of Ciprofloxacin as HCl,One Immidiate Relese Layer of Ciprofloxacin As Hcl,5,One immidiate relese layer of Ciprofloxacin as HCl,0.99,auto_candidate
+Oxcarbazepine.,Oxcarbazepine.,5,Oxcarbazepine.,0.99,auto_candidate
+Palonosetron HCl eq. to Palonosetron,Palonosetron Hcl Eq To Palonosetron,5,Palonosetron HCl eq. to Palonosetron,0.99,auto_candidate
+PANTOPRAZOL SODIUM SESQUIHYDRATE EQ.TO PANTOPRAZOLE(PELLETS),Pantoprazol Sodium Sesquihydrate Eq To Pantoprazole(pellets),5,PANTOPRAZOL SODIUM SESQUIHYDRATE EQ.TO PANTOPRAZOLE(PELLETS),0.99,auto_candidate
+Paracetamol + Caffeine,Paracetamol + Caffeine,5,Paracetamol + Caffeine,0.99,auto_candidate
+Pentazocin (as lactate),Pentazocin (as Lactate),5,Pentazocin (as lactate),0.99,auto_candidate
+Permethol.,Permethol.,5,Permethol.,0.99,auto_candidate
+Plain Catgut Absorbable Suture With Needle,Plain Catgut Absorbable Suture With Needle,5,Plain Catgut Absorbable Suture With Needle,0.99,auto_candidate
+Poliomyelitis virus type 1 (Mahoney),Poliomyelitis Virus Type 1 (mahoney),5,Poliomyelitis virus type 1 (Mahoney),0.99,auto_candidate
+Poliomyelitis virus type 2 (MEF 1),Poliomyelitis Virus Type 2 (mef 1),5,Poliomyelitis virus type 2 (MEF 1),0.99,auto_candidate
+Poliomyelitis virus type 3 (Saukett),Poliomyelitis Virus Type 3 (saukett),5,Poliomyelitis virus type 3 (Saukett),0.99,auto_candidate
+Poliovirus Type 1 Mahoney strain (inactivated),Poliovirus Type 1 Mahoney Strain (inactivated),5,Poliovirus Type 1 Mahoney strain (inactivated),0.99,auto_candidate
+"Poliovirus Type 2, MEF-1 strain (inactivated)","Poliovirus Type 2, Mef-1 Strain (inactivated)",5,"Poliovirus Type 2, MEF-1 strain (inactivated)",0.99,auto_candidate
+"Poliovirus Type 3, Saukett strain (inactivated)","Poliovirus Type 3, Saukett Strain (inactivated)",5,"Poliovirus Type 3, Saukett strain (inactivated)",0.99,auto_candidate
+Polyglycolic Acid Absorbable Suture With Needle,Polyglycolic Acid Absorbable Suture With Needle,5,Polyglycolic Acid Absorbable Suture With Needle,0.99,auto_candidate
+Polypropylene Monofilament Non Absorbable Suture With Needle,Polypropylene Monofilament Non Absorbable Suture With Needle,5,Polypropylene Monofilament Non Absorbable Suture With Needle,0.99,auto_candidate
+"Polysaccharide of Group A,C,Y and W135","Polysaccharide of Group A,c,y and W135",5,"Polysaccharide of Group A,C,Y and W135",0.99,auto_candidate
+Pyridoxin (Vitamin B6),Pyridoxin (vitamin B6),5,Pyridoxin (Vitamin B6),0.99,auto_candidate
+Pyroxicam as Beta Cyclodextrin,Pyroxicam As Beta Cyclodextrin,5,Pyroxicam as Beta Cyclodextrin,0.99,auto_candidate
+Quetapine as Fumarate,Quetapine As Fumarate,5,Quetapine as Fumarate,0.99,auto_candidate
+Raniridine (as HCL),Raniridine (as Hcl),5,Raniridine (as HCL),0.99,auto_candidate
+Ribociclib (as succinate) ..200mg,Ribociclib (as Succinate) ..200mg,5,Ribociclib (as succinate) ..200mg,0.99,auto_candidate
+"ron protein succiylate 400mg eq to iron (III)20mg,Folic acid2.5mg","Ron Protein Succiylate 400mg Eq To Iron (iii)20mg,folic Acid2.5mg",5,"ron protein succiylate 400mg eq to iron (III)20mg,Folic acid2.5mg",0.99,auto_candidate
+Russel's Viper Venom (Vipera russli),Russel's Viper Venom (vipera Russli),5,Russel's Viper Venom (Vipera russli),0.99,auto_candidate
+Salbutamol(as Sulphate),Salbutamol(as Sulphate),5,Salbutamol(as Sulphate),0.99,auto_candidate
+Salmeterol (as xinafoate(,Salmeterol (as Xinafoate(,5,Salmeterol (as xinafoate(,0.99,auto_candidate
+Saw scaled viper venom (Echis carinatus),Saw Scaled Viper Venom (echis Carinatus),5,Saw scaled viper venom (Echis carinatus),0.99,auto_candidate
+Second extended release layer of Ciprofloxacin as Betaine Base,Second Extended Release Layer of Ciprofloxacin As Betaine Base,5,Second extended release layer of Ciprofloxacin as Betaine Base,0.99,auto_candidate
+Silk Braided Non Absorbable Surgical Suture With Needle,Silk Braided Non Absorbable Surgical Suture With Needle,5,Silk Braided Non Absorbable Surgical Suture With Needle,0.99,auto_candidate
+Sodium Chloride and Water For Injection,Sodium Chloride and Water For Injection,5,Sodium Chloride and Water For Injection,0.99,auto_candidate
+Solifenacin as succinate,Solifenacin As Succinate,5,Solifenacin as succinate,0.99,auto_candidate
+Soluble Insulin aspart….50% + Protamine-crystallised Insulin aspart…..50%,Soluble Insulin Aspart….50% + Protamine-crystallised Insulin Aspart…..50%,5,Soluble Insulin aspart….50% + Protamine-crystallised Insulin aspart…..50%,0.99,auto_candidate
+Spironolactone + Furosemide,Spironolactone + Furosemide,5,Spironolactone + Furosemide,0.99,auto_candidate
+Sterile Piperacillin sodium eq to Piperacillin,Sterile Piperacillin Sodium Eq To Piperacillin,5,Sterile Piperacillin sodium eq to Piperacillin,0.99,auto_candidate
+Sterile powder of Ceftriaxone sodium eq. to Ceftriaxone,Sterile Powder of Ceftriaxone Sodium Eq To Ceftriaxone,5,Sterile powder of Ceftriaxone sodium eq. to Ceftriaxone,0.99,auto_candidate
+Sterile tazobactam sodium eq to tazobactam,Sterile Tazobactam Sodium Eq To Tazobactam,5,Sterile tazobactam sodium eq to tazobactam,0.99,auto_candidate
+Sulbactam(as sodium),Sulbactam(as Sodium),5,sulbactam as sodium,0.99,auto_candidate
+Sulbactum(as Sodium),Sulbactum(as Sodium),5,Sulbactum(as Sodium),0.99,auto_candidate
+Sumitriptan as Succinate,Sumitriptan As Succinate,5,Sumitriptan as Succinate,0.99,auto_candidate
+surfactant associated proteins SP-B and SP-C,Surfactant Associated Proteins Sp-b and Sp-c,5,surfactant associated proteins SP-B and SP-C,0.99,auto_candidate
+Surfactant Associated Proteins SP-B and SP-C,Surfactant Associated Proteins Sp-b and Sp-c,5,surfactant associated proteins SP-B and SP-C,0.99,auto_candidate
+Sustained release pellets of Cyclobenzaprine hydrochloride eq. to Cyclobenzaprine hydrochloride,Sustained Release Pellets of Cyclobenzaprine Hydrochloride Eq To Cyclobenzaprine Hydrochloride,5,Sustained release pellets of Cyclobenzaprine hydrochloride eq. to Cyclobenzaprine hydrochloride,0.99,auto_candidate
+Terbinafine(as HCL),Terbinafine(as Hcl),5,Terbinafine(as HCL),0.99,auto_candidate
+terile Ceftriaxone Sodium (USP) eq. to Ceftriaxone,Terile Ceftriaxone Sodium (usp) Eq To Ceftriaxone,5,terile Ceftriaxone Sodium (USP) eq. to Ceftriaxone,0.99,auto_candidate
+Thiamin (Vitamin B1),Thiamin (vitamin B1),5,Thiamin (Vitamin B1),0.99,auto_candidate
+Tiotropium (eq. to 22.5mcg tiotropium Bromide monohydrate,Tiotropium (eq To 22.5mcg Tiotropium Bromide Monohydrate,5,Tiotropium (eq. to 22.5mcg tiotropium Bromide monohydrate,0.99,auto_candidate
+Valproate Sodium eq. to valproic acid,Valproate Sodium Eq To Valproic Acid,5,Valproate Sodium eq. to valproic acid,0.99,auto_candidate
+"Virus Antigen (FMD Serotypes A,O, Asia-1)","Virus Antigen (fmd Serotypes A,o, Asia-1)",5,"Virus Antigen (FMD Serotypes A,O, Asia-1)",0.99,auto_candidate
+Vit. D-3 (Cholecalciferol),Vit. D-3 (cholecalciferol),5,Vit. D-3 (Cholecalciferol),0.99,auto_candidate
+α-keto analogue to isoleucine (calcium salt),Α-keto Analogue To Isoleucine (calcium Salt),5,α-keto analogue to isoleucine (calcium salt),0.99,auto_candidate
+α-keto analogue to leucine (calcium salt),Α-keto Analogue To Leucine (calcium Salt),5,α-keto analogue to leucine (calcium salt),0.99,auto_candidate
+α-keto analogue to methionine (calcium salt),Α-keto Analogue To Methionine (calcium Salt),5,α-keto analogue to methionine (calcium salt),0.99,auto_candidate
+α-keto analogue to phenylalanine (calcium salt),Α-keto Analogue To Phenylalanine (calcium Salt),5,α-keto analogue to phenylalanine (calcium salt),0.99,auto_candidate
+α-keto analogue to valine (calcium salt),Α-keto Analogue To Valine (calcium Salt),5,α-keto analogue to valine (calcium salt),0.99,auto_candidate
+?-keto analogue to valine (calcium salt),-keto Analogue To Valine (calcium Salt),5,?-keto analogue to valine (calcium salt),0.96,auto_candidate
+15ml /Iron Protein Succinylate 800mg,15ml / Iron Protein Succinylate 800mg,5,15ml /Iron Protein Succinylate 800mg,0.96,auto_candidate
+"A/CK/Kor/01310/2001, CE20) (H9N2, 10^8.5EID50/0.1ml)","A / Ck / Kor / 01310 / 2001, Ce20) (h9n2, 10^8.5eid50 / 0.1ml)",5,"A/CK/Kor/01310/2001, CE20) (H9N2, 10^8.5EID50/0.1ml)",0.96,auto_candidate
+Acyclovir..........5% w/w,Acyclovir..........5% W / W,5,Acyclovir..........5% w/w,0.96,auto_candidate
+Al+++(as AlPO4),Al + + + (as Alpo4),5,Al+++(as AlPO4),0.96,auto_candidate
+Alcohol/Methylated Spirit,Alcohol / Methylated Spirit,5,Alcohol/Methylated Spirit,0.96,auto_candidate
+Aradine injection IV/IM,Aradine Injection Iv / Im,5,Aradine injection IV/IM,0.96,auto_candidate
+Artimether+ lumefantrine,Artimether + Lumefantrine,5,Artimether+ lumefantrine,0.96,auto_candidate
+AVI ND HB1+IB Vaccine,Avi Nd Hb1 + Ib Vaccine,5,AVI ND HB1+IB Vaccine,0.96,auto_candidate
+Clobetasol Propionate....0.05% w/w,Clobetasol Propionate....0.05% W / W,5,Clobetasol Propionate....0.05% w/w,0.96,auto_candidate
+Clobetasol Propionate...0.050% w/w,Clobetasol Propionate...0.050% W / W,5,Clobetasol Propionate...0.050% w/w,0.96,auto_candidate
+Clotrimazole.............1% w/w,Clotrimazole.............1% W / W,5,Clotrimazole.............1% w/w,0.96,auto_candidate
+E/N,E / N,5,E/N,0.96,auto_candidate
+Fluocinolone Acetonide....0.01% w/w Hydroquinone...4% w/w Tretinoin....0.05% w/w,Fluocinolone Acetonide....0.01% W / W Hydroquinone...4% W / W Tretinoin....0.05% W / W,5,Fluocinolone Acetonide....0.01% w/w Hydroquinone...4% w/w Tretinoin....0.05% w/w,0.96,auto_candidate
+Inactivated Avian Influenza A/Chicken/Egypt/114940v/NLQP/2011(H9N2),Inactivated Avian Influenza A / Chicken / Egypt / 114940v / Nlqp / 2011(h9n2),5,Inactivated Avian Influenza A/Chicken/Egypt/114940v/NLQP/2011(H9N2),0.96,auto_candidate
+"Inactivated Avian Influenza Virus, A/Chicken/Egypt/114940V/NLQP/2011(H9N2)","Inactivated Avian Influenza Virus, A / Chicken / Egypt / 114940v / Nlqp / 2011(h9n2)",5,"Inactivated Avian Influenza Virus, A/Chicken/Egypt/114940V/NLQP/2011(H9N2)",0.96,auto_candidate
+"Infectious Bronchitis virus (KH-120 strain, Min. 10^5.5 EID50/mL","Infectious Bronchitis Virus (kh-120 Strain, Min. 10^5.5 Eid50 / Ml",5,"Infectious Bronchitis virus (KH-120 strain, Min. 10^5.5 EID50/mL",0.96,auto_candidate
+insulin degludec/ insulin aspart in ratio 70/30,Insulin Degludec / Insulin Aspart In Ratio 70 / 30,5,insulin degludec/ insulin aspart in ratio 70/30,0.96,auto_candidate
+ITA ND+IB+EDS Vaccine,Ita Nd + Ib + Eds Vaccine,5,ITA ND+IB+EDS Vaccine,0.96,auto_candidate
+Levonorgestrel+Ethinylestradiol,Levonorgestrel + Ethinylestradiol,5,Levonorgestrel+Ethinylestradiol,0.96,auto_candidate
+"Newcastle Disease virus (B1 strain, Min. 10^7.5 EID 50/ml","Newcastle Disease Virus (b1 Strain, Min. 10^7.5 Eid 50 / Ml",5,"Newcastle Disease virus (B1 strain, Min. 10^7.5 EID 50/ml",0.96,auto_candidate
+Permethrin.... 5% w/w,Permethrin.... 5% W / W,5,Permethrin.... 5% w/w,0.96,auto_candidate
+Permethrin..... 5% w/v,Permethrin..... 5% W / V,5,Permethrin..... 5% w/v,0.96,auto_candidate
+R/O USP qs,R / O Usp Qs,5,R/O USP qs,0.96,auto_candidate
+Silver Sulphadiazine....1% w/w,Silver Sulphadiazine....1% W / W,5,Silver Sulphadiazine....1% w/w,0.96,auto_candidate
+Diclofenac sodium coated pellets 33% w/w eq. to Diclofenac sodium,Diclofenac Sodium Coated Pellets 33% W / W Eq To Diclofenac Sodium,5,diclofenac sodium,0.92,review_candidate
+Duloxitine HCl Equivalent to Duloxitine (as enteric coated pellets),Duloxitine Hcl Eq To Duloxitine (as Enteric Coated Pellets),5,Duloxetine,0.92,review_candidate
+irIron (III) Hydroxide Polymaltose Complex equivalent to elemental iron,Iriron (iii) Hydroxide Polymaltose Complex Eq To Elemental Iron,5,Elemental Iron (III) as Iron Sucrose,0.92,review_candidate
+Clindamycin (as Phosphate) ...1% w/w Benzoyl Peroxide ….5% w/w,Clindamycin (as Phosphate) ...1% W / W Benzoyl Peroxide ….5% W / W,5,Clindamycin (as Phosphate) ...1% w/w Benzoyl Peroxide ….5% w/w,0.83,review_candidate
+Clindamycin Phosphate.........1% w/w,Clindamycin Phosphate.........1% W / W,5,Clindamycin Phosphate.........1% w/w,0.83,review_candidate
+Losartan potassium+ Hydrochlothaizide,Losartan Potassium + Hydrochlothaizide,5,Irbesartan + Hydrochlorothiazide,0.83,review_candidate
+"27mg rivastigmine base, in vivo release rate of 13.3mg/24hours","27mg Rivastigmine Base, In Vivo Release Rate of 13.3mg / 24hours",5,"27mg rivastigmine base, in vivo release rate of 13.3mg/24hours",0.79,manual_review
+"BCG for Immunotherapy B.P., SII-ONCO-BCG, (Freeze-Dried), Powder for Intravesical Instillation, Each vial contains: - Bacillus Calmette-Guerin Strain: 40mg/ml (between 1 – 19.2 X 10(8) CFU)","Bcg For Immunotherapy B.p., Sii-onco-bcg, (freeze-dried), Powder For Intravesical Instillation, Each Vial Contains: - Bacillus Calmette-guerin Strain: 40mg / Ml (between 1 – 19.2 X 10(8) Cfu)",5,"BCG for Immunotherapy B.P., SII-ONCO-BCG, (Freeze-Dried), Powder for Intravesical Instillation, Each vial contains: - Bacillus Calmette-Guerin Strain: 40mg/ml (between 1 – 19.2 X 10(8) CFU)",0.79,manual_review
+Finesse 50mg/5ml Suspension,Finesse 50mg / 5ml Suspension,5,Finesse 50mg/5ml Suspension,0.79,manual_review
+Suspension of BI Inactivated Virus-M41 Strain S/P,Suspension of Bi Inactivated Virus-m41 Strain S / P,5,Suspension of BI Inactivated Virus-M41 Strain S/P,0.79,manual_review
