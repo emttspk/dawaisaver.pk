@@ -2,34 +2,34 @@
 
 Date: 2026-06-23
 Project: DawaiSaver.pk
-Update: DRAP Mirror Dashboard Issue Identified - Worker Needs Restart
+Update: DRAP Resume Failure Fixed - Ready to Restart
 
 ## Key findings
 
 ### DRAP Mirror Status
-- Worker container stopped/crashed
-- No active RUNNING batch in database
-- Dashboard shows historical INTERRUPTED batch
-- Database is empty (0 products)
+- Worker stopped/crashed
+- Dashboard shows: INTERRUPTED
+- Last registration: 135068
+- Database empty: 0 products
 
-### Dashboard Issue
-- Bug in `mirror-status.service.ts` `fallbackCurrentRun()` function
-- Shows last batch instead of prioritizing RUNNING batches
-- Fix applied to prioritize: RUNNING > PAUSED > INTERRUPTED > COMPLETED
+### Root Cause Identified
+- `launchWorker()` didn't extract checkpoint from INTERRUPTED batch
+- Worker used default start registration instead of last registration
+- Resume function didn't pass checkpoint to worker
 
-### Container Status
-| Container | ID | Status |
-|-----------|------|--------|
-| drap-api | f821bef | Running (old version) |
-| API | 9fa559e | Running (new version) |
-| Database | 1a2f9d121a5a | Running |
+### Fix Applied
+- Modified `findActiveBatch()` to include FAILED status
+- Added `extractLastRegistration()` to get checkpoint
+- Added `getDefaultStartRegistration()` helper
+- Worker now starts from last registration (135068)
 
 ### Build Status
 - ✅ `npm run build` passed
 
-### Recommendation: **RESTART WORKER**
+### Next Steps
+1. Restart DRAP mirror via admin endpoint
+2. Monitor worker startup
+3. Verify checkpoint advancement
+4. Wait for catalog population
 
-Restart DRAP mirror worker to:
-1. Create new RUNNING batch
-2. Begin data import from checkpoint
-3. Populate production catalog
+### Recommendation: **RESTART WORKER**

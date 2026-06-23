@@ -26,8 +26,9 @@ export class DrapMirrorWorkerLauncherService {
     private readonly config: ConfigService,
   ) {}
 
-  async launchWorker(_action: "start" | "resume" | "recover"): Promise<WorkerLaunchResult> {
+  async launchWorker(action: "start" | "resume" | "recover"): Promise<WorkerLaunchResult> {
     const existingBatch = await this.findActiveBatch();
+    let checkpointRegistration: string | undefined;
     
     if (existingBatch) {
       const isStale = await this.isBatchStale(existingBatch);
@@ -38,13 +39,16 @@ export class DrapMirrorWorkerLauncherService {
       this.logger.warn(
         `Active batch ${existingBatch.id} is stale; launching a replacement worker`,
       );
+      checkpointRegistration = this.extractLastRegistration(existingBatch.metadata);
     }
 
     const runId = this.generateRunId();
+    const startRegistration = checkpointRegistration || this.getDefaultStartRegistration();
     
     const env = {
       ...process.env,
       DRAP_MIRROR_RUN_ID: runId,
+      DRAP_MIRROR_START_REGISTRATION: startRegistration,
       NODE_ENV: process.env.NODE_ENV || "production",
     };
 
@@ -77,16 +81,36 @@ export class DrapMirrorWorkerLauncherService {
 
     return {
       success: true,
-      message: `DRAP mirror worker launched with PID ${worker.pid}.`,
+      message: `DRAP mirror worker launched with PID ${worker.pid}. Starting from registration ${startRegistration}.`,
       alreadyRunning: false,
     };
+  }
+  
+  private getDefaultStartRegistration(): string {
+    return process.env.DRAP_MIRROR_START_REGISTRATION || "041350";
+  }
+  
+  private extractLastRegistration(metadata: unknown): string | undefined {
+    if (!metadata || typeof metadata !== "object" || Array.isArray(metadata)) {
+      return undefined;
+    }
+    const acquisition = (metadata as Record<string, unknown>).acquisition;
+    if (!acquisition || typeof acquisition !== "object" || Array.isArray(acquisition)) {
+      return undefined;
+    }
+    const checkpoint = (acquisition as Record<string, unknown>).checkpoint;
+    if (!checkpoint || typeof checkpoint !== "object") {
+      return undefined;
+    }
+    const lastReg = (checkpoint as Record<string, unknown>).lastRegistrationNumber;
+    return typeof lastReg === "string" && lastReg.trim() ? lastReg : undefined;
   }
 
   private async findActiveBatch(): Promise<ActiveBatchSnapshot | null> {
     const batch = await this.prisma.importBatch.findFirst({
       where: {
         adapterType: "drap-mirror",
-        status: "RUNNING",
+        status: { in: ["RUNNING", "FAILED"] },
       },
       orderBy: { createdAt: "desc" },
       select: { id: true, updatedAt: true, metadata: true },
