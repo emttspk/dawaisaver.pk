@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AdminAuthContext";
 import DiscoveryReviewDashboard from "./DiscoveryReviewDashboard";
+import IngredientReviewDashboard from "./IngredientReviewDashboard";
 import MedicineMatchReview from "./MedicineMatchReview";
 import OcrReviewDashboard from "./OcrReviewDashboard";
 import PrescriptionReviewDashboard from "./PrescriptionReviewDashboard";
@@ -9,10 +10,11 @@ import SourceHealthDashboard from "./SourceHealthDashboard";
 import SystemHealthDashboard from "./SystemHealthDashboard";
 import UserActivityDashboard from "./UserActivityDashboard";
 
-type ReviewTab = "overview" | "ocr" | "prescriptions" | "matching" | "discovery" | "prices" | "sources" | "users" | "system";
+type ReviewTab = "overview" | "ingredient-review" | "ocr" | "prescriptions" | "matching" | "discovery" | "prices" | "sources" | "users" | "system";
 
 const tabs: Array<{ key: ReviewTab; label: string }> = [
   { key: "overview", label: "Dashboard" },
+  { key: "ingredient-review", label: "Ingredient Review" },
   { key: "ocr", label: "OCR" },
   { key: "prescriptions", label: "Prescriptions" },
   { key: "matching", label: "Medicine Match" },
@@ -71,6 +73,8 @@ function DashboardContent({ tab }: { tab: ReviewTab }) {
   switch (tab) {
     case "overview":
       return <AdminOverview />;
+    case "ingredient-review":
+      return <IngredientReviewDashboard />;
     case "ocr":
       return <OcrReviewDashboard />;
     case "prescriptions":
