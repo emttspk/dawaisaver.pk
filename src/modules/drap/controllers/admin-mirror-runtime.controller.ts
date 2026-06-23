@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
-import { AdminGuard } from "../../../common/guards/admin.guard";
+import { InternalGuard } from "../../../common/guards/internal.guard";
 import { DrapMirrorControlService, MirrorControlAction } from "../drap-mirror-control.service";
 import { getMirrorRuntimeState } from "../drap.freeze";
 import { PrismaService } from "../../../database/prisma.service";
@@ -9,7 +9,7 @@ import { DrapMirrorStatusService } from "../mirror-status.service";
 
 @ApiTags("Admin")
 @Controller("admin/mirror")
-@UseGuards(AdminGuard)
+@UseGuards(InternalGuard)
 export class AdminMirrorRuntimeController {
   constructor(
     private readonly controlService: DrapMirrorControlService,
