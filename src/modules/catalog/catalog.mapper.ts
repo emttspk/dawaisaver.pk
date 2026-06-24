@@ -134,7 +134,7 @@ function mapDrapMirrorParsedRecord(
   item: ImportBatchItemLike,
   record: DrapMirrorParsedRecord,
 ): { record?: CatalogSourceRecord; issues: CatalogValidationIssue[] } {
-  const manufacturerName = cleanText(record.manufacturer);
+  const manufacturerName = cleanText(record.manufacturer) || "Unknown Manufacturer";
   const brandName = cleanText(record.brandName || record.registrationNumber);
   const normalizedBrandName = normalizeBrandName(brandName);
   const dosageForm = cleanText(record.dosageForm) || undefined;
@@ -144,12 +144,10 @@ function mapDrapMirrorParsedRecord(
     .map((composition, index) => normalizeComposition(composition, index + 1))
     .filter((composition): composition is CatalogCompositionInput => Boolean(composition));
 
-  if (!manufacturerName) {
-    return {
-      issues: [
-        buildIssue(item, "MISSING_MANUFACTURER", "Manufacturer name is required.", "import_item"),
-      ],
-    };
+  if (!manufacturerName || manufacturerName === "Unknown Manufacturer") {
+    if (!cleanText(record.manufacturer)) {
+      // Allow items without manufacturer - use placeholder
+    }
   }
 
   if (!brandName || !normalizedBrandName) {
@@ -221,6 +219,9 @@ function normalizeComposition(
   const genericName = cleanText(composition.genericName);
   const normalizedGenericName = normalizeGenericName(genericName);
   if (!genericName || !normalizedGenericName) {
+    return undefined;
+  }
+  if (genericName.toLowerCase().includes("no composition data recorded")) {
     return undefined;
   }
 
