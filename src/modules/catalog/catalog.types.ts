@@ -125,4 +125,22 @@ export interface CatalogSourceRecord {
   confidenceScore: number;
   rawData: unknown;
   compositions: CatalogCompositionInput[];
+  drapFields?: {
+    companyAddress?: string;
+    activeIngredient?: string;
+    dosage?: string;
+    packageType?: string;
+    therapeuticCategory?: string;
+    atcCode?: string;
+    indications?: string;
+    contraindications?: string;
+    sideEffects?: string;
+    drugInteractions?: string;
+    precautions?: string;
+    warnings?: string;
+    shelfLife?: string;
+    storageCondition?: string;
+    country?: string;
+    manufacturingType?: string;
+  };
 }

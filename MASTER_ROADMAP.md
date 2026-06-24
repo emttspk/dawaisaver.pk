@@ -128,8 +128,10 @@ DawaiSaver.pk is a medicine intelligence platform that provides price comparison
 - [x] Deploy API container with port 3000 exposed
 - [x] Run catalog build from DRAP data (98,214 products created)
 - [x] Verify golden samples in catalog (all 5 found)
-- [ ] Validate search/comparison works
 - [x] DRAP master field inventory audit complete
+- [x] Phase 1 field preservation implemented
+- [ ] Reprocess all 591,469 SAVED items with new fields
+- [ ] Re-run catalog build to populate enriched fields
 
 ---
 

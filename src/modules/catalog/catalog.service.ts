@@ -645,6 +645,7 @@ export class CatalogService {
           importBatchItemId: record.importBatchItemId,
           sourceTable: record.sourceTable,
         },
+        drap: record.drapFields || null,
       },
     };
 
