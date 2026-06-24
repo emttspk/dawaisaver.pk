@@ -102,9 +102,14 @@ DawaiSaver.pk is a medicine intelligence platform that provides price comparison
 ### Phase 9: Public Launch
 - [x] Search pipeline implemented
 - [x] Comparison engine implemented
-- [x] DRAP worker restarted
-- [ ] Monitor data import
-- [ ] Catalog population
+- [x] DRAP worker restart fixes deployed
+- [ ] Deploy new API container with fixes
+- [ ] Start DRAP mirror worker
+- [ ] Monitor catalog population
+
+### Post-Launch
+- [ ] Begin closed beta testing
+- [ ] Continue DRAP acquisition in background
 
 ---
 
