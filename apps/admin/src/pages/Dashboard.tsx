@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AdminAuthContext";
-import DiscoveryReviewDashboard from "./DiscoveryReviewDashboard";
+import Dashboard from "./Dashboard";
+import MirrorStatusDashboard from "./MirrorStatusDashboard";
 import IngredientReviewDashboard from "./IngredientReviewDashboard";
 import MedicineMatchReview from "./MedicineMatchReview";
 import OcrReviewDashboard from "./OcrReviewDashboard";
@@ -9,8 +10,10 @@ import PriceAnomalyDashboard from "./PriceAnomalyDashboard";
 import SourceHealthDashboard from "./SourceHealthDashboard";
 import SystemHealthDashboard from "./SystemHealthDashboard";
 import UserActivityDashboard from "./UserActivityDashboard";
+import DiscoveryReviewDashboard from "./DiscoveryReviewDashboard";
+import ProductsDashboard from "./ProductsDashboard";
 
-type ReviewTab = "overview" | "ingredient-review" | "ocr" | "prescriptions" | "matching" | "discovery" | "prices" | "sources" | "users" | "system";
+type ReviewTab = "overview" | "ingredient-review" | "ocr" | "prescriptions" | "matching" | "discovery" | "prices" | "sources" | "users" | "system" | "products" | "validation" | "scraper";
 
 const tabs: Array<{ key: ReviewTab; label: string }> = [
   { key: "overview", label: "Dashboard" },
@@ -23,6 +26,9 @@ const tabs: Array<{ key: ReviewTab; label: string }> = [
   { key: "sources", label: "Sources" },
   { key: "users", label: "User Activity" },
   { key: "system", label: "System Health" },
+  { key: "products", label: "Products" },
+  { key: "validation", label: "Validation" },
+  { key: "scraper", label: "Scraper" },
 ];
 
 export default function Dashboard() {
@@ -91,6 +97,12 @@ function DashboardContent({ tab }: { tab: ReviewTab }) {
       return <UserActivityDashboard />;
     case "system":
       return <SystemHealthDashboard />;
+    case "products":
+      return <ProductsDashboard />;
+    case "validation":
+      return <ValidationCenterDashboard />;
+    case "scraper":
+      return <ScraperCenterDashboard />;
     default:
       return <AdminOverview />;
   }

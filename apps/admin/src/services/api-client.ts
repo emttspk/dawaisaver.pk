@@ -372,9 +372,87 @@ class AdminApiClient {
     });
   }
 
-  getIngredientReviewStats() {
+getIngredientReviewStats() {
     return this.request<IngredientReviewStatsEntry[]>("/admin/ingredient-review/stats");
   }
+
+  backfillIngredientReviewQueue() {
+    return this.request<{ queueCount: number; whoCanonicalMolecules: number; whoAliasSeeds: number }>("/admin/ingredient-review/backfill", {
+      method: "POST",
+    });
+  }
+
+  getProducts(limit = 50, status?: string, search?: string) {
+    const params = new URLSearchParams();
+    params.set("limit", String(limit));
+    if (status) params.set("status", status);
+    if (search) params.set("search", search);
+    return this.request<Product[]>(`/admin/products?${params.toString()}`);
+  }
+
+  getDashboardStats() {
+    return this.request<{
+      totalProducts: number;
+      totalManufacturers: number;
+      totalPharmacies: number;
+      totalPrices: number;
+      pendingSubmissions: number;
+      pendingValidations: number;
+    }>("/admin/dashboard/stats");
+  }
+
+  getPrices(limit = 50, sourceType?: string, verificationStatus?: string) {
+    const params = new URLSearchParams();
+    params.set("limit", String(limit));
+    if (sourceType) params.set("sourceType", sourceType);
+    if (verificationStatus) params.set("verificationStatus", verificationStatus);
+    return this.request<any[]>(`/admin/prices?${params.toString()}`);
+  }
+
+  approvePrice(id: string, notes?: string) {
+    return this.request(`/admin/prices/${id}/approve`, {
+      method: "POST",
+      body: JSON.stringify({ notes }),
+    });
+  }
+
+  rejectPrice(id: string, notes?: string) {
+    return this.request(`/admin/prices/${id}/reject`, {
+      method: "POST",
+      body: JSON.stringify({ notes }),
+    });
+  }
+
+  getValidationQueues(limit = 20) {
+    return this.request<{
+      ingredient: any[];
+      products: any[];
+      manufacturers: any[];
+      prices: any[];
+      ownershipClaims: any[];
+    }>(`/admin/validation/queues?limit=${limit}`);
+  }
+
+  getScraperJobs(limit = 20) {
+    return this.request<any[]>(`/admin/scraper/jobs?limit=${limit}`);
+  }
+
+  startScraperJob(id: string) {
+    return this.request(`/admin/scraper/jobs/${id}/start`, { method: "POST" });
+  }
+
+  pauseScraperJob(id: string) {
+    return this.request(`/admin/scraper/jobs/${id}/pause`, { method: "POST" });
+  }
+
+  resumeScraperJob(id: string) {
+    return this.request(`/admin/scraper/jobs/${id}/resume`, { method: "POST" });
+  }
+
+  stopScraperJob(id: string) {
+    return this.request(`/admin/scraper/jobs/${id}/stop`, { method: "POST" });
+  }
+}
 
   backfillIngredientReviewQueue() {
     return this.request<{ queueCount: number; whoCanonicalMolecules: number; whoAliasSeeds: number }>(

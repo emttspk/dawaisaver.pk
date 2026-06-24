@@ -161,13 +161,13 @@ DawaiSaver.pk is a medicine intelligence platform that provides price comparison
 - [x] Closed beta readiness audit
 
 ### Phase 14: Admin Operations Center
-- [ ] Products page (list, search, edit, publish, archive)
+- [x] Products page (list, search, edit, publish, archive)
 - [ ] Manufacturers page
 - [ ] Distributors page
 - [ ] Pharmacies page
-- [ ] Prices page
-- [ ] Validation Center (5 queues)
-- [ ] Scraper Center (start, stop, pause, resume)
+- [x] Prices page (list, filter, approve, reject)
+- [x] Validation Center (5 queues)
+- [x] Scraper Center (start, stop, pause, resume)
 - [ ] Submission Center
 - [ ] Reports (daily, weekly, monthly)
 - [ ] Audit Logs

@@ -20,6 +20,7 @@ import { CatalogueModule } from "./modules/catalogue/catalogue.module";
 import { IngredientReviewModule } from "./modules/ingredient-review/ingredient-review.module";
 import { CompositionModule } from "./modules/composition/composition.module";
 import { RuntimeFeatureModule } from "./runtime-feature.module";
+import { AdminApiModule } from "./modules/admin/api/admin-api.module";
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { RuntimeFeatureModule } from "./runtime-feature.module";
     IngredientReviewModule,
     CompositionModule,
     RuntimeFeatureModule,
+    AdminApiModule,
   ],
 })
 export class AppModule {}
