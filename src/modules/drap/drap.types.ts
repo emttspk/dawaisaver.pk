@@ -152,6 +152,7 @@ export interface DrapMirrorParsedRecord {
   approvedPrice?: string;
   pricingType?: string;
   manufacturer?: string;
+  companyAddress?: string;
   country?: string;
   manufacturingType?: string;
   category?: string;
@@ -159,6 +160,19 @@ export interface DrapMirrorParsedRecord {
   sourceVerificationStatus?: string;
   routeOfAdmin?: string;
   labelClaim?: string;
+  activeIngredient?: string;
+  dosage?: string;
+  packageType?: string;
+  therapeuticCategory?: string;
+  atcCode?: string;
+  indications?: string;
+  contraindications?: string;
+  sideEffects?: string;
+  drugInteractions?: string;
+  precautions?: string;
+  warnings?: string;
+  shelfLife?: string;
+  storageCondition?: string;
   remarks?: string[];
   rawHtmlUrl?: string;
 }
