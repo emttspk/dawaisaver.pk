@@ -30,8 +30,8 @@ interface DrapMirrorWorkerResult {
   checkpoint?: DrapAcquisitionCheckpoint;
 }
 
-export async function runDrapMirrorJob(logger = new Logger("DrapMirrorJob")): Promise<void> {
-  await assertMirrorExecutionAllowed();
+export async function runDrapMirrorJob(logger = new Logger("DrapMirrorJob"), options?: { bypass?: boolean }): Promise<void> {
+  await assertMirrorExecutionAllowed(options);
   const totalRows = Number(process.env.DRAP_MIRROR_TOTAL_REGISTRATIONS || 50000);
   const startRegistration = process.env.DRAP_MIRROR_START_REGISTRATION || "041350";
   const endRegistration = process.env.DRAP_MIRROR_END_REGISTRATION || buildEndRegistration(startRegistration, totalRows);

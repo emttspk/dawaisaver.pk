@@ -5,7 +5,7 @@ async function main() {
   const logger = new Logger("DrapMirrorCLI");
   logger.log("Starting DRAP mirror job...");
   try {
-    await runDrapMirrorJob(logger);
+    await runDrapMirrorJob(logger, { bypass: true });
     logger.log("DRAP mirror job completed.");
     process.exit(0);
   } catch (error) {
