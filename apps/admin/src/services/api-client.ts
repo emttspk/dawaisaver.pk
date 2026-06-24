@@ -437,6 +437,42 @@ getIngredientReviewStats() {
     return this.request<any[]>(`/admin/scraper/jobs?limit=${limit}`);
   }
 
+  getManufacturers(limit = 50, search?: string) {
+    const params = new URLSearchParams();
+    params.set("limit", String(limit));
+    if (search) params.set("search", search);
+    return this.request<any[]>(`/admin/manufacturers?${params.toString()}`);
+  }
+
+  getDistributors(limit = 50, search?: string) {
+    const params = new URLSearchParams();
+    params.set("limit", String(limit));
+    if (search) params.set("search", search);
+    return this.request<any[]>(`/admin/distributors?${params.toString()}`);
+  }
+
+  getPharmacies(limit = 50, search?: string) {
+    const params = new URLSearchParams();
+    params.set("limit", String(limit));
+    if (search) params.set("search", search);
+    return this.request<any[]>(`/admin/pharmacies?${params.toString()}`);
+  }
+
+  getSubmissions(tab: "pending" | "approved" | "rejected" = "pending") {
+    return this.request<any[]>(`/admin/submissions/${tab}`);
+  }
+
+  getReports(period: "daily" | "weekly" | "monthly") {
+    return this.request(`/admin/reports/${period}`);
+  }
+
+  getAuditLogs(action?: string, limit = 100) {
+    const params = new URLSearchParams();
+    if (action) params.set("action", action);
+    params.set("limit", String(limit));
+    return this.request<any[]>(`/admin/audit?${params.toString()}`);
+  }
+
   startScraperJob(id: string) {
     return this.request(`/admin/scraper/jobs/${id}/start`, { method: "POST" });
   }

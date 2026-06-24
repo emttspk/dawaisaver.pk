@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AdminAuthContext";
+import { apiClient } from "../services/api-client";
 import Dashboard from "./Dashboard";
 import MirrorStatusDashboard from "./MirrorStatusDashboard";
 import IngredientReviewDashboard from "./IngredientReviewDashboard";
@@ -12,8 +13,14 @@ import SystemHealthDashboard from "./SystemHealthDashboard";
 import UserActivityDashboard from "./UserActivityDashboard";
 import DiscoveryReviewDashboard from "./DiscoveryReviewDashboard";
 import ProductsDashboard from "./ProductsDashboard";
+import ManufacturersDashboard from "./ManufacturersDashboard";
+import DistributorsDashboard from "./DistributorsDashboard";
+import PharmaciesDashboard from "./PharmaciesDashboard";
+import SubmissionCenterDashboard from "./SubmissionCenterDashboard";
+import ReportsDashboard from "./ReportsDashboard";
+import AuditLogsDashboard from "./AuditLogsDashboard";
 
-type ReviewTab = "overview" | "ingredient-review" | "ocr" | "prescriptions" | "matching" | "discovery" | "prices" | "sources" | "users" | "system" | "products" | "validation" | "scraper";
+type ReviewTab = "overview" | "ingredient-review" | "ocr" | "prescriptions" | "matching" | "discovery" | "prices" | "sources" | "users" | "system" | "products" | "validation" | "scraper" | "manufacturers" | "distributors" | "pharmacies" | "submissions" | "reports" | "audit";
 
 const tabs: Array<{ key: ReviewTab; label: string }> = [
   { key: "overview", label: "Dashboard" },
@@ -29,6 +36,12 @@ const tabs: Array<{ key: ReviewTab; label: string }> = [
   { key: "products", label: "Products" },
   { key: "validation", label: "Validation" },
   { key: "scraper", label: "Scraper" },
+  { key: "manufacturers", label: "Manufacturers" },
+  { key: "distributors", label: "Distributors" },
+  { key: "pharmacies", label: "Pharmacies" },
+  { key: "submissions", label: "Submissions" },
+  { key: "reports", label: "Reports" },
+  { key: "audit", label: "Audit Logs" },
 ];
 
 export default function Dashboard() {
@@ -103,12 +116,37 @@ function DashboardContent({ tab }: { tab: ReviewTab }) {
       return <ValidationCenterDashboard />;
     case "scraper":
       return <ScraperCenterDashboard />;
+    case "manufacturers":
+      return <ManufacturersDashboard />;
+    case "distributors":
+      return <DistributorsDashboard />;
+    case "pharmacies":
+      return <PharmaciesDashboard />;
+    case "submissions":
+      return <SubmissionCenterDashboard />;
+    case "reports":
+      return <ReportsDashboard />;
+    case "audit":
+      return <AuditLogsDashboard />;
     default:
       return <AdminOverview />;
   }
 }
 
 function AdminOverview() {
+  const [stats, setStats] = useState<{
+    totalProducts: number;
+    totalManufacturers: number;
+    totalPharmacies: number;
+    totalPrices: number;
+    pendingSubmissions: number;
+    pendingValidations: number;
+  } | null>(null);
+
+  useEffect(() => {
+    apiClient.getDashboardStats().then(setStats).catch(console.error);
+  }, []);
+
   return (
     <div className="space-y-6">
       <section className="rounded-3xl border border-emerald-100 bg-white p-6 shadow-lg shadow-emerald-950/5">
@@ -118,11 +156,13 @@ function AdminOverview() {
           Premium beta console for review queues, health checks, and audit-friendly decision support.
         </p>
       </section>
-      <div className="grid gap-4 md:grid-cols-4">
-        <Kpi value="9" label="Admin modules" tone="emerald" />
-        <Kpi value="Live" label="Production API" tone="blue" />
-        <Kpi value="R2" label="Upload storage" tone="amber" />
-        <Kpi value="JWT" label="Role guarded" tone="slate" />
+      <div className="grid gap-4 md:grid-cols-6">
+        <Kpi value={stats?.totalProducts ?? "-"} label="Products" tone="emerald" />
+        <Kpi value={stats?.totalManufacturers ?? "-"} label="Manufacturers" tone="blue" />
+        <Kpi value={stats?.totalPharmacies ?? "-"} label="Pharmacies" tone="amber" />
+        <Kpi value={stats?.totalPrices ?? "-"} label="Prices" tone="slate" />
+        <Kpi value={stats?.pendingSubmissions ?? "-"} label="Pending" tone="red" />
+        <Kpi value={stats?.pendingValidations ?? "-"} label="Validations" tone="blue" />
       </div>
       <div className="grid gap-4 lg:grid-cols-[1fr_0.8fr]">
         <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">

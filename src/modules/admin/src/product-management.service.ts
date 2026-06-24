@@ -18,6 +18,7 @@ export class ProductManagementService {
       data: {
         ...data,
         status: "PENDING_REVIEW" as RecordStatus,
+        displayName: data.brandName,
       },
     });
   }
@@ -28,7 +29,7 @@ export class ProductManagementService {
     strengthText: string;
     packSize: string;
     status: RecordStatus;
-  }> & { status?: RecordStatus }) {
+  }>) {
     return this.prisma.product.update({
       where: { id },
       data,

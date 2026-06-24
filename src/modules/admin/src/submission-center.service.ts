@@ -15,14 +15,14 @@ export class SubmissionCenterService {
   async getApprovedSubmissions() {
     return this.prisma.submission.findMany({
       where: { status: "VERIFIED" },
-      orderBy: { reviewedAt: "desc" },
+      orderBy: { createdAt: "desc" },
     });
   }
 
   async getRejectedSubmissions() {
     return this.prisma.submission.findMany({
       where: { status: "REJECTED" },
-      orderBy: { reviewedAt: "desc" },
+      orderBy: { createdAt: "desc" },
     });
   }
 }
