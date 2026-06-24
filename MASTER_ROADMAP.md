@@ -112,6 +112,7 @@ DawaiSaver.pk is a medicine intelligence platform that provides price comparison
 - [x] Begin closed beta testing
 - [x] Master Medicine Database audit complete
 - [x] Master Data Population report created
+- [x] Catalog Population pipeline ready
 
 ### Phase 10: Master Medicine Database
 - [x] Audit current medicine schema
@@ -120,6 +121,13 @@ DawaiSaver.pk is a medicine intelligence platform that provides price comparison
 - [x] Generate coverage report
 - [x] Create master-medicine-database.md audit
 - [x] Create master-data-population-report.md
+- [x] Create catalog-population-report.md
+
+### Phase 11: Catalog Population
+- [ ] Deploy API container with port 3000 exposed
+- [ ] Run catalog build from DRAP data
+- [ ] Verify golden samples in catalog
+- [ ] Validate search/comparison works
 
 ---
 
