@@ -129,6 +129,11 @@ interface ApiEnvelope<T> {
 }
 
 class AdminApiClient {
+  async get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
+    const query = params ? `?${new URLSearchParams(params).toString()}` : "";
+    return this.request<T>(`${endpoint}${query}`);
+  }
+
   async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
     const token = localStorage.getItem(TOKEN_KEY);
     const headers = new Headers(options?.headers);
@@ -376,18 +381,12 @@ getIngredientReviewStats() {
     return this.request<IngredientReviewStatsEntry[]>("/admin/ingredient-review/stats");
   }
 
-  backfillIngredientReviewQueue() {
-    return this.request<{ queueCount: number; whoCanonicalMolecules: number; whoAliasSeeds: number }>("/admin/ingredient-review/backfill", {
-      method: "POST",
-    });
-  }
-
   getProducts(limit = 50, status?: string, search?: string) {
     const params = new URLSearchParams();
     params.set("limit", String(limit));
     if (status) params.set("status", status);
     if (search) params.set("search", search);
-    return this.request<Product[]>(`/admin/products?${params.toString()}`);
+    return this.request<any[]>(`/admin/products?${params.toString()}`);
   }
 
   getDashboardStats() {
@@ -487,14 +486,6 @@ getIngredientReviewStats() {
 
   stopScraperJob(id: string) {
     return this.request(`/admin/scraper/jobs/${id}/stop`, { method: "POST" });
-  }
-}
-
-  backfillIngredientReviewQueue() {
-    return this.request<{ queueCount: number; whoCanonicalMolecules: number; whoAliasSeeds: number }>(
-      "/admin/ingredient-review/backfill",
-      { method: "POST" },
-    );
   }
 }
 

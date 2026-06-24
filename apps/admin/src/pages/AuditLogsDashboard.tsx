@@ -22,10 +22,10 @@ export default function AuditLogsDashboard() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const data = await apiClient.get("/admin/audit", {
-        action: filter || undefined,
-        limit: 100,
-      } as any);
+      const data: any = await apiClient.get("/admin/audit", {
+        limit: "100",
+        ...(filter && { action: filter }),
+      });
       setLogs(Array.isArray(data) ? data : data.items || []);
     } catch (error) {
       console.error(error);

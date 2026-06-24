@@ -178,7 +178,7 @@ export default function IngredientReviewDashboard() {
   const handleBackfill = async () => {
     setBackfillBusy(true);
     try {
-      await apiClient.backfillIngredientReviewQueue();
+      await apiClient.request("/admin/ingredient-review/backfill", { method: "POST" });
       await loadData();
     } finally {
       setBackfillBusy(false);

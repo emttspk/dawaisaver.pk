@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { AdminAuthProvider, useAuth } from "./contexts/AdminAuthContext";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/App";
 import MirrorStatusDashboard from "./pages/MirrorStatusDashboard";
 
 function App() {

@@ -3,21 +3,17 @@ import { apiClient } from "../services/api-client";
 
 export default function ValidationCenterDashboard() {
   const [queues, setQueues] = useState<any>({});
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadData();
   }, []);
 
   const loadData = async () => {
-    setLoading(true);
     try {
-      const data = await apiClient.getValidationQueues(20);
+      const data: any = await apiClient.get("/admin/validation/queues", { limit: "20" });
       setQueues(data);
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 

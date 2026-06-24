@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AdminAuthContext";
 import { apiClient } from "../services/api-client";
-import Dashboard from "./Dashboard";
-import MirrorStatusDashboard from "./MirrorStatusDashboard";
 import IngredientReviewDashboard from "./IngredientReviewDashboard";
 import MedicineMatchReview from "./MedicineMatchReview";
 import OcrReviewDashboard from "./OcrReviewDashboard";
@@ -19,6 +17,8 @@ import PharmaciesDashboard from "./PharmaciesDashboard";
 import SubmissionCenterDashboard from "./SubmissionCenterDashboard";
 import ReportsDashboard from "./ReportsDashboard";
 import AuditLogsDashboard from "./AuditLogsDashboard";
+import ValidationCenterDashboard from "./ValidationCenterDashboard";
+import ScraperCenterDashboard from "./ScraperCenterDashboard";
 
 type ReviewTab = "overview" | "ingredient-review" | "ocr" | "prescriptions" | "matching" | "discovery" | "prices" | "sources" | "users" | "system" | "products" | "validation" | "scraper" | "manufacturers" | "distributors" | "pharmacies" | "submissions" | "reports" | "audit";
 
@@ -44,7 +44,7 @@ const tabs: Array<{ key: ReviewTab; label: string }> = [
   { key: "audit", label: "Audit Logs" },
 ];
 
-export default function Dashboard() {
+export default function AdminDashboard() {
   const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState<ReviewTab>("overview");
 
@@ -157,12 +157,12 @@ function AdminOverview() {
         </p>
       </section>
       <div className="grid gap-4 md:grid-cols-6">
-        <Kpi value={stats?.totalProducts ?? "-"} label="Products" tone="emerald" />
-        <Kpi value={stats?.totalManufacturers ?? "-"} label="Manufacturers" tone="blue" />
-        <Kpi value={stats?.totalPharmacies ?? "-"} label="Pharmacies" tone="amber" />
-        <Kpi value={stats?.totalPrices ?? "-"} label="Prices" tone="slate" />
-        <Kpi value={stats?.pendingSubmissions ?? "-"} label="Pending" tone="red" />
-        <Kpi value={stats?.pendingValidations ?? "-"} label="Validations" tone="blue" />
+        <Kpi value={String(stats?.totalProducts ?? 0)} label="Products" tone="emerald" />
+        <Kpi value={String(stats?.totalManufacturers ?? 0)} label="Manufacturers" tone="blue" />
+        <Kpi value={String(stats?.totalPharmacies ?? 0)} label="Pharmacies" tone="amber" />
+        <Kpi value={String(stats?.totalPrices ?? 0)} label="Prices" tone="slate" />
+        <Kpi value={String(stats?.pendingSubmissions ?? 0)} label="Pending" tone="red" />
+        <Kpi value={String(stats?.pendingValidations ?? 0)} label="Validations" tone="blue" />
       </div>
       <div className="grid gap-4 lg:grid-cols-[1fr_0.8fr]">
         <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -203,12 +203,13 @@ function AdminOverview() {
   );
 }
 
-function Kpi({ value, label, tone }: { value: string; label: string; tone: "emerald" | "blue" | "amber" | "slate" }) {
+function Kpi({ value, label, tone }: { value: string; label: string; tone: "emerald" | "blue" | "amber" | "slate" | "red" }) {
   const toneClass = {
     emerald: "bg-emerald-50 text-emerald-800",
     blue: "bg-sky-50 text-sky-800",
     amber: "bg-amber-50 text-amber-900",
     slate: "bg-slate-100 text-slate-800",
+    red: "bg-red-50 text-red-800",
   }[tone];
 
   return (

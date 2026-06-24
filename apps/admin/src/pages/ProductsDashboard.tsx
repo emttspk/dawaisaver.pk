@@ -25,11 +25,11 @@ export default function ProductsDashboard() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const data = await apiClient.get("/admin/products", {
-        search: search || undefined,
-        status: statusFilter || undefined,
-        limit: 50,
-      } as any);
+      const data: any = await apiClient.get("/admin/products", {
+        limit: "50",
+        ...(search && { search }),
+        ...(statusFilter && { status: statusFilter }),
+      });
       setProducts(Array.isArray(data) ? data : data.items || []);
     } catch (error) {
       console.error(error);

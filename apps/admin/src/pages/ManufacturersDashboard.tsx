@@ -23,10 +23,10 @@ export default function ManufacturersDashboard() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const data = await apiClient.get("/admin/manufacturers", {
-        search: search || undefined,
-        limit: 50,
-      } as any);
+      const data: any = await apiClient.get("/admin/manufacturers", {
+        limit: "50",
+        ...(search && { search }),
+      });
       setManufacturers(Array.isArray(data) ? data : data.items || []);
     } catch (error) {
       console.error(error);

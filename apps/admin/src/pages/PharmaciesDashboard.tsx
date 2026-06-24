@@ -21,10 +21,10 @@ export default function PharmaciesDashboard() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const data = await apiClient.get("/admin/pharmacies", {
-        search: search || undefined,
-        limit: 50,
-      } as any);
+      const data: any = await apiClient.get("/admin/pharmacies", {
+        limit: "50",
+        ...(search && { search }),
+      });
       setPharmacies(Array.isArray(data) ? data : data.items || []);
     } catch (error) {
       console.error(error);

@@ -18,10 +18,10 @@ export default function SubmissionCenterDashboard() {
     loadData();
   }, [tab]);
 
-  const loadData = async () => {
+const loadData = async () => {
     setLoading(true);
     try {
-      let data: Submission[] = [];
+      let data: any[] = [];
       switch (tab) {
         case "pending":
           data = await apiClient.get("/admin/submissions/pending");
@@ -33,7 +33,7 @@ export default function SubmissionCenterDashboard() {
           data = await apiClient.get("/admin/submissions/rejected");
           break;
       }
-      setSubmissions(Array.isArray(data) ? data : data.items || []);
+      setSubmissions(Array.isArray(data) ? data : (data as any).items || []);
     } catch (error) {
       console.error(error);
     } finally {

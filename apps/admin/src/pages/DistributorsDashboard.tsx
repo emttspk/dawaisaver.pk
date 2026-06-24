@@ -21,10 +21,10 @@ export default function DistributorsDashboard() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const data = await apiClient.get("/admin/distributors", {
-        search: search || undefined,
-        limit: 50,
-      } as any);
+      const data: any = await apiClient.get("/admin/distributors", {
+        limit: "50",
+        ...(search && { search }),
+      });
       setDistributors(Array.isArray(data) ? data : data.items || []);
     } catch (error) {
       console.error(error);
