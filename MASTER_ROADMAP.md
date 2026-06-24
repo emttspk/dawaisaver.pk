@@ -130,8 +130,10 @@ DawaiSaver.pk is a medicine intelligence platform that provides price comparison
 - [x] Verify golden samples in catalog (all 5 found)
 - [x] DRAP master field inventory audit complete
 - [x] Phase 1 field preservation implemented
+- [x] ATC enrichment pipeline implemented
 - [ ] Reprocess all 591,469 SAVED items with new fields
 - [ ] Re-run catalog build to populate enriched fields
+- [ ] Begin price scraping for comparison feature
 
 ---
 
