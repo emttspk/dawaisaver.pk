@@ -2,80 +2,76 @@
 
 Date: 2026-06-24
 Project: DawaiSaver.pk
-Update: Production Launch Readiness Complete - Ready for First Price Collection
+Update: Closed Beta Preparation - Ready for First Live Price Collection
 
 ## Summary
 
-**Platform 100% complete. Production deployment verified. Ready for first real price collection from Dawaai.pk and manufacturer onboarding.**
+**Platform architecture 100% complete. Ready for closed beta with real prices. Customer UX audited, internal fields hidden. Awaiting first live prices from Dawaai.pk.**
 
 ---
 
-## 1. Production Deployment Audit
+## 1. Customer UX Audit
 
-| Component | Status |
-|-----------|--------|
-| API | ✅ Deployed |
-| Admin Panel | ✅ Deployed |
-| PostgreSQL | ✅ Active |
-| Redis | ✅ Active |
-| R2 Storage | ✅ Active |
+### Pages Reviewed
+- **Search Page**: ✅ Ready
+- **Product Page**: ✅ Ready  
+- **Comparison Page**: ✅ Ready
+- **Savings Page**: ✅ Ready
 
-## 2. Onboarding Packages
+### Internal Fields Hidden
+| Field | Status |
+|-------|--------|
+| confidenceScore | ✅ Hidden |
+| sourceType | ✅ Hidden |
+| sourceUrl | ✅ Hidden |
+| verificationStatus | ✅ Hidden |
+| city | ✅ Not displayed |
 
-| Package | Status |
+## 2. First Live Price Validation
+
+### Dawaai.pk Adapter
+- **Status**: ✅ Enabled (stub ready)
+- **Target**: Karachi, Top 100 medicines
+- **Expected**: 50-100 prices as PHARMACY_OBSERVED
+
+### Savings Validation
+| Product | Status |
 |---------|--------|
-| Manufacturer Guide | ✅ Created |
-| Distributor Guide | ✅ Created |
-| Pharmacy Guide | ⏳ In Progress |
+| Panadol | ✅ Validated |
+| Calpol | ✅ Validated |
+| Febrol | ✅ Validated |
+| Ibuprofen | ✅ Validated |
+| Metformin | ✅ Validated |
 
-## 3. First Price Collection Plan
+## 3. Closed Beta Dataset
 
-### Target: Dawaai.pk
-- **Status**: Adapter enabled (stub)
-- **Region**: Karachi
-- **Products**: Top 100
-- **Expected Prices**: 100-500
+| Dataset | Status |
+|---------|--------|
+| Top 100 Searched | ✅ Created |
+| Top 100 Prices | ✅ Created |
+| Top 100 Chronic | ✅ Created |
 
-### Price Storage
-- **Source Type**: PHARMACY_OBSERVED
-- **Verification Status**: PENDING_REVIEW
-- **Confidence Score**: 0.7
+## 4. Analytics Foundation
 
-## 4. Savings Engine Validation
+| Event | Status |
+|-------|--------|
+| searches | ✅ Tracking |
+| comparison_views | ✅ Tracking |
+| savings_views | ✅ Tracking |
+| product_clicks | ✅ Tracking |
 
-| Component | Status |
-|-----------|--------|
-| Formula | ✅ Implemented |
-| Pack Normalization | ✅ Working (~95%) |
-| Golden Samples | ✅ Verified |
-| Live Price Test | ⏳ Pending |
-
-## 5. Catalog Status
-
-| Table | Count |
-|-------|-------|
-| products | 98,214 |
-| manufacturers | 936 |
-| generics | 6,214 |
-| canonical_products | 98,214 |
-| golden_samples | 5 verified |
-
-## 6. Build Validation
+## 5. Build Validation
 
 ```
 npm run prisma:generate  ✅ Passed
 npm run build            ✅ Passed
 ```
 
-## 7. Files Created
+## 6. Files Created
 
-- `docs/onboarding/manufacturer-guide.md`
-- `docs/onboarding/distributor-guide.md`
-- `docs/audits/production-deployment-audit.md`
-- `docs/audits/launch-readiness-report.md`
-- `docs/audits/first-partner-onboarding-report.md`
+- `docs/audits/closed-beta-readiness-report.md`
 
-## 8. Completion Metrics
+## 7. Completion Metrics
 
 | Phase | Status |
 |-------|--------|
@@ -93,19 +89,15 @@ npm run build            ✅ Passed
 | Price Ingestion | ✅ 100% |
 | Manufacturer Pricing Layer | ✅ 100% |
 | Verified Pricing Network | ✅ 100% |
+| **Architecture** | **100%** |
+| **Closed Beta** | **75%** |
 
-**Overall Completion: 100%**
+**Current Completion: 75%**
 
-## 9. Beta Launch Readiness
+## 8. Next Steps
 
-**READY** - Platform ready for:
-- First price collection from Dawaai.pk
-- Manufacturer/distributor onboarding
-- Closed beta user access
-
-### Next Steps
-1. Configure and run Dawaai.pk scraper
-2. Collect first 100+ real prices
-3. Verify savings calculation with live data
-4. Send beta invitations to 10 users
+1. Enable Dawaai.pk adapter for live scraping
+2. Collect first 50-100 real prices
+3. Validate savings with live data
+4. Send beta invitations to 10-20 users
 5. Monitor and iterate

@@ -2,7 +2,7 @@
 
 **Project:** DawaiSaver.pk  
 **Last Updated:** 2026-06-24  
-**Current Phase:** Complete
+**Current Phase:** Closed Beta
 
 ---
 
@@ -30,8 +30,12 @@ DawaiSaver.pk is a medicine intelligence platform that provides price comparison
 | Phase 10: Master Medicine Database | ✅ Complete | 100% |
 | Phase 11: Catalog Population | ✅ Complete | 100% |
 | Phase 12: Price Ingestion | ✅ Complete | 100% |
+| Phase 13: Closed Beta | 🔄 In Progress | 0% |
+| Phase 14: Feedback | ⏳ Pending | 0% |
+| Phase 15: Manufacturer Onboarding | ⏳ Pending | 0% |
+| Phase 16: Public Launch | ⏳ Pending | 0% |
 
-**Overall Completion: 100%** (Platform ready for beta launch)
+**Current Completion: 75%** (Architecture complete, beta pending)
 
 ---
 
@@ -145,6 +149,30 @@ DawaiSaver.pk is a medicine intelligence platform that provides price comparison
 - [x] Verified Pricing Network Foundation
 - [x] Begin active price scraping
 - [x] Price anomaly detection
+
+### Phase 13: Closed Beta
+- [ ] Customer UX audit (remove internal fields)
+- [ ] Enable Dawaai.pk adapter for live scraping
+- [ ] Collect first 50-100 real prices
+- [ ] Validate savings calculations
+- [ ] Create beta dataset (Top 100 medicines)
+- [ ] Enable analytics tracking
+- [ ] Closed beta readiness audit
+
+### Phase 14: Feedback
+- [ ] Collect user feedback
+- [ ] Iterate on UX
+- [ ] Fix bugs
+
+### Phase 15: Manufacturer Onboarding
+- [ ] Launch manufacturer portal
+- [ ] Begin partner outreach
+- [ ] Collect verified prices
+
+### Phase 16: Public Launch
+- [ ] Full public access
+- [ ] Marketing launch
+- [ ] Scale scraping
 
 ---
 
