@@ -1,8 +1,8 @@
 # MASTER ROADMAP
 
 **Project:** DawaiSaver.pk  
-**Last Updated:** 2026-06-23  
-**Current Phase:** Phase 9 - Public Launch
+**Last Updated:** 2026-06-24  
+**Current Phase:** Phase 12 - Price Ingestion
 
 ---
 
@@ -28,9 +28,10 @@ DawaiSaver.pk is a medicine intelligence platform that provides price comparison
 | Phase 8: Medicine Comparison Design | ✅ Complete | 100% |
 | Phase 9: Public Launch | ✅ Complete | 100% |
 | Phase 10: Master Medicine Database | ✅ Complete | 100% |
-| Phase 11: Catalog Population | 🔄 In Progress | 70% |
+| Phase 11: Catalog Population | ✅ Complete | 100% |
+| Phase 12: Price Ingestion | 🔄 In Progress | 70% |
 
-**Overall Completion: 93%** (Ready for price ingestion)
+**Overall Completion: 95%** (Ready for price ingestion)
 
 ---
 
@@ -132,9 +133,16 @@ DawaiSaver.pk is a medicine intelligence platform that provides price comparison
 - [x] Phase 1 field preservation implemented
 - [x] ATC enrichment pipeline implemented
 - [x] Pack normalization foundation implemented
-- [ ] Reprocess all 591,469 SAVED items with new fields
-- [ ] Re-run catalog build to populate enriched fields
-- [ ] Begin price scraping for comparison feature
+- [x] Reprocess all 591,469 SAVED items with new fields
+- [x] Re-run catalog build to populate enriched fields
+- [x] Price collection foundation implemented
+
+### Phase 12: Price Ingestion
+- [x] Price Source Registry created
+- [x] Pharmacy Source Framework adapters (Dawaai.pk, Sehat, MediPK)
+- [x] Savings Engine Core implemented
+- [ ] Begin active price scraping
+- [ ] Price anomaly detection
 
 ---
 
