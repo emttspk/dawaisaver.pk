@@ -1,5 +1,16 @@
 export type CatalogBuildCommand = "build" | "resume" | "verify";
 
+export type PackUnitType = "TABLET" | "CAPSULE" | "SYRUP" | "SUSPENSION" | "DROPS" | "CREAM" | "OINTMENT" | "INJECTION" | "AMPOULE" | "VIAL" | "INHALER" | "STRIP" | "BOTTLE" | "PACK" | "OTHER";
+
+export interface NormalizedPack {
+  unitCount: number;
+  unitType: string;
+  volumeMl?: number;
+  weightG?: number;
+  containerCount: number;
+  normalizedPackLabel: string;
+}
+
 export interface CatalogBuildOptions {
   command: CatalogBuildCommand;
   jobId?: string;
@@ -143,4 +154,5 @@ export interface CatalogSourceRecord {
     country?: string;
     manufacturingType?: string;
   };
+  normalizedPack?: NormalizedPack;
 }

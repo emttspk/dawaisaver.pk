@@ -8,6 +8,7 @@ import {
 } from "../drap/drap.normalizer";
 import { DrapMirrorParsedRecord, DrapNormalizedRecord } from "../drap/drap.types";
 import { CatalogCompositionInput, CatalogSourceRecord, CatalogValidationIssue } from "./catalog.types";
+import { normalizePack } from "./pack-normalizer";
 
 interface ImportBatchItemLike {
   id: string;
@@ -207,6 +208,7 @@ function mapDrapMirrorParsedRecord(
       confidenceScore: 0.95,
       rawData: record,
       compositions,
+      normalizedPack: normalizePack(record.packSize),
       drapFields: {
         companyAddress: cleanText(record.companyAddress),
         activeIngredient: cleanText(record.activeIngredient),

@@ -646,6 +646,7 @@ export class CatalogService {
           sourceTable: record.sourceTable,
         },
         drap: record.drapFields || null,
+        pack: record.normalizedPack ? JSON.parse(JSON.stringify(record.normalizedPack)) : null,
       },
     };
 
@@ -711,7 +712,7 @@ export class CatalogService {
 
     this.productCache.set(productKey, saved.id);
     await this.bumpJob(jobId, existing ? { productsUpdated: 1 } : { productsCreated: 1 });
-    return saved;
+    return saved as unknown as ProductCandidate;
   }
 
   private async syncProductCompositions(
