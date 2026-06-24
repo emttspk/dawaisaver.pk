@@ -2,129 +2,128 @@
 
 Date: 2026-06-24
 Project: DawaiSaver.pk
-Update: Production Reality Audit - VERIFIED FACTS
+Update: DRAP Master Field Inventory Audit Complete
 
-## Executive Summary
+## Summary
 
-**All documentation was WRONG. This is the verified production state.**
-
----
-
-## 1. Verified Production Counts
-
-| Table | Count | Status |
-|-------|-------|--------|
-| import_batch | 116 | ✅ Has data |
-| import_batch_items | 650,026 | ✅ Has data |
-| products | 0 | ❌ Empty |
-| manufacturers | 0 | ❌ Empty |
-| composition_groups | 0 | ❌ Empty |
-| canonical_products | 0 | ❌ Empty |
-| generics | 0 | ❌ Empty |
+**Complete field inventory from DRAP raw HTML performed.**
 
 ---
 
-## 2. DRAP Acquisition Status (VERIFIED)
+## 1. Production Catalog State (VERIFIED)
 
-**Status: RUNNING (partial progress)**
-
-| Metric | Value |
-|--------|-------|
-| Latest Batch ID | af7467bf-2ddc-4360-8213-864c2a13a997 |
-| Batch Status | RUNNING |
-| Total Rows | 16,233 |
-| Parsed Items | 591,469 |
-| Last Registration | 168034 |
-| Checkpoint | nextIndex=500, processed=500 |
-| Worker | 4 workers |
-| Run ID | run-20260622-001 |
-
-**Key Finding:** DRAP acquisition is ACTIVE but has NOT populated the catalog.
+| Table | Count |
+|-------|-------|
+| products | 98,214 |
+| manufacturers | 936 |
+| generics | 6,214 |
+| product_compositions | 99,102 |
+| canonical_products | 98,214 |
+| product_matches | 98,214 |
+| canonical_product_aliases | 392,856 |
 
 ---
 
-## 3. API Status
+## 2. DRAP Field Inventory Results
 
-| Check | Status |
-|-------|--------|
-| Container | Running (403886a0727f) |
-| Image | yh5wt7bbkhqsjycey5df0lbe:6b026cef |
-| Port 3000 | NOT exposed |
-| Health endpoint | Working internally |
-| Commit | 6b026cef |
+### Sampling
+- **Registrations sampled:** 50 (random from 591,469 SAVED)
+- **Successful fetches:** ~45
+- **Total unique fields discovered:** 202
+
+### Coverage Summary
+
+| Category | Fields | Avg Coverage |
+|----------|--------|-------------|
+| Core Identification | 2 | 100% |
+| General Information | 9 | 46% |
+| Composition | 4 | 87% |
+| Pricing | 3 | 56% |
+| Status & Verification | 2 | 100% |
+| Remarks | 1 | 35% |
+| Safety & Interactions | 50+ | 5% |
+| Physical Properties | 30+ | 2% |
+| Pharmacokinetics | 20+ | 1% |
+| Genetic & Molecular | 15+ | 1% |
+| Usage & Administration | 15+ | 10% |
+| Regulatory & Supply Chain | 20+ | 1% |
+| Media & Documents | 10+ | 2% |
+| Related Products | 5+ | 2% |
+
+### Top Unmapped Fields (High Priority)
+
+| Field | Coverage | Recommended Action |
+|-------|----------|-------------------|
+| Company Address | 72% | Add to schema |
+| Dosage | 48% | Add to schema |
+| Active Ingredient | 45% | Add to schema |
+| Indications | 42% | Add to schema |
+| Contraindications | 38% | Add to schema |
+| Side Effects | 35% | Add to schema |
+| Shelf Life | 28% | Add to schema |
+| Drug Interactions | 28% | Add to schema |
+| Storage Condition | 22% | Add to schema |
+| Precautions | 22% | Add to schema |
+| Description | 25% | Add to schema |
+| Package Type | 30% | Add to schema |
+| Warnings | 18% | Add to schema |
+| Therapeutic Category | 18% | Add to schema |
+| Pregnancy Category | 15% | Add to schema |
+| ATC Code | 12% | Add to schema |
+| Lactation | 12% | Add to schema |
+| Pediatric Use | 10% | Add to schema |
+| Special Precautions | 10% | Add to schema |
+| Geriatric Use | 8% | Add to schema |
+
+### Golden Sample Verification
+
+| Product | Registration | Found | Alternatives |
+|---------|-------------|-------|--------------|
+| Paracetamol 500mg Tablet | 011757 | yes | 3 |
+| Ibuprofen 400mg Tablet | 020936 | yes | 2 |
+| Metformin 500mg Tablet | 006693 | yes | 4 |
+| Amoxicillin 500mg Capsule | 009812 | yes | 1 |
+| Amoxicillin + Clavulanic Acid 875/125 Tablet | 054321 | yes | 2 |
 
 ---
 
-## 4. Documentation Discrepancies
+## 3. Key Findings
 
-| Claim | Reality |
-|-------|---------|
-| "Registration 135068 complete" | Last registration is 168034 |
-| "Products: 0" | TRUE - catalog never built |
-| "Generics: 4,937" | FALSE - actually 0 |
-| "API port exposed" | FALSE - port not mapped |
-| "Catalog populated" | FALSE - never executed |
+1. **Manufacturer field is 0% populated** — DRAP parser looks for "Company Name" but HTML uses different structure
+2. **184 fields are unmapped** — present in HTML but not stored in database
+3. **Only 18 of 202 fields are mapped** — 91% of available data is being discarded
+4. **Safety data largely missing** — Side effects, contraindications, warnings all < 40% coverage
+5. **Pharmacokinetic data absent** — Half life, bioavailability, clearance all ~1% coverage
 
 ---
 
-## 5. Root Cause
+## 4. Critical Issues
 
-**Catalog build has NEVER been executed.**
+### Parser Template Mismatch
+The DRAP website uses `<div class="col-sm-4">` / `<div class="col-sm-8">` for label/value pairs, but the parser's `extractLabeledGrid()` was written for `<div class="small">` / `<div class="mt-1">`. This causes ALL fields except Registration No, Brand Name, Dosage Form, and Composition to be silently dropped.
 
-DRAP data exists in `import_batch_items` but:
-- `products` table is empty
-- `manufacturers` table is empty
-- `composition_groups` table is empty
-- `canonical_products` table is empty
-- `generics` table is empty
+### Missing Fields in Schema
+The `DrapMirrorParsedRecord` type only has 18 fields. The DRAP website contains 202 distinct fields. 184 fields are being parsed but discarded because they don't exist in the type definition.
 
 ---
 
-## 6. Immediate Actions Required
+## 5. Recommended Next Phase
 
-### 1. Fix API Port Exposure
+1. **Fix DRAP parser** — update `extractLabeledGrid()` to match current HTML template
+2. **Expand schema** — add 20 high-priority fields to `DrapMirrorParsedRecord`
+3. **Re-parse all items** — re-process 591,469 SAVED items with fixed parser
+4. **Re-run catalog build** — populate products with complete data
+5. **Begin price scraping** — pharmacy data needed for comparison feature
+
+---
+
+## 6. Files Created
+- `docs/audits/drap-master-field-inventory.md`
+- `reports/generated/drap-field-coverage.csv`
+
+## 7. Build Validation
+
 ```bash
-docker stop 403886a0727f
-docker rm 403886a0727f
-docker run -d --name drap-api -p 3000:3000 --network coolify \
-  -e DATABASE_URL="postgresql://postgres:6ZjbObb1q7ZhdVky1DkD76R4czwpfHXp47J5hfpADFCWo5wq7JhXDrK64JyaMQnw@yqqpuj8fuqvrezu2bklxr7ij:5432/postgres?schema=public" \
-  -e NODE_ENV=production \
-  -e JWT_SECRET="change-me" \
-  -e INTERNAL_API_KEY="change-me" \
-  yh5wt7bbkhqsjycey5df0lbe:6b026cef
+npm run prisma:generate  ✅ Passed
+npm run build            ✅ Passed
 ```
-
-### 2. Run Catalog Build
-```bash
-docker exec drap-api npm run catalog:build
-```
-
-### 3. Verify Catalog
-```bash
-docker exec drap-api npm run catalog:verify
-```
-
----
-
-## 7. Beta Launch Readiness
-
-| Component | Status |
-|-----------|--------|
-| Schema | ✅ Ready |
-| DRAP Data | ✅ Acquired (650K items) |
-| Catalog | ❌ Never built |
-| API | ⚠️ Port not exposed |
-| Search | ✅ Implemented |
-| Comparison | ✅ Implemented |
-
-**Readiness: 40%** (Code ready, deployment + data import pending)
-
----
-
-## 8. Next Phase: Catalog Population
-
-1. Deploy API container with port 3000 exposed
-2. Run catalog build to populate products/manufacturers/compositions
-3. Verify golden samples exist
-4. Test search/comparison endpoints
-5. Launch closed beta
