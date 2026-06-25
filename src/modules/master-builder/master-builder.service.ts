@@ -44,9 +44,6 @@ export class MasterBuilderService {
     const errors: string[] = [];
     const warnings: string[] = [];
 
-    const records = await this.jsonReader.readAll();
-    this.stats.jsonProcessed = records.length;
-
     const manufacturerBuilder = new ManufacturerBuilder(this.prisma);
     const genericBuilder = new GenericBuilder(this.prisma);
     const compositionBuilder = new CompositionBuilder(this.prisma);
@@ -61,7 +58,9 @@ export class MasterBuilderService {
     let totalConfidenceMedium = 0;
     let totalConfidenceLow = 0;
 
-    for (const record of records) {
+    for await (const record of this.jsonReader.iterateAll()) {
+      this.stats.jsonProcessed++;
+
       try {
         const manufacturer = await manufacturerBuilder.build(record);
         if (manufacturer) {
@@ -118,8 +117,8 @@ export class MasterBuilderService {
       low: totalConfidenceLow,
     };
 
-    this.stats.duplicateRate = records.length > 0
-      ? (this.stats.productsCreated - (this.stats.productsCreated - this.stats.validationFailures)) / records.length
+    this.stats.duplicateRate = this.stats.jsonProcessed > 0
+      ? this.stats.validationFailures / this.stats.jsonProcessed
       : 0;
 
     return ValidationReportBuilder.generateReport(this.stats, errors, warnings);

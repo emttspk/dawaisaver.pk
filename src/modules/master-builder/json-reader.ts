@@ -1,4 +1,5 @@
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { opendir } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { NormalizedJsonRecord } from './master-builder.types';
 
@@ -11,22 +12,30 @@ export class JsonReader {
 
   async readAll(): Promise<NormalizedJsonRecord[]> {
     const records: NormalizedJsonRecord[] = [];
-    
-    if (!existsSync(this.dataPath)) {
-      return records;
-    }
 
-    const files = readdirSync(this.dataPath);
-    const jsonFiles = files.filter(f => f.endsWith('.json'));
-
-    for (const file of jsonFiles) {
-      const filePath = join(this.dataPath, file);
-      const content = readFileSync(filePath, 'utf-8');
-      const record: NormalizedJsonRecord = JSON.parse(content);
+    for await (const record of this.iterateAll()) {
       records.push(record);
     }
 
     return records;
+  }
+
+  async *iterateAll(): AsyncGenerator<NormalizedJsonRecord> {
+    if (!existsSync(this.dataPath)) {
+      return;
+    }
+
+    const dir = await opendir(this.dataPath);
+    for await (const entry of dir) {
+      if (!entry.isFile() || !entry.name.endsWith('.json')) {
+        continue;
+      }
+
+      const filePath = join(this.dataPath, entry.name);
+      const content = readFileSync(filePath, 'utf-8');
+      const record: NormalizedJsonRecord = JSON.parse(content);
+      yield record;
+    }
   }
 
   async readByRegistration(registrationNumber: string): Promise<NormalizedJsonRecord | null> {

@@ -53,14 +53,11 @@ async function main(): Promise<void> {
 
     const limitArg = process.argv[2];
     const limit = limitArg ? parseInt(limitArg, 10) : 0;
+    const batchSize = 500;
 
-    const savedItems = await prisma.importBatchItem.findMany({
+    stats.totalItems = await prisma.importBatchItem.count({
       where: { status: 'SAVED', deletedAt: null },
-      orderBy: { rowNumber: 'asc' },
-      ...(limit > 0 ? { take: limit } : {}),
     });
-
-    stats.totalItems = savedItems.length;
     console.log(`Found ${stats.totalItems} SAVED records${limit > 0 ? ' (LIMITED)' : ''}\n`);
 
     const manufacturerCache = new Map<string, string>();
@@ -71,8 +68,34 @@ async function main(): Promise<void> {
     const atcCache = new Map<string, string>();
     const therapeuticCategoryCache = new Map<string, string>();
 
-    for (const item of savedItems) {
-      try {
+    let processed = 0;
+    let offset = 0;
+
+    while (true) {
+      const remaining = limit > 0 ? Math.max(limit - processed, 0) : batchSize;
+      const take = limit > 0 ? Math.min(batchSize, remaining) : batchSize;
+
+      if (limit > 0 && processed >= limit) {
+        break;
+      }
+
+      const savedItems = await prisma.importBatchItem.findMany({
+        where: { status: 'SAVED', deletedAt: null },
+        orderBy: { rowNumber: 'asc' },
+        skip: offset,
+        take,
+      });
+
+      if (savedItems.length === 0) {
+        break;
+      }
+
+      offset += savedItems.length;
+
+      for (const item of savedItems) {
+        processed++;
+
+        try {
         const normalizedData = item.normalizedData as Record<string, any> || {};
         
         if (!normalizedData || Object.keys(normalizedData).length === 0) {
@@ -317,6 +340,9 @@ async function main(): Promise<void> {
         stats.errors++;
         console.error(`Error processing item ${item.id}:`, error);
       }
+      }
+
+      console.log(`Processed ${processed}/${limit > 0 ? limit : stats.totalItems} records`);
     }
 
     console.log('\n=== Master Table Population Report ===');

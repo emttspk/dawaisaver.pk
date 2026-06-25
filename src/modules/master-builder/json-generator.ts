@@ -42,45 +42,60 @@ export class JsonGeneratorService {
   async generate(): Promise<void> {
     await mkdir(this.dataPath, { recursive: true });
 
-    const savedItems = await this.prisma.importBatchItem.findMany({
+    this.stats.totalSaved = await this.prisma.importBatchItem.count({
       where: { status: 'SAVED', deletedAt: null },
-      orderBy: { rowNumber: 'asc' },
     });
+    console.log(`Found ${this.stats.totalSaved} SAVED records`);
 
-    this.stats.totalSaved = savedItems.length;
-    console.log(`Found ${savedItems.length} SAVED records`);
+    const batchSize = 500;
+    let offset = 0;
 
-    for (const item of savedItems) {
-      this.stats.processed++;
+    while (true) {
+      const savedItems = await this.prisma.importBatchItem.findMany({
+        where: { status: 'SAVED', deletedAt: null },
+        orderBy: { rowNumber: 'asc' },
+        skip: offset,
+        take: batchSize,
+      });
 
-      const registrationNumber = this.extractRegistrationNumber(item);
-      if (!registrationNumber) {
-        this.stats.failed++;
-        this.failedRegistrations.push({
-          registrationNumber: 'unknown',
-          error: 'Missing registration number',
-          rowNumber: item.rowNumber,
-        });
-        continue;
+      if (savedItems.length === 0) {
+        break;
       }
 
-      const jsonPath = join(this.dataPath, `${registrationNumber}.json`);
-      if (await this.fileExists(jsonPath)) {
-        this.stats.skipped++;
-        continue;
-      }
+      offset += savedItems.length;
 
-      try {
-        const normalized = await this.extractToJson(item);
-        await writeFile(jsonPath, JSON.stringify(normalized, null, 2), 'utf-8');
-        this.stats.generated++;
-      } catch (error) {
-        this.stats.failed++;
-        this.failedRegistrations.push({
-          registrationNumber,
-          error: error instanceof Error ? error.message : String(error),
-          rowNumber: item.rowNumber,
-        });
+      for (const item of savedItems) {
+        this.stats.processed++;
+
+        const registrationNumber = this.extractRegistrationNumber(item);
+        if (!registrationNumber) {
+          this.stats.failed++;
+          this.failedRegistrations.push({
+            registrationNumber: 'unknown',
+            error: 'Missing registration number',
+            rowNumber: item.rowNumber,
+          });
+          continue;
+        }
+
+        const jsonPath = join(this.dataPath, `${registrationNumber}.json`);
+        if (await this.fileExists(jsonPath)) {
+          this.stats.skipped++;
+          continue;
+        }
+
+        try {
+          const normalized = await this.extractToJson(item);
+          await writeFile(jsonPath, JSON.stringify(normalized, null, 2), 'utf-8');
+          this.stats.generated++;
+        } catch (error) {
+          this.stats.failed++;
+          this.failedRegistrations.push({
+            registrationNumber,
+            error: error instanceof Error ? error.message : String(error),
+            rowNumber: item.rowNumber,
+          });
+        }
       }
     }
 
