@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { PrismaService } from '../database/prisma.service';
 import { MasterBuilderService } from '../modules/master-builder/master-builder.service';
@@ -17,6 +17,7 @@ async function main(): Promise<void> {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const jsonPath = join(reportDir, `master-builder-${timestamp}.json`);
     const mdPath = join(reportDir, `master-builder-${timestamp}.md`);
+    mkdirSync(reportDir, { recursive: true });
 
     const jsonContent = JSON.stringify(report, null, 2);
     writeFileSync(jsonPath, jsonContent, 'utf8');
