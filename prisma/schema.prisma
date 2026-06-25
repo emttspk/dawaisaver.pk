@@ -2522,3 +2522,222 @@ model MirrorRuntimeControl {
 
   @@map("mirror_runtime_control")
 }
+
+model ManufacturerMaster {
+  id                    String    @id @default(uuid()) @db.Uuid
+  name                  String
+  normalizedName        String    @map("normalized_name")
+  country               String?
+  websiteUrl            String?   @map("website_url")
+  status                RecordStatus @default(PENDING_REVIEW)
+  confidenceScore       Decimal?    @map("confidence_score") @db.Decimal(5, 4)
+  sourceType            SourceType? @map("source_type")
+  sourceUrl             String?     @map("source_url")
+  rawHtml               Json?       @map("raw_html")
+  normalizedJson        Json?       @map("normalized_json")
+  validationStatus      String?     @map("validation_status")
+  approvalStatus        String?     @map("approval_status") @default("PENDING")
+  linkedRegistrations   Int         @default(0) @map("linked_registrations")
+  metadata              Json?
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+  deletedAt             DateTime? @map("deleted_at")
+
+  @@index([normalizedName])
+  @@index([approvalStatus])
+  @@map("manufacturer_master")
+}
+
+model IngredientMaster {
+  id                    String    @id @default(uuid()) @db.Uuid
+  name                  String
+  normalizedName        String    @map("normalized_name")
+  whoMatched            Boolean?  @map("who_matched")
+  whoCode               String?   @map("who_code")
+  status                RecordStatus @default(PENDING_REVIEW)
+  confidenceScore       Decimal?  @map("confidence_score") @db.Decimal(5, 4)
+  sourceType            SourceType? @map("source_type")
+  sourceUrl             String?     @map("source_url")
+  rawHtml               Json?       @map("raw_html")
+  normalizedJson        Json?       @map("normalized_json")
+  validationStatus      String?     @map("validation_status")
+  approvalStatus        String?     @map("approval_status") @default("PENDING")
+  linkedRegistrations   Int         @default(0) @map("linked_registrations")
+  metadata              Json?
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+  deletedAt             DateTime? @map("deleted_at")
+
+  @@index([normalizedName])
+  @@index([approvalStatus])
+  @@map("ingredient_master")
+}
+
+model ApplicantMaster {
+  id                    String    @id @default(uuid()) @db.Uuid
+  name                  String
+  normalizedName        String    @map("normalized_name")
+  country               String?
+  status                RecordStatus @default(PENDING_REVIEW)
+  confidenceScore       Decimal?    @map("confidence_score") @db.Decimal(5, 4)
+  sourceType            SourceType? @map("source_type")
+  sourceUrl             String?     @map("source_url")
+  rawHtml               Json?       @map("raw_html")
+  normalizedJson        Json?       @map("normalized_json")
+  validationStatus      String?     @map("validation_status")
+  approvalStatus        String?     @map("approval_status") @default("PENDING")
+  linkedRegistrations   Int         @default(0) @map("linked_registrations")
+  metadata              Json?
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+  deletedAt             DateTime? @map("deleted_at")
+
+  @@index([normalizedName])
+  @@index([approvalStatus])
+  @@map("applicant_master")
+}
+
+model DosageFormMaster {
+  id                    String    @id @default(uuid()) @db.Uuid
+  name                  String
+  normalizedName        String    @map("normalized_name")
+  status                RecordStatus @default(PENDING_REVIEW)
+  confidenceScore       Decimal?    @map("confidence_score") @db.Decimal(5, 4)
+  sourceType            SourceType? @map("source_type")
+  sourceUrl             String?     @map("source_url")
+  rawHtml               Json?       @map("raw_html")
+  normalizedJson        Json?       @map("normalized_json")
+  validationStatus      String?     @map("validation_status")
+  approvalStatus        String?     @map("approval_status") @default("PENDING")
+  linkedRegistrations   Int         @default(0) @map("linked_registrations")
+  metadata              Json?
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+  deletedAt             DateTime? @map("deleted_at")
+
+  @@index([normalizedName])
+  @@index([approvalStatus])
+  @@map("dosage_form_master")
+}
+
+model StrengthMaster {
+  id                    String    @id @default(uuid()) @db.Uuid
+  value                 String?
+  unit                  String?
+  normalizedValue       String    @map("normalized_value")
+  status                RecordStatus @default(PENDING_REVIEW)
+  confidenceScore       Decimal?    @map("confidence_score") @db.Decimal(5, 4)
+  sourceType            SourceType? @map("source_type")
+  sourceUrl             String?     @map("source_url")
+  rawHtml               Json?       @map("raw_html")
+  normalizedJson        Json?       @map("normalized_json")
+  validationStatus      String?     @map("validation_status")
+  approvalStatus        String?     @map("approval_status") @default("PENDING")
+  linkedRegistrations   Int         @default(0) @map("linked_registrations")
+  metadata              Json?
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+  deletedAt             DateTime? @map("deleted_at")
+
+  @@index([normalizedValue])
+  @@index([approvalStatus])
+  @@map("strength_master")
+}
+
+model PackMaster {
+  id                    String    @id @default(uuid()) @db.Uuid
+  unitCount             Int?      @map("unit_count")
+  unitType              String?   @map("unit_type")
+  volumeMl              String?   @map("volume_ml")
+  weightG               String?   @map("weight_g")
+  containerCount        Int?      @map("container_count")
+  normalizedPackLabel   String    @map("normalized_pack_label")
+  status                RecordStatus @default(PENDING_REVIEW)
+  confidenceScore       Decimal?    @map("confidence_score") @db.Decimal(5, 4)
+  sourceType            SourceType? @map("source_type")
+  sourceUrl             String?     @map("source_url")
+  rawHtml               Json?       @map("raw_html")
+  normalizedJson        Json?       @map("normalized_json")
+  validationStatus      String?     @map("validation_status")
+  approvalStatus        String?     @map("approval_status") @default("PENDING")
+  linkedRegistrations   Int         @default(0) @map("linked_registrations")
+  metadata              Json?
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+  deletedAt             DateTime? @map("deleted_at")
+
+  @@index([normalizedPackLabel])
+  @@index([approvalStatus])
+  @@map("pack_master")
+}
+
+model RouteMaster {
+  id                    String    @id @default(uuid()) @db.Uuid
+  name                  String
+  normalizedName        String    @map("normalized_name")
+  status                RecordStatus @default(PENDING_REVIEW)
+  confidenceScore       Decimal?    @map("confidence_score") @db.Decimal(5, 4)
+  sourceType            SourceType? @map("source_type")
+  sourceUrl             String?     @map("source_url")
+  rawHtml               Json?       @map("raw_html")
+  normalizedJson        Json?       @map("normalized_json")
+  validationStatus      String?     @map("validation_status")
+  approvalStatus        String?     @map("approval_status") @default("PENDING")
+  linkedRegistrations   Int         @default(0) @map("linked_registrations")
+  metadata              Json?
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+  deletedAt             DateTime? @map("deleted_at")
+
+  @@index([normalizedName])
+  @@index([approvalStatus])
+  @@map("route_master")
+}
+
+model AtcMaster {
+  id                    String    @id @default(uuid()) @db.Uuid
+  code                  String
+  name                  String?
+  level                 Int?
+  parentCode            String?   @map("parent_code")
+  status                RecordStatus @default(PENDING_REVIEW)
+  confidenceScore       Decimal?    @map("confidence_score") @db.Decimal(5, 4)
+  sourceType            SourceType? @map("source_type")
+  sourceUrl             String?     @map("source_url")
+  rawHtml               Json?       @map("raw_html")
+  normalizedJson        Json?       @map("normalized_json")
+  validationStatus      String?     @map("validation_status")
+  approvalStatus        String?     @map("approval_status") @default("PENDING")
+  linkedRegistrations   Int         @default(0) @map("linked_registrations")
+  metadata              Json?
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+  deletedAt             DateTime? @map("deleted_at")
+
+  @@index([code])
+  @@index([approvalStatus])
+  @@map("atc_master")
+}
+
+model TherapeuticCategoryMaster {
+  id                    String    @id @default(uuid()) @db.Uuid
+  name                  String
+  normalizedName        String    @map("normalized_name")
+  status                RecordStatus @default(PENDING_REVIEW)
+  confidenceScore       Decimal?    @map("confidence_score") @db.Decimal(5, 4)
+  sourceType            SourceType? @map("source_type")
+  sourceUrl             String?     @map("source_url")
+  rawHtml               Json?       @map("raw_html")
+  normalizedJson        Json?       @map("normalized_json")
+  validationStatus      String?     @map("validation_status")
+  approvalStatus        String?     @map("approval_status") @default("PENDING")
+  linkedRegistrations   Int         @default(0) @map("linked_registrations")
+  metadata              Json?
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+  deletedAt             DateTime? @map("deleted_at")
+
+  @@index([normalizedName])
+  @@index([approvalStatus])
+  @@map("therapeutic_category_master")
+}

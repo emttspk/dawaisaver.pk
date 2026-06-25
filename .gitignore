@@ -28,8 +28,8 @@ docs/exports/catalog/!golden-sample-catalogue-*.{json,md}
 *_REPORT.md
 
 # Historical status snapshots
+docs/archive/CURRENT_UPDATE-*.md
 docs/archive/CURRENT_UPDATE_*.md
-docs/archive/CURRENT_UPDATE*.md
 CURRENT_UPDATE-*.md
 backups/
 .env.coolify

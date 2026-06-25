@@ -19,8 +19,13 @@ import ReportsDashboard from "./ReportsDashboard";
 import AuditLogsDashboard from "./AuditLogsDashboard";
 import ValidationCenterDashboard from "./ValidationCenterDashboard";
 import ScraperCenterDashboard from "./ScraperCenterDashboard";
+import MasterProductsDashboard from "./MasterProductsDashboard";
+import MasterManufacturersDashboard from "./MasterManufacturersDashboard";
+import MasterGenericsDashboard from "./MasterGenericsDashboard";
+import MasterCanonicalProductsDashboard from "./MasterCanonicalProductsDashboard";
+import MasterValidationDashboard from "./MasterValidationDashboard";
 
-type ReviewTab = "overview" | "ingredient-review" | "ocr" | "prescriptions" | "matching" | "discovery" | "prices" | "sources" | "users" | "system" | "products" | "validation" | "scraper" | "manufacturers" | "distributors" | "pharmacies" | "submissions" | "reports" | "audit";
+type ReviewTab = "overview" | "ingredient-review" | "ocr" | "prescriptions" | "matching" | "discovery" | "prices" | "sources" | "users" | "system" | "products" | "validation" | "scraper" | "manufacturers" | "distributors" | "pharmacies" | "submissions" | "reports" | "audit" | "master-products" | "master-manufacturers" | "master-generics" | "master-canonical" | "master-validation";
 
 const tabs: Array<{ key: ReviewTab; label: string }> = [
   { key: "overview", label: "Dashboard" },
@@ -42,6 +47,11 @@ const tabs: Array<{ key: ReviewTab; label: string }> = [
   { key: "submissions", label: "Submissions" },
   { key: "reports", label: "Reports" },
   { key: "audit", label: "Audit Logs" },
+  { key: "master-products", label: "Master Products" },
+  { key: "master-manufacturers", label: "Master Manufacturers" },
+  { key: "master-generics", label: "Master Generics" },
+  { key: "master-canonical", label: "Canonical Products" },
+  { key: "master-validation", label: "Master Validation" },
 ];
 
 export default function AdminDashboard() {
@@ -128,6 +138,16 @@ function DashboardContent({ tab }: { tab: ReviewTab }) {
       return <ReportsDashboard />;
     case "audit":
       return <AuditLogsDashboard />;
+    case "master-products":
+      return <MasterProductsDashboard />;
+    case "master-manufacturers":
+      return <MasterManufacturersDashboard />;
+    case "master-generics":
+      return <MasterGenericsDashboard />;
+    case "master-canonical":
+      return <MasterCanonicalProductsDashboard />;
+    case "master-validation":
+      return <MasterValidationDashboard />;
     default:
       return <AdminOverview />;
   }

@@ -136,6 +136,17 @@ export interface CatalogSourceRecord {
   confidenceScore: number;
   rawData: unknown;
   compositions: CatalogCompositionInput[];
+  normalizedPack?: NormalizedPack;
+  routeOfAdmin?: string;
+  atcCode?: string;
+  applicant?: string;
+  country?: string;
+  registrationStatus?: string;
+  storageConditions?: string;
+  shelfLife?: string;
+  therapeuticCategory?: string;
+  labelClaim?: string;
+  remarks?: string[];
   drapFields?: {
     companyAddress?: string;
     activeIngredient?: string;
@@ -154,5 +165,4 @@ export interface CatalogSourceRecord {
     country?: string;
     manufacturingType?: string;
   };
-  normalizedPack?: NormalizedPack;
 }

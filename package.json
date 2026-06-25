@@ -13,6 +13,8 @@
     "catalog:resume": "ts-node -r dotenv/config src/cli/catalog.ts resume",
     "catalog:verify": "ts-node -r dotenv/config src/cli/catalog.ts verify",
     "drap:mirror": "ts-node -r dotenv/config src/cli/drap-mirror.ts",
+    "master:build": "ts-node -r dotenv/config src/cli/master-builder.ts",
+    "json:generate": "ts-node -r dotenv/config src/cli/generate-json.ts",
     "lint": "eslint \"src/**/*.ts\"",
     "format": "prettier --write \"src/**/*.ts\" \"docs/**/*.md\"",
     "test": "jest",

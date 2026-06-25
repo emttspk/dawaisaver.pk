@@ -1,0 +1,35 @@
+{
+  "registrationNumber": "031356",
+  "brandName": "Amoxi-Clav 625mg Tablet",
+  "registrationDate": "2009-04-28",
+  "meetingNumber": "213",
+  "dosageForm": "Tablet",
+  "compositionRows": [
+    {
+      "genericName": "Amoxicillin (as trihydrate)",
+      "operator": "+",
+      "strength": "500",
+      "unit": "mg"
+    },
+    {
+      "genericName": "Clavulanic Acid as Potassium",
+      "operator": "+",
+      "strength": "125",
+      "unit": "mg"
+    }
+  ],
+  "packSize": "Nil",
+  "approvedPrice": "As per SRO",
+  "pricingType": "As per SRO",
+  "manufacturer": "Bayer Pakistan Limited",
+  "companyAddress": "Bayer House, Plot # 24-L, Site Area-III, Muridke Road, Lahore.",
+  "country": "Pakistan",
+  "manufacturingType": "Self Manufacturing",
+  "category": "Pharmaceutical",
+  "sourceStatus": "Cancelled",
+  "sourceVerificationStatus": "Approved / Verified",
+  "routeOfAdmin": "oral",
+  "therapeuticCategory": "Antibiotics",
+  "atcCode": "J01CR02",
+  "rawHtmlUrl": "https://eapp.dra.gov.pk/product_view_web.php?reg_no=031356"
+}

@@ -432,6 +432,58 @@ getIngredientReviewStats() {
     }>(`/admin/validation/queues?limit=${limit}`);
   }
 
+  getMasterProducts(limit = 50, status?: string, search?: string) {
+    const params = new URLSearchParams();
+    params.set("limit", String(limit));
+    if (status) params.set("status", status);
+    if (search) params.set("search", search);
+    return this.request<{ items: any[]; total: number }>(`/admin/master/products?${params.toString()}`);
+  }
+
+  getMasterProduct(id: string) {
+    return this.request<any>(`/admin/master/products/${id}`);
+  }
+
+  getMasterManufacturers(limit = 50, search?: string) {
+    const params = new URLSearchParams();
+    params.set("limit", String(limit));
+    if (search) params.set("search", search);
+    return this.request<any[]>(`/admin/master/manufacturers?${params.toString()}`);
+  }
+
+  getMasterGenerics(limit = 50, search?: string) {
+    const params = new URLSearchParams();
+    params.set("limit", String(limit));
+    if (search) params.set("search", search);
+    return this.request<any[]>(`/admin/master/generics?${params.toString()}`);
+  }
+
+  getMasterCanonicalProducts(limit = 50, search?: string) {
+    const params = new URLSearchParams();
+    params.set("limit", String(limit));
+    if (search) params.set("search", search);
+    return this.request<any[]>(`/admin/master/canonical-products?${params.toString()}`);
+  }
+
+  getMasterTherapeuticCategories() {
+    return this.request<any[]>(`/admin/master/therapeutic-categories`);
+  }
+
+  getMasterAtcClassifications() {
+    return this.request<any[]>(`/admin/master/atc-classifications`);
+  }
+
+  getMasterValidationStats() {
+    return this.request<{
+      totalProducts: number;
+      activeProducts: number;
+      pendingReview: number;
+      lowConfidence: number;
+      missingFields: number;
+      duplicateCandidates: number;
+    }>(`/admin/master/validation/stats`);
+  }
+
   getScraperJobs(limit = 20) {
     return this.request<any[]>(`/admin/scraper/jobs?limit=${limit}`);
   }
