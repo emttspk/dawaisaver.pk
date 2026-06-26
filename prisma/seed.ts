@@ -1,6 +1,12 @@
 import { PrismaClient, RecordStatus, SourceType } from "@prisma/client";
+import { createHash } from "crypto";
 
 const prisma = new PrismaClient();
+
+function deterministicUuid(seed: string): string {
+  const hash = createHash('sha256').update(seed).digest('hex');
+  return `${hash.substring(0, 8)}-${hash.substring(8, 12)}-${hash.substring(12, 16)}-${hash.substring(16, 20)}-${hash.substring(20, 32)}`;
+}
 
 const commonSeedFields = {
   status: RecordStatus.VERIFIED,
@@ -257,6 +263,114 @@ async function main() {
       },
     },
   });
+
+  const manufacturers = await prisma.manufacturer.findMany({ where: { deletedAt: null } });
+  for (const m of manufacturers) {
+    await prisma.manufacturerMaster.upsert({
+      where: { id: deterministicUuid(`manufacturer:${m.normalizedName}`) },
+      create: {
+        id: deterministicUuid(`manufacturer:${m.normalizedName}`),
+        name: m.name,
+        normalizedName: m.normalizedName,
+        country: m.country,
+        status: RecordStatus.VERIFIED,
+        sourceType: SourceType.SYSTEM,
+        confidenceScore: "0.9500",
+        approvalStatus: "APPROVED",
+        linkedRegistrations: 1,
+        metadata: { seedSource: true },
+      },
+      update: {
+        name: m.name,
+        normalizedName: m.normalizedName,
+        country: m.country,
+      },
+    });
+  }
+
+  const generics = await prisma.generic.findMany({ where: { deletedAt: null } });
+  for (const g of generics) {
+    await prisma.ingredientMaster.upsert({
+      where: { id: deterministicUuid(`ingredient:${g.normalizedName}`) },
+      create: {
+        id: deterministicUuid(`ingredient:${g.normalizedName}`),
+        name: g.name,
+        normalizedName: g.normalizedName,
+        status: RecordStatus.VERIFIED,
+        sourceType: SourceType.SYSTEM,
+        confidenceScore: "0.9500",
+        approvalStatus: "APPROVED",
+        linkedRegistrations: 1,
+        metadata: { seedSource: true },
+      },
+      update: {
+        name: g.name,
+        normalizedName: g.normalizedName,
+      },
+    });
+  }
+
+  for (const medicine of medicines) {
+    await prisma.dosageFormMaster.upsert({
+      where: { id: deterministicUuid(`dosageForm:${medicine.dosageForm}`) },
+      create: {
+        id: deterministicUuid(`dosageForm:${medicine.dosageForm}`),
+        name: medicine.dosageForm,
+        normalizedName: medicine.dosageForm.toLowerCase(),
+        status: RecordStatus.VERIFIED,
+        sourceType: SourceType.SYSTEM,
+        confidenceScore: "0.9500",
+        approvalStatus: "APPROVED",
+        linkedRegistrations: 1,
+        metadata: { seedSource: true },
+      },
+      update: {
+        name: medicine.dosageForm,
+        normalizedName: medicine.dosageForm.toLowerCase(),
+      },
+    });
+
+    const packLabel = medicine.packSize.toLowerCase();
+    await prisma.packMaster.upsert({
+      where: { id: deterministicUuid(`pack:${packLabel}`) },
+      create: {
+        id: deterministicUuid(`pack:${packLabel}`),
+        normalizedPackLabel: packLabel,
+        unitCount: 10,
+        unitType: "tablet",
+        status: RecordStatus.VERIFIED,
+        sourceType: SourceType.SYSTEM,
+        confidenceScore: "0.9500",
+        approvalStatus: "APPROVED",
+        linkedRegistrations: 1,
+        metadata: { seedSource: true },
+      },
+      update: {
+        normalizedPackLabel: packLabel,
+      },
+    });
+
+    await prisma.strengthMaster.upsert({
+      where: { id: deterministicUuid(`strength:${medicine.strengthText}`) },
+      create: {
+        id: deterministicUuid(`strength:${medicine.strengthText}`),
+        value: medicine.strengthText,
+        unit: "mg",
+        normalizedValue: medicine.strengthText.toLowerCase(),
+        status: RecordStatus.VERIFIED,
+        sourceType: SourceType.SYSTEM,
+        confidenceScore: "0.9500",
+        approvalStatus: "APPROVED",
+        linkedRegistrations: 1,
+        metadata: { seedSource: true },
+      },
+      update: {
+        value: medicine.strengthText,
+        unit: "mg",
+        normalizedValue: medicine.strengthText.toLowerCase(),
+      },
+    });
+  }
 }
 
 main()

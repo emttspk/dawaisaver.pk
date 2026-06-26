@@ -132,4 +132,4 @@ function renderMarkdown(report: any): string {
   return lines.join('\n');
 }
 
-main();
+void main();
