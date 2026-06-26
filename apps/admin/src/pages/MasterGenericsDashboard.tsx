@@ -13,7 +13,7 @@ export default function MasterGenericsDashboard() {
   const loadGenerics = async () => {
     setLoading(true);
     try {
-      const response = await apiClient.get("/admin/generics", { limit: 50, search });
+      const response: any = await apiClient.get("/admin/generics", { limit: 50, search });
       setGenerics(response.items || response);
     } catch (error) {
       console.error(error);

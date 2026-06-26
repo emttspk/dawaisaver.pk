@@ -15,8 +15,8 @@ export class AdminDashboardController {
       this.prisma.manufacturer.count({ where: { deletedAt: null } }),
       this.prisma.pharmacy.count({ where: { deletedAt: null } }),
       this.prisma.productPrice.count({ where: { deletedAt: null } }),
-      this.prisma.submission.count({ where: { status: "PENDING_REVIEW" } }),
-      this.prisma.ingredientReviewQueue.count({ where: { reviewStatus: "PENDING_AI" } }),
+      this.safeCount(() => this.prisma.submission.count({ where: { status: "PENDING_REVIEW" } })),
+      this.safeCount(() => this.prisma.ingredientReviewQueue.count({ where: { reviewStatus: "PENDING_AI" } })),
     ]);
 
     return {
@@ -27,6 +27,14 @@ export class AdminDashboardController {
       pendingSubmissions: submissions,
       pendingValidations: validations,
     };
+  }
+
+  private async safeCount(fn: () => Promise<number>): Promise<number> {
+    try {
+      return await fn();
+    } catch {
+      return 0;
+    }
   }
 
   @Get("scraper/status")

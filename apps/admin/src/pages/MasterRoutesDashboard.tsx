@@ -1,23 +1,22 @@
 import MasterReferenceDashboard from "./MasterReferenceDashboard";
 
-export default function MasterManufacturersDashboard() {
+export default function MasterRoutesDashboard() {
   return (
     <MasterReferenceDashboard
-      title="Manufacturers"
-      description="Live manufacturer_master rows populated from normalized medicine records."
-      resource="manufacturers"
-      searchPlaceholder="Search manufacturers..."
+      title="Routes"
+      description="Live route_master rows populated from normalized route-of-administration values."
+      resource="routes"
+      searchPlaceholder="Search routes..."
       statusOptions={["PENDING_REVIEW", "ACTIVE", "INACTIVE"]}
       approvalStatusOptions={["PENDING", "APPROVED", "REJECTED"]}
       columns={[
         { label: "Name", render: (item) => item.name },
-        { label: "Country", render: (item) => item.country || "-" },
+        { label: "Normalized", render: (item) => item.normalizedName },
         { label: "Linked", render: (item) => String(item.linkedRegistrations ?? 0) },
         { label: "Status", render: (item) => item.status },
       ]}
       detailFields={[
         { label: "Normalized", render: (item) => item.normalizedName },
-        { label: "Country", render: (item) => item.country || "-" },
         { label: "Approval", render: (item) => item.approvalStatus || "-" },
       ]}
     />

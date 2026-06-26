@@ -120,6 +120,41 @@ export interface IngredientReviewStatsEntry {
   occurrences: number;
 }
 
+export type MasterReferenceResource =
+  | "products"
+  | "canonical-products"
+  | "manufacturers"
+  | "ingredients"
+  | "applicants"
+  | "dosage-forms"
+  | "strengths"
+  | "packs"
+  | "routes"
+  | "atc-classifications"
+  | "therapeutic-categories";
+
+export interface MasterReferenceListParams {
+  limit?: number;
+  offset?: number;
+  search?: string;
+  status?: string;
+  approvalStatus?: string;
+}
+
+export interface MasterReferenceListResponse {
+  items: any[];
+  total: number;
+  limit: number;
+  offset: number;
+}
+
+export interface MasterReferenceDetailResponse {
+  item: any;
+  linkedProducts: any[];
+  linkedProductsTotal: number;
+  linkedCompositions?: any[];
+}
+
 interface ApiEnvelope<T> {
   success: boolean;
   data?: T;
@@ -129,8 +164,15 @@ interface ApiEnvelope<T> {
 }
 
 class AdminApiClient {
-  async get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
-    const query = params ? `?${new URLSearchParams(params).toString()}` : "";
+  async get<T>(endpoint: string, params?: Record<string, string | number | boolean | undefined | null>): Promise<T> {
+    const query = params
+      ? `?${new URLSearchParams(
+          Object.entries(params).reduce<Record<string, string>>((acc, [key, value]) => {
+            if (value !== undefined && value !== null) acc[key] = String(value);
+            return acc;
+          }, {}),
+        ).toString()}`
+      : "";
     return this.request<T>(`${endpoint}${query}`);
   }
 
@@ -438,6 +480,20 @@ getIngredientReviewStats() {
     if (status) params.set("status", status);
     if (search) params.set("search", search);
     return this.request<{ items: any[]; total: number }>(`/admin/master/products?${params.toString()}`);
+  }
+
+  getMasterReferenceList(resource: MasterReferenceResource, params?: MasterReferenceListParams) {
+    return this.get<MasterReferenceListResponse>(`/admin/master/${resource}`, {
+      limit: params?.limit ?? 25,
+      offset: params?.offset ?? 0,
+      search: params?.search,
+      status: params?.status,
+      approvalStatus: params?.approvalStatus,
+    });
+  }
+
+  getMasterReferenceDetail(resource: MasterReferenceResource, id: string) {
+    return this.request<MasterReferenceDetailResponse>(`/admin/master/${resource}/${id}`);
   }
 
   getMasterProduct(id: string) {

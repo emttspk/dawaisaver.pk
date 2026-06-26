@@ -1,12 +1,12 @@
 import MasterReferenceDashboard from "./MasterReferenceDashboard";
 
-export default function MasterManufacturersDashboard() {
+export default function MasterApplicantsDashboard() {
   return (
     <MasterReferenceDashboard
-      title="Manufacturers"
-      description="Live manufacturer_master rows populated from normalized medicine records."
-      resource="manufacturers"
-      searchPlaceholder="Search manufacturers..."
+      title="Applicants"
+      description="Live applicant_master rows linked back to the same normalized medicine records."
+      resource="applicants"
+      searchPlaceholder="Search applicants..."
       statusOptions={["PENDING_REVIEW", "ACTIVE", "INACTIVE"]}
       approvalStatusOptions={["PENDING", "APPROVED", "REJECTED"]}
       columns={[

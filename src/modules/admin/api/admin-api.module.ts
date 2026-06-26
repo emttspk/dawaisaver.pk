@@ -10,6 +10,7 @@ import { AdminPharmaciesController } from "./admin-pharmacies.controller";
 import { AdminSubmissionsController } from "./admin-submissions.controller";
 import { AdminReportsController } from "./admin-reports.controller";
 import { AdminAuditController } from "./admin-audit.controller";
+import { AdminMasterController } from "./admin-master.controller";
 
 @Module({
   controllers: [
@@ -24,6 +25,7 @@ import { AdminAuditController } from "./admin-audit.controller";
     AdminSubmissionsController,
     AdminReportsController,
     AdminAuditController,
+    AdminMasterController,
   ],
 })
 export class AdminApiModule {}

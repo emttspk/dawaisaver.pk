@@ -1,23 +1,22 @@
 import MasterReferenceDashboard from "./MasterReferenceDashboard";
 
-export default function MasterManufacturersDashboard() {
+export default function MasterStrengthsDashboard() {
   return (
     <MasterReferenceDashboard
-      title="Manufacturers"
-      description="Live manufacturer_master rows populated from normalized medicine records."
-      resource="manufacturers"
-      searchPlaceholder="Search manufacturers..."
+      title="Strengths"
+      description="Live strength_master rows derived from normalized composition strengths."
+      resource="strengths"
+      searchPlaceholder="Search strengths..."
       statusOptions={["PENDING_REVIEW", "ACTIVE", "INACTIVE"]}
       approvalStatusOptions={["PENDING", "APPROVED", "REJECTED"]}
       columns={[
-        { label: "Name", render: (item) => item.name },
-        { label: "Country", render: (item) => item.country || "-" },
+        { label: "Value", render: (item) => item.value || item.normalizedValue },
+        { label: "Unit", render: (item) => item.unit || "-" },
         { label: "Linked", render: (item) => String(item.linkedRegistrations ?? 0) },
         { label: "Status", render: (item) => item.status },
       ]}
       detailFields={[
-        { label: "Normalized", render: (item) => item.normalizedName },
-        { label: "Country", render: (item) => item.country || "-" },
+        { label: "Normalized", render: (item) => item.normalizedValue },
         { label: "Approval", render: (item) => item.approvalStatus || "-" },
       ]}
     />
