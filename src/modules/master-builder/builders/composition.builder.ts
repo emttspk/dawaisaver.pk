@@ -19,14 +19,13 @@ export class CompositionBuilder {
       );
 
       const strengthParts = this.parseStrength(row.strength || '');
-      const strengthValue = strengthParts.value ? parseFloat(strengthParts.value) : null;
 
       compositions.push({
         id: compositionId,
         product: { connect: { id: productId } },
         generic: { connect: { id: genericId } },
         ingredientOrder: i + 1,
-        strengthValue,
+        strengthValue: strengthParts.value,
         strengthUnit: strengthParts.unit,
         strengthText: row.strength,
         status: 'PENDING_REVIEW',
@@ -65,10 +64,14 @@ export class CompositionBuilder {
     return created[0];
   }
 
-  private parseStrength(strength: string): { value: string | null; unit: string | null } {
+  private parseStrength(strength: string): { value: number | null; unit: string | null } {
     const match = strength.match(/([\d.]+)\s*([a-zA-Z]*)/);
     if (match) {
-      return { value: match[1], unit: match[2] || null };
+      const parsed = Number.parseFloat(match[1]);
+      if (!Number.isFinite(parsed) || Math.abs(parsed) >= 100000000) {
+        return { value: null, unit: match[2] || null };
+      }
+      return { value: parsed, unit: match[2] || null };
     }
     return { value: null, unit: null };
   }

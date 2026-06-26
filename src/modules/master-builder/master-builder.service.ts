@@ -7,7 +7,6 @@ import { CanonicalProductBuilder } from './builders/canonical-product.builder';
 import { ProductPackBuilder } from './builders/product-pack.builder';
 import { SearchMetadataBuilder } from './builders/search-metadata.builder';
 import { TherapeuticCategoryBuilder } from './builders/therapeutic-category.builder';
-import { AtcClassificationBuilder } from './builders/atc-classification.builder';
 import { ValidationReportBuilder } from './builders/validation-report.builder';
 import { MasterBuilderStats, MasterBuilderReport, NormalizedJsonRecord } from './master-builder.types';
 import { PrismaService } from '../../database/prisma.service';
@@ -52,7 +51,6 @@ export class MasterBuilderService {
     const canonicalProductBuilder = new CanonicalProductBuilder(this.prisma, productBuilder);
     const searchMetadataBuilder = new SearchMetadataBuilder(this.prisma, productBuilder);
     const therapeuticCategoryBuilder = new TherapeuticCategoryBuilder(this.prisma);
-    const atcClassificationBuilder = new AtcClassificationBuilder(this.prisma);
 
     let totalConfidenceHigh = 0;
     let totalConfidenceMedium = 0;
@@ -97,11 +95,6 @@ export class MasterBuilderService {
         const therapeuticCategory = await therapeuticCategoryBuilder.build(record);
         if (therapeuticCategory) {
           this.stats.therapeuticCategoriesCreated++;
-        }
-
-        const atcClassification = await atcClassificationBuilder.build(record);
-        if (atcClassification) {
-          this.stats.atcClassificationsCreated++;
         }
 
         const confidence = this.calculateConfidence(record);
