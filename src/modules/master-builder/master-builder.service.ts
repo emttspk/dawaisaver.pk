@@ -40,7 +40,7 @@ export class MasterBuilderService {
     };
   }
 
-  async build(): Promise<MasterBuilderReport> {
+  async build(options?: { registrationNumbers?: string[] }): Promise<MasterBuilderReport> {
     const errors: string[] = [];
     const warnings: string[] = [];
 
@@ -58,7 +58,11 @@ export class MasterBuilderService {
     let totalConfidenceMedium = 0;
     let totalConfidenceLow = 0;
 
-    for await (const record of this.jsonReader.iterateAll()) {
+    const records = options?.registrationNumbers?.length
+      ? this.jsonReader.iterateSelected(options.registrationNumbers)
+      : this.jsonReader.iterateAll();
+
+    for await (const record of records) {
       this.stats.jsonProcessed++;
 
       try {
@@ -72,11 +76,6 @@ export class MasterBuilderService {
           this.stats.genericsCreated++;
         }
 
-        const composition = await compositionBuilder.build(record, generic?.id ?? null);
-        if (composition) {
-          this.stats.compositionsCreated++;
-        }
-
         const product = await productBuilder.build(record, manufacturer?.id ?? null, generic?.id ?? null);
         if (product) {
           this.stats.productsCreated++;
@@ -85,8 +84,15 @@ export class MasterBuilderService {
         await productPackBuilder.build(record, product?.id ?? null);
         this.stats.productPacksCreated++;
 
+        const composition = await compositionBuilder.build(record, product?.id ?? null, generic?.id ?? null);
+        if (composition) {
+          this.stats.compositionsCreated++;
+        }
+
         await canonicalProductBuilder.build(record, product?.id ?? null);
         this.stats.canonicalProductsCreated++;
+
+        await searchMetadataBuilder.build(record, product?.id ?? null);
 
         const therapeuticCategory = await therapeuticCategoryBuilder.build(record);
         if (therapeuticCategory) {
@@ -97,8 +103,6 @@ export class MasterBuilderService {
         if (atcClassification) {
           this.stats.atcClassificationsCreated++;
         }
-
-        await searchMetadataBuilder.build(record, product?.id ?? null);
 
         const confidence = this.calculateConfidence(record);
         if (confidence >= 0.8) totalConfidenceHigh++;

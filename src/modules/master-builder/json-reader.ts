@@ -38,6 +38,17 @@ export class JsonReader {
     }
   }
 
+  async *iterateSelected(registrationNumbers: Iterable<string>): AsyncGenerator<NormalizedJsonRecord> {
+    const uniqueNumbers = Array.from(new Set(Array.from(registrationNumbers).filter(Boolean)));
+
+    for (const registrationNumber of uniqueNumbers) {
+      const record = await this.readByRegistration(registrationNumber);
+      if (record) {
+        yield record;
+      }
+    }
+  }
+
   async readByRegistration(registrationNumber: string): Promise<NormalizedJsonRecord | null> {
     const filePath = join(this.dataPath, `${registrationNumber}.json`);
     

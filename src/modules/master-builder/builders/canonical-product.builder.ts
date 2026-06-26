@@ -11,22 +11,30 @@ export class CanonicalProductBuilder {
       return null;
     }
 
-    const existing = await this.prisma.canonicalProduct.findFirst({
-      where: { productId },
-    });
-
-    if (existing) {
-      return existing;
-    }
-
     const canonicalId = deterministicUuid(`canonical:${productId}`);
     const canonicalName = this.generateCanonicalName(record);
     const medicineSignature = this.generateMedicineSignature(record);
 
-    return this.prisma.canonicalProduct.create({
-      data: {
+    return this.prisma.canonicalProduct.upsert({
+      where: { productId },
+      create: {
         id: canonicalId,
         productId,
+        canonicalName,
+        normalizedBrand: record.brandName ? record.brandName.toLowerCase() : '',
+        normalizedGeneric: record.compositionRows?.[0]?.genericName?.toLowerCase() ?? '',
+        normalizedStrength: record.compositionRows?.[0]?.strength ?? undefined,
+        normalizedDosageForm: record.dosageForm?.toLowerCase() ?? undefined,
+        normalizedManufacturer: record.manufacturer?.toLowerCase() ?? undefined,
+        packSize: record.packSize ?? undefined,
+        registrationNumber: record.registrationNumber ?? undefined,
+        medicineSignature,
+        status: 'PENDING_REVIEW',
+        confidenceScore: 0.9,
+        sourceType: 'DRAP',
+        sourceUrl: record.rawHtmlUrl ?? undefined,
+      },
+      update: {
         canonicalName,
         normalizedBrand: record.brandName ? record.brandName.toLowerCase() : '',
         normalizedGeneric: record.compositionRows?.[0]?.genericName?.toLowerCase() ?? '',

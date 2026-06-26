@@ -13,9 +13,18 @@ export class ProductPackBuilder {
 
     const packId = deterministicUuid(`pack:${productId}`);
 
-    return this.prisma.productPack.create({
-      data: {
+    return this.prisma.productPack.upsert({
+      where: { id: packId },
+      create: {
         id: packId,
+        productId,
+        packSize: record.packSize,
+        status: 'PENDING_REVIEW',
+        confidenceScore: 0.9,
+        sourceType: 'DRAP',
+        sourceUrl: record.rawHtmlUrl ?? undefined,
+      },
+      update: {
         productId,
         packSize: record.packSize,
         status: 'PENDING_REVIEW',

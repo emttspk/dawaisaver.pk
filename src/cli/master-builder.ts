@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { PrismaService } from '../database/prisma.service';
 import { MasterBuilderService } from '../modules/master-builder/master-builder.service';
@@ -6,12 +6,27 @@ import { MasterBuilderService } from '../modules/master-builder/master-builder.s
 async function main(): Promise<void> {
   const prisma = new PrismaService();
   const service = new MasterBuilderService(prisma);
+  const args = parseArgs(process.argv.slice(2));
 
   await prisma.$connect();
 
   try {
     console.log('Starting Master Builder...');
-    const report = await service.build();
+    const resumeRegistrations = args.resumeFrom
+      ? extractFailedRegistrations(args.resumeFrom)
+      : [];
+
+    if (args.resumeFrom) {
+      console.log(`Resuming from report: ${args.resumeFrom}`);
+      if (resumeRegistrations.length === 0) {
+        throw new Error(`No failed registrations found in resume report: ${args.resumeFrom}`);
+      }
+      console.log(`Retrying ${resumeRegistrations.length} failed records`);
+    }
+
+    const report = await service.build({
+      registrationNumbers: resumeRegistrations.length > 0 ? resumeRegistrations : undefined,
+    });
 
     const reportDir = process.env.REPORT_DIR || 'reports/generated/master-builder';
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -32,6 +47,47 @@ async function main(): Promise<void> {
   } finally {
     await prisma.$disconnect();
   }
+}
+
+function parseArgs(argv: string[]): { resumeFrom?: string } {
+  const resumeIndex = argv.indexOf('--resume-from');
+  if (resumeIndex >= 0 && argv[resumeIndex + 1]) {
+    return { resumeFrom: argv[resumeIndex + 1] };
+  }
+
+  const equalsArg = argv.find((arg) => arg.startsWith('--resume-from='));
+  if (equalsArg) {
+    return { resumeFrom: equalsArg.split('=', 2)[1] };
+  }
+
+  return {};
+}
+
+function extractFailedRegistrations(reportPath: string): string[] {
+  const raw = readFileSync(reportPath, 'utf8');
+  const report = JSON.parse(raw) as { errors?: string[]; failedRegistrations?: Array<{ registrationNumber?: string }> };
+
+  if (Array.isArray(report.failedRegistrations) && report.failedRegistrations.length > 0) {
+    return report.failedRegistrations
+      .map((entry) => entry.registrationNumber?.trim())
+      .filter((value): value is string => Boolean(value));
+  }
+
+  if (!Array.isArray(report.errors)) {
+    return [];
+  }
+
+  const registrations = new Set<string>();
+  const pattern = /Failed to process ([A-Za-z0-9_-]+)/;
+
+  for (const entry of report.errors) {
+    const match = entry.match(pattern);
+    if (match?.[1]) {
+      registrations.add(match[1]);
+    }
+  }
+
+  return Array.from(registrations);
 }
 
 function renderMarkdown(report: any): string {

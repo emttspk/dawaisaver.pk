@@ -5,8 +5,8 @@ import type { NormalizedJsonRecord, CompositionRow } from '../master-builder.typ
 export class CompositionBuilder {
   constructor(private readonly prisma: PrismaService) {}
 
-  async build(record: NormalizedJsonRecord, genericId: string | null) {
-    if (!genericId || !record.compositionRows || record.compositionRows.length === 0) {
+  async build(record: NormalizedJsonRecord, productId: string | null, genericId: string | null) {
+    if (!productId || !genericId || !record.compositionRows || record.compositionRows.length === 0) {
       return null;
     }
 
@@ -23,8 +23,8 @@ export class CompositionBuilder {
 
       compositions.push({
         id: compositionId,
-        productId: null,
-        genericId,
+        product: { connect: { id: productId } },
+        generic: { connect: { id: genericId } },
         ingredientOrder: i + 1,
         strengthValue,
         strengthUnit: strengthParts.unit,
@@ -44,7 +44,22 @@ export class CompositionBuilder {
     }
 
     const created = await this.prisma.$transaction(
-      compositions.map(c => this.prisma.productComposition.create({ data: c }))
+      compositions.map(({ id, product, generic, ...data }) =>
+        this.prisma.productComposition.upsert({
+          where: { id },
+          create: {
+            id,
+            ...data,
+            product,
+            generic,
+          },
+          update: {
+            ...data,
+            product,
+            generic,
+          },
+        }),
+      ),
     );
 
     return created[0];
