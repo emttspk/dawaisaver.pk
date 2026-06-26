@@ -10,31 +10,45 @@ export class AdminDashboardController {
   @Get("stats")
   @ApiOperation({ summary: "Get dashboard statistics" })
   async getStats() {
-    const [products, manufacturers, pharmacies, prices, submissions, validations] = await Promise.all([
+    const [
+      products,
+      manufacturers,
+      ingredients,
+      dosageForms,
+      strengths,
+      packs,
+      routes,
+      atcClassifications,
+      therapeuticCategories,
+      importBatches,
+      importBatchItems,
+    ] = await Promise.all([
       this.prisma.product.count({ where: { deletedAt: null } }),
       this.prisma.manufacturerMaster.count({ where: { deletedAt: null } }),
-      this.prisma.pharmacy.count({ where: { deletedAt: null } }),
-      this.prisma.productPrice.count({ where: { deletedAt: null } }),
-      this.safeCount(() => this.prisma.submission.count({ where: { status: "PENDING_REVIEW" } })),
-      this.safeCount(() => this.prisma.ingredientReviewQueue.count({ where: { reviewStatus: "PENDING_AI" } })),
+      this.prisma.ingredientMaster.count({ where: { deletedAt: null } }),
+      this.prisma.dosageFormMaster.count({ where: { deletedAt: null } }),
+      this.prisma.strengthMaster.count({ where: { deletedAt: null } }),
+      this.prisma.packMaster.count({ where: { deletedAt: null } }),
+      this.prisma.routeMaster.count({ where: { deletedAt: null } }),
+      this.prisma.atcMaster.count({ where: { deletedAt: null } }),
+      this.prisma.therapeuticCategoryMaster.count({ where: { deletedAt: null } }),
+      this.prisma.importBatch.count({ where: { deletedAt: null } }),
+      this.prisma.importBatchItem.count({ where: { status: "SAVED" } }),
     ]);
 
     return {
       totalProducts: products,
       totalManufacturers: manufacturers,
-      totalPharmacies: pharmacies,
-      totalPrices: prices,
-      pendingSubmissions: submissions,
-      pendingValidations: validations,
+      totalIngredients: ingredients,
+      totalDosageForms: dosageForms,
+      totalStrengths: strengths,
+      totalPacks: packs,
+      totalRoutes: routes,
+      totalAtc: atcClassifications,
+      totalTherapeuticCategories: therapeuticCategories,
+      totalImportBatches: importBatches,
+      totalNormalizedRecords: importBatchItems,
     };
-  }
-
-  private async safeCount(fn: () => Promise<number>): Promise<number> {
-    try {
-      return await fn();
-    } catch {
-      return 0;
-    }
   }
 
   @Get("scraper/status")

@@ -1,6 +1,6 @@
-const PRODUCTION_API_BASE = "/api";
+const PRODUCTION_API_BASE = "/api/v1";
 const DEFAULT_API_BASE = import.meta.env.DEV
-  ? "http://localhost:3000/api"
+  ? "http://localhost:3000/api/v1"
   : PRODUCTION_API_BASE;
 
 export const API_BASE = normalizeApiBase(import.meta.env.VITE_API_URL || DEFAULT_API_BASE);
@@ -428,17 +428,22 @@ getIngredientReviewStats() {
     params.set("limit", String(limit));
     if (status) params.set("status", status);
     if (search) params.set("search", search);
-    return this.request<any[]>(`/admin/products?${params.toString()}`);
+    return this.request<{ items: any[]; total: number }>(`/admin/products?${params.toString()}`);
   }
 
   getDashboardStats() {
     return this.request<{
       totalProducts: number;
       totalManufacturers: number;
-      totalPharmacies: number;
-      totalPrices: number;
-      pendingSubmissions: number;
-      pendingValidations: number;
+      totalIngredients: number;
+      totalDosageForms: number;
+      totalStrengths: number;
+      totalPacks: number;
+      totalRoutes: number;
+      totalAtc: number;
+      totalTherapeuticCategories: number;
+      totalImportBatches: number;
+      totalNormalizedRecords: number;
     }>("/admin/dashboard/stats");
   }
 

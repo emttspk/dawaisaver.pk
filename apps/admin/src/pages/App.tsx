@@ -185,10 +185,15 @@ function AdminOverview() {
   const [stats, setStats] = useState<{
     totalProducts: number;
     totalManufacturers: number;
-    totalPharmacies: number;
-    totalPrices: number;
-    pendingSubmissions: number;
-    pendingValidations: number;
+    totalIngredients: number;
+    totalDosageForms: number;
+    totalStrengths: number;
+    totalPacks: number;
+    totalRoutes: number;
+    totalAtc: number;
+    totalTherapeuticCategories: number;
+    totalImportBatches: number;
+    totalNormalizedRecords: number;
   } | null>(null);
 
   useEffect(() => {
@@ -207,10 +212,10 @@ function AdminOverview() {
       <div className="grid gap-4 md:grid-cols-6">
         <Kpi value={String(stats?.totalProducts ?? 0)} label="Products" tone="emerald" />
         <Kpi value={String(stats?.totalManufacturers ?? 0)} label="Manufacturers" tone="blue" />
-        <Kpi value={String(stats?.totalPharmacies ?? 0)} label="Pharmacies" tone="amber" />
-        <Kpi value={String(stats?.totalPrices ?? 0)} label="Prices" tone="slate" />
-        <Kpi value={String(stats?.pendingSubmissions ?? 0)} label="Pending" tone="red" />
-        <Kpi value={String(stats?.pendingValidations ?? 0)} label="Validations" tone="blue" />
+        <Kpi value={String(stats?.totalIngredients ?? 0)} label="Ingredients" tone="amber" />
+        <Kpi value={String(stats?.totalRoutes ?? 0)} label="Routes" tone="slate" />
+        <Kpi value={String(stats?.totalNormalizedRecords ?? 0)} label="Normalized" tone="red" />
+        <Kpi value={String(stats?.totalImportBatches ?? 0)} label="Imports" tone="blue" />
       </div>
       <div className="grid gap-4 lg:grid-cols-[1fr_0.8fr]">
         <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">

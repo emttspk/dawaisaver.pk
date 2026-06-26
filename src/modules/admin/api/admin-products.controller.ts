@@ -9,46 +9,88 @@ export class AdminProductsController {
   constructor(private readonly prisma: PrismaService) {}
 
   @Get()
-  @ApiOperation({ summary: "List all products for admin" })
-  listProducts(
+  @ApiOperation({ summary: "List all products for admin with pagination" })
+  async listProducts(
     @Query("status") status?: RecordStatus,
     @Query("limit") limit = 50,
     @Query("offset") offset = 0,
     @Query("search") search?: string,
+    @Query("sortBy") sortBy?: string,
+    @Query("sortOrder") sortOrder: "asc" | "desc" = "desc",
   ) {
     const where: Prisma.ProductWhereInput = {
       deletedAt: null,
       ...(status && { status }),
-      ...(search && { brandName: { contains: search, mode: "insensitive" as any } }),
+      ...(search && { brandName: { contains: search, mode: "insensitive" } }),
     };
-    return this.prisma.product.findMany({
-      where,
-      include: { manufacturer: true },
-      take: Number(limit),
-      skip: Number(offset),
-      orderBy: { createdAt: "desc" },
-    });
+
+    const validSortFields = ["createdAt", "updatedAt", "brandName", "registrationNumber"];
+    const orderByField = validSortFields.includes(sortBy || "") ? (sortBy as keyof Prisma.ProductOrderByWithRelationInput) : "createdAt";
+
+    const [items, total] = await Promise.all([
+      this.prisma.product.findMany({
+        where,
+        include: { manufacturer: true },
+        take: Number(limit),
+        skip: Number(offset),
+        orderBy: { [orderByField]: sortOrder },
+      }),
+      this.prisma.product.count({ where }),
+    ]);
+
+    return { items, total, limit: Number(limit), offset: Number(offset) };
   }
 
   @Get(":id")
-  @ApiOperation({ summary: "Get product by ID" })
+  @ApiOperation({ summary: "Get product by ID with full details" })
   @ApiParam({ name: "id" })
-  getProduct(@Param("id", ParseUUIDPipe) id: string) {
-    return this.prisma.product.findUnique({
+  async getProduct(@Param("id", ParseUUIDPipe) id: string) {
+    const product = await this.prisma.product.findUnique({
       where: { id, deletedAt: null },
       include: {
         manufacturer: true,
-        compositions: { include: { generic: true } },
+        compositions: { 
+          include: { generic: true },
+        },
         prices: true,
         packs: true,
+        canonicalProduct: {
+          include: { aliases: true },
+        },
       },
     });
-  }
 
-  @Post()
-  @ApiOperation({ summary: "Create new product" })
-  createProduct(@Body() data: any) {
-    return this.prisma.product.create({ data: { ...data, status: "PENDING_REVIEW" } });
+    if (!product) return null;
+
+    const compositions = product.compositions || [];
+    return {
+      id: product.id,
+      brandName: product.brandName,
+      normalizedBrand: product.normalizedBrand,
+      displayName: product.displayName,
+      dosageForm: product.dosageForm,
+      normalizedForm: product.normalizedForm,
+      strengthText: product.strengthText,
+      packSize: product.packSize,
+      registrationNumber: product.registrationNumber,
+      signature: product.signature,
+      status: product.status,
+      confidenceScore: product.confidenceScore,
+      sourceType: product.sourceType,
+      sourceUrl: product.sourceUrl,
+      metadata: product.metadata,
+      createdAt: product.createdAt,
+      updatedAt: product.updatedAt,
+      manufacturer: product.manufacturer,
+      compositions: compositions,
+      prices: product.prices,
+      packs: product.packs,
+      canonicalProduct: product.canonicalProduct,
+      genericName: compositions
+        .map((c: any) => c.generic?.name)
+        .filter((v: any) => Boolean(v))
+        .join(" + "),
+    };
   }
 
   @Patch(":id/publish")
@@ -76,5 +118,11 @@ export class AdminProductsController {
       where: { id },
       data: { deletedAt: new Date() },
     });
+  }
+
+  @Post()
+  @ApiOperation({ summary: "Create new product" })
+  createProduct(@Body() data: any) {
+    return this.prisma.product.create({ data: { ...data, status: "PENDING_REVIEW" } });
   }
 }
