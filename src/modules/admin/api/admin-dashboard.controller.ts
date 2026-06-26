@@ -12,7 +12,7 @@ export class AdminDashboardController {
   async getStats() {
     const [products, manufacturers, pharmacies, prices, submissions, validations] = await Promise.all([
       this.prisma.product.count({ where: { deletedAt: null } }),
-      this.prisma.manufacturer.count({ where: { deletedAt: null } }),
+      this.prisma.manufacturerMaster.count({ where: { deletedAt: null } }),
       this.prisma.pharmacy.count({ where: { deletedAt: null } }),
       this.prisma.productPrice.count({ where: { deletedAt: null } }),
       this.safeCount(() => this.prisma.submission.count({ where: { status: "PENDING_REVIEW" } })),

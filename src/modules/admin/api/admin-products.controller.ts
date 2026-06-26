@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Patch, Param, Body, Query, ParseUUIDPipe } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiParam } from "@nestjs/swagger";
 import { PrismaService } from "../../../database/prisma.service";
-import { RecordStatus } from "@prisma/client";
+import { RecordStatus, Prisma } from "@prisma/client";
 
 @ApiTags("Admin Products")
 @Controller("admin/products")
@@ -13,16 +13,19 @@ export class AdminProductsController {
   listProducts(
     @Query("status") status?: RecordStatus,
     @Query("limit") limit = 50,
+    @Query("offset") offset = 0,
     @Query("search") search?: string,
   ) {
+    const where: Prisma.ProductWhereInput = {
+      deletedAt: null,
+      ...(status && { status }),
+      ...(search && { brandName: { contains: search, mode: "insensitive" as any } }),
+    };
     return this.prisma.product.findMany({
-      where: {
-        deletedAt: null,
-        ...(status && { status }),
-        ...(search && { brandName: { contains: search, mode: "insensitive" } }),
-      },
+      where,
       include: { manufacturer: true },
       take: Number(limit),
+      skip: Number(offset),
       orderBy: { createdAt: "desc" },
     });
   }

@@ -10,7 +10,7 @@ export class AdminManufacturersController {
   @Get()
   @ApiOperation({ summary: "List manufacturers" })
   listManufacturers(@Query("search") search?: string, @Query("limit") limit = 50) {
-    return this.prisma.manufacturer.findMany({
+    return this.prisma.manufacturerMaster.findMany({
       where: search ? { name: { contains: search, mode: "insensitive" } } : undefined,
       take: Number(limit),
       orderBy: { createdAt: "desc" },
