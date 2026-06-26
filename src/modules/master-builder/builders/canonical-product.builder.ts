@@ -11,30 +11,45 @@ export class CanonicalProductBuilder {
       return null;
     }
 
-    const canonicalId = deterministicUuid(`canonical:${productId}`);
     const canonicalName = this.generateCanonicalName(record);
     const medicineSignature = this.generateMedicineSignature(record);
 
-    return this.prisma.canonicalProduct.upsert({
-      where: { productId },
-      create: {
+    const existingBySignature = await this.prisma.canonicalProduct.findUnique({
+      where: { medicineSignature },
+    });
+
+    if (existingBySignature) {
+      if (!existingBySignature.productId && productId) {
+        return this.prisma.canonicalProduct.update({
+          where: { id: existingBySignature.id },
+          data: {
+            productId,
+            canonicalName,
+            normalizedBrand: record.brandName ? record.brandName.toLowerCase() : '',
+            normalizedGeneric: record.compositionRows?.[0]?.genericName?.toLowerCase() ?? '',
+            normalizedStrength: record.compositionRows?.[0]?.strength ?? undefined,
+            normalizedDosageForm: record.dosageForm?.toLowerCase() ?? undefined,
+            normalizedManufacturer: record.manufacturer?.toLowerCase() ?? undefined,
+            packSize: record.packSize ?? undefined,
+            registrationNumber: record.registrationNumber ?? undefined,
+            medicineSignature,
+            status: 'PENDING_REVIEW',
+            confidenceScore: 0.9,
+            sourceType: 'DRAP',
+            sourceUrl: record.rawHtmlUrl ?? undefined,
+          },
+        });
+      }
+
+      return existingBySignature;
+    }
+
+    const canonicalId = deterministicUuid(`canonical:${productId}`);
+
+    return this.prisma.canonicalProduct.create({
+      data: {
         id: canonicalId,
         productId,
-        canonicalName,
-        normalizedBrand: record.brandName ? record.brandName.toLowerCase() : '',
-        normalizedGeneric: record.compositionRows?.[0]?.genericName?.toLowerCase() ?? '',
-        normalizedStrength: record.compositionRows?.[0]?.strength ?? undefined,
-        normalizedDosageForm: record.dosageForm?.toLowerCase() ?? undefined,
-        normalizedManufacturer: record.manufacturer?.toLowerCase() ?? undefined,
-        packSize: record.packSize ?? undefined,
-        registrationNumber: record.registrationNumber ?? undefined,
-        medicineSignature,
-        status: 'PENDING_REVIEW',
-        confidenceScore: 0.9,
-        sourceType: 'DRAP',
-        sourceUrl: record.rawHtmlUrl ?? undefined,
-      },
-      update: {
         canonicalName,
         normalizedBrand: record.brandName ? record.brandName.toLowerCase() : '',
         normalizedGeneric: record.compositionRows?.[0]?.genericName?.toLowerCase() ?? '',
