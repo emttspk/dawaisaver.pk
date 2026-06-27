@@ -1,4 +1,5 @@
 const DEFAULT_BACKEND_ORIGIN = "http://yh5wt7bbkhqsjycey5df0lbe.178.105.221.236.sslip.io";
+// v4 - updated for admin
 
 export const onRequestGet = (context: any) => proxyRequest(context);
 export const onRequestPost = (context: any) => proxyRequest(context);
