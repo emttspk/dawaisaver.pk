@@ -1,5 +1,8 @@
 const DEFAULT_BACKEND_ORIGIN = "http://yh5wt7bbkhqsjycey5df0lbe.178.105.221.236.sslip.io";
-// v4 - updated for admin
+
+interface Env {
+  API_BASE_URL: string;
+}
 
 export const onRequestGet = (context: any) => proxyRequest(context);
 export const onRequestPost = (context: any) => proxyRequest(context);
@@ -9,12 +12,9 @@ export const onRequestDelete = (context: any) => proxyRequest(context);
 export const onRequestOptions = (context: any) => handleOptions(context.request);
 
 async function proxyRequest(context: any) {
-  const backendOrigin = (context.env?.BACKEND_ORIGIN || DEFAULT_BACKEND_ORIGIN).replace(/\/$/, "");
+  const apiBase = context.env?.API_BASE_URL || DEFAULT_BACKEND_ORIGIN;
   const incomingUrl = new URL(context.request.url);
-  const targetUrl = new URL(backendOrigin);
-
-  targetUrl.pathname = incomingUrl.pathname;
-  targetUrl.search = incomingUrl.search;
+  const targetUrl = `${apiBase}${incomingUrl.pathname}${incomingUrl.search}`;
 
   const headers = new Headers(context.request.headers);
   headers.delete("host");
@@ -33,7 +33,7 @@ async function proxyRequest(context: any) {
     init.body = await context.request.arrayBuffer();
   }
 
-  const response = await fetch(targetUrl.toString(), init);
+  const response = await fetch(targetUrl, init);
   const responseHeaders = new Headers(response.headers);
   responseHeaders.set("access-control-allow-origin", incomingUrl.origin);
   responseHeaders.set("access-control-allow-credentials", "true");
