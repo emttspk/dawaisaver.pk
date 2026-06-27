@@ -1,4 +1,5 @@
 /PRODUCTION_DEPLOYMENT_REPORT.md
+docs/master_canonical_structure.md
 .env.example
 docs/archive/*.md
 docs/reports/*.md
