@@ -4,53 +4,58 @@ interface Env {
   API_BASE_URL: string;
 }
 
-export const onRequest: PagesFunction<Env>[] = [
-  async (context) => {
-    const url = new URL(context.request.url);
-    const apiBase = context.env.API_BASE_URL || DEFAULT_BACKEND_ORIGIN;
-    const targetUrl = `${apiBase}${url.pathname}${url.search}`;
+export const onRequestGet = (context: any) => proxyRequest(context);
+export const onRequestPost = (context: any) => proxyRequest(context);
+export const onRequestPut = (context: any) => proxyRequest(context);
+export const onRequestPatch = (context: any) => proxyRequest(context);
+export const onRequestDelete = (context: any) => proxyRequest(context);
+export const onRequestOptions = (context: any) => handleOptions(context.request);
 
-    if (context.request.method === 'OPTIONS') {
-      return new Response(null, {
-        status: 204,
-        headers: {
-          'Access-Control-Allow-Origin': url.origin,
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization, Accept',
-          'Access-Control-Allow-Credentials': 'true',
-          'Access-Control-Max-Age': '86400',
-          vary: 'Origin',
-        },
-      });
-    }
+async function proxyRequest(context: any) {
+  const apiBase = context.env?.API_BASE_URL || DEFAULT_BACKEND_ORIGIN;
+  const incomingUrl = new URL(context.request.url);
+  const targetUrl = `${apiBase}${incomingUrl.pathname}${incomingUrl.search}`;
 
-    const headers = new Headers(context.request.headers);
-    headers.delete('host');
-    headers.delete('origin');
-    headers.delete('referer');
-    headers.set('x-forwarded-host', url.host);
-    headers.set('x-forwarded-proto', url.protocol.replace(':', ''));
+  const headers = new Headers(context.request.headers);
+  headers.delete("host");
+  headers.delete("origin");
+  headers.delete("referer");
+  headers.set("x-forwarded-host", incomingUrl.host);
+  headers.set("x-forwarded-proto", incomingUrl.protocol.replace(":", ""));
 
-    const body = context.request.method !== 'GET' && context.request.method !== 'HEAD'
-      ? await context.request.arrayBuffer()
-      : undefined;
+  const init: RequestInit = {
+    method: context.request.method,
+    headers,
+    redirect: "manual",
+  };
 
-    const response = await fetch(targetUrl, {
-      method: context.request.method,
-      headers,
-      body,
-      redirect: 'manual',
-    });
-
-    const responseHeaders = new Headers(response.headers);
-    responseHeaders.set('access-control-allow-origin', url.origin);
-    responseHeaders.set('access-control-allow-credentials', 'true');
-    responseHeaders.set('vary', 'Origin');
-
-    return new Response(response.body, {
-      status: response.status,
-      statusText: response.statusText,
-      headers: responseHeaders,
-    });
+  if (context.request.method !== "GET" && context.request.method !== "HEAD") {
+    init.body = await context.request.arrayBuffer();
   }
-];
+
+  const response = await fetch(targetUrl, init);
+  const responseHeaders = new Headers(response.headers);
+  responseHeaders.set("access-control-allow-origin", incomingUrl.origin);
+  responseHeaders.set("access-control-allow-credentials", "true");
+  responseHeaders.set("vary", "Origin");
+
+  return new Response(response.body, {
+    status: response.status,
+    headers: responseHeaders,
+  });
+}
+
+function handleOptions(request: Request) {
+  const origin = new URL(request.url).origin;
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "access-control-allow-origin": origin,
+      "access-control-allow-credentials": "true",
+      "access-control-allow-headers": "authorization, content-type",
+      "access-control-allow-methods": "GET,POST,PATCH,PUT,DELETE,OPTIONS",
+      "access-control-max-age": "86400",
+      vary: "Origin",
+    },
+  });
+}
