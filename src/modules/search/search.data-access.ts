@@ -4,55 +4,45 @@ import { SearchableProduct, SearchPopularitySignal, SearchSynonym } from "./sear
 export async function loadSearchableProducts(
   prisma: PrismaService,
   city?: string,
+  limit = 100,
 ): Promise<SearchableProduct[]> {
   const products = await prisma.product.findMany({
     where: { deletedAt: null },
-    include: {
-      manufacturer: true,
+    take: limit,
+    select: {
+      id: true,
+      brandName: true,
+      normalizedBrand: true,
+      displayName: true,
+      dosageForm: true,
+      normalizedForm: true,
+      strengthText: true,
+      packSize: true,
+      registrationNumber: true,
+      signature: true,
+      confidenceScore: true,
+      sourceType: true,
+      createdAt: true,
+      manufacturer: {
+        select: { name: true },
+      },
       compositions: {
-        include: {
-          generic: true,
+        select: {
+          ingredientOrder: true,
+          generic: { select: { name: true } },
         },
-        orderBy: {
-          ingredientOrder: "asc",
-        },
-      },
-      priceStatistics: {
-        orderBy: {
-          calculatedAt: "desc",
-        },
-        take: 1,
-      },
-      cityPriceStatistics: {
-        orderBy: {
-          calculatedAt: "desc",
-        },
-        take: 1,
-      },
-      marketSignals: {
-        orderBy: {
-          calculatedAt: "desc",
-        },
-        take: 1,
-      },
-      availability: {
-        orderBy: {
-          capturedAt: "desc",
-        },
-        take: 1,
+        orderBy: { ingredientOrder: "asc" },
       },
       canonicalProduct: {
-        include: {
-          aliases: true,
+        select: {
+          id: true,
+          medicineSignature: true,
+          aliases: { select: { aliasValue: true } },
         },
       },
       productMatches: {
-        where: {
-          matchStatus: "MATCHED" as any,
-        },
-        select: {
-          canonicalProductId: true,
-        },
+        where: { matchStatus: "MATCHED" },
+        select: { canonicalProductId: true },
       },
     },
   });
@@ -124,10 +114,6 @@ export async function recordSearchLog(
 }
 
 export function mapSearchableProduct(product: any): SearchableProduct {
-  const priceStatistic = product.priceStatistics[0];
-  const cityStatistic = product.cityPriceStatistics[0];
-  const signal = product.marketSignals[0];
-  const availability = product.availability[0];
   const canonical = product.canonicalProduct;
   const genericName =
     product.compositions
@@ -147,13 +133,11 @@ export function mapSearchableProduct(product: any): SearchableProduct {
     registrationNumber: product.registrationNumber || undefined,
     medicineSignature: canonical?.medicineSignature || product.signature || undefined,
     confidenceScore: toNumber(product.confidenceScore ?? canonical?.confidenceScore),
-    availabilityScore: toNumber(
-      priceStatistic?.availabilityScore ?? cityStatistic?.availabilityPercentage ?? availability?.confidenceScore,
-    ),
-    priceIntelligenceScore: toNumber(signal?.priceStabilityScore ?? signal?.confidenceScore ?? priceStatistic?.confidenceScore),
-    lowestPrice: toNumber(priceStatistic?.lowestPrice ?? cityStatistic?.lowestObservedPrice),
-    averagePrice: toNumber(priceStatistic?.averagePrice ?? cityStatistic?.averagePrice),
-    city: cityStatistic?.city ?? availability?.city ?? undefined,
+    availabilityScore: 0,
+    priceIntelligenceScore: 0,
+    lowestPrice: 0,
+    averagePrice: 0,
+    city: undefined,
     aliases: canonical?.aliases.map((alias: any) => alias.aliasValue) ?? [],
     equivalentBrandIds: product.productMatches
       .map((match: any) => match.canonicalProductId || undefined)

@@ -605,7 +605,7 @@ getIngredientReviewStats() {
 export const apiClient = new AdminApiClient();
 
 function normalizeApiBase(value: string | undefined) {
-  const fallback = "/api";
+  const fallback = "/api/v1";
   const raw = (value || fallback).trim();
   if (!raw) return fallback;
   return raw.replace(/\/$/, "");
