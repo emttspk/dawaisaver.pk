@@ -9,6 +9,8 @@ import { CanonicalDatasetService } from "./canonical-dataset.service";
 import { CoverageAnalysisService } from "./coverage-analysis.service";
 import { CanonicalProductBuilderService } from "./canonical-product-builder.service";
 import { CanonicalProductBuilderDesignService } from "./production-readiness.service";
+import { IntegrityVerificationService } from "./integrity-verification.service";
+import { PerformanceMonitoringService } from "./performance-monitoring.service";
 import { BridgeController } from "./controllers/bridge.controller";
 
 @Module({
@@ -24,6 +26,8 @@ import { BridgeController } from "./controllers/bridge.controller";
     CoverageAnalysisService,
     CanonicalProductBuilderService,
     CanonicalProductBuilderDesignService,
+    IntegrityVerificationService,
+    PerformanceMonitoringService,
   ],
   exports: [
     MoleculeService,
@@ -35,6 +39,8 @@ import { BridgeController } from "./controllers/bridge.controller";
     CoverageAnalysisService,
     CanonicalProductBuilderService,
     CanonicalProductBuilderDesignService,
+    IntegrityVerificationService,
+    PerformanceMonitoringService,
   ],
 })
 export class BridgeModule {}

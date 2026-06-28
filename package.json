@@ -34,7 +34,10 @@
     "bridge:validate": "ts-node -r dotenv/config src/cli/bridge.ts validate",
     "bridge:freeze": "ts-node -r dotenv/config src/cli/bridge.ts freeze",
     "bridge:build-products": "ts-node -r dotenv/config src/cli/bridge.ts build-products",
-    "bridge:link-products": "ts-node -r dotenv/config src/cli/bridge.ts link-products"
+    "bridge:link-products": "ts-node -r dotenv/config src/cli/bridge.ts link-products",
+    "bridge:verify-integrity": "ts-node -r dotenv/config src/cli/bridge.ts verify-integrity",
+    "bridge:analyze-performance": "ts-node -r dotenv/config src/cli/bridge.ts analyze-performance",
+    "bridge:release-candidate": "ts-node -r dotenv/config src/cli/bridge.ts release-candidate"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",
