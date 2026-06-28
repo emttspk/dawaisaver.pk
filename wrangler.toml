@@ -1,4 +1,4 @@
 name = "dawaisaver-admin"
-pages_build_output_dir = "dist"
+pages_build_output_dir = "apps/admin/dist"
 compatibility_date = "2024-01-01"
 compatibility_flags = ["nodejs_compat"]

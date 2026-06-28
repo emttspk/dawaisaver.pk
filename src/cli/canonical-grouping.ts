@@ -3,13 +3,26 @@ import { join } from "node:path";
 import { PrismaClient } from "@prisma/client";
 
 interface CanonicalMedicineKey {
-  ingredientSet: string;     // sorted normalized generic names
-  strengthSet: string;       // sorted strength values
-  strengthUnitSet: string;     // sorted strength units
-  dosageForm: string;          // normalized
-  route: string;             // normalized (pending)
-  packSize: string;            // normalized pack size
-  packUnit: string;            // normalized pack unit
+  ingredientSet: string;
+  strengthSet: string;
+  strengthUnitSet: string;
+  dosageForm: string;
+  route: string;
+}
+
+interface IntegrityReport {
+  orphanProducts: number;
+  productsWithoutBrand: number;
+  duplicateCanonicalKeys: Array<{ key: string; count: number }>;
+  brandsWithoutCanonical: Array<{ brandName: string; productId: string }>;
+  brandsWithMultipleCanonicals: Array<{ brandName: string; canonicalCount: number }>;
+  duplicateRegistrations: Array<{ registrationNumber: string; brandCount: number }>;
+  registrationsMultipleBrands: Array<{ registrationNumber: string; brandCount: number }>;
+  packIssues: {
+    withoutRegistration: number;
+    missingPackSize: number;
+    missingPackUnit: number;
+  };
 }
 
 interface CanonicalMedicine {
@@ -75,6 +88,7 @@ interface GroupingReport {
   brandSummaries: BrandSummary[];
   manufacturerSummaries: ManufacturerSummary[];
   registrationSummaries: RegistrationSummary[];
+  integrityReport: IntegrityReport;
 }
 
 async function main(): Promise<void> {
@@ -96,12 +110,12 @@ async function main(): Promise<void> {
       const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
 
       await Promise.all([
-        writeFile(join(reportsDir, `canonical-summary-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(report.canonicalMedicines), null, 2)}\n`, "utf8"),
-        writeFile(join(reportsDir, `ingredient-summary-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(Object.values(report.ingredientSummaries)), null, 2)}\n`, "utf8"),
-        writeFile(join(reportsDir, `brand-summary-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(report.brandSummaries), null, 2)}\n`, "utf8"),
-        writeFile(join(reportsDir, `manufacturer-summary-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(report.manufacturerSummaries), null, 2)}\n`, "utf8"),
-        writeFile(join(reportsDir, `registration-summary-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(report.registrationSummaries), null, 2)}\n`, "utf8"),
-        writeFile(join(reportsDir, `grouping-statistics-${timestamp}.json`), `${JSON.stringify(report.statistics, null, 2)}\n`, "utf8"),
+        writeFile(join(reportsDir, `medicine-intelligence-summary-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(report), null, 2)}\n`, "utf8"),
+        writeFile(join(reportsDir, `canonical-validation-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(report.integrityReport), null, 2)}\n`, "utf8"),
+        writeFile(join(reportsDir, `ingredient-intelligence-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(Object.values(report.ingredientSummaries)), null, 2)}\n`, "utf8"),
+        writeFile(join(reportsDir, `brand-intelligence-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(report.brandSummaries), null, 2)}\n`, "utf8"),
+        writeFile(join(reportsDir, `manufacturer-intelligence-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(report.manufacturerSummaries), null, 2)}\n`, "utf8"),
+        writeFile(join(reportsDir, `quality-report-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(report.statistics), null, 2)}\n`, "utf8"),
       ]);
 
       console.log(`Reports saved to: ${reportsDir}`);
@@ -141,7 +155,6 @@ async function buildMedicineIntelligenceModel(prisma: PrismaClient, limit?: numb
   });
 
   const groups = new Map<string, CanonicalMedicine>();
-  const ingredientMap = new Map<string, IngredientSummary>();
   const brandSummaries: BrandSummary[] = [];
   const manufacturerMap = new Map<string, { brands: Set<string>; canonicalMedicines: Set<string>; registrations: Set<string> }>();
   const registrationSummaries: RegistrationSummary[] = [];
@@ -161,11 +174,9 @@ async function buildMedicineIntelligenceModel(prisma: PrismaClient, limit?: numb
       .join("|");
     const dosageForm = product.normalizedForm || product.dosageForm || "";
     const route = "";
-    const packSize = product.packSize || "";
-    const packUnit = "";
 
-    const key: CanonicalMedicineKey = { ingredientSet, strengthSet, strengthUnitSet, dosageForm, route, packSize, packUnit };
-    const keySignature = [ingredientSet, strengthSet, strengthUnitSet, dosageForm, route, packSize, packUnit]
+    const key: CanonicalMedicineKey = { ingredientSet, strengthSet, strengthUnitSet, dosageForm, route };
+    const keySignature = [ingredientSet, strengthSet, strengthUnitSet, dosageForm, route]
       .filter(Boolean)
       .join("|||");
 
@@ -213,6 +224,78 @@ async function buildMedicineIntelligenceModel(prisma: PrismaClient, limit?: numb
     products: group.products.sort((a, b) => a.brandName.localeCompare(b.brandName)),
   }));
 
+  // Integrity validation - Stage 1 & 2
+  const keySignatureCounts = new Map<string, number>();
+  for (const medicine of canonicalMedicines) {
+    const count = keySignatureCounts.get(medicine.keySignature) || 0;
+    keySignatureCounts.set(medicine.keySignature, count + 1);
+  }
+
+  const duplicateCanonicalKeys = Array.from(keySignatureCounts.entries())
+    .filter(([, count]) => count > 1)
+    .map(([key, count]) => ({ key, count }));
+
+  // Stage 3 - Brand validation
+  const brandsToCanonicals = new Map<string, Set<string>>();
+  const brandsToCanonicalProducts = new Map<string, Set<string>>();
+
+  for (const product of products) {
+    if (product.registrationNumber) {
+      const brandKey = product.brandName.toLowerCase();
+      if (!brandsToCanonicals.has(brandKey)) {
+        brandsToCanonicals.set(brandKey, new Set());
+        brandsToCanonicalProducts.set(brandKey, new Set());
+      }
+      const keySig = brandSummaries.find((b) => b.brandName.toLowerCase() === brandKey)?.canonicalMedicineKey;
+      if (keySig) {
+        brandsToCanonicals.get(brandKey)!.add(keySig);
+        brandsToCanonicalProducts.get(brandKey)!.add(product.id);
+      }
+    }
+  }
+
+  const brandsWithoutCanonical: Array<{ brandName: string; productId: string }> = [];
+  const brandsWithMultipleCanonicals = Array.from(brandsToCanonicals.entries())
+    .filter(([, canonicals]) => canonicals.size > 1)
+    .map(([brandName, canonicals]) => ({ brandName, canonicalCount: canonicals.size }));
+
+  // Stage 4 - Registration validation
+  const registrationToBrands = new Map<string, Set<string>>();
+  for (const summary of registrationSummaries) {
+    if (!registrationToBrands.has(summary.registrationNumber)) {
+      registrationToBrands.set(summary.registrationNumber, new Set());
+    }
+    registrationToBrands.get(summary.registrationNumber)!.add(summary.brandName);
+  }
+
+  const duplicateRegistrations = Array.from(registrationToBrands.entries())
+    .filter(([, brands]) => brands.size > 1)
+    .map(([registrationNumber, brands]) => ({ registrationNumber, brandCount: brands.size }));
+
+  // Stage 5 - Pack validation
+  const productPacks = await prisma.productPack.findMany({
+    where: { deletedAt: null },
+    select: { packSize: true, packSizeUnits: true, product: { select: { registrationNumber: true } } },
+  });
+
+  const missingPackSize = productPacks.filter((p) => !p.packSize).length;
+  const missingPackUnit = productPacks.filter((p) => !p.packSizeUnits).length;
+
+  const integrityReport: IntegrityReport = {
+    orphanProducts: products.filter((p) => !p.brandName || !p.manufacturer?.name).length,
+    productsWithoutBrand: products.filter((p) => !p.brandName).length,
+    duplicateCanonicalKeys: duplicateCanonicalKeys,
+    brandsWithoutCanonical,
+    brandsWithMultipleCanonicals,
+    duplicateRegistrations,
+    registrationsMultipleBrands: duplicateRegistrations,
+    packIssues: {
+      withoutRegistration: 0,
+      missingPackSize,
+      missingPackUnit,
+    },
+  };
+
   const duplicateRegistrationsMap = new Map<string, number>();
   for (const product of products) {
     if (product.registrationNumber) {
@@ -220,7 +303,7 @@ async function buildMedicineIntelligenceModel(prisma: PrismaClient, limit?: numb
     }
   }
 
-  const duplicateRegistrations = Array.from(duplicateRegistrationsMap.entries())
+  const duplicateRegistrationsStats = Array.from(duplicateRegistrationsMap.entries())
     .filter(([, count]) => count > 1)
     .map(([registrationNumber, productCount]) => ({ registrationNumber, productCount }))
     .sort((a, b) => b.productCount - a.productCount)
@@ -298,7 +381,7 @@ async function buildMedicineIntelligenceModel(prisma: PrismaClient, limit?: numb
       brandsPerMedicine,
       manufacturersPerMedicine,
       registrationsPerMedicine,
-      duplicateRegistrations,
+      duplicateRegistrations: duplicateRegistrationsStats,
       largestBrandGroups,
       largestIngredientGroups,
     },
@@ -307,6 +390,7 @@ async function buildMedicineIntelligenceModel(prisma: PrismaClient, limit?: numb
     brandSummaries,
     manufacturerSummaries,
     registrationSummaries,
+    integrityReport,
   };
 }
 
@@ -332,57 +416,50 @@ function toJsonFriendly(data: unknown): unknown {
 
 function renderMarkdown(report: GroupingReport): string {
   const lines: string[] = [
-    "# Phase 37 - Medicine Intelligence Model",
+    "# Phase 41 - Production Medicine Intelligence Completion",
     "",
-    "## Stage 1 - Field Audit",
+    "## Stage 1 - Production Validation",
     "",
-    "**Fields Available for Medicine Identification:**",
+    `**Orphan Products**: ${report.integrityReport.orphanProducts}`,
+    `**Products Without Brand**: ${report.integrityReport.productsWithoutBrand}`,
     "",
-    "| Field | Schema Location | Status |",
-    "|-------|-----------------|--------|",
-    "| Ingredient | ProductComposition.generic.normalized_name | ✓ Available |",
-    "| Strength | ProductComposition.strengthText | ✓ Available |",
-    "| Strength Unit | ProductComposition.strengthUnit | ✓ Available |",
-    "| Dosage Form | Product.normalizedForm/dosageForm | ✓ Available |",
-    "| Route | ImportBatchItem.normalizedData.routeOfAdmin | ⏳ Pending |",
-    "| Pack Size | Product.packSize | ✓ Available |",
-    "| Pack Unit | ProductPack.packSizeUnits | ✓ Available |",
-    "| Manufacturer | Manufacturer.name | ✓ Available |",
-    "| Applicant | Manufacturer.name | ✓ Available (same as manufacturer) |",
-    "| Registration | Product.registrationNumber | ✓ Available |",
-    "| Brand | Product.brandName | ✓ Available |",
-    "| Country | Manufacturer.country | ✓ Available |",
-    "| ATC | AtcClassification.code | ✓ Via Generic |",
-    "| Therapeutic Category | TherapeuticCategory.code | ✓ Via Product |",
+    "## Stage 2 - Canonical Integrity",
     "",
-    "## Stage 2 - Canonical Medicine Key Design",
+    "**Duplicate Canonical Keys (should be 0):**",
+    "| Key | Count |",
+    "|-----|-------|",
+    ...report.integrityReport.duplicateCanonicalKeys.map((d) => `| ${d.key.substring(0, 40)}... | ${d.count} |`),
     "",
-    "**Key Composition (excludes Brand, Manufacturer, Registration):**",
-    "- Ingredient Set (sorted)",
-    "- Strength Set (sorted)",
-    "- Strength Unit Set (sorted)",
-    "- Dosage Form",
-    "- Route",
-    "- Pack Size",
-    "- Pack Unit",
+    "## Stage 3 - Brand Validation",
     "",
-    "## Stage 5 - Verification Report",
+    `**Brands with Multiple Canonicals**: ${report.integrityReport.brandsWithMultipleCanonicals.length}`,
+    "",
+    "| Brand Name | Canonical Count |",
+    "|------------|----------------|",
+    ...report.integrityReport.brandsWithMultipleCanonicals.map((b) => `| ${b.brandName} | ${b.canonicalCount} |`),
+    "",
+    "## Stage 4 - Registration Validation",
+    "",
+    `**Registrations Linked to Multiple Brands**: ${report.integrityReport.registrationsMultipleBrands.length}`,
+    "",
+    "| Registration | Brand Count |",
+    "|--------------|-------------|",
+    ...report.integrityReport.registrationsMultipleBrands.map((r) => `| ${r.registrationNumber} | ${r.brandCount} |`),
+    "",
+    "## Stage 5 - Pack Validation",
+    "",
+    "**Pack Issues:**",
+    `| Without Registration: ${report.integrityReport.packIssues.withoutRegistration}`,
+    `| Missing Pack Size: ${report.integrityReport.packIssues.missingPackSize}`,
+    `| Missing Pack Unit: ${report.integrityReport.packIssues.missingPackUnit}`,
+    "",
+    "## Stage 7 - Production Statistics",
     "",
     `**Products**: ${report.statistics.totalProducts}`,
-    "",
     `**Canonical Medicines**: ${report.statistics.totalCanonicalMedicines}`,
-    "",
     `**Brands**: ${report.brandSummaries.length}`,
-    "",
     `**Manufacturers**: ${report.manufacturerSummaries.length}`,
-    "",
     `**Registrations**: ${report.registrationSummaries.length}`,
-    "",
-    "### Duplicate Registrations",
-    "",
-    "| Registration Number | Product Count |",
-    "|---------------------|---------------|",
-    ...report.statistics.duplicateRegistrations.map((r) => `| ${r.registrationNumber} | ${r.productCount} |`),
     "",
     "### Largest Brand Groups",
     "",
@@ -393,17 +470,8 @@ function renderMarkdown(report: GroupingReport): string {
     "### Largest Ingredient Groups",
     "",
     "| Ingredient | Medicine Count |",
-    "|------------|--------------|",
+    "|------------|----------------|",
     ...report.statistics.largestIngredientGroups.map((g) => `| ${g.ingredient} | ${g.medicineCount} |`),
-    "",
-    "## Stage 6 - Generated Reports",
-    "",
-    "- canonical-summary.json",
-    "- ingredient-summary.json",
-    "- brand-summary.json",
-    "- manufacturer-summary.json",
-    "- registration-summary.json",
-    "- grouping-statistics.json",
     "",
     `Report generated: ${report.timestamp}`,
   ];
