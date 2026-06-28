@@ -338,6 +338,7 @@ model Manufacturer {
 
 model Generic {
   id                 String                        @id @default(uuid()) @db.Uuid
+  
   name               String
   normalizedName     String                        @map("normalized_name")
   aliases            String[]                      @default([])
@@ -2740,4 +2741,117 @@ model TherapeuticCategoryMaster {
   @@index([normalizedName])
   @@index([approvalStatus])
   @@map("therapeutic_category_master")
+}
+
+model Molecule {
+  id               String                        @id @default(uuid()) @db.Uuid
+  whoAtcCode       String?                       @map("who_atc_code")
+  whoDdd           String?                       @map("who_ddd")
+  whoUom           String?                       @map("who_uom")
+  whoAdmRoute      String?                       @map("who_adm_route")
+  fdaUnii          String?                       @map("fda_unii")
+  fdaRxcui         String?                       @map("fda_rxcui")
+  emaCas           String?                       @map("ema_cas")
+  emaEcNumber      String?                       @map("ema_ec_number")
+  rxnormRxcui      String?                       @map("rxnorm_rxcui")
+  preferredName      String                        @map("preferred_name")
+  normalizedName   String                        @unique @map("normalized_name")
+  aliases          String[]                      @default([])
+  status           RecordStatus                  @default(PENDING_REVIEW)
+  confidenceScore  Decimal?                      @map("confidence_score") @db.Decimal(5, 4)
+  sourceType       SourceType?                   @map("source_type")
+  sourceUrl        String?                       @map("source_url")
+  createdAt        DateTime                      @default(now()) @map("created_at")
+  updatedAt        DateTime                      @updatedAt @map("updated_at")
+  deletedAt        DateTime?                     @map("deleted_at")
+
+  
+  variants         IngredientVariant[]           @relation("MoleculeVariants")
+
+  @@index([normalizedName])
+  @@index([whoAtcCode])
+  @@map("molecules")
+}
+
+model IngredientVariant {
+  id               String                        @id @default(uuid()) @db.Uuid
+  moleculeId       String                        @map("molecule_id") @db.Uuid
+  variantType      String                        @map("variant_type")
+  name             String
+  normalizedName   String                        @map("normalized_name")
+  strengthFactor   Decimal?                      @map("strength_factor") @db.Decimal(12, 4)
+  strengthUnit     String?                       @map("strength_unit")
+  confidenceScore  Decimal?                      @map("confidence_score") @db.Decimal(5, 4)
+  status           RecordStatus                  @default(PENDING_REVIEW)
+  sourceType       SourceType?                   @map("source_type")
+  sourceUrl        String?                       @map("source_url")
+  createdAt        DateTime                      @default(now()) @map("created_at")
+  updatedAt        DateTime                      @updatedAt @map("updated_at")
+  deletedAt        DateTime?                     @map("deleted_at")
+
+  molecule         Molecule                      @relation("MoleculeVariants", fields: [moleculeId], references: [id])
+
+  @@unique([moleculeId, normalizedName])
+  @@index([moleculeId])
+  @@index([normalizedName])
+  @@map("ingredient_variants")
+}
+
+model WhoDrapBridge {
+  id               String                        @id @default(uuid()) @db.Uuid
+  whoMoleculeId   String?                       @map("who_molecule_id") @db.Uuid
+  drapGenericId   String?                       @map("drap_generic_id") @db.Uuid
+  matchMethod      String                        @map("match_method")
+  variantType      String?                       @map("variant_type")
+  confidenceScore  Decimal?                      @map("confidence_score") @db.Decimal(5, 4)
+  reviewStatus     String                        @default("PENDING") @map("review_status")
+  aiReasoning      String?                       @map("ai_reasoning")
+  evidence         Json?
+  sourceUrl        String?                       @map("source_url")
+  createdAt        DateTime                      @default(now()) @map("created_at")
+  updatedAt        DateTime                      @updatedAt @map("updated_at")
+  reviewedById     String?                       @map("reviewed_by_id") @db.Uuid
+  reviewedAt       DateTime?                     @map("reviewed_at")
+
+  @@unique([whoMoleculeId, drapGenericId])
+  @@index([drapGenericId])
+  @@index([reviewStatus])
+  @@map("who_drap_bridge")
+}
+
+model BridgeAiSuggestion {
+  id               String                        @id @default(uuid()) @db.Uuid
+  bridgeId         String?                       @map("bridge_id") @db.Uuid
+  ingredientText   String                        @map("ingredient_text")
+  suggestedMolecule String?                     @map("suggested_molecule")
+  suggestedMoleculeId String?                    @map("suggested_molecule_id") @db.Uuid
+  variantType      String?                       @map("variant_type")
+  confidence       Decimal?                      @map("confidence") @db.Decimal(5, 4)
+  reasoning        String?
+  evidence         Json?
+  alternativeCandidates Json?                    @map("alternative_candidates")
+  status           String                        @default("PENDING")
+  createdAt        DateTime                      @default(now()) @map("created_at")
+  approvedAt       DateTime?                     @map("approved_at")
+  approvedById     String?                       @map("approved_by_id") @db.Uuid
+
+  @@index([ingredientText])
+  @@index([status])
+  @@map("bridge_ai_suggestions")
+}
+
+model BridgeReviewHistory {
+  id               String                        @id @default(uuid()) @db.Uuid
+  bridgeId         String                        @map("bridge_id") @db.Uuid
+  changeType       String                        @map("change_type")
+  previousConfidence Decimal?                      @map("previous_confidence") @db.Decimal(5, 4)
+  newConfidence    Decimal?                     @map("new_confidence") @db.Decimal(5, 4)
+  reason           String?
+  actorType        String                        @map("actor_type")
+  actorId          String?                       @map("actor_id") @db.Uuid
+  createdAt        DateTime                      @default(now()) @map("created_at")
+
+  @@index([bridgeId])
+  @@index([changeType])
+  @@map("bridge_review_history")
 }

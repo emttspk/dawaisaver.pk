@@ -11,8 +11,11 @@ import { AdminSubmissionsController } from "./admin-submissions.controller";
 import { AdminReportsController } from "./admin-reports.controller";
 import { AdminAuditController } from "./admin-audit.controller";
 import { AdminMasterController } from "./admin-master.controller";
+import { AdminBridgeController } from "./admin-bridge.controller";
+import { BridgeModule } from "../../bridge/bridge.module";
 
 @Module({
+  imports: [BridgeModule],
   controllers: [
     AdminProductsController,
     AdminPricesController,
@@ -26,6 +29,7 @@ import { AdminMasterController } from "./admin-master.controller";
     AdminReportsController,
     AdminAuditController,
     AdminMasterController,
+    AdminBridgeController,
   ],
 })
 export class AdminApiModule {}

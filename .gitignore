@@ -3,6 +3,9 @@ canonical-freeze-report.md
 master_canonical_validation.md
 golden_dataset_statistics.md
 golden_canonical_structure.md
+golden-dataset-review.md
+canonical-integrity-report.md
+canonical-production-ready.md
 .env.example
 CURRENT_UPDATE.md
 CURRENT_UPDATE_*.md

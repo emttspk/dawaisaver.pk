@@ -24,7 +24,15 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "db:bootstrap": "npm run prisma:generate && npm run prisma:migrate",
-    "benchmark:drap": "npx ts-node -r dotenv/config src/benchmark/drap-benchmark.mock.ts"
+    "benchmark:drap": "npx ts-node -r dotenv/config src/benchmark/drap-benchmark.mock.ts",
+    "bridge:bootstrap": "ts-node -r dotenv/config src/cli/bridge.ts bootstrap",
+    "bridge:extract": "ts-node -r dotenv/config src/cli/bridge.ts extract",
+    "bridge:stats": "ts-node -r dotenv/config src/cli/bridge.ts stats",
+    "bridge:match": "ts-node -r dotenv/config src/cli/bridge.ts match",
+    "bridge:unmatched": "ts-node -r dotenv/config src/cli/bridge.ts unmatched",
+    "bridge:ai-review": "ts-node -r dotenv/config src/cli/bridge.ts ai-review",
+    "bridge:validate": "ts-node -r dotenv/config src/cli/bridge.ts validate",
+    "bridge:freeze": "ts-node -r dotenv/config src/cli/bridge.ts freeze"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",
@@ -60,7 +68,7 @@
     "prettier": "^3.4.2",
     "prisma": "^6.2.1",
     "swagger-ui-express": "^5.0.1",
-    "ts-jest": "^29.2.5",
+    "ts-jest": "^29.4.11",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
