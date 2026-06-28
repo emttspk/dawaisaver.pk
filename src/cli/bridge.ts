@@ -10,6 +10,7 @@ import { CanonicalProductBuilderService } from "../modules/bridge/canonical-prod
 import { IntegrityVerificationService } from "../modules/bridge/integrity-verification.service";
 import { PerformanceMonitoringService } from "../modules/bridge/performance-monitoring.service";
 import { ReleaseCandidateReportService } from "../modules/bridge/release-candidate-report.service";
+import { GoLiveApprovalService } from "../modules/bridge/go-live-approval.service";
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -23,6 +24,7 @@ async function bootstrap() {
   const integrity = app.get(IntegrityVerificationService);
   const performance = app.get(PerformanceMonitoringService);
   const finalReports = app.get(ReleaseCandidateReportService);
+  const goLive = app.get(GoLiveApprovalService);
 
   const command = process.argv[2];
 
@@ -75,8 +77,11 @@ async function bootstrap() {
     case "final-reports":
       await runFinalReports(finalReports);
       break;
+    case "go-live":
+      await runGoLive(goLive);
+      break;
     default:
-      console.error("Unknown command. Use: bootstrap | extract | stats | match | unmatched | ai-review | validate | freeze | coverage | top-unmatched | build-products | link-products | verify-integrity | analyze-performance | release-candidate | final-reports");
+      console.error("Unknown command. Use: bootstrap | extract | stats | match | unmatched | ai-review | validate | freeze | coverage | top-unmatched | build-products | link-products | verify-integrity | analyze-performance | release-candidate | final-reports | go-live");
       process.exit(1);
   }
 
@@ -248,6 +253,23 @@ async function runFinalReports(finalReports: ReleaseCandidateReportService) {
   console.log("Generating final reports...");
   await finalReports.generateFinalReports();
   console.log("All final reports generated");
+}
+
+async function runGoLive(goLive: GoLiveApprovalService) {
+  console.log("Generating go-live approval reports...");
+  const metrics = {
+    whoMolecules: 0,
+    drapVariants: 0,
+    canonicalProducts: 0,
+    linkedProducts: 0,
+    coverage: 0,
+    avgConfidence: 0,
+    duplicates: 0,
+    orphans: 0,
+    executionTime: "PENDING",
+  };
+  await goLive.generateGoLiveApproval(metrics);
+  console.log("Go-live approval reports generated");
 }
 
 bootstrap().catch((error) => {

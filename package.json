@@ -38,7 +38,8 @@
     "bridge:verify-integrity": "ts-node -r dotenv/config src/cli/bridge.ts verify-integrity",
     "bridge:analyze-performance": "ts-node -r dotenv/config src/cli/bridge.ts analyze-performance",
     "bridge:release-candidate": "ts-node -r dotenv/config src/cli/bridge.ts release-candidate",
-    "bridge:final-reports": "ts-node -r dotenv/config src/cli/bridge.ts final-reports"
+    "bridge:final-reports": "ts-node -r dotenv/config src/cli/bridge.ts final-reports",
+    "bridge:go-live": "ts-node -r dotenv/config src/cli/bridge.ts go-live"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",

@@ -12,6 +12,7 @@ import { CanonicalProductBuilderDesignService } from "./production-readiness.ser
 import { IntegrityVerificationService } from "./integrity-verification.service";
 import { PerformanceMonitoringService } from "./performance-monitoring.service";
 import { ReleaseCandidateReportService } from "./release-candidate-report.service";
+import { GoLiveApprovalService } from "./go-live-approval.service";
 import { BridgeController } from "./controllers/bridge.controller";
 
 @Module({
@@ -30,6 +31,7 @@ import { BridgeController } from "./controllers/bridge.controller";
     IntegrityVerificationService,
     PerformanceMonitoringService,
     ReleaseCandidateReportService,
+    GoLiveApprovalService,
   ],
   exports: [
     MoleculeService,
@@ -44,6 +46,7 @@ import { BridgeController } from "./controllers/bridge.controller";
     IntegrityVerificationService,
     PerformanceMonitoringService,
     ReleaseCandidateReportService,
+    GoLiveApprovalService,
   ],
 })
 export class BridgeModule {}
