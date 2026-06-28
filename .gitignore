@@ -1,14 +1,20 @@
 /PRODUCTION_DEPLOYMENT_REPORT.md
-docs/master_canonical_structure.md
+canonical-freeze-report.md
+master_canonical_validation.md
+golden_dataset_statistics.md
+golden_canonical_structure.md
 .env.example
-docs/archive/*.md
-docs/reports/*.md
-docs/exports/*.md
 CURRENT_UPDATE.md
 CURRENT_UPDATE_*.md
 Data-Fields.md
 .coolify/
 .coolify/inventory.json
+
+# Documentation to remain private during development
+docs/golden_canonical_dataset.md
+docs/canonical_review_workflow.md
+docs/canonical_validation_rules.md
+docs/master_canonical_structure.md
 
 # Temporary artifacts
 *.log
@@ -25,7 +31,6 @@ logs/
 temp/
 reports/
 reports/generated/catalog/
-docs/exports/catalog/!golden-sample-catalogue-*.{json,md}
 *_REPORT.md
 
 # Historical status snapshots
