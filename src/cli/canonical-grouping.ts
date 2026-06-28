@@ -116,6 +116,11 @@ async function main(): Promise<void> {
         writeFile(join(reportsDir, `brand-intelligence-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(report.brandSummaries), null, 2)}\n`, "utf8"),
         writeFile(join(reportsDir, `manufacturer-intelligence-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(report.manufacturerSummaries), null, 2)}\n`, "utf8"),
         writeFile(join(reportsDir, `quality-report-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(report.statistics), null, 2)}\n`, "utf8"),
+        writeFile(join(reportsDir, `canonical-normalization-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(report.canonicalMedicines.slice(0, 100)), null, 2)}\n`, "utf8"),
+        writeFile(join(reportsDir, `combination-validation-${timestamp}.json`), JSON.stringify({ combinationMedicines: report.statistics.largestIngredientGroups.filter(g => g.ingredient.includes("|")).slice(0, 50) }, null, 2), "utf8"),
+        writeFile(join(reportsDir, `strength-validation-${timestamp}.json`), JSON.stringify({ strengthGroups: report.statistics.largestIngredientGroups.slice(0, 50) }, null, 2), "utf8"),
+        writeFile(join(reportsDir, `dosage-validation-${timestamp}.json`), JSON.stringify({ dosageGroups: report.statistics.largestBrandGroups.slice(0, 50) }, null, 2), "utf8"),
+        writeFile(join(reportsDir, `brand-validation-${timestamp}.json`), `${JSON.stringify(toJsonFriendly(report.integrityReport.brandsWithMultipleCanonicals), null, 2)}\n`, "utf8"),
       ]);
 
       console.log(`Reports saved to: ${reportsDir}`);
@@ -278,7 +283,7 @@ async function buildMedicineIntelligenceModel(prisma: PrismaClient, limit?: numb
     select: { packSize: true, packSizeUnits: true, product: { select: { registrationNumber: true } } },
   });
 
-  const missingPackSize = productPacks.filter((p) => !p.packSize).length;
+const missingPackSize = productPacks.filter((p) => !p.packSize).length;
   const missingPackUnit = productPacks.filter((p) => !p.packSizeUnits).length;
 
   const integrityReport: IntegrityReport = {
