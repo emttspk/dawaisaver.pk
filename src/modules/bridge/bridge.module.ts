@@ -11,6 +11,7 @@ import { CanonicalProductBuilderService } from "./canonical-product-builder.serv
 import { CanonicalProductBuilderDesignService } from "./production-readiness.service";
 import { IntegrityVerificationService } from "./integrity-verification.service";
 import { PerformanceMonitoringService } from "./performance-monitoring.service";
+import { ReleaseCandidateReportService } from "./release-candidate-report.service";
 import { BridgeController } from "./controllers/bridge.controller";
 
 @Module({
@@ -28,6 +29,7 @@ import { BridgeController } from "./controllers/bridge.controller";
     CanonicalProductBuilderDesignService,
     IntegrityVerificationService,
     PerformanceMonitoringService,
+    ReleaseCandidateReportService,
   ],
   exports: [
     MoleculeService,
@@ -41,6 +43,7 @@ import { BridgeController } from "./controllers/bridge.controller";
     CanonicalProductBuilderDesignService,
     IntegrityVerificationService,
     PerformanceMonitoringService,
+    ReleaseCandidateReportService,
   ],
 })
 export class BridgeModule {}

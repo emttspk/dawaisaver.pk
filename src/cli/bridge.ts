@@ -9,6 +9,7 @@ import { CoverageAnalysisService } from "../modules/bridge/coverage-analysis.ser
 import { CanonicalProductBuilderService } from "../modules/bridge/canonical-product-builder.service";
 import { IntegrityVerificationService } from "../modules/bridge/integrity-verification.service";
 import { PerformanceMonitoringService } from "../modules/bridge/performance-monitoring.service";
+import { ReleaseCandidateReportService } from "../modules/bridge/release-candidate-report.service";
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -21,6 +22,7 @@ async function bootstrap() {
   const productBuilder = app.get(CanonicalProductBuilderService);
   const integrity = app.get(IntegrityVerificationService);
   const performance = app.get(PerformanceMonitoringService);
+  const finalReports = app.get(ReleaseCandidateReportService);
 
   const command = process.argv[2];
 
@@ -70,8 +72,11 @@ async function bootstrap() {
     case "release-candidate":
       await runReleaseCandidate(canonical, integrity, performance);
       break;
+    case "final-reports":
+      await runFinalReports(finalReports);
+      break;
     default:
-      console.error("Unknown command. Use: bootstrap | extract | stats | match | unmatched | ai-review | validate | freeze | coverage | top-unmatched | build-products | link-products | verify-integrity | analyze-performance | release-candidate");
+      console.error("Unknown command. Use: bootstrap | extract | stats | match | unmatched | ai-review | validate | freeze | coverage | top-unmatched | build-products | link-products | verify-integrity | analyze-performance | release-candidate | final-reports");
       process.exit(1);
   }
 
@@ -237,6 +242,12 @@ ${allClean ? "âœ… DAWAISEVER CANONICAL ENGINE RELEASE CANDIDATE v1.0 READY" : "â
   fs.writeFileSync(path.join(process.cwd(), "release-candidate-report.md"), report);
   console.log("Release candidate report generated");
   console.timeEnd("release-candidate");
+}
+
+async function runFinalReports(finalReports: ReleaseCandidateReportService) {
+  console.log("Generating final reports...");
+  await finalReports.generateFinalReports();
+  console.log("All final reports generated");
 }
 
 bootstrap().catch((error) => {
