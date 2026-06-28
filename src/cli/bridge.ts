@@ -6,6 +6,7 @@ import { BridgeAiReviewService } from "../modules/bridge-review/ai-review.servic
 import { BridgeValidationService } from "../modules/bridge-review/validation.service";
 import { CanonicalDatasetService } from "../modules/bridge/canonical-dataset.service";
 import { CoverageAnalysisService } from "../modules/bridge/coverage-analysis.service";
+import { CanonicalProductBuilderService } from "../modules/bridge/canonical-product-builder.service";
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -15,6 +16,7 @@ async function bootstrap() {
   const validation = app.get(BridgeValidationService);
   const canonical = app.get(CanonicalDatasetService);
   const coverage = app.get(CoverageAnalysisService);
+  const productBuilder = app.get(CanonicalProductBuilderService);
 
   const command = process.argv[2];
 
@@ -49,8 +51,14 @@ async function bootstrap() {
     case "top-unmatched":
       await runTopUnmatched(coverage);
       break;
+    case "build-products":
+      await runBuildProducts(productBuilder);
+      break;
+    case "link-products":
+      await runLinkProducts(productBuilder);
+      break;
     default:
-      console.error("Unknown command. Use: bootstrap | extract | stats | match | unmatched | ai-review | validate | freeze | coverage | top-unmatched");
+      console.error("Unknown command. Use: bootstrap | extract | stats | match | unmatched | ai-review | validate | freeze | coverage | top-unmatched | build-products | link-products");
       process.exit(1);
   }
 
@@ -122,8 +130,8 @@ async function runFreeze(canonical: CanonicalDatasetService) {
   const version = process.argv[3] || "1.0.0";
   console.time("freeze");
   console.log(`Freezing canonical dataset v${version}...`);
-  const path = await canonical.freezeCanonicalDataset(version);
-  console.log(`Canonical dataset frozen: ${path}`);
+  const filePath = await canonical.freezeCanonicalDataset(version);
+  console.log(`Canonical dataset frozen: ${filePath}`);
   console.timeEnd("freeze");
 }
 
@@ -138,6 +146,22 @@ async function runTopUnmatched(coverage: CoverageAnalysisService) {
   console.log(`Generating top ${topN} unmatched...`);
   await coverage.generateTopUnmatched(topN);
   console.log(`Top unmatched generated: top-${topN}-unmatched.md`);
+}
+
+async function runBuildProducts(productBuilder: CanonicalProductBuilderService) {
+  console.time("build-products");
+  console.log("Building canonical products from approved bridges...");
+  const result = await productBuilder.buildCanonicalProducts(false);
+  console.log(`Created ${result.created} canonical products, skipped ${result.skipped} existing`);
+  console.timeEnd("build-products");
+}
+
+async function runLinkProducts(productBuilder: CanonicalProductBuilderService) {
+  console.time("link-products");
+  console.log("Linking canonical products to existing products...");
+  const result = await productBuilder.linkToProduction();
+  console.log(`Linked ${result.linked} products`);
+  console.timeEnd("link-products");
 }
 
 bootstrap().catch((error) => {

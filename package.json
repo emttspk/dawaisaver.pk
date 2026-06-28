@@ -32,7 +32,9 @@
     "bridge:unmatched": "ts-node -r dotenv/config src/cli/bridge.ts unmatched",
     "bridge:ai-review": "ts-node -r dotenv/config src/cli/bridge.ts ai-review",
     "bridge:validate": "ts-node -r dotenv/config src/cli/bridge.ts validate",
-    "bridge:freeze": "ts-node -r dotenv/config src/cli/bridge.ts freeze"
+    "bridge:freeze": "ts-node -r dotenv/config src/cli/bridge.ts freeze",
+    "bridge:build-products": "ts-node -r dotenv/config src/cli/bridge.ts build-products",
+    "bridge:link-products": "ts-node -r dotenv/config src/cli/bridge.ts link-products"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",
