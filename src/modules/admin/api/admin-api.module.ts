@@ -12,10 +12,12 @@ import { AdminReportsController } from "./admin-reports.controller";
 import { AdminAuditController } from "./admin-audit.controller";
 import { AdminMasterController } from "./admin-master.controller";
 import { AdminBridgeController } from "./admin-bridge.controller";
+import { AdminSearchController } from "./admin-search.controller";
 import { BridgeModule } from "../../bridge/bridge.module";
+import { SearchModule } from "../../search/search.module";
 
 @Module({
-  imports: [BridgeModule],
+  imports: [BridgeModule, SearchModule],
   controllers: [
     AdminProductsController,
     AdminPricesController,
@@ -30,6 +32,7 @@ import { BridgeModule } from "../../bridge/bridge.module";
     AdminAuditController,
     AdminMasterController,
     AdminBridgeController,
+    AdminSearchController,
   ],
 })
 export class AdminApiModule {}
